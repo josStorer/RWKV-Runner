@@ -1,4 +1,4 @@
-import {Combobox, CompoundButton, Link, Option, Text} from '@fluentui/react-components';
+import {Button, CompoundButton, Dropdown, Link, Option, Text} from '@fluentui/react-components';
 import React, {FC, ReactElement} from 'react';
 import Banner from '../assets/images/banner.jpg';
 import {
@@ -8,6 +8,7 @@ import {
   Storage20Regular
 } from '@fluentui/react-icons';
 import {useNavigate} from 'react-router';
+import {SaveConfig} from '../../wailsjs/go/backend_golang/App';
 
 type NavCard = {
   label: string;
@@ -81,7 +82,7 @@ export const Home: FC = () => {
           <Link>Help</Link>
         </div>
         <div className="flex gap-3">
-          <Combobox placeholder="Config"
+          <Dropdown placeholder="Config"
                     value={selectedConfig}
                     onOptionSelect={(_, data) => {
                       if (data.optionValue)
@@ -99,8 +100,8 @@ export const Home: FC = () => {
             <Option id="item-4" key="item-4">
               Item 4
             </Option>
-          </Combobox>
-          <CompoundButton appearance="primary" size="large">Run</CompoundButton>
+          </Dropdown>
+          <Button appearance="primary" size="large" onClick={() => SaveConfig({a: 1234, b: 'test'})}>Run</Button>
         </div>
       </div>
     </div>
