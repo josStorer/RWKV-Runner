@@ -1,4 +1,4 @@
-import {Text, Combobox, CompoundButton, Link, Option} from '@fluentui/react-components';
+import {Combobox, CompoundButton, Link, Option, Text} from '@fluentui/react-components';
 import React, {FC, ReactElement} from 'react';
 import Banner from '../assets/images/banner.jpg';
 import {
@@ -7,6 +7,7 @@ import {
   DocumentSettings20Regular,
   Storage20Regular
 } from '@fluentui/react-icons';
+import {useNavigate} from 'react-router';
 
 type NavCard = {
   label: string;
@@ -15,7 +16,7 @@ type NavCard = {
   icon: ReactElement;
 };
 
-export const navCards:NavCard[] = [
+export const navCards: NavCard[] = [
   {
     label: 'Chat',
     desc: 'Go to chat page',
@@ -45,6 +46,12 @@ export const navCards:NavCard[] = [
 export const Home: FC = () => {
   const [selectedConfig, setSelectedConfig] = React.useState('RWKV-3B-4G MEM');
 
+  const navigate = useNavigate();
+
+  const onClickNavCard = (path: string) => {
+    navigate({pathname: path});
+  };
+
   return (
     <div className="flex flex-col justify-between h-full">
       <img className="rounded-xl select-none" src={Banner}/>
@@ -63,7 +70,7 @@ export const Home: FC = () => {
       <div className="flex justify-between">
         {navCards.map(({label, path, icon, desc}, index) => (
           <CompoundButton className="w-1/5" icon={icon} secondaryContent={desc} key={`${path}-${index}`} value={path}
-                          size="large">
+                          size="large" onClick={() => onClickNavCard(path)}>
             {label}
           </CompoundButton>
         ))}
