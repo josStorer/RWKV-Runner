@@ -1,0 +1,17 @@
+{
+  "version": "1.0.0",
+  "models": [
+    {
+      "name": "RWKV-4-Raven-14B-v11x-Eng99%-Other1%-20230501-ctx8192.pth",
+      "desc": {
+        "en": "Mainly English language corpus",
+        "zh": "英语语料为主"
+      },
+      "size": 28297309490,
+      "lastUpdated": "2023-05-02T09:43:33",
+      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-14B-v11x-Eng99%25-Other1%25-20230501-ctx8192.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-14B-v11x-Eng99%25-Other1%25-20230501-ctx8192.pth",
+      "SHA256": "c4bc72406c3c62613e8e2592e8d07ac045f8a88381c728f8eb60af890e299f4d"
+    }
+  ]
+}

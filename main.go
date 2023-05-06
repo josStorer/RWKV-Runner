@@ -22,7 +22,7 @@ func main() {
 		Title:     "RWKV-Runner",
 		Width:     1024,
 		Height:    640,
-		MinWidth:  1024,
+		MinWidth:  375,
 		MinHeight: 640,
 		AssetServer: &assetserver.Options{
 			Assets: assets,

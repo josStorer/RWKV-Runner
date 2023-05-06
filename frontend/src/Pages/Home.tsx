@@ -8,7 +8,7 @@ import {
   Storage20Regular
 } from '@fluentui/react-icons';
 import {useNavigate} from 'react-router';
-import {SaveConfig} from '../../wailsjs/go/backend_golang/App';
+import {SaveJson} from '../../wailsjs/go/backend_golang/App';
 
 type NavCard = {
   label: string;
@@ -55,10 +55,10 @@ export const Home: FC = () => {
 
   return (
     <div className="flex flex-col justify-between h-full">
-      <img className="rounded-xl select-none" src={Banner}/>
+      <img className="rounded-xl select-none hidden sm:block" src={Banner}/>
       <div className="flex flex-col gap-2">
         <Text size={600} weight="medium">Introduction</Text>
-        <Text size={300}>
+        <div className="h-40 overflow-y-auto">
           RWKV is an RNN with Transformer-level LLM performance, which can also be directly trained like a GPT
           transformer (parallelizable). And it's 100% attention-free. You only need the hidden state at position t to
           compute the state at position t+1. You can use the "GPT" mode to quickly compute the hidden state for the
@@ -66,42 +66,46 @@ export const Home: FC = () => {
           <br/>
           So it's combining the best of RNN and transformer - great performance, fast inference, saves VRAM, fast
           training, "infinite" ctx_len, and free sentence embedding (using the final hidden state).
-        </Text>
+        </div>
       </div>
-      <div className="flex justify-between">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">
         {navCards.map(({label, path, icon, desc}, index) => (
-          <CompoundButton className="w-1/5" icon={icon} secondaryContent={desc} key={`${path}-${index}`} value={path}
+          <CompoundButton icon={icon} secondaryContent={desc} key={`${path}-${index}`} value={path}
                           size="large" onClick={() => onClickNavCard(path)}>
             {label}
           </CompoundButton>
         ))}
       </div>
-      <div className="flex justify-between">
+      <div className="flex flex-col gap-2">
+        <div className="flex flex-row-reverse sm:fixed bottom-2 right-2">
+          <div className="flex gap-3">
+            <Dropdown style={{minWidth: 0}}
+                      placeholder="Config"
+                      value={selectedConfig}
+                      onOptionSelect={(_, data) => {
+                        if (data.optionValue)
+                          setSelectedConfig(data.optionValue);
+                      }}>
+              <Option id="item-1" key="item-1">
+                RWKV-3B-4G MEM
+              </Option>
+              <Option id="item-2" key="item-2">
+                Item 2
+              </Option>
+              <Option id="item-3" key="item-3">
+                Item 3
+              </Option>
+              <Option id="item-4" key="item-4">
+                Item 4
+              </Option>
+            </Dropdown>
+            <Button appearance="primary" size="large"
+                    onClick={() => SaveJson('config.json', {a: 1234, b: 'test'})}>Run</Button>
+          </div>
+        </div>
         <div className="flex gap-4 items-end">
           Version: 1.0.0
           <Link>Help</Link>
-        </div>
-        <div className="flex gap-3">
-          <Dropdown placeholder="Config"
-                    value={selectedConfig}
-                    onOptionSelect={(_, data) => {
-                      if (data.optionValue)
-                        setSelectedConfig(data.optionValue);
-                    }}>
-            <Option id="item-1" key="item-1">
-              RWKV-3B-4G MEM
-            </Option>
-            <Option id="item-2" key="item-2">
-              Item 2
-            </Option>
-            <Option id="item-3" key="item-3">
-              Item 3
-            </Option>
-            <Option id="item-4" key="item-4">
-              Item 4
-            </Option>
-          </Dropdown>
-          <Button appearance="primary" size="large" onClick={() => SaveConfig({a: 1234, b: 'test'})}>Run</Button>
         </div>
       </div>
     </div>

@@ -27,10 +27,12 @@ import {FluentProvider, Tab, TabList, webDarkTheme} from '@fluentui/react-compon
 import {FC, useEffect, useState} from 'react';
 import {Route, Routes, useLocation, useNavigate} from 'react-router';
 import {pages} from './Pages';
+import {useMediaQuery} from 'usehooks-ts';
 
 const App: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const mq = useMediaQuery('(min-width: 640px)');
 
   const [path, setPath] = useState<string>(pages[0].path);
 
@@ -42,7 +44,7 @@ const App: FC = () => {
   return (
     <FluentProvider theme={webDarkTheme} className="h-screen">
       <div className="flex h-full">
-        <div className="flex flex-col w-40 p-2 justify-between">
+        <div className="flex flex-col w-16 sm:w-48 p-2 justify-between">
           <TabList
             size="large"
             appearance="subtle"
@@ -50,9 +52,9 @@ const App: FC = () => {
             onTabSelect={(_, {value}) => selectTab(value)}
             vertical
           >
-            {pages.filter(page=>page.top).map(({label, path, icon}, index) => (
+            {pages.filter(page => page.top).map(({label, path, icon}, index) => (
               <Tab icon={icon} key={`${path}-${index}`} value={path}>
-                {label}
+                {mq && label}
               </Tab>
             ))}
           </TabList>
@@ -63,9 +65,9 @@ const App: FC = () => {
             onTabSelect={(_, {value}) => selectTab(value)}
             vertical
           >
-            {pages.filter(page=>!page.top).map(({label, path, icon}, index) => (
+            {pages.filter(page => !page.top).map(({label, path, icon}, index) => (
               <Tab icon={icon} key={`${path}-${index}`} value={path}>
-                {label}
+                {mq && label}
               </Tab>
             ))}
           </TabList>

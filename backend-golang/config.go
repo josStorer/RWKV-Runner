@@ -5,13 +5,13 @@ import (
 	"os"
 )
 
-func (a *App) SaveConfig(config interface{}) string {
-	jsonData, err := json.MarshalIndent(config, "", "  ")
+func (a *App) SaveJson(fileName string, jsonData interface{}) string {
+	text, err := json.MarshalIndent(jsonData, "", "  ")
 	if err != nil {
 		return err.Error()
 	}
 
-	if err := os.WriteFile("config.json", jsonData, 0644); err != nil {
+	if err := os.WriteFile(fileName, text, 0644); err != nil {
 		return err.Error()
 	}
 	return ""

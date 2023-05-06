@@ -4,3 +4,4 @@ frontend/dist
 .idea
 .vs
 package.json.md5
+cache.json
