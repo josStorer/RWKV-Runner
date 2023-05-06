@@ -56,7 +56,7 @@ export const Configs: FC = () => {
                   <ToolTipButton desc="Manage Models" icon={<DataUsageSettings20Regular/>}/>
                 </div>
               }/>
-              <div/>
+              <ToolTipButton text="Convert" desc="Convert model with these configs"/>
               <Labeled label="Device" content={
                 <Dropdown style={{minWidth: 0}} className="grow">
                   <Option>CPU</Option>

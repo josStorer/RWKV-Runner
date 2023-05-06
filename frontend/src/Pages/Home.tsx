@@ -58,7 +58,7 @@ export const Home: FC = () => {
       <img className="rounded-xl select-none hidden sm:block" src={Banner}/>
       <div className="flex flex-col gap-2">
         <Text size={600} weight="medium">Introduction</Text>
-        <div className="h-40 overflow-y-auto">
+        <div className="h-40 overflow-y-auto p-1">
           RWKV is an RNN with Transformer-level LLM performance, which can also be directly trained like a GPT
           transformer (parallelizable). And it's 100% attention-free. You only need the hidden state at position t to
           compute the state at position t+1. You can use the "GPT" mode to quickly compute the hidden state for the
