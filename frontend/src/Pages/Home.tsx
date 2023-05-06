@@ -8,7 +8,7 @@ import {
   Storage20Regular
 } from '@fluentui/react-icons';
 import {useNavigate} from 'react-router';
-import {SaveJson} from '../../wailsjs/go/backend_golang/App';
+import {StartServer} from '../../wailsjs/go/backend_golang/App';
 
 type NavCard = {
   label: string;
@@ -100,7 +100,7 @@ export const Home: FC = () => {
               </Option>
             </Dropdown>
             <Button appearance="primary" size="large"
-                    onClick={() => SaveJson('config.json', {a: 1234, b: 'test'})}>Run</Button>
+                    onClick={() => StartServer('cuda fp16i8', 'E:\\RWKV-4-Raven-3B-v10-Eng49%-Chn50%-Other1%-20230419-ctx4096.pth').then(console.log)}>Run</Button>
           </div>
         </div>
         <div className="flex gap-4 items-end">

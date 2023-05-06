@@ -5,3 +5,4 @@ frontend/dist
 .vs
 package.json.md5
 cache.json
+stats.html
