@@ -26,6 +26,8 @@ class CompletionBody(BaseModel):
 @router.post("/chat/completions")
 async def completions(body: CompletionBody, request: Request):
     model = global_var.get(global_var.Model)
+    if (model is None):
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "model not loaded")
 
     question = body.messages[-1]
     if question.role == 'user':

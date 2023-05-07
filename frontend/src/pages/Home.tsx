@@ -8,6 +8,8 @@ import {
   Storage20Regular
 } from '@fluentui/react-icons';
 import {useNavigate} from 'react-router';
+import commonStore, {ModelStatus} from '../stores/commonStore';
+import {observer} from 'mobx-react-lite';
 import {StartServer} from '../../wailsjs/go/backend_golang/App';
 
 type NavCard = {
@@ -44,13 +46,60 @@ export const navCards: NavCard[] = [
   }
 ];
 
-export const Home: FC = () => {
+const mainButtonText = {
+  [ModelStatus.Offline]: 'Run',
+  [ModelStatus.Starting]: 'Starting',
+  [ModelStatus.Loading]: 'Loading',
+  [ModelStatus.Working]: 'Stop'
+};
+
+export const Home: FC = observer(() => {
   const [selectedConfig, setSelectedConfig] = React.useState('RWKV-3B-4G MEM');
 
   const navigate = useNavigate();
 
   const onClickNavCard = (path: string) => {
     navigate({pathname: path});
+  };
+
+  const onClickMainButton = async () => {
+    if (commonStore.modelStatus === ModelStatus.Offline) {
+      commonStore.updateModelStatus(ModelStatus.Starting);
+      StartServer('cuda fp16i8', 'E:\\RWKV-4-Raven-3B-v10-Eng49%-Chn50%-Other1%-20230419-ctx4096.pth');
+
+      let timeoutCount = 5;
+      let loading = false;
+      const intervalId = setInterval(() => {
+        fetch('http://127.0.0.1:8000')
+          .then(r => {
+            if (r.ok && !loading) {
+              clearInterval(intervalId);
+              commonStore.updateModelStatus(ModelStatus.Loading);
+              loading = true;
+              fetch('http://127.0.0.1:8000/update-config', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({})
+              }).then(async (r) => {
+                if (r.ok)
+                  commonStore.updateModelStatus(ModelStatus.Working);
+              });
+            }
+          }).catch(() => {
+          if (timeoutCount <= 0) {
+            clearInterval(intervalId);
+            commonStore.updateModelStatus(ModelStatus.Offline);
+          }
+        });
+
+        timeoutCount--;
+      }, 1000);
+    } else {
+      commonStore.updateModelStatus(ModelStatus.Offline);
+      fetch('http://127.0.0.1:8000/exit', {method: 'POST'});
+    }
   };
 
   return (
@@ -99,8 +148,10 @@ export const Home: FC = () => {
                 Item 4
               </Option>
             </Dropdown>
-            <Button appearance="primary" size="large"
-                    onClick={() => StartServer('cuda fp16i8', 'E:\\RWKV-4-Raven-3B-v10-Eng49%-Chn50%-Other1%-20230419-ctx4096.pth').then(console.log)}>Run</Button>
+            <Button disabled={commonStore.modelStatus === ModelStatus.Starting} appearance="primary" size="large"
+                    onClick={onClickMainButton}>
+              {mainButtonText[commonStore.modelStatus]}
+            </Button>
           </div>
         </div>
         <div className="flex gap-4 items-end">
@@ -110,4 +161,4 @@ export const Home: FC = () => {
       </div>
     </div>
   );
-};
+});

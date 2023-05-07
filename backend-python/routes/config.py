@@ -1,7 +1,7 @@
 import pathlib
 import sys
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, Response, status
 from pydantic import BaseModel
 from langchain.llms import RWKV
 from utils.rwkv import *
@@ -22,9 +22,10 @@ class UpdateConfigBody(BaseModel):
 
 
 @router.post("/update-config")
-def update_config(body: UpdateConfigBody):
+def update_config(body: UpdateConfigBody, response: Response):
     if (global_var.get(global_var.Model_Status) is global_var.ModelStatus.Loading):
-        return "loading"
+        response.status_code = status.HTTP_304_NOT_MODIFIED
+        return
 
     global_var.set(global_var.Model_Status, global_var.ModelStatus.Offline)
     global_var.set(global_var.Model, None)

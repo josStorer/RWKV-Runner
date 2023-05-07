@@ -42,7 +42,7 @@ def read_root():
 
 
 @app.post("/exit")
-def read_root():
+def exit():
     parent_pid = os.getpid()
     parent = psutil.Process(parent_pid)
     for child in parent.children(recursive=True):
