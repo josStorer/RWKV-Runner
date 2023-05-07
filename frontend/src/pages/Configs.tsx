@@ -1,9 +1,9 @@
 import {Button, Divider, Dropdown, Input, Option, Slider, Switch, Text} from '@fluentui/react-components';
 import {AddCircle20Regular, DataUsageSettings20Regular, Delete20Regular, Save20Regular} from '@fluentui/react-icons';
 import React, {FC} from 'react';
-import {Section} from './components/Section';
-import {Labeled} from './components/Labeled';
-import {ToolTipButton} from './components/ToolTipButton';
+import {Section} from '../components/Section';
+import {Labeled} from '../components/Labeled';
+import {ToolTipButton} from '../components/ToolTipButton';
 
 export const Configs: FC = () => {
   return (

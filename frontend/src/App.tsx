@@ -26,7 +26,7 @@
 import {FluentProvider, Tab, TabList, webDarkTheme} from '@fluentui/react-components';
 import {FC, useEffect, useState} from 'react';
 import {Route, Routes, useLocation, useNavigate} from 'react-router';
-import {pages} from './Pages';
+import {pages} from './pages';
 import {useMediaQuery} from 'usehooks-ts';
 
 const App: FC = () => {

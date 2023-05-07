@@ -13,7 +13,7 @@ import {
   Textarea
 } from '@fluentui/react-components';
 import {EditRegular} from '@fluentui/react-icons/lib/fonts';
-import {ToolTipButton} from './components/ToolTipButton';
+import {ToolTipButton} from '../components/ToolTipButton';
 import {ArrowClockwise20Regular} from '@fluentui/react-icons';
 
 type Operation = {
