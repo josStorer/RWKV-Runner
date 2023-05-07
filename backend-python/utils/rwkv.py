@@ -15,8 +15,8 @@ def rwkv_generate(model: RWKV, prompt: str):
     for i in range(model.max_tokens_per_generation):
         for n in occurrence:
             logits[n] -= (
-                    model.penalty_alpha_presence
-                    + occurrence[n] * model.penalty_alpha_frequency
+                model.penalty_alpha_presence
+                + occurrence[n] * model.penalty_alpha_frequency
             )
         token = model.pipeline.sample_logits(
             logits, temperature=model.temperature, top_p=model.top_p

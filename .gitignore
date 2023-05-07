@@ -1,6 +1,7 @@
 build/bin
 node_modules
 frontend/dist
+__pycache__
 .idea
 .vs
 package.json.md5
