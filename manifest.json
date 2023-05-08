@@ -1,5 +1,35 @@
 {
   "version": "1.0.0",
+  "program-files": [
+    {
+      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/backend-python/main.py",
+      "path": "backend-python/main.py"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/backend-python/global_var.py",
+      "path": "backend-python/global_var.py"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/backend-python/routes/completion.py",
+      "path": "backend-python/routes/completion.py"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/backend-python/routes/config.py",
+      "path": "backend-python/routes/config.py"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/backend-python/utils/ngrok.py",
+      "path": "backend-python/utils/ngrok.py"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/backend-python/utils/rwkv.py",
+      "path": "backend-python/utils/rwkv.py"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/backend-python/utils/torch.py",
+      "path": "backend-python/utils/torch.py"
+    }
+  ],
   "models": [
     {
       "name": "RWKV-4-Raven-3B-v11-Eng99%-Other1%-20230425-ctx4096.pth",
