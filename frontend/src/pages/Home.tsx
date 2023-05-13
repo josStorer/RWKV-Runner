@@ -1,6 +1,6 @@
 import {Button, CompoundButton, Dropdown, Link, Option, Text} from '@fluentui/react-components';
 import React, {FC, ReactElement} from 'react';
-import Banner from '../assets/images/banner.jpg';
+import banner from '../assets/images/banner.jpg';
 import {
   Chat20Regular,
   DataUsageSettings20Regular,
@@ -64,7 +64,7 @@ export const Home: FC = observer(() => {
 
   const onClickMainButton = async () => {
     if (commonStore.modelStatus === ModelStatus.Offline) {
-      commonStore.updateModelStatus(ModelStatus.Starting);
+      commonStore.setModelStatus(ModelStatus.Starting);
       StartServer('cuda fp16i8', 'E:\\RWKV-4-Raven-3B-v10-Eng49%-Chn50%-Other1%-20230419-ctx4096.pth');
 
       let timeoutCount = 5;
@@ -74,7 +74,7 @@ export const Home: FC = observer(() => {
           .then(r => {
             if (r.ok && !loading) {
               clearInterval(intervalId);
-              commonStore.updateModelStatus(ModelStatus.Loading);
+              commonStore.setModelStatus(ModelStatus.Loading);
               loading = true;
               fetch('http://127.0.0.1:8000/update-config', {
                 method: 'POST',
@@ -84,27 +84,27 @@ export const Home: FC = observer(() => {
                 body: JSON.stringify({})
               }).then(async (r) => {
                 if (r.ok)
-                  commonStore.updateModelStatus(ModelStatus.Working);
+                  commonStore.setModelStatus(ModelStatus.Working);
               });
             }
           }).catch(() => {
           if (timeoutCount <= 0) {
             clearInterval(intervalId);
-            commonStore.updateModelStatus(ModelStatus.Offline);
+            commonStore.setModelStatus(ModelStatus.Offline);
           }
         });
 
         timeoutCount--;
       }, 1000);
     } else {
-      commonStore.updateModelStatus(ModelStatus.Offline);
+      commonStore.setModelStatus(ModelStatus.Offline);
       fetch('http://127.0.0.1:8000/exit', {method: 'POST'});
     }
   };
 
   return (
     <div className="flex flex-col justify-between h-full">
-      <img className="rounded-xl select-none hidden sm:block" src={Banner}/>
+      <img className="rounded-xl select-none hidden sm:block" src={banner}/>
       <div className="flex flex-col gap-2">
         <Text size={600} weight="medium">Introduction</Text>
         <div className="h-40 overflow-y-auto p-1">

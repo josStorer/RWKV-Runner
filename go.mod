@@ -2,7 +2,10 @@ module rwkv-runner
 
 go 1.18
 
-require github.com/wailsapp/wails/v2 v2.4.1
+require (
+	github.com/cavaliergopher/grab/v3 v3.0.1
+	github.com/wailsapp/wails/v2 v2.4.1
+)
 
 require (
 	github.com/bep/debounce v1.2.1 // indirect

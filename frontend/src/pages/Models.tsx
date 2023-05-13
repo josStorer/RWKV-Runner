@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC} from 'react';
 import {
   createTableColumn,
   DataGrid,
@@ -12,40 +12,18 @@ import {
   Text,
   Textarea
 } from '@fluentui/react-components';
-import {EditRegular} from '@fluentui/react-icons/lib/fonts';
 import {ToolTipButton} from '../components/ToolTipButton';
-import {ArrowClockwise20Regular} from '@fluentui/react-icons';
+import {ArrowClockwise20Regular, ArrowDownload20Regular, Open20Regular} from '@fluentui/react-icons';
+import {observer} from 'mobx-react-lite';
+import commonStore, {ModelSourceItem} from '../stores/commonStore';
+import {BrowserOpenURL} from '../../wailsjs/runtime';
+import {DownloadFile} from '../../wailsjs/go/backend_golang/App';
 
-type Operation = {
-  icon: JSX.Element;
-  desc: string
-}
-
-type Item = {
-  filename: string;
-  desc: string;
-  size: number;
-  lastUpdated: number;
-  actions: Operation[];
-  isLocal: boolean;
-};
-
-const items: Item[] = [
-  {
-    filename: 'RWKV-4-Raven-14B-v11x-Eng99%-Other1%-20230501-ctx8192.pth',
-    desc: 'Mainly English language corpus',
-    size: 28297309490,
-    lastUpdated: 1,
-    actions: [{icon: <EditRegular/>, desc: 'Edit'}],
-    isLocal: false
-  }
-];
-
-const columns: TableColumnDefinition<Item>[] = [
-  createTableColumn<Item>({
+const columns: TableColumnDefinition<ModelSourceItem>[] = [
+  createTableColumn<ModelSourceItem>({
     columnId: 'file',
     compare: (a, b) => {
-      return a.filename.localeCompare(b.filename);
+      return a.name.localeCompare(b.name);
     },
     renderHeaderCell: () => {
       return 'File';
@@ -53,15 +31,15 @@ const columns: TableColumnDefinition<Item>[] = [
     renderCell: (item) => {
       return (
         <TableCellLayout className="break-all">
-          {item.filename}
+          {item.name}
         </TableCellLayout>
       );
     }
   }),
-  createTableColumn<Item>({
+  createTableColumn<ModelSourceItem>({
     columnId: 'desc',
     compare: (a, b) => {
-      return a.desc.localeCompare(b.desc);
+      return a.desc['en'].localeCompare(b.desc['en']);
     },
     renderHeaderCell: () => {
       return 'Desc';
@@ -69,12 +47,12 @@ const columns: TableColumnDefinition<Item>[] = [
     renderCell: (item) => {
       return (
         <TableCellLayout>
-          {item.desc}
+          {item.desc['en']}
         </TableCellLayout>
       );
     }
   }),
-  createTableColumn<Item>({
+  createTableColumn<ModelSourceItem>({
     columnId: 'size',
     compare: (a, b) => {
       return a.size - b.size;
@@ -90,10 +68,14 @@ const columns: TableColumnDefinition<Item>[] = [
       );
     }
   }),
-  createTableColumn<Item>({
+  createTableColumn<ModelSourceItem>({
     columnId: 'lastUpdated',
     compare: (a, b) => {
-      return a.lastUpdated - b.lastUpdated;
+      if (!a.lastUpdatedMs)
+        a.lastUpdatedMs = Date.parse(a.lastUpdated);
+      if (!b.lastUpdatedMs)
+        b.lastUpdatedMs = Date.parse(b.lastUpdated);
+      return a.lastUpdatedMs - b.lastUpdatedMs;
     },
     renderHeaderCell: () => {
       return 'Last updated';
@@ -103,10 +85,10 @@ const columns: TableColumnDefinition<Item>[] = [
       return new Date(item.lastUpdated).toLocaleString();
     }
   }),
-  createTableColumn<Item>({
+  createTableColumn<ModelSourceItem>({
     columnId: 'actions',
     compare: (a, b) => {
-      return a.isLocal === b.isLocal ? 0 : a.isLocal ? -1 : 1;
+      return a.isDownloading ? 0 : a.isLocal ? 1 : 2;
     },
     renderHeaderCell: () => {
       return 'Actions';
@@ -114,54 +96,63 @@ const columns: TableColumnDefinition<Item>[] = [
     renderCell: (item) => {
       return (
         <TableCellLayout>
+          <div className="flex gap-1">
+            <ToolTipButton desc="Download" icon={<ArrowDownload20Regular/>} onClick={() => {
+              DownloadFile(`./models/${item.name}`, item.downloadUrl);
+            }}/>
+            <ToolTipButton desc="Open Url" icon={<Open20Regular/>} onClick={() => {
+              BrowserOpenURL(item.url);
+            }}/>
+          </div>
         </TableCellLayout>
       );
     }
   })
 ];
 
-export const Models: FC = () => {
-  useEffect(() => {
-    fetch('https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/manifest.json')
-      .then(
-        res => res.json().then(console.log)
-      );
-  }, []);
-
+export const Models: FC = observer(() => {
   return (
-    <div className="flex flex-col box-border gap-5 p-2">
-      <Text size={600}>In Development</Text>
+    <div className="flex flex-col gap-2 p-2 h-full">
+      <Text size={600}>Models</Text>
       <div className="flex flex-col gap-1">
         <div className="flex justify-between">
-          <Text weight="medium">Model Source Url List</Text>
+          <Text weight="medium">Model Source Manifest List</Text>
           <ToolTipButton desc="Refresh" icon={<ArrowClockwise20Regular/>}/>
         </div>
-        <Text size={100}>description</Text>
+        <Text size={100}>Provide JSON file URLs for the models manifest. Separate URLs with semicolons. The "models"
+          field in JSON files will be parsed into the following table.</Text>
         <Textarea size="large" resize="vertical"
-                  defaultValue="https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/manifest.json;"/>
+                  defaultValue={commonStore.modelSourceManifestList}
+                  onChange={(e, data) => commonStore.setModelSourceManifestList(data.value)}/>
       </div>
-      <DataGrid
-        items={items}
-        columns={columns}
-        sortable={true}
-      >
-        <DataGridHeader>
-          <DataGridRow>
-            {({renderHeaderCell}) => (
-              <DataGridHeaderCell>{renderHeaderCell()}</DataGridHeaderCell>
-            )}
-          </DataGridRow>
-        </DataGridHeader>
-        <DataGridBody<Item>>
-          {({item, rowId}) => (
-            <DataGridRow<Item> key={rowId}>
-              {({renderCell}) => (
-                <DataGridCell>{renderCell(item)}</DataGridCell>
+      <div className="flex grow overflow-hidden">
+        <DataGrid
+          items={commonStore.modelSourceList}
+          columns={columns}
+          sortable={true}
+          style={{display: 'flex'}}
+          className="flex-col"
+        >
+          <DataGridHeader>
+            <DataGridRow>
+              {({renderHeaderCell}) => (
+                <DataGridHeaderCell>{renderHeaderCell()}</DataGridHeaderCell>
               )}
             </DataGridRow>
-          )}
-        </DataGridBody>
-      </DataGrid>
+          </DataGridHeader>
+          <div className="overflow-y-auto overflow-x-hidden">
+            <DataGridBody<ModelSourceItem>>
+              {({item, rowId}) => (
+                <DataGridRow<ModelSourceItem> key={rowId}>
+                  {({renderCell}) => (
+                    <DataGridCell>{renderCell(item)}</DataGridCell>
+                  )}
+                </DataGridRow>
+              )}
+            </DataGridBody>
+          </div>
+        </DataGrid>
+      </div>
     </div>
   );
-};
+});
