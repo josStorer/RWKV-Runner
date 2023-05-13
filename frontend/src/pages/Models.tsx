@@ -13,11 +13,12 @@ import {
   Textarea
 } from '@fluentui/react-components';
 import {ToolTipButton} from '../components/ToolTipButton';
-import {ArrowClockwise20Regular, ArrowDownload20Regular, Open20Regular} from '@fluentui/react-icons';
+import {ArrowClockwise20Regular, ArrowDownload20Regular, Folder20Regular, Open20Regular} from '@fluentui/react-icons';
 import {observer} from 'mobx-react-lite';
 import commonStore, {ModelSourceItem} from '../stores/commonStore';
 import {BrowserOpenURL} from '../../wailsjs/runtime';
-import {DownloadFile} from '../../wailsjs/go/backend_golang/App';
+import {DownloadFile, OpenFileFolder} from '../../wailsjs/go/backend_golang/App';
+import manifest from '../../../manifest.json';
 
 const columns: TableColumnDefinition<ModelSourceItem>[] = [
   createTableColumn<ModelSourceItem>({
@@ -39,7 +40,10 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
   createTableColumn<ModelSourceItem>({
     columnId: 'desc',
     compare: (a, b) => {
-      return a.desc['en'].localeCompare(b.desc['en']);
+      if (a.desc && b.desc)
+        return a.desc['en'].localeCompare(b.desc['en']);
+      else
+        return 0;
     },
     renderHeaderCell: () => {
       return 'Desc';
@@ -47,7 +51,7 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
     renderCell: (item) => {
       return (
         <TableCellLayout>
-          {item.desc['en']}
+          {item.desc && item.desc['en']}
         </TableCellLayout>
       );
     }
@@ -75,7 +79,7 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
         a.lastUpdatedMs = Date.parse(a.lastUpdated);
       if (!b.lastUpdatedMs)
         b.lastUpdatedMs = Date.parse(b.lastUpdated);
-      return a.lastUpdatedMs - b.lastUpdatedMs;
+      return b.lastUpdatedMs - a.lastUpdatedMs;
     },
     renderHeaderCell: () => {
       return 'Last updated';
@@ -88,7 +92,7 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
   createTableColumn<ModelSourceItem>({
     columnId: 'actions',
     compare: (a, b) => {
-      return a.isDownloading ? 0 : a.isLocal ? 1 : 2;
+      return a.isDownloading ? 0 : a.isLocal ? -1 : 1;
     },
     renderHeaderCell: () => {
       return 'Actions';
@@ -97,12 +101,19 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
       return (
         <TableCellLayout>
           <div className="flex gap-1">
-            <ToolTipButton desc="Download" icon={<ArrowDownload20Regular/>} onClick={() => {
-              DownloadFile(`./models/${item.name}`, item.downloadUrl);
-            }}/>
-            <ToolTipButton desc="Open Url" icon={<Open20Regular/>} onClick={() => {
-              BrowserOpenURL(item.url);
-            }}/>
+            {
+              item.isLocal &&
+              <ToolTipButton desc="Open Folder" icon={<Folder20Regular/>} onClick={() => {
+                OpenFileFolder(`.\\${manifest.localModelPath}\\${item.name}`);
+              }}/>
+            }
+            {item.downloadUrl && !item.isLocal &&
+              <ToolTipButton desc="Download" icon={<ArrowDownload20Regular/>} onClick={() => {
+                DownloadFile(`./${manifest.localModelPath}/${item.name}`, item.downloadUrl!);
+              }}/>}
+            {item.url && <ToolTipButton desc="Open Url" icon={<Open20Regular/>} onClick={() => {
+              BrowserOpenURL(item.url!);
+            }}/>}
           </div>
         </TableCellLayout>
       );

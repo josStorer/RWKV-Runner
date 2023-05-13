@@ -10,8 +10,16 @@ export function FileExists(arg1) {
   return window['go']['backend_golang']['App']['FileExists'](arg1);
 }
 
-export function FileInfo(arg1) {
-  return window['go']['backend_golang']['App']['FileInfo'](arg1);
+export function ListDirFiles(arg1) {
+  return window['go']['backend_golang']['App']['ListDirFiles'](arg1);
+}
+
+export function OpenFileFolder(arg1) {
+  return window['go']['backend_golang']['App']['OpenFileFolder'](arg1);
+}
+
+export function ReadFileInfo(arg1) {
+  return window['go']['backend_golang']['App']['ReadFileInfo'](arg1);
 }
 
 export function ReadJson(arg1) {

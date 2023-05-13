@@ -7,4 +7,5 @@ __pycache__
 package.json.md5
 cache.json
 stats.html
-models
+*.pth
+*.bin

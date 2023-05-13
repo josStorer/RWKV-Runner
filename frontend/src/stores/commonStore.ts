@@ -9,12 +9,12 @@ export enum ModelStatus {
 
 export type ModelSourceItem = {
   name: string;
-  desc: { [lang: string]: string; };
   size: number;
   lastUpdated: string;
-  SHA256: string;
-  url: string;
-  downloadUrl: string;
+  desc?: { [lang: string]: string; };
+  SHA256?: string;
+  url?: string;
+  downloadUrl?: string;
   isLocal?: boolean;
   isDownloading?: boolean;
   lastUpdatedMs?: number;
