@@ -45,14 +45,14 @@ async def completions(body: CompletionBody, request: Request):
 
     async def eval_rwkv():
         if body.stream:
-            for response, delta in rwkv_generate(model, completion_text):
+            for response, delta in rwkv_generate(model, completion_text, stop="Bob:"):
                 if await request.is_disconnected():
                     break
                 yield json.dumps({"response": response, "choices": [{"delta": {"content": delta}}], "model": "rwkv"})
             yield "[DONE]"
         else:
             response = None
-            for response, delta in rwkv_generate(model, completion_text):
+            for response, delta in rwkv_generate(model, completion_text, stop="Bob:"):
                 pass
             yield json.dumps({"response": response, "model": "rwkv"})
         # torch_gc()

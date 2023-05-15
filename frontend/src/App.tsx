@@ -28,6 +28,7 @@ import {FC, useEffect, useState} from 'react';
 import {Route, Routes, useLocation, useNavigate} from 'react-router';
 import {pages} from './pages';
 import {useMediaQuery} from 'usehooks-ts';
+import {ToastContainer} from 'react-toastify';
 
 const App: FC = () => {
   const navigate = useNavigate();
@@ -80,6 +81,19 @@ const App: FC = () => {
           </Routes>
         </div>
       </div>
+      <ToastContainer
+        style={{
+          width: '250px'
+        }}
+        position="top-right"
+        autoClose={4000}
+        newestOnTop={true}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable={false}
+        theme={'dark'}
+      />
     </FluentProvider>
   );
 };

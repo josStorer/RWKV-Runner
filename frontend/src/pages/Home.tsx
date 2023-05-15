@@ -65,7 +65,7 @@ export const Home: FC = observer(() => {
   const onClickMainButton = async () => {
     if (commonStore.modelStatus === ModelStatus.Offline) {
       commonStore.setModelStatus(ModelStatus.Starting);
-      StartServer('cuda fp16i8', 'E:\\RWKV-4-Raven-3B-v10-Eng49%-Chn50%-Other1%-20230419-ctx4096.pth');
+      StartServer('cuda fp16', 'models\\RWKV-4-Raven-1B5-v8-Eng-20230408-ctx4096.pth');
 
       let timeoutCount = 5;
       let loading = false;

@@ -1,9 +1,10 @@
-import commonStore, {ModelSourceItem} from './stores/commonStore';
+import commonStore, {defaultModelConfigs, ModelSourceItem} from './stores/commonStore';
 import {ListDirFiles, ReadJson, SaveJson} from '../wailsjs/go/backend_golang/App';
 import manifest from '../../manifest.json';
 
 export async function startup() {
-  initConfig();
+  initCache();
+  await initConfig();
 }
 
 type Cache = {
@@ -11,6 +12,21 @@ type Cache = {
 }
 
 async function initConfig() {
+  await ReadJson('config.json').then((configData) => {
+    if (configData.modelSourceManifestList)
+      commonStore.setModelSourceManifestList(configData.modelSourceManifestList);
+    if (configData.modelConfigs && Array.isArray(configData.modelConfigs))
+      commonStore.setModelConfigs(configData.modelConfigs, false);
+    else throw new Error('Invalid config.json');
+    if (configData.currentModelConfigIndex &&
+      configData.currentModelConfigIndex >= 0 && configData.currentModelConfigIndex < configData.modelConfigs.length)
+      commonStore.setCurrentConfigIndex(configData.currentModelConfigIndex, false);
+  }).catch(() => {
+    commonStore.setModelConfigs(defaultModelConfigs, true);
+  });
+}
+
+async function initCache() {
   let cache: Cache = {models: []};
   await ReadJson('cache.json').then((cacheData: Cache) => {
     cache = cacheData;

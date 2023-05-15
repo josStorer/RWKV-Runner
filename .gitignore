@@ -4,8 +4,9 @@ frontend/dist
 __pycache__
 .idea
 .vs
-package.json.md5
-cache.json
-stats.html
 *.pth
 *.bin
+/config.json
+/cache.json
+/frontend/stats.html
+/frontend/package.json.md5

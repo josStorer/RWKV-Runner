@@ -1,4 +1,5 @@
 import {makeAutoObservable} from 'mobx';
+import {SaveJson} from '../../wailsjs/go/backend_golang/App';
 
 export enum ModelStatus {
   Offline,
@@ -38,17 +39,17 @@ export type ModelParameters = {
 }
 
 export type ModelConfig = {
-  configName: string;
+  name: string;
   apiParameters: ApiParameters
   modelParameters: ModelParameters
 }
 
-const defaultModelConfigs: ModelConfig[] = [
+export const defaultModelConfigs: ModelConfig[] = [
   {
-    configName: 'Default',
+    name: 'Default',
     apiParameters: {
       apiPort: 8000,
-      maxResponseToken: 1000,
+      maxResponseToken: 4100,
       temperature: 1,
       topP: 1,
       presencePenalty: 0,
@@ -71,28 +72,61 @@ class CommonStore {
 
   modelStatus: ModelStatus = ModelStatus.Offline;
   currentModelConfigIndex: number = 0;
-  modelConfigs: ModelConfig[] = defaultModelConfigs;
+  modelConfigs: ModelConfig[] = [];
   modelSourceManifestList: string = 'https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/manifest.json;';
   modelSourceList: ModelSourceItem[] = [];
+
+  async saveConfigs() {
+    await SaveJson('config.json', {
+      modelSourceManifestList: this.modelSourceManifestList,
+      currentModelConfigIndex: this.currentModelConfigIndex,
+      modelConfigs: this.modelConfigs
+    });
+  }
 
   setModelStatus = (status: ModelStatus) => {
     this.modelStatus = status;
   };
 
-  setCurrentConfigIndex = (index: number) => {
+  setCurrentConfigIndex = (index: number, saveConfig: boolean = true) => {
     this.currentModelConfigIndex = index;
+    if (saveConfig)
+      this.saveConfigs();
   };
 
-  setModelConfig = (index: number, config: ModelConfig) => {
+  setModelConfig = (index: number, config: ModelConfig, saveConfig: boolean = true) => {
     this.modelConfigs[index] = config;
+    if (saveConfig)
+      this.saveConfigs();
   };
 
-  createModelConfig = (config: ModelConfig = defaultModelConfigs[0]) => {
+  setModelConfigs = (configs: ModelConfig[], saveConfig: boolean = true) => {
+    this.modelConfigs = configs;
+    if (saveConfig)
+      this.saveConfigs();
+  };
+
+  createModelConfig = (config: ModelConfig = defaultModelConfigs[0], saveConfig: boolean = true) => {
+    if (config.name === defaultModelConfigs[0].name)
+      config.name = new Date().toLocaleString();
     this.modelConfigs.push(config);
+    if (saveConfig)
+      this.saveConfigs();
   };
 
-  deleteModelConfig = (index: number) => {
+  deleteModelConfig = (index: number, saveConfig: boolean = true) => {
     this.modelConfigs.splice(index, 1);
+    if (index < this.currentModelConfigIndex) {
+      this.setCurrentConfigIndex(this.currentModelConfigIndex - 1);
+    }
+    if (this.modelConfigs.length === 0) {
+      this.createModelConfig();
+    }
+    if (this.currentModelConfigIndex >= this.modelConfigs.length) {
+      this.setCurrentConfigIndex(this.modelConfigs.length - 1);
+    }
+    if (saveConfig)
+      this.saveConfigs();
   };
 
   setModelSourceManifestList = (value: string) => {

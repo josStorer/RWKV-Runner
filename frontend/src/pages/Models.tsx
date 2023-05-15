@@ -19,6 +19,8 @@ import commonStore, {ModelSourceItem} from '../stores/commonStore';
 import {BrowserOpenURL} from '../../wailsjs/runtime';
 import {DownloadFile, OpenFileFolder} from '../../wailsjs/go/backend_golang/App';
 import manifest from '../../../manifest.json';
+import {toast} from 'react-toastify';
+import {Page} from '../components/Page';
 
 const columns: TableColumnDefinition<ModelSourceItem>[] = [
   createTableColumn<ModelSourceItem>({
@@ -109,6 +111,7 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
             }
             {item.downloadUrl && !item.isLocal &&
               <ToolTipButton desc="Download" icon={<ArrowDownload20Regular/>} onClick={() => {
+                toast(`Downloading ${item.name}`);
                 DownloadFile(`./${manifest.localModelPath}/${item.name}`, item.downloadUrl!);
               }}/>}
             {item.url && <ToolTipButton desc="Open Url" icon={<Open20Regular/>} onClick={() => {
@@ -123,47 +126,50 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
 
 export const Models: FC = observer(() => {
   return (
-    <div className="flex flex-col gap-2 p-2 h-full">
-      <Text size={600}>Models</Text>
-      <div className="flex flex-col gap-1">
-        <div className="flex justify-between">
-          <Text weight="medium">Model Source Manifest List</Text>
-          <ToolTipButton desc="Refresh" icon={<ArrowClockwise20Regular/>}/>
-        </div>
-        <Text size={100}>Provide JSON file URLs for the models manifest. Separate URLs with semicolons. The "models"
-          field in JSON files will be parsed into the following table.</Text>
-        <Textarea size="large" resize="vertical"
-                  defaultValue={commonStore.modelSourceManifestList}
-                  onChange={(e, data) => commonStore.setModelSourceManifestList(data.value)}/>
-      </div>
-      <div className="flex grow overflow-hidden">
-        <DataGrid
-          items={commonStore.modelSourceList}
-          columns={columns}
-          sortable={true}
-          style={{display: 'flex'}}
-          className="flex-col"
-        >
-          <DataGridHeader>
-            <DataGridRow>
-              {({renderHeaderCell}) => (
-                <DataGridHeaderCell>{renderHeaderCell()}</DataGridHeaderCell>
-              )}
-            </DataGridRow>
-          </DataGridHeader>
-          <div className="overflow-y-auto overflow-x-hidden">
-            <DataGridBody<ModelSourceItem>>
-              {({item, rowId}) => (
-                <DataGridRow<ModelSourceItem> key={rowId}>
-                  {({renderCell}) => (
-                    <DataGridCell>{renderCell(item)}</DataGridCell>
-                  )}
-                </DataGridRow>
-              )}
-            </DataGridBody>
+    <Page title="Models" content={
+      <div className="flex flex-col gap-2 overflow-hidden">
+        <div className="flex flex-col gap-1">
+          <div className="flex justify-between">
+            <Text weight="medium">Model Source Manifest List</Text>
+            <ToolTipButton desc="Refresh" icon={<ArrowClockwise20Regular/>}/>
           </div>
-        </DataGrid>
+          <Text size={100}>
+            Provide JSON file URLs for the models manifest. Separate URLs with semicolons. The "models"
+            field in JSON files will be parsed into the following table.
+          </Text>
+          <Textarea size="large" resize="vertical"
+                    value={commonStore.modelSourceManifestList}
+                    onChange={(e, data) => commonStore.setModelSourceManifestList(data.value)}/>
+        </div>
+        <div className="flex grow overflow-hidden">
+          <DataGrid
+            items={commonStore.modelSourceList}
+            columns={columns}
+            sortable={true}
+            style={{display: 'flex'}}
+            className="flex-col w-full"
+          >
+            <DataGridHeader>
+              <DataGridRow>
+                {({renderHeaderCell}) => (
+                  <DataGridHeaderCell>{renderHeaderCell()}</DataGridHeaderCell>
+                )}
+              </DataGridRow>
+            </DataGridHeader>
+            <div className="overflow-y-auto overflow-x-hidden">
+              <DataGridBody<ModelSourceItem>>
+                {({item, rowId}) => (
+                  <DataGridRow<ModelSourceItem> key={rowId}>
+                    {({renderCell}) => (
+                      <DataGridCell>{renderCell(item)}</DataGridCell>
+                    )}
+                  </DataGridRow>
+                )}
+              </DataGridBody>
+            </div>
+          </DataGrid>
+        </div>
       </div>
-    </div>
+    }/>
   );
 });
