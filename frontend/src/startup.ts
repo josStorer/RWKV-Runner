@@ -62,12 +62,14 @@ async function initCache() {
       if (!cache.models[j].lastUpdatedMs)
         cache.models[j].lastUpdatedMs = Date.parse(cache.models[j].lastUpdated);
 
-      if (cache.models[i].name === cache.models[j].name && cache.models[i].size === cache.models[j].size) {
-        if (cache.models[i].lastUpdatedMs! < cache.models[j].lastUpdatedMs!) {
-          cache.models[i] = Object.assign({}, cache.models[i], cache.models[j]);
-        } else {
-          cache.models[i] = Object.assign({}, cache.models[j], cache.models[i]);
-        }
+      if (cache.models[i].name === cache.models[j].name) {
+        if (cache.models[i].size === cache.models[j].size) {
+          if (cache.models[i].lastUpdatedMs! < cache.models[j].lastUpdatedMs!) {
+            cache.models[i] = Object.assign({}, cache.models[i], cache.models[j]);
+          } else {
+            cache.models[i] = Object.assign({}, cache.models[j], cache.models[i]);
+          }
+        } // else is bad local file
         cache.models.splice(j, 1);
         j--;
       }
@@ -93,7 +95,9 @@ async function initCache() {
     .catch(() => {
     });
   cache.models = cache.models.filter((model, index, self) => {
-    return model.name.endsWith('.pth') && index === self.findIndex(m => m.SHA256 === model.SHA256 && m.size === model.size);
+    return model.name.endsWith('.pth')
+      && index === self.findIndex(
+        m => m.name === model.name || (m.SHA256 === model.SHA256 && m.size === model.size));
   });
   // remote files
   commonStore.setModelSourceList(cache.models);

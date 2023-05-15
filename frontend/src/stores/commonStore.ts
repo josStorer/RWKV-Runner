@@ -31,6 +31,7 @@ export type ApiParameters = {
 }
 
 export type ModelParameters = {
+  // different models can not have the same name
   modelName: string;
   device: string;
   precision: string;
@@ -39,6 +40,7 @@ export type ModelParameters = {
 }
 
 export type ModelConfig = {
+  // different configs can have the same name
   name: string;
   apiParameters: ApiParameters
   modelParameters: ModelParameters

@@ -1,4 +1,4 @@
-import {Button, Dropdown, Input, Label, Option, Slider, Switch} from '@fluentui/react-components';
+import {Button, Dropdown, Input, Label, Option, Select, Slider, Switch} from '@fluentui/react-components';
 import {AddCircle20Regular, DataUsageSettings20Regular, Delete20Regular, Save20Regular} from '@fluentui/react-icons';
 import React, {FC} from 'react';
 import {Section} from '../components/Section';
@@ -10,10 +10,13 @@ import {toast} from 'react-toastify';
 import {ValuedSlider} from '../components/ValuedSlider';
 import {NumberInput} from '../components/NumberInput';
 import {Page} from '../components/Page';
+import {useNavigate} from 'react-router';
 
 export const Configs: FC = observer(() => {
   const [selectedIndex, setSelectedIndex] = React.useState(commonStore.currentModelConfigIndex);
   const [selectedConfig, setSelectedConfig] = React.useState(commonStore.modelConfigs[selectedIndex]);
+
+  const navigate = useNavigate();
 
   const updateSelectedIndex = (newIndex: number) => {
     setSelectedIndex(newIndex);
@@ -143,19 +146,27 @@ export const Configs: FC = observer(() => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <Labeled label="Model" content={
                   <div className="flex gap-2 grow">
-                    <Dropdown style={{minWidth: 0}} className="grow">
+                    <Select style={{minWidth: 0}} className="grow"
+                            value={selectedConfig.modelParameters.modelName}
+                            onChange={(e, data) => {
+                              setSelectedConfigModelParams({
+                                modelName: data.value
+                              });
+                            }}>
                       {commonStore.modelSourceList.map((modelItem, index) =>
-                        <Option key={index} value={index.toString()}>{modelItem.name}</Option>
+                        modelItem.isLocal && <option key={index} value={modelItem.name}>{modelItem.name}</option>
                       )}
-                    </Dropdown>
-                    <ToolTipButton desc="Manage Models" icon={<DataUsageSettings20Regular/>}/>
+                    </Select>
+                    <ToolTipButton desc="Manage Models" icon={<DataUsageSettings20Regular/>} onClick={() => {
+                      navigate({pathname: '/models'});
+                    }}/>
                   </div>
                 }/>
                 <ToolTipButton text="Convert" desc="Convert model with these configs"/>
                 <Labeled label="Device" content={
                   <Dropdown style={{minWidth: 0}} className="grow">
                     <Option>CPU</Option>
-                    <Option>CUDA: 0</Option>
+                    <Option>CUDA</Option>
                   </Dropdown>
                 }/>
                 <Labeled label="Precision" content={
