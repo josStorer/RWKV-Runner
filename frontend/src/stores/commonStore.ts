@@ -30,12 +30,16 @@ export type ApiParameters = {
   countPenalty: number;
 }
 
+export type Device = 'CPU' | 'CUDA';
+export type Precision = 'fp16' | 'int8' | 'fp32';
+
 export type ModelParameters = {
   // different models can not have the same name
   modelName: string;
-  device: string;
-  precision: string;
+  device: Device;
+  precision: Precision;
   streamedLayers: number;
+  maxStreamedLayers: number;
   enableHighPrecisionForLastLayer: boolean;
 }
 
@@ -58,10 +62,11 @@ export const defaultModelConfigs: ModelConfig[] = [
       countPenalty: 0
     },
     modelParameters: {
-      modelName: '124M',
-      device: 'CPU',
-      precision: 'fp32',
-      streamedLayers: 1,
+      modelName: 'RWKV-4-Raven-1B5-v11-Eng99%-Other1%-20230425-ctx4096.pth',
+      device: 'CUDA',
+      precision: 'fp16',
+      streamedLayers: 25,
+      maxStreamedLayers: 25,
       enableHighPrecisionForLastLayer: false
     }
   }
@@ -85,6 +90,24 @@ class CommonStore {
       modelConfigs: this.modelConfigs
     });
   }
+
+  getStrategy(modelConfig: ModelConfig | undefined = undefined) {
+    let params: ModelParameters;
+    if (modelConfig) params = modelConfig.modelParameters;
+    else params = this.getCurrentModelConfig().modelParameters;
+    let strategy = '';
+    strategy += (params.device === 'CPU' ? 'cpu' : 'cuda') + ' ';
+    strategy += (params.precision === 'fp16' ? 'fp16' : params.precision === 'int8' ? 'fp16i8' : 'fp32');
+    if (params.streamedLayers < params.maxStreamedLayers)
+      strategy += ` *${params.streamedLayers}+`;
+    if (params.enableHighPrecisionForLastLayer)
+      strategy += ' -> cpu fp32 *1';
+    return strategy;
+  }
+
+  getCurrentModelConfig = () => {
+    return this.modelConfigs[this.currentModelConfigIndex];
+  };
 
   setModelStatus = (status: ModelStatus) => {
     this.modelStatus = status;

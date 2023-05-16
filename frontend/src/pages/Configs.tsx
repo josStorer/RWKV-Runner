@@ -1,16 +1,17 @@
-import {Button, Dropdown, Input, Label, Option, Select, Slider, Switch} from '@fluentui/react-components';
+import {Dropdown, Input, Label, Option, Select, Switch} from '@fluentui/react-components';
 import {AddCircle20Regular, DataUsageSettings20Regular, Delete20Regular, Save20Regular} from '@fluentui/react-icons';
 import React, {FC} from 'react';
 import {Section} from '../components/Section';
 import {Labeled} from '../components/Labeled';
 import {ToolTipButton} from '../components/ToolTipButton';
-import commonStore, {ApiParameters, ModelParameters} from '../stores/commonStore';
+import commonStore, {ApiParameters, Device, ModelParameters, Precision} from '../stores/commonStore';
 import {observer} from 'mobx-react-lite';
 import {toast} from 'react-toastify';
 import {ValuedSlider} from '../components/ValuedSlider';
 import {NumberInput} from '../components/NumberInput';
 import {Page} from '../components/Page';
 import {useNavigate} from 'react-router';
+import {RunButton} from '../components/RunButton';
 
 export const Configs: FC = observer(() => {
   const [selectedIndex, setSelectedIndex] = React.useState(commonStore.currentModelConfigIndex);
@@ -164,30 +165,57 @@ export const Configs: FC = observer(() => {
                 }/>
                 <ToolTipButton text="Convert" desc="Convert model with these configs"/>
                 <Labeled label="Device" content={
-                  <Dropdown style={{minWidth: 0}} className="grow">
+                  <Dropdown style={{minWidth: 0}} className="grow" value={selectedConfig.modelParameters.device}
+                            selectedOptions={[selectedConfig.modelParameters.device]}
+                            onOptionSelect={(_, data) => {
+                              if (data.optionText) {
+                                setSelectedConfigModelParams({
+                                  device: data.optionText as Device
+                                });
+                              }
+                            }}>
                     <Option>CPU</Option>
                     <Option>CUDA</Option>
                   </Dropdown>
                 }/>
                 <Labeled label="Precision" content={
-                  <Dropdown style={{minWidth: 0}} className="grow">
+                  <Dropdown style={{minWidth: 0}} className="grow" value={selectedConfig.modelParameters.precision}
+                            selectedOptions={[selectedConfig.modelParameters.precision]}
+                            onOptionSelect={(_, data) => {
+                              if (data.optionText) {
+                                setSelectedConfigModelParams({
+                                  precision: data.optionText as Precision
+                                });
+                              }
+                            }}>
                     <Option>fp16</Option>
                     <Option>int8</Option>
                     <Option>fp32</Option>
                   </Dropdown>
                 }/>
                 <Labeled label="Streamed Layers" content={
-                  <Slider style={{minWidth: 0}} className="grow"/>
+                  <ValuedSlider value={selectedConfig.modelParameters.streamedLayers} min={0}
+                                max={selectedConfig.modelParameters.maxStreamedLayers} step={1} input
+                                onChange={(e, data) => {
+                                  setSelectedConfigModelParams({
+                                    streamedLayers: data.value
+                                  });
+                                }}/>
                 }/>
                 <Labeled label="Enable High Precision For Last Layer" content={
-                  <Switch/>
+                  <Switch checked={selectedConfig.modelParameters.enableHighPrecisionForLastLayer}
+                          onChange={(e, data) => {
+                            setSelectedConfigModelParams({
+                              enableHighPrecisionForLastLayer: data.checked
+                            });
+                          }}/>
                 }/>
               </div>
             }
           />
         </div>
         <div className="flex flex-row-reverse sm:fixed bottom-2 right-2">
-          <Button appearance="primary" size="large">Run</Button>
+          <RunButton/>
         </div>
       </div>
     }/>

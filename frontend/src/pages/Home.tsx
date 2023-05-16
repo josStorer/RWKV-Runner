@@ -1,4 +1,4 @@
-import {Button, CompoundButton, Dropdown, Link, Option, Text} from '@fluentui/react-components';
+import {CompoundButton, Dropdown, Link, Option, Text} from '@fluentui/react-components';
 import React, {FC, ReactElement} from 'react';
 import banner from '../assets/images/banner.jpg';
 import {
@@ -8,9 +8,9 @@ import {
   Storage20Regular
 } from '@fluentui/react-icons';
 import {useNavigate} from 'react-router';
-import commonStore, {ModelStatus} from '../stores/commonStore';
+import commonStore from '../stores/commonStore';
 import {observer} from 'mobx-react-lite';
-import {StartServer} from '../../wailsjs/go/backend_golang/App';
+import {RunButton} from '../components/RunButton';
 
 type NavCard = {
   label: string;
@@ -19,7 +19,7 @@ type NavCard = {
   icon: ReactElement;
 };
 
-export const navCards: NavCard[] = [
+const navCards: NavCard[] = [
   {
     label: 'Chat',
     desc: 'Go to chat page',
@@ -46,60 +46,11 @@ export const navCards: NavCard[] = [
   }
 ];
 
-const mainButtonText = {
-  [ModelStatus.Offline]: 'Run',
-  [ModelStatus.Starting]: 'Starting',
-  [ModelStatus.Loading]: 'Loading',
-  [ModelStatus.Working]: 'Stop'
-};
-
 export const Home: FC = observer(() => {
-  const [selectedConfig, setSelectedConfig] = React.useState('RWKV-3B-4G MEM');
-
   const navigate = useNavigate();
 
   const onClickNavCard = (path: string) => {
     navigate({pathname: path});
-  };
-
-  const onClickMainButton = async () => {
-    if (commonStore.modelStatus === ModelStatus.Offline) {
-      commonStore.setModelStatus(ModelStatus.Starting);
-      StartServer('cuda fp16', 'models\\RWKV-4-Raven-1B5-v8-Eng-20230408-ctx4096.pth');
-
-      let timeoutCount = 5;
-      let loading = false;
-      const intervalId = setInterval(() => {
-        fetch('http://127.0.0.1:8000')
-          .then(r => {
-            if (r.ok && !loading) {
-              clearInterval(intervalId);
-              commonStore.setModelStatus(ModelStatus.Loading);
-              loading = true;
-              fetch('http://127.0.0.1:8000/update-config', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({})
-              }).then(async (r) => {
-                if (r.ok)
-                  commonStore.setModelStatus(ModelStatus.Working);
-              });
-            }
-          }).catch(() => {
-          if (timeoutCount <= 0) {
-            clearInterval(intervalId);
-            commonStore.setModelStatus(ModelStatus.Offline);
-          }
-        });
-
-        timeoutCount--;
-      }, 1000);
-    } else {
-      commonStore.setModelStatus(ModelStatus.Offline);
-      fetch('http://127.0.0.1:8000/exit', {method: 'POST'});
-    }
   };
 
   return (
@@ -128,30 +79,18 @@ export const Home: FC = observer(() => {
       <div className="flex flex-col gap-2">
         <div className="flex flex-row-reverse sm:fixed bottom-2 right-2">
           <div className="flex gap-3">
-            <Dropdown style={{minWidth: 0}}
-                      placeholder="Config"
-                      value={selectedConfig}
+            <Dropdown style={{minWidth: 0}} listbox={{style: {minWidth: 0}}}
+                      value={commonStore.getCurrentModelConfig().name}
+                      selectedOptions={[commonStore.currentModelConfigIndex.toString()]}
                       onOptionSelect={(_, data) => {
                         if (data.optionValue)
-                          setSelectedConfig(data.optionValue);
+                          commonStore.setCurrentConfigIndex(Number(data.optionValue));
                       }}>
-              <Option id="item-1" key="item-1">
-                RWKV-3B-4G MEM
-              </Option>
-              <Option id="item-2" key="item-2">
-                Item 2
-              </Option>
-              <Option id="item-3" key="item-3">
-                Item 3
-              </Option>
-              <Option id="item-4" key="item-4">
-                Item 4
-              </Option>
+              {commonStore.modelConfigs.map((config, index) =>
+                <Option key={index} value={index.toString()}>{config.name}</Option>
+              )}
             </Dropdown>
-            <Button disabled={commonStore.modelStatus === ModelStatus.Starting} appearance="primary" size="large"
-                    onClick={onClickMainButton}>
-              {mainButtonText[commonStore.modelStatus]}
-            </Button>
+            <RunButton/>
           </div>
         </div>
         <div className="flex gap-4 items-end">
