@@ -23,14 +23,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import {FluentProvider, Tab, TabList, webDarkTheme} from '@fluentui/react-components';
+import {FluentProvider, Tab, TabList, webDarkTheme, webLightTheme} from '@fluentui/react-components';
 import {FC, useEffect, useState} from 'react';
 import {Route, Routes, useLocation, useNavigate} from 'react-router';
 import {pages} from './pages';
 import {useMediaQuery} from 'usehooks-ts';
 import {ToastContainer} from 'react-toastify';
+import commonStore from './stores/commonStore';
+import {observer} from 'mobx-react-lite';
 
-const App: FC = () => {
+const App: FC = observer(() => {
   const navigate = useNavigate();
   const location = useLocation();
   const mq = useMediaQuery('(min-width: 640px)');
@@ -43,7 +45,7 @@ const App: FC = () => {
   useEffect(() => setPath(location.pathname), [location]);
 
   return (
-    <FluentProvider theme={webDarkTheme} className="h-screen">
+    <FluentProvider theme={commonStore.settings.darkMode ? webDarkTheme : webLightTheme} className="h-screen">
       <div className="flex h-full">
         <div className="flex flex-col w-16 sm:w-48 p-2 justify-between">
           <TabList
@@ -93,10 +95,10 @@ const App: FC = () => {
         rtl={false}
         pauseOnFocusLoss={false}
         draggable={false}
-        theme={'dark'}
+        theme={commonStore.settings.darkMode ? 'dark' : 'light'}
       />
     </FluentProvider>
   );
-};
+});
 
 export default App;

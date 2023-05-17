@@ -6,10 +6,17 @@ export type Cache = {
   models: ModelSourceItem[]
 }
 
+export type Settings = {
+  language: string,
+  darkMode: boolean
+  autoUpdatesCheck: boolean
+}
+
 export type LocalConfig = {
   modelSourceManifestList: string
   currentModelConfigIndex: number
   modelConfigs: ModelConfig[]
+  settings: Settings
 }
 
 export async function refreshBuiltInModels(readCache: boolean = false) {
@@ -122,7 +129,8 @@ export const saveConfigs = async () => {
   const data: LocalConfig = {
     modelSourceManifestList: commonStore.modelSourceManifestList,
     currentModelConfigIndex: commonStore.currentModelConfigIndex,
-    modelConfigs: commonStore.modelConfigs
+    modelConfigs: commonStore.modelConfigs,
+    settings: commonStore.settings
   };
   return SaveJson('config.json', data);
 };
@@ -133,3 +141,13 @@ export const saveCache = async () => {
   };
   return SaveJson('cache.json', data);
 };
+
+export function getNavigatorLanguage() {
+  // const l = navigator.language.toLowerCase();
+  // if (['zh-hk', 'zh-mo', 'zh-tw', 'zh-cht', 'zh-hant'].includes(l)) return 'zhHant'
+  return navigator.language.substring(0, 2);
+}
+
+export function isSystemLightMode() {
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+}

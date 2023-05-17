@@ -4,10 +4,12 @@ go 1.20
 
 require (
 	github.com/cavaliergopher/grab/v3 v3.0.1
+	github.com/minio/selfupdate v0.6.0
 	github.com/wailsapp/wails/v2 v2.5.1
 )
 
 require (
+	aead.dev/minisign v0.2.0 // indirect
 	github.com/bep/debounce v1.2.1 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/google/uuid v1.3.0 // indirect

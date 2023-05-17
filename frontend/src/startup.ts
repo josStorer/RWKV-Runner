@@ -11,6 +11,10 @@ async function initConfig() {
   await ReadJson('config.json').then((configData: LocalConfig) => {
     if (configData.modelSourceManifestList)
       commonStore.setModelSourceManifestList(configData.modelSourceManifestList);
+
+    if (configData.settings)
+      commonStore.setSettings(configData.settings, false);
+
     if (configData.modelConfigs && Array.isArray(configData.modelConfigs))
       commonStore.setModelConfigs(configData.modelConfigs, false);
     else throw new Error('Invalid config.json');

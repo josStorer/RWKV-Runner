@@ -21,7 +21,7 @@ import {DownloadFile, OpenFileFolder} from '../../wailsjs/go/backend_golang/App'
 import manifest from '../../../manifest.json';
 import {toast} from 'react-toastify';
 import {Page} from '../components/Page';
-import {refreshModels} from '../utils';
+import {refreshModels, saveConfigs} from '../utils';
 
 const columns: TableColumnDefinition<ModelSourceItem>[] = [
   createTableColumn<ModelSourceItem>({
@@ -134,6 +134,7 @@ export const Models: FC = observer(() => {
             <Text weight="medium">Model Source Manifest List</Text>
             <ToolTipButton desc="Refresh" icon={<ArrowClockwise20Regular/>} onClick={() => {
               refreshModels(false);
+              saveConfigs();
             }}/>
           </div>
           <Text size={100}>

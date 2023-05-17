@@ -37,3 +37,7 @@ export function SaveJson(arg1, arg2) {
 export function StartServer(arg1) {
   return window['go']['backend_golang']['App']['StartServer'](arg1);
 }
+
+export function UpdateApp(arg1) {
+  return window['go']['backend_golang']['App']['UpdateApp'](arg1);
+}
