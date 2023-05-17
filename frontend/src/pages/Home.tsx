@@ -11,6 +11,8 @@ import {useNavigate} from 'react-router';
 import commonStore from '../stores/commonStore';
 import {observer} from 'mobx-react-lite';
 import {RunButton} from '../components/RunButton';
+import manifest from '../../../manifest.json';
+import {BrowserOpenURL} from '../../wailsjs/runtime';
 
 type NavCard = {
   label: string;
@@ -94,8 +96,8 @@ export const Home: FC = observer(() => {
           </div>
         </div>
         <div className="flex gap-4 items-end">
-          Version: 1.0.0
-          <Link>Help</Link>
+          Version: {manifest.version}
+          <Link onClick={() => BrowserOpenURL('https://github.com/josStorer/RWKV-Runner')}>Help</Link>
         </div>
       </div>
     </div>

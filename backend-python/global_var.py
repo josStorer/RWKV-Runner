@@ -1,7 +1,8 @@
 from enum import Enum, auto
 
-Model = 'model'
-Model_Status = 'model_status'
+Model = "model"
+Model_Status = "model_status"
+Model_Config = "model_config"
 
 
 class ModelStatus(Enum):

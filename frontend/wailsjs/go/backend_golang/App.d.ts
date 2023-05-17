@@ -16,4 +16,4 @@ export function ReadJson(arg1:string):Promise<any>;
 
 export function SaveJson(arg1:string,arg2:any):Promise<void>;
 
-export function StartServer(arg1:string,arg2:string):Promise<string>;
+export function StartServer(arg1:number):Promise<string>;

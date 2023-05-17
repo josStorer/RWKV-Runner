@@ -27,7 +27,7 @@ export type ApiParameters = {
   temperature: number;
   topP: number;
   presencePenalty: number;
-  countPenalty: number;
+  frequencyPenalty: number;
 }
 
 export type Device = 'CPU' | 'CUDA';
@@ -38,8 +38,8 @@ export type ModelParameters = {
   modelName: string;
   device: Device;
   precision: Precision;
-  streamedLayers: number;
-  maxStreamedLayers: number;
+  storedLayers: number;
+  maxStoredLayers: number;
   enableHighPrecisionForLastLayer: boolean;
 }
 
@@ -59,14 +59,14 @@ export const defaultModelConfigs: ModelConfig[] = [
       temperature: 1,
       topP: 1,
       presencePenalty: 0,
-      countPenalty: 0
+      frequencyPenalty: 0
     },
     modelParameters: {
       modelName: 'RWKV-4-Raven-1B5-v11-Eng99%-Other1%-20230425-ctx4096.pth',
       device: 'CUDA',
       precision: 'fp16',
-      streamedLayers: 25,
-      maxStreamedLayers: 25,
+      storedLayers: 25,
+      maxStoredLayers: 25,
       enableHighPrecisionForLastLayer: false
     }
   }
@@ -98,8 +98,8 @@ class CommonStore {
     let strategy = '';
     strategy += (params.device === 'CPU' ? 'cpu' : 'cuda') + ' ';
     strategy += (params.precision === 'fp16' ? 'fp16' : params.precision === 'int8' ? 'fp16i8' : 'fp32');
-    if (params.streamedLayers < params.maxStreamedLayers)
-      strategy += ` *${params.streamedLayers}+`;
+    if (params.storedLayers < params.maxStoredLayers)
+      strategy += ` *${params.storedLayers}+`;
     if (params.enableHighPrecisionForLastLayer)
       strategy += ' -> cpu fp32 *1';
     return strategy;

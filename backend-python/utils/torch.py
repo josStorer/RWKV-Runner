@@ -11,8 +11,8 @@ def set_torch():
             print("torch already set")
         else:
             print("run:")
-            os.environ['PATH'] = paths + os.pathsep + torch_path + os.pathsep
-            print(f'set Path={paths + os.pathsep + torch_path + os.pathsep}')
+            os.environ["PATH"] = paths + os.pathsep + torch_path + os.pathsep
+            print(f"set Path={paths + os.pathsep + torch_path + os.pathsep}")
     else:
         print("torch not found")
 

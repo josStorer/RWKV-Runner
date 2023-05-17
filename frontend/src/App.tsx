@@ -85,8 +85,9 @@ const App: FC = () => {
         style={{
           width: '250px'
         }}
-        position="top-right"
+        position="top-center"
         autoClose={4000}
+        hideProgressBar={true}
         newestOnTop={true}
         closeOnClick={false}
         rtl={false}

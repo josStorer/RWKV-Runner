@@ -1,5 +1,6 @@
 import os
 import psutil
+import sys
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -26,7 +27,7 @@ app.include_router(completion.router)
 app.include_router(config.router)
 
 
-@app.on_event('startup')
+@app.on_event("startup")
 def init():
     global_var.init()
 
@@ -38,7 +39,7 @@ def init():
 
 @app.get("/")
 def read_root():
-    return {"Hello": "World!"}
+    return {"Hello": "World!", "pid": os.getpid()}
 
 
 @app.post("/exit")
@@ -51,4 +52,4 @@ def exit():
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", port=8000)
+    uvicorn.run("main:app", port=8000 if len(sys.argv) == 1 else int(sys.argv[1]))

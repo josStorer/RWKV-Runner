@@ -12,6 +12,7 @@ import {NumberInput} from '../components/NumberInput';
 import {Page} from '../components/Page';
 import {useNavigate} from 'react-router';
 import {RunButton} from '../components/RunButton';
+import {updateConfig} from '../apis';
 
 export const Configs: FC = observer(() => {
   const [selectedIndex, setSelectedIndex] = React.useState(commonStore.currentModelConfigIndex);
@@ -49,6 +50,18 @@ export const Configs: FC = observer(() => {
     });
   };
 
+  const onClickSave = () => {
+    commonStore.setModelConfig(selectedIndex, selectedConfig);
+    updateConfig({
+      max_tokens: selectedConfig.apiParameters.maxResponseToken,
+      temperature: selectedConfig.apiParameters.temperature,
+      top_p: selectedConfig.apiParameters.topP,
+      presence_penalty: selectedConfig.apiParameters.presencePenalty,
+      frequency_penalty: selectedConfig.apiParameters.frequencyPenalty
+    });
+    toast('Config Saved', {autoClose: 300, type: 'success'});
+  };
+
   return (
     <Page title="Configs" content={
       <div className="flex flex-col gap-2 overflow-hidden">
@@ -72,10 +85,7 @@ export const Configs: FC = observer(() => {
             commonStore.deleteModelConfig(selectedIndex);
             updateSelectedIndex(Math.min(selectedIndex, commonStore.modelConfigs.length - 1));
           }}/>
-          <ToolTipButton desc="Save Config" icon={<Save20Regular/>} onClick={() => {
-            commonStore.setModelConfig(selectedIndex, selectedConfig);
-            toast('Config Saved', {hideProgressBar: true, autoClose: 300, position: 'top-center'});
-          }}/>
+          <ToolTipButton desc="Save Config" icon={<Save20Regular/>} onClick={onClickSave}/>
         </div>
         <div className="flex items-center gap-4">
           <Label>Config Name</Label>
@@ -89,7 +99,7 @@ export const Configs: FC = observer(() => {
             desc="Hover your mouse over the text to view a detailed description. Settings marked with * will take effect immediately after being saved."
             content={
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                <Labeled label="API Port" desc="127.0.0.1:8000" content={
+                <Labeled label="API Port" desc={`127.0.0.1:${selectedConfig.apiParameters.apiPort}`} content={
                   <NumberInput value={selectedConfig.apiParameters.apiPort} min={1} max={65535} step={1}
                                onChange={(e, data) => {
                                  setSelectedConfigApiParams({
@@ -130,11 +140,11 @@ export const Configs: FC = observer(() => {
                                   });
                                 }}/>
                 }/>
-                <Labeled label="Count Penalty *" content={
-                  <ValuedSlider value={selectedConfig.apiParameters.countPenalty} min={-2} max={2} step={0.1} input
+                <Labeled label="Frequency Penalty *" content={
+                  <ValuedSlider value={selectedConfig.apiParameters.frequencyPenalty} min={-2} max={2} step={0.1} input
                                 onChange={(e, data) => {
                                   setSelectedConfigApiParams({
-                                    countPenalty: data.value
+                                    frequencyPenalty: data.value
                                   });
                                 }}/>
                 }/>
@@ -193,12 +203,12 @@ export const Configs: FC = observer(() => {
                     <Option>fp32</Option>
                   </Dropdown>
                 }/>
-                <Labeled label="Streamed Layers" content={
-                  <ValuedSlider value={selectedConfig.modelParameters.streamedLayers} min={0}
-                                max={selectedConfig.modelParameters.maxStreamedLayers} step={1} input
+                <Labeled label="Stored Layers" content={
+                  <ValuedSlider value={selectedConfig.modelParameters.storedLayers} min={0}
+                                max={selectedConfig.modelParameters.maxStoredLayers} step={1} input
                                 onChange={(e, data) => {
                                   setSelectedConfigModelParams({
-                                    streamedLayers: data.value
+                                    storedLayers: data.value
                                   });
                                 }}/>
                 }/>
@@ -215,7 +225,7 @@ export const Configs: FC = observer(() => {
           />
         </div>
         <div className="flex flex-row-reverse sm:fixed bottom-2 right-2">
-          <RunButton/>
+          <RunButton onClickRun={onClickSave}/>
         </div>
       </div>
     }/>
