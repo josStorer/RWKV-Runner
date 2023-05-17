@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"runtime"
 	"time"
 
@@ -97,9 +98,13 @@ func (a *App) DownloadFile(path string, url string) error {
 }
 
 func (a *App) OpenFileFolder(path string) error {
+	absPath, err := filepath.Abs(path)
+	if err != nil {
+		return err
+	}
 	switch os := runtime.GOOS; os {
 	case "windows":
-		cmd := exec.Command("explorer", "/select,", path)
+		cmd := exec.Command("explorer", "/select,", absPath)
 		err := cmd.Run()
 		if err != nil {
 			return err

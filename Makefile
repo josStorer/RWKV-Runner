@@ -11,3 +11,6 @@ build-windows:
 build-macos:
 	@echo ---- build for macos
 
+dev:
+	wails dev
+

@@ -13,6 +13,9 @@ import {Page} from '../components/Page';
 import {useNavigate} from 'react-router';
 import {RunButton} from '../components/RunButton';
 import {updateConfig} from '../apis';
+import {ConvertModel} from '../../wailsjs/go/backend_golang/App';
+import manifest from '../../../manifest.json';
+import {getStrategy, refreshLocalModels} from '../utils';
 
 export const Configs: FC = observer(() => {
   const [selectedIndex, setSelectedIndex] = React.useState(commonStore.currentModelConfigIndex);
@@ -173,7 +176,18 @@ export const Configs: FC = observer(() => {
                     }}/>
                   </div>
                 }/>
-                <ToolTipButton text="Convert" desc="Convert model with these configs"/>
+                <ToolTipButton text="Convert" desc="Convert model with these configs" onClick={() => {
+                  const modelPath = `${manifest.localModelDir}/${selectedConfig.modelParameters.modelName}`;
+                  const strategy = getStrategy(selectedConfig);
+                  const newModelPath = modelPath + '-' + strategy.replace(/[> *+]/g, '-');
+                  toast('Start Converting', {autoClose: 1000, type: 'info'});
+                  ConvertModel(modelPath, strategy, newModelPath).then(() => {
+                    toast(`Convert Success - ${newModelPath}`, {type: 'success'});
+                    refreshLocalModels({models: commonStore.modelSourceList});
+                  }).catch(e => {
+                    toast(`Convert Failed - ${e}`, {type: 'error'});
+                  });
+                }}/>
                 <Labeled label="Device" content={
                   <Dropdown style={{minWidth: 0}} className="grow" value={selectedConfig.modelParameters.device}
                             selectedOptions={[selectedConfig.modelParameters.device]}

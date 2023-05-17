@@ -5,6 +5,8 @@ import {Button} from '@fluentui/react-components';
 import {observer} from 'mobx-react-lite';
 import {exit, readRoot, switchModel, updateConfig} from '../apis';
 import {toast} from 'react-toastify';
+import manifest from '../../../manifest.json';
+import {getStrategy} from '../utils';
 
 const mainButtonText = {
   [ModelStatus.Offline]: 'Run',
@@ -39,11 +41,12 @@ const onClickMainButton = async () => {
               frequency_penalty: modelConfig.apiParameters.frequencyPenalty
             });
             switchModel({
-              model: `models\\${modelConfig.modelParameters.modelName}`,
-              strategy: commonStore.getStrategy(modelConfig)
+              model: `${manifest.localModelDir}/${modelConfig.modelParameters.modelName}`,
+              strategy: getStrategy(modelConfig)
             }).then((r) => {
               if (r.ok) {
                 commonStore.setModelStatus(ModelStatus.Working);
+                toast('Startup Completed', {type: 'success'});
               } else if (r.status === 304) {
                 toast('Loading Model', {type: 'info'});
               } else {

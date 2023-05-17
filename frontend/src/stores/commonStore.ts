@@ -1,5 +1,5 @@
 import {makeAutoObservable} from 'mobx';
-import {SaveJson} from '../../wailsjs/go/backend_golang/App';
+import {saveConfigs} from '../utils';
 
 export enum ModelStatus {
   Offline,
@@ -83,28 +83,6 @@ class CommonStore {
   modelSourceManifestList: string = 'https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/manifest.json;';
   modelSourceList: ModelSourceItem[] = [];
 
-  async saveConfigs() {
-    await SaveJson('config.json', {
-      modelSourceManifestList: this.modelSourceManifestList,
-      currentModelConfigIndex: this.currentModelConfigIndex,
-      modelConfigs: this.modelConfigs
-    });
-  }
-
-  getStrategy(modelConfig: ModelConfig | undefined = undefined) {
-    let params: ModelParameters;
-    if (modelConfig) params = modelConfig.modelParameters;
-    else params = this.getCurrentModelConfig().modelParameters;
-    let strategy = '';
-    strategy += (params.device === 'CPU' ? 'cpu' : 'cuda') + ' ';
-    strategy += (params.precision === 'fp16' ? 'fp16' : params.precision === 'int8' ? 'fp16i8' : 'fp32');
-    if (params.storedLayers < params.maxStoredLayers)
-      strategy += ` *${params.storedLayers}+`;
-    if (params.enableHighPrecisionForLastLayer)
-      strategy += ' -> cpu fp32 *1';
-    return strategy;
-  }
-
   getCurrentModelConfig = () => {
     return this.modelConfigs[this.currentModelConfigIndex];
   };
@@ -116,19 +94,19 @@ class CommonStore {
   setCurrentConfigIndex = (index: number, saveConfig: boolean = true) => {
     this.currentModelConfigIndex = index;
     if (saveConfig)
-      this.saveConfigs();
+      saveConfigs();
   };
 
   setModelConfig = (index: number, config: ModelConfig, saveConfig: boolean = true) => {
     this.modelConfigs[index] = config;
     if (saveConfig)
-      this.saveConfigs();
+      saveConfigs();
   };
 
   setModelConfigs = (configs: ModelConfig[], saveConfig: boolean = true) => {
     this.modelConfigs = configs;
     if (saveConfig)
-      this.saveConfigs();
+      saveConfigs();
   };
 
   createModelConfig = (config: ModelConfig = defaultModelConfigs[0], saveConfig: boolean = true) => {
@@ -136,7 +114,7 @@ class CommonStore {
       config.name = new Date().toLocaleString();
     this.modelConfigs.push(config);
     if (saveConfig)
-      this.saveConfigs();
+      saveConfigs();
   };
 
   deleteModelConfig = (index: number, saveConfig: boolean = true) => {
@@ -151,7 +129,7 @@ class CommonStore {
       this.setCurrentConfigIndex(this.modelConfigs.length - 1);
     }
     if (saveConfig)
-      this.saveConfigs();
+      saveConfigs();
   };
 
   setModelSourceManifestList = (value: string) => {

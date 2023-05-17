@@ -21,6 +21,7 @@ import {DownloadFile, OpenFileFolder} from '../../wailsjs/go/backend_golang/App'
 import manifest from '../../../manifest.json';
 import {toast} from 'react-toastify';
 import {Page} from '../components/Page';
+import {refreshModels} from '../utils';
 
 const columns: TableColumnDefinition<ModelSourceItem>[] = [
   createTableColumn<ModelSourceItem>({
@@ -106,13 +107,13 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
             {
               item.isLocal &&
               <ToolTipButton desc="Open Folder" icon={<Folder20Regular/>} onClick={() => {
-                OpenFileFolder(`.\\${manifest.localModelPath}\\${item.name}`);
+                OpenFileFolder(`./${manifest.localModelDir}/${item.name}`);
               }}/>
             }
             {item.downloadUrl && !item.isLocal &&
               <ToolTipButton desc="Download" icon={<ArrowDownload20Regular/>} onClick={() => {
                 toast(`Downloading ${item.name}`);
-                DownloadFile(`./${manifest.localModelPath}/${item.name}`, item.downloadUrl!);
+                DownloadFile(`./${manifest.localModelDir}/${item.name}`, item.downloadUrl!);
               }}/>}
             {item.url && <ToolTipButton desc="Open Url" icon={<Open20Regular/>} onClick={() => {
               BrowserOpenURL(item.url!);
@@ -131,7 +132,9 @@ export const Models: FC = observer(() => {
         <div className="flex flex-col gap-1">
           <div className="flex justify-between">
             <Text weight="medium">Model Source Manifest List</Text>
-            <ToolTipButton desc="Refresh" icon={<ArrowClockwise20Regular/>}/>
+            <ToolTipButton desc="Refresh" icon={<ArrowClockwise20Regular/>} onClick={() => {
+              refreshModels(false);
+            }}/>
           </div>
           <Text size={100}>
             Provide JSON file URLs for the models manifest. Separate URLs with semicolons. The "models"
@@ -146,6 +149,7 @@ export const Models: FC = observer(() => {
             items={commonStore.modelSourceList}
             columns={columns}
             sortable={true}
+            defaultSortState={{sortColumn: 'actions', sortDirection: 'ascending'}}
             style={{display: 'flex'}}
             className="flex-col w-full"
           >

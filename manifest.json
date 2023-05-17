@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "localModelPath": "models",
+  "localModelDir": "models",
   "programFiles": [
     {
       "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/cmd-helper.bat",
@@ -17,6 +17,10 @@
     {
       "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/backend-python/global_var.py",
       "path": "backend-python/global_var.py"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/backend-python/convert_model.py",
+      "path": "backend-python/convert_model.py"
     },
     {
       "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/backend-python/routes/completion.py",
