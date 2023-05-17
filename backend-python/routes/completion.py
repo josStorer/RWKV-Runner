@@ -19,8 +19,8 @@ class Message(BaseModel):
 
 class CompletionBody(ModelConfigBody):
     messages: List[Message]
-    model: str
-    stream: bool
+    model: str = "rwkv"
+    stream: bool = False
 
 
 completion_lock = Lock()

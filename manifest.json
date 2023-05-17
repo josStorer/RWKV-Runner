@@ -3,6 +3,14 @@
   "localModelPath": "models",
   "programFiles": [
     {
+      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/cmd-helper.bat",
+      "path": "cmd-helper.bat"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/backend-python/20B_tokenizer.json",
+      "path": "backend-python/20B_tokenizer.json"
+    },
+    {
       "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/backend-python/main.py",
       "path": "backend-python/main.py"
     },
