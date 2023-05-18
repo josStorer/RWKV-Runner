@@ -1,0 +1,110 @@
+{
+  "version": "1.2",
+  "profiles": [
+    {
+      "id": "e4cca065-e0f7-49ce-a400-75dfba1270eb",
+      "name": "Default",
+      "keyNamingPattern": "NATURAL_LANGUAGE_PATTERN",
+      "sink": {
+        "id": "93a27d2a-ff09-4608-ba13-0c08bc34c2dc",
+        "type": "singleFile",
+        "pathToFile": "$PROJECT_DIR$/frontend/src/_locales/zh-hans/main.json",
+        "fileType": "json",
+        "nestingType": "DISABLED",
+        "placeholderFormatterName": "I18NEXT"
+      },
+      "sources": [
+        {
+          "id": "efa45b89-aed3-4bc2-97d0-fa6147d13f8c",
+          "type": "jsx",
+          "scopeName": "Project Files",
+          "scopePattern": "",
+          "defaultReplacementTemplate": "t(\"%key%\")",
+          "attributeReplacementTemplate": "",
+          "inlineTagsReplacementTemplate": "",
+          "recognizedReplacementTemplates": [],
+          "inlineTagNames": [
+            "small",
+            "tt",
+            "big",
+            "sub",
+            "img",
+            "strong",
+            "code",
+            "data",
+            "samp",
+            "wbr",
+            "del",
+            "Page",
+            "slot",
+            "sup",
+            "br",
+            "output",
+            "abbr",
+            "a",
+            "b",
+            "acronym",
+            "bdi",
+            "meter",
+            "var",
+            "em",
+            "i",
+            "label",
+            "bdo",
+            "kbd",
+            "dfn",
+            "ins",
+            "ruby",
+            "input",
+            "q",
+            "s",
+            "u",
+            "cite",
+            "progress",
+            "time",
+            "mark",
+            "span"
+          ],
+          "translatableAttributeNames": [
+            "alt",
+            "placeholder",
+            "label",
+            "title",
+            "aria-label",
+            "desc",
+            "text"
+          ],
+          "skipDefaultNamespace": false,
+          "inlineTagHandler": "NONE"
+        }
+      ]
+    }
+  ],
+  "ignores": {
+    "valuesInProject": [
+      "use strict"
+    ],
+    "valuesInFile": {},
+    "filesInProject": [],
+    "unignoredFunctionNames": [],
+    "unignoredFunctionArguments": {},
+    "ignoredArrayKeys": [
+      "template",
+      "date",
+      "dateFormat",
+      "el",
+      "query",
+      "type",
+      "sql",
+      "layout",
+      "component",
+      "condition",
+      "name",
+      "selector",
+      "id",
+      "class",
+      "key",
+      "middleware"
+    ]
+  }
+}

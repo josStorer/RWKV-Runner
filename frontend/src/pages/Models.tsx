@@ -22,6 +22,7 @@ import manifest from '../../../manifest.json';
 import {toast} from 'react-toastify';
 import {Page} from '../components/Page';
 import {refreshModels, saveConfigs} from '../utils';
+import {useTranslation} from 'react-i18next';
 
 const columns: TableColumnDefinition<ModelSourceItem>[] = [
   createTableColumn<ModelSourceItem>({
@@ -30,7 +31,9 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
       return a.name.localeCompare(b.name);
     },
     renderHeaderCell: () => {
-      return 'File';
+      const {t} = useTranslation();
+
+      return t('File');
     },
     renderCell: (item) => {
       return (
@@ -49,12 +52,18 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
         return 0;
     },
     renderHeaderCell: () => {
-      return 'Desc';
+      const {t} = useTranslation();
+
+      return t('Desc');
     },
     renderCell: (item) => {
+      const lang: string = commonStore.settings.language;
+
       return (
         <TableCellLayout>
-          {item.desc && item.desc['en']}
+          {item.desc &&
+            (lang in item.desc ? item.desc[lang] :
+              ('en' in item.desc && item.desc['en']))}
         </TableCellLayout>
       );
     }
@@ -65,7 +74,9 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
       return a.size - b.size;
     },
     renderHeaderCell: () => {
-      return 'Size';
+      const {t} = useTranslation();
+
+      return t('Size');
     },
     renderCell: (item) => {
       return (
@@ -85,7 +96,9 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
       return b.lastUpdatedMs - a.lastUpdatedMs;
     },
     renderHeaderCell: () => {
-      return 'Last updated';
+      const {t} = useTranslation();
+
+      return t('Last updated');
     },
 
     renderCell: (item) => {
@@ -98,24 +111,28 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
       return a.isDownloading ? 0 : a.isLocal ? -1 : 1;
     },
     renderHeaderCell: () => {
-      return 'Actions';
+      const {t} = useTranslation();
+
+      return t('Actions');
     },
     renderCell: (item) => {
+      const {t} = useTranslation();
+
       return (
         <TableCellLayout>
           <div className="flex gap-1">
             {
               item.isLocal &&
-              <ToolTipButton desc="Open Folder" icon={<Folder20Regular/>} onClick={() => {
+              <ToolTipButton desc={t('Open Folder')} icon={<Folder20Regular/>} onClick={() => {
                 OpenFileFolder(`./${manifest.localModelDir}/${item.name}`);
               }}/>
             }
             {item.downloadUrl && !item.isLocal &&
-              <ToolTipButton desc="Download" icon={<ArrowDownload20Regular/>} onClick={() => {
+              <ToolTipButton desc={t('Download')} icon={<ArrowDownload20Regular/>} onClick={() => {
                 toast(`Downloading ${item.name}`);
                 DownloadFile(`./${manifest.localModelDir}/${item.name}`, item.downloadUrl!);
               }}/>}
-            {item.url && <ToolTipButton desc="Open Url" icon={<Open20Regular/>} onClick={() => {
+            {item.url && <ToolTipButton desc={t('Open Url')} icon={<Open20Regular/>} onClick={() => {
               BrowserOpenURL(item.url!);
             }}/>}
           </div>
@@ -126,20 +143,21 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
 ];
 
 export const Models: FC = observer(() => {
+  const {t} = useTranslation();
+
   return (
-    <Page title="Models" content={
+    <Page title={t('Models')} content={
       <div className="flex flex-col gap-2 overflow-hidden">
         <div className="flex flex-col gap-1">
           <div className="flex justify-between">
-            <Text weight="medium">Model Source Manifest List</Text>
-            <ToolTipButton desc="Refresh" icon={<ArrowClockwise20Regular/>} onClick={() => {
+            <Text weight="medium">{t('Model Source Manifest List')}</Text>
+            <ToolTipButton desc={t('Refresh')} icon={<ArrowClockwise20Regular/>} onClick={() => {
               refreshModels(false);
               saveConfigs();
             }}/>
           </div>
           <Text size={100}>
-            Provide JSON file URLs for the models manifest. Separate URLs with semicolons. The "models"
-            field in JSON files will be parsed into the following table.
+            {t('Provide JSON file URLs for the models manifest. Separate URLs with semicolons. The "models" field in JSON files will be parsed into the following table.')}
           </Text>
           <Textarea size="large" resize="vertical"
                     value={commonStore.modelSourceManifestList}

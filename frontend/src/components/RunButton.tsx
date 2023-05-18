@@ -7,6 +7,7 @@ import {exit, readRoot, switchModel, updateConfig} from '../apis';
 import {toast} from 'react-toastify';
 import manifest from '../../../manifest.json';
 import {getStrategy} from '../utils';
+import {useTranslation} from 'react-i18next';
 
 const mainButtonText = {
   [ModelStatus.Offline]: 'Run',
@@ -70,6 +71,8 @@ const onClickMainButton = async () => {
 };
 
 export const RunButton: FC<{ onClickRun?: MouseEventHandler }> = observer(({onClickRun}) => {
+  const {t} = useTranslation();
+
   return (
     <Button disabled={commonStore.modelStatus === ModelStatus.Starting} appearance="primary" size="large"
             onClick={async (e) => {
@@ -77,7 +80,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler }> = observer(({onCl
                 await onClickRun?.(e);
               await onClickMainButton();
             }}>
-      {mainButtonText[commonStore.modelStatus]}
+      {t(mainButtonText[commonStore.modelStatus])}
     </Button>
   );
 });

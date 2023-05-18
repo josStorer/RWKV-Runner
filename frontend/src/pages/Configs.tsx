@@ -16,8 +16,10 @@ import {updateConfig} from '../apis';
 import {ConvertModel} from '../../wailsjs/go/backend_golang/App';
 import manifest from '../../../manifest.json';
 import {getStrategy, refreshLocalModels} from '../utils';
+import {useTranslation} from 'react-i18next';
 
 export const Configs: FC = observer(() => {
+  const {t} = useTranslation();
   const [selectedIndex, setSelectedIndex] = React.useState(commonStore.currentModelConfigIndex);
   const [selectedConfig, setSelectedConfig] = React.useState(commonStore.modelConfigs[selectedIndex]);
 
@@ -66,7 +68,7 @@ export const Configs: FC = observer(() => {
   };
 
   return (
-    <Page title="Configs" content={
+    <Page title={t('Configs')} content={
       <div className="flex flex-col gap-2 overflow-hidden">
         <div className="flex gap-2 items-center">
           <Dropdown style={{minWidth: 0}} className="grow" value={commonStore.modelConfigs[selectedIndex].name}
@@ -80,29 +82,29 @@ export const Configs: FC = observer(() => {
               <Option key={index} value={index.toString()}>{config.name}</Option>
             )}
           </Dropdown>
-          <ToolTipButton desc="New Config" icon={<AddCircle20Regular/>} onClick={() => {
+          <ToolTipButton desc={t('New Config')} icon={<AddCircle20Regular/>} onClick={() => {
             commonStore.createModelConfig();
             updateSelectedIndex(commonStore.modelConfigs.length - 1);
           }}/>
-          <ToolTipButton desc="Delete Config" icon={<Delete20Regular/>} onClick={() => {
+          <ToolTipButton desc={t('Delete Config')} icon={<Delete20Regular/>} onClick={() => {
             commonStore.deleteModelConfig(selectedIndex);
             updateSelectedIndex(Math.min(selectedIndex, commonStore.modelConfigs.length - 1));
           }}/>
-          <ToolTipButton desc="Save Config" icon={<Save20Regular/>} onClick={onClickSave}/>
+          <ToolTipButton desc={t('Save Config')} icon={<Save20Regular/>} onClick={onClickSave}/>
         </div>
         <div className="flex items-center gap-4">
-          <Label>Config Name</Label>
+          <Label>{t('Config Name')}</Label>
           <Input className="grow" value={selectedConfig.name} onChange={(e, data) => {
             setSelectedConfigName(data.value);
           }}/>
         </div>
         <div className="flex flex-col gap-2 overflow-y-hidden">
           <Section
-            title="Default API Parameters"
-            desc="Hover your mouse over the text to view a detailed description. Settings marked with * will take effect immediately after being saved."
+            title={t('Default API Parameters')}
+            desc={t('Hover your mouse over the text to view a detailed description. Settings marked with * will take effect immediately after being saved.')}
             content={
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                <Labeled label="API Port" desc={`127.0.0.1:${selectedConfig.apiParameters.apiPort}`} content={
+                <Labeled label={t('API Port')} desc={`127.0.0.1:${selectedConfig.apiParameters.apiPort}`} content={
                   <NumberInput value={selectedConfig.apiParameters.apiPort} min={1} max={65535} step={1}
                                onChange={(e, data) => {
                                  setSelectedConfigApiParams({
@@ -110,7 +112,7 @@ export const Configs: FC = observer(() => {
                                  });
                                }}/>
                 }/>
-                <Labeled label="Max Response Token *" content={
+                <Labeled label={t('Max Response Token *')} content={
                   <ValuedSlider value={selectedConfig.apiParameters.maxResponseToken} min={100} max={8100} step={400}
                                 input
                                 onChange={(e, data) => {
@@ -119,7 +121,7 @@ export const Configs: FC = observer(() => {
                                   });
                                 }}/>
                 }/>
-                <Labeled label="Temperature *" content={
+                <Labeled label={t('Temperature *')} content={
                   <ValuedSlider value={selectedConfig.apiParameters.temperature} min={0} max={2} step={0.1} input
                                 onChange={(e, data) => {
                                   setSelectedConfigApiParams({
@@ -127,7 +129,7 @@ export const Configs: FC = observer(() => {
                                   });
                                 }}/>
                 }/>
-                <Labeled label="Top_P *" content={
+                <Labeled label={t('Top_P *')} content={
                   <ValuedSlider value={selectedConfig.apiParameters.topP} min={0} max={1} step={0.1} input
                                 onChange={(e, data) => {
                                   setSelectedConfigApiParams({
@@ -135,7 +137,7 @@ export const Configs: FC = observer(() => {
                                   });
                                 }}/>
                 }/>
-                <Labeled label="Presence Penalty *" content={
+                <Labeled label={t('Presence Penalty *')} content={
                   <ValuedSlider value={selectedConfig.apiParameters.presencePenalty} min={-2} max={2} step={0.1} input
                                 onChange={(e, data) => {
                                   setSelectedConfigApiParams({
@@ -143,7 +145,7 @@ export const Configs: FC = observer(() => {
                                   });
                                 }}/>
                 }/>
-                <Labeled label="Frequency Penalty *" content={
+                <Labeled label={t('Frequency Penalty *')} content={
                   <ValuedSlider value={selectedConfig.apiParameters.frequencyPenalty} min={-2} max={2} step={0.1} input
                                 onChange={(e, data) => {
                                   setSelectedConfigApiParams({
@@ -155,10 +157,10 @@ export const Configs: FC = observer(() => {
             }
           />
           <Section
-            title="Model Parameters"
+            title={t('Model Parameters')}
             content={
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                <Labeled label="Model" content={
+                <Labeled label={t('Model')} content={
                   <div className="flex gap-2 grow">
                     <Select style={{minWidth: 0}} className="grow"
                             value={selectedConfig.modelParameters.modelName}
@@ -171,12 +173,12 @@ export const Configs: FC = observer(() => {
                         modelItem.isLocal && <option key={index} value={modelItem.name}>{modelItem.name}</option>
                       )}
                     </Select>
-                    <ToolTipButton desc="Manage Models" icon={<DataUsageSettings20Regular/>} onClick={() => {
+                    <ToolTipButton desc={t('Manage Models')} icon={<DataUsageSettings20Regular/>} onClick={() => {
                       navigate({pathname: '/models'});
                     }}/>
                   </div>
                 }/>
-                <ToolTipButton text="Convert" desc="Convert model with these configs" onClick={() => {
+                <ToolTipButton text={t('Convert')} desc={t('Convert model with these configs')} onClick={() => {
                   const modelPath = `${manifest.localModelDir}/${selectedConfig.modelParameters.modelName}`;
                   const strategy = getStrategy(selectedConfig);
                   const newModelPath = modelPath + '-' + strategy.replace(/[> *+]/g, '-');
@@ -188,7 +190,7 @@ export const Configs: FC = observer(() => {
                     toast(`Convert Failed - ${e}`, {type: 'error'});
                   });
                 }}/>
-                <Labeled label="Device" content={
+                <Labeled label={t('Device')} content={
                   <Dropdown style={{minWidth: 0}} className="grow" value={selectedConfig.modelParameters.device}
                             selectedOptions={[selectedConfig.modelParameters.device]}
                             onOptionSelect={(_, data) => {
@@ -202,7 +204,7 @@ export const Configs: FC = observer(() => {
                     <Option>CUDA</Option>
                   </Dropdown>
                 }/>
-                <Labeled label="Precision" content={
+                <Labeled label={t('Precision')} content={
                   <Dropdown style={{minWidth: 0}} className="grow" value={selectedConfig.modelParameters.precision}
                             selectedOptions={[selectedConfig.modelParameters.precision]}
                             onOptionSelect={(_, data) => {
@@ -217,7 +219,7 @@ export const Configs: FC = observer(() => {
                     <Option>fp32</Option>
                   </Dropdown>
                 }/>
-                <Labeled label="Stored Layers" content={
+                <Labeled label={t('Stored Layers')} content={
                   <ValuedSlider value={selectedConfig.modelParameters.storedLayers} min={0}
                                 max={selectedConfig.modelParameters.maxStoredLayers} step={1} input
                                 onChange={(e, data) => {
@@ -226,7 +228,7 @@ export const Configs: FC = observer(() => {
                                   });
                                 }}/>
                 }/>
-                <Labeled label="Enable High Precision For Last Layer" content={
+                <Labeled label={t('Enable High Precision For Last Layer')} content={
                   <Switch checked={selectedConfig.modelParameters.enableHighPrecisionForLastLayer}
                           onChange={(e, data) => {
                             setSelectedConfigModelParams({

@@ -14,7 +14,7 @@ export const Settings: FC = observer(() => {
   return (
     <Page title={t('Settings')} content={
       <div className="flex flex-col gap-2 overflow-hidden">
-        <Labeled label="Language" flex spaceBetween content={
+        <Labeled label={t('Language')} flex spaceBetween content={
           <Dropdown style={{minWidth: 0}} listbox={{style: {minWidth: 0}}}
                     value={Languages[commonStore.settings.language]}
                     selectedOptions={[Languages[commonStore.settings.language]]}
@@ -33,7 +33,7 @@ export const Settings: FC = observer(() => {
             }
           </Dropdown>
         }/>
-        <Labeled label="Dark Mode" flex spaceBetween content={
+        <Labeled label={t('Dark Mode')} flex spaceBetween content={
           <Switch checked={commonStore.settings.darkMode}
                   onChange={(e, data) => {
                     commonStore.setSettings({
@@ -41,7 +41,7 @@ export const Settings: FC = observer(() => {
                     });
                   }}/>
         }/>
-        <Labeled label="Automatic Updates Check" flex spaceBetween content={
+        <Labeled label={t('Automatic Updates Check')} flex spaceBetween content={
           <Switch checked={commonStore.settings.autoUpdatesCheck}
                   onChange={(e, data) => {
                     commonStore.setSettings({

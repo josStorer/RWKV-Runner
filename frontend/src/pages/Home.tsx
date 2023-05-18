@@ -13,6 +13,7 @@ import {observer} from 'mobx-react-lite';
 import {RunButton} from '../components/RunButton';
 import manifest from '../../../manifest.json';
 import {BrowserOpenURL} from '../../wailsjs/runtime';
+import {useTranslation} from 'react-i18next';
 
 type NavCard = {
   label: string;
@@ -49,6 +50,7 @@ const navCards: NavCard[] = [
 ];
 
 export const Home: FC = observer(() => {
+  const {t} = useTranslation();
   const navigate = useNavigate();
 
   const onClickNavCard = (path: string) => {
@@ -59,22 +61,17 @@ export const Home: FC = observer(() => {
     <div className="flex flex-col justify-between h-full">
       <img className="rounded-xl select-none hidden sm:block" src={banner}/>
       <div className="flex flex-col gap-2">
-        <Text size={600} weight="medium">Introduction</Text>
+        <Text size={600} weight="medium">{t('Introduction')}</Text>
         <div className="h-40 overflow-y-auto p-1">
-          RWKV is an RNN with Transformer-level LLM performance, which can also be directly trained like a GPT
-          transformer (parallelizable). And it's 100% attention-free. You only need the hidden state at position t to
-          compute the state at position t+1. You can use the "GPT" mode to quickly compute the hidden state for the
-          "RNN" mode.
-          <br/>
-          So it's combining the best of RNN and transformer - great performance, fast inference, saves VRAM, fast
-          training, "infinite" ctx_len, and free sentence embedding (using the final hidden state).
+          {t('RWKV is an RNN with Transformer-level LLM performance, which can also be directly trained like a GPT transformer (parallelizable). And it\'s 100% attention-free. You only need the hidden state at position t to compute the state at position t+1. You can use the "GPT" mode to quickly compute the hidden state for the "RNN" mode. <br/> So it\'s combining the best of RNN and transformer - great performance, fast inference, saves VRAM, fast training, "infinite" ctx_len, and free sentence embedding (using the final hidden state).')}
+          {/*TODO Markdown*/}
         </div>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">
         {navCards.map(({label, path, icon, desc}, index) => (
-          <CompoundButton icon={icon} secondaryContent={desc} key={`${path}-${index}`} value={path}
+          <CompoundButton icon={icon} secondaryContent={t(desc)} key={`${path}-${index}`} value={path}
                           size="large" onClick={() => onClickNavCard(path)}>
-            {label}
+            {t(label)}
           </CompoundButton>
         ))}
       </div>
@@ -96,8 +93,8 @@ export const Home: FC = observer(() => {
           </div>
         </div>
         <div className="flex gap-4 items-end">
-          Version: {manifest.version}
-          <Link onClick={() => BrowserOpenURL('https://github.com/josStorer/RWKV-Runner')}>Help</Link>
+          {t('Version')}: {manifest.version}
+          <Link onClick={() => BrowserOpenURL('https://github.com/josStorer/RWKV-Runner')}>{t('Help')}</Link>
         </div>
       </div>
     </div>

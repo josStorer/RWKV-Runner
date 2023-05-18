@@ -31,8 +31,10 @@ import {useMediaQuery} from 'usehooks-ts';
 import {ToastContainer} from 'react-toastify';
 import commonStore from './stores/commonStore';
 import {observer} from 'mobx-react-lite';
+import {useTranslation} from 'react-i18next';
 
 const App: FC = observer(() => {
+  const {t} = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const mq = useMediaQuery('(min-width: 640px)');
@@ -57,7 +59,7 @@ const App: FC = observer(() => {
           >
             {pages.filter(page => page.top).map(({label, path, icon}, index) => (
               <Tab icon={icon} key={`${path}-${index}`} value={path}>
-                {mq && label}
+                {mq && t(label)}
               </Tab>
             ))}
           </TabList>
@@ -70,7 +72,7 @@ const App: FC = observer(() => {
           >
             {pages.filter(page => !page.top).map(({label, path, icon}, index) => (
               <Tab icon={icon} key={`${path}-${index}`} value={path}>
-                {mq && label}
+                {mq && t(label)}
               </Tab>
             ))}
           </TabList>
