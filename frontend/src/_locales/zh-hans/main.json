@@ -59,5 +59,6 @@
   "Failed to switch model": "切换模型失败",
   "Start Converting": "开始转换",
   "Convert Success": "转换成功",
-  "Convert Failed": "转换失败"
+  "Convert Failed": "转换失败",
+  "Model Not Found": "模型不存在"
 }

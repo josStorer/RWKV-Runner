@@ -3,7 +3,7 @@
   "localModelDir": "models",
   "programFiles": [
     {
-      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/cmd-helper.bat",
+      "url": "https://raw.githubusercontent.com/josStorer/RWKV-Runner/master/cmd-helper.bat",
       "path": "cmd-helper.bat"
     },
     {

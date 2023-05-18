@@ -39,12 +39,9 @@ func (a *App) ReadJson(fileName string) (any, error) {
 	return data, nil
 }
 
-func (a *App) FileExists(fileName string) (bool, error) {
+func (a *App) FileExists(fileName string) bool {
 	_, err := os.Stat(fileName)
-	if err == nil {
-		return true, nil
-	}
-	return false, err
+	return err == nil
 }
 
 type FileInfo struct {

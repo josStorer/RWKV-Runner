@@ -1,4 +1,4 @@
-import {ListDirFiles, ReadJson, SaveJson} from '../../wailsjs/go/backend_golang/App';
+import {DownloadFile, FileExists, ListDirFiles, ReadJson, SaveJson} from '../../wailsjs/go/backend_golang/App';
 import manifest from '../../../manifest.json';
 import commonStore, {ModelConfig, ModelParameters, ModelSourceItem} from '../stores/commonStore';
 
@@ -160,4 +160,19 @@ export function getUserLanguage(): Language {
 
 export function isSystemLightMode() {
   return window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+}
+
+export function downloadProgramFiles() {
+  manifest.programFiles.forEach(({url, path}) => {
+    FileExists(path).then(exists => {
+      if (!exists)
+        DownloadFile(path, url);
+    });
+  });
+}
+
+export function forceDownloadProgramFiles() {
+  manifest.programFiles.forEach(({url, path}) => {
+    DownloadFile(path, url);
+  });
 }

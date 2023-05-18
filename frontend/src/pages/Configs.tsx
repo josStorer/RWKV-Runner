@@ -13,7 +13,7 @@ import {Page} from '../components/Page';
 import {useNavigate} from 'react-router';
 import {RunButton} from '../components/RunButton';
 import {updateConfig} from '../apis';
-import {ConvertModel} from '../../wailsjs/go/backend_golang/App';
+import {ConvertModel, FileExists} from '../../wailsjs/go/backend_golang/App';
 import manifest from '../../../manifest.json';
 import {getStrategy, refreshLocalModels} from '../utils';
 import {useTranslation} from 'react-i18next';
@@ -178,17 +178,21 @@ export const Configs: FC = observer(() => {
                     }}/>
                   </div>
                 }/>
-                <ToolTipButton text={t('Convert')} desc={t('Convert model with these configs')} onClick={() => {
+                <ToolTipButton text={t('Convert')} desc={t('Convert model with these configs')} onClick={async () => {
                   const modelPath = `${manifest.localModelDir}/${selectedConfig.modelParameters.modelName}`;
-                  const strategy = getStrategy(selectedConfig);
-                  const newModelPath = modelPath + '-' + strategy.replace(/[> *+]/g, '-');
-                  toast(t('Start Converting'), {autoClose: 1000, type: 'info'});
-                  ConvertModel(modelPath, strategy, newModelPath).then(() => {
-                    toast(`${t('Convert Success')} - ${newModelPath}`, {type: 'success'});
-                    refreshLocalModels({models: commonStore.modelSourceList});
-                  }).catch(e => {
-                    toast(`${t('Convert Failed')} - ${e}`, {type: 'error'});
-                  });
+                  if (await FileExists(modelPath)) {
+                    const strategy = getStrategy(selectedConfig);
+                    const newModelPath = modelPath + '-' + strategy.replace(/[> *+]/g, '-');
+                    toast(t('Start Converting'), {autoClose: 1000, type: 'info'});
+                    ConvertModel(modelPath, strategy, newModelPath).then(() => {
+                      toast(`${t('Convert Success')} - ${newModelPath}`, {type: 'success'});
+                      refreshLocalModels({models: commonStore.modelSourceList});
+                    }).catch(e => {
+                      toast(`${t('Convert Failed')} - ${e}`, {type: 'error'});
+                    });
+                  } else {
+                    toast(`${t('Model Not Found')} - ${modelPath}`, {type: 'error'});
+                  }
                 }}/>
                 <Labeled label={t('Device')} content={
                   <Dropdown style={{minWidth: 0}} className="grow" value={selectedConfig.modelParameters.device}
