@@ -11,10 +11,12 @@
   "dependencies": {
     "@fluentui/react-components": "^9.20.0",
     "@fluentui/react-icons": "^2.0.201",
+    "i18next": "^22.4.15",
     "mobx": "^6.9.0",
     "mobx-react-lite": "^3.4.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-i18next": "^12.2.2",
     "react-router": "^6.11.1",
     "react-router-dom": "^6.11.1",
     "react-toastify": "^9.1.3",

@@ -3,8 +3,11 @@ package backend_golang
 import (
 	"context"
 	"net/http"
+	"os"
+	"os/exec"
 
 	"github.com/minio/selfupdate"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 // App struct
@@ -36,5 +39,11 @@ func (a *App) UpdateApp(url string) (broken bool, err error) {
 		}
 		return false, err
 	}
+	name, err := os.Executable()
+	if err != nil {
+		return false, err
+	}
+	exec.Command(name, os.Args[1:]...).Start()
+	runtime.Quit(a.ctx)
 	return false, nil
 }

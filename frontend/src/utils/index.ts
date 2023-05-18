@@ -2,12 +2,19 @@ import {ListDirFiles, ReadJson, SaveJson} from '../../wailsjs/go/backend_golang/
 import manifest from '../../../manifest.json';
 import commonStore, {ModelConfig, ModelParameters, ModelSourceItem} from '../stores/commonStore';
 
+export const Languages = {
+  dev: 'English', // i18n default
+  zh: '简体中文'
+};
+
+export type Language = keyof typeof Languages;
+
 export type Cache = {
   models: ModelSourceItem[]
 }
 
 export type Settings = {
-  language: string,
+  language: Language,
   darkMode: boolean
   autoUpdatesCheck: boolean
 }
