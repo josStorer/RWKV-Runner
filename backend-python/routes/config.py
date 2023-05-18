@@ -35,7 +35,8 @@ def switch_model(body: SwitchModelBody, response: Response):
                 tokens_path=f"{pathlib.Path(__file__).parent.parent.resolve()}/20B_tokenizer.json",
             ),
         )
-    except Exception:
+    except Exception as e:
+        print(e)
         global_var.set(global_var.Model_Status, global_var.ModelStatus.Offline)
         raise HTTPException(status.HTTP_500_INTERNAL_SERVER_ERROR, "failed to load")
 

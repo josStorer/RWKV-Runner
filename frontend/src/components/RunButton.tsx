@@ -8,6 +8,7 @@ import {toast} from 'react-toastify';
 import manifest from '../../../manifest.json';
 import {getStrategy} from '../utils';
 import {useTranslation} from 'react-i18next';
+import {t} from 'i18next';
 
 const mainButtonText = {
   [ModelStatus.Offline]: 'Run',
@@ -22,6 +23,8 @@ const onClickMainButton = async () => {
 
   if (commonStore.modelStatus === ModelStatus.Offline) {
     commonStore.setModelStatus(ModelStatus.Starting);
+    await exit(1000).catch(() => {
+    });
     StartServer(port);
 
     let timeoutCount = 6;
@@ -33,7 +36,7 @@ const onClickMainButton = async () => {
             clearInterval(intervalId);
             commonStore.setModelStatus(ModelStatus.Loading);
             loading = true;
-            toast('Loading Model', {type: 'info'});
+            toast(t('Loading Model'), {type: 'info'});
             updateConfig({
               max_tokens: modelConfig.apiParameters.maxResponseToken,
               temperature: modelConfig.apiParameters.temperature,
@@ -47,12 +50,12 @@ const onClickMainButton = async () => {
             }).then((r) => {
               if (r.ok) {
                 commonStore.setModelStatus(ModelStatus.Working);
-                toast('Startup Completed', {type: 'success'});
+                toast(t('Startup Completed'), {type: 'success'});
               } else if (r.status === 304) {
-                toast('Loading Model', {type: 'info'});
+                toast(t('Loading Model'), {type: 'info'});
               } else {
                 commonStore.setModelStatus(ModelStatus.Offline);
-                toast('Failed to switch model', {type: 'error'});
+                toast(t('Failed to switch model'), {type: 'error'});
               }
             });
           }
@@ -66,6 +69,7 @@ const onClickMainButton = async () => {
       timeoutCount--;
     }, 1000);
   } else {
+    commonStore.setModelStatus(ModelStatus.Offline);
     exit();
   }
 };

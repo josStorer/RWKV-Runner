@@ -1,14 +1,17 @@
-import commonStore, {ModelStatus} from '../stores/commonStore';
+import commonStore from '../stores/commonStore';
 
 export const readRoot = async () => {
   const port = commonStore.getCurrentModelConfig().apiParameters.apiPort;
   return fetch(`http://127.0.0.1:${port}`);
 };
 
-export const exit = async () => {
-  commonStore.setModelStatus(ModelStatus.Offline);
+export const exit = async (timeout?: number) => {
+  const controller = new AbortController();
+  if (timeout)
+    setTimeout(() => controller.abort(), timeout);
+
   const port = commonStore.getCurrentModelConfig().apiParameters.apiPort;
-  return fetch(`http://127.0.0.1:${port}/exit`, {method: 'POST'});
+  return fetch(`http://127.0.0.1:${port}/exit`, {method: 'POST', signal: controller.signal});
 };
 
 export const switchModel = async (body: any) => {

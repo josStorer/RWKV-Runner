@@ -51,5 +51,13 @@
   "Last updated": "上次更新",
   "Desc": "描述",
   "Size": "文件大小",
-  "File": "文件"
+  "File": "文件",
+  "Config Saved": "配置已保存",
+  "Downloading": "正在下载",
+  "Loading Model": "正在读取模型",
+  "Startup Completed": "启动完成",
+  "Failed to switch model": "切换模型失败",
+  "Start Converting": "开始转换",
+  "Convert Success": "转换成功",
+  "Convert Failed": "转换失败"
 }

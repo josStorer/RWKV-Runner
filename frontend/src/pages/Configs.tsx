@@ -64,7 +64,7 @@ export const Configs: FC = observer(() => {
       presence_penalty: selectedConfig.apiParameters.presencePenalty,
       frequency_penalty: selectedConfig.apiParameters.frequencyPenalty
     });
-    toast('Config Saved', {autoClose: 300, type: 'success'});
+    toast(t('Config Saved'), {autoClose: 300, type: 'success'});
   };
 
   return (
@@ -182,12 +182,12 @@ export const Configs: FC = observer(() => {
                   const modelPath = `${manifest.localModelDir}/${selectedConfig.modelParameters.modelName}`;
                   const strategy = getStrategy(selectedConfig);
                   const newModelPath = modelPath + '-' + strategy.replace(/[> *+]/g, '-');
-                  toast('Start Converting', {autoClose: 1000, type: 'info'});
+                  toast(t('Start Converting'), {autoClose: 1000, type: 'info'});
                   ConvertModel(modelPath, strategy, newModelPath).then(() => {
-                    toast(`Convert Success - ${newModelPath}`, {type: 'success'});
+                    toast(`${t('Convert Success')} - ${newModelPath}`, {type: 'success'});
                     refreshLocalModels({models: commonStore.modelSourceList});
                   }).catch(e => {
-                    toast(`Convert Failed - ${e}`, {type: 'error'});
+                    toast(`${t('Convert Failed')} - ${e}`, {type: 'error'});
                   });
                 }}/>
                 <Labeled label={t('Device')} content={

@@ -87,7 +87,7 @@ const App: FC = observer(() => {
       </div>
       <ToastContainer
         style={{
-          width: '250px'
+          width: '350px'
         }}
         position="top-center"
         autoClose={4000}
