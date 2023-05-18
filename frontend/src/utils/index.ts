@@ -149,10 +149,13 @@ export const saveCache = async () => {
   return SaveJson('cache.json', data);
 };
 
-export function getNavigatorLanguage() {
+export function getUserLanguage(): Language {
   // const l = navigator.language.toLowerCase();
   // if (['zh-hk', 'zh-mo', 'zh-tw', 'zh-cht', 'zh-hant'].includes(l)) return 'zhHant'
-  return navigator.language.substring(0, 2);
+
+  const l = navigator.language.substring(0, 2);
+  if (l in Languages) return l as Language;
+  return 'dev';
 }
 
 export function isSystemLightMode() {

@@ -1,5 +1,5 @@
 import {makeAutoObservable} from 'mobx';
-import {getNavigatorLanguage, isSystemLightMode, Language, saveConfigs, Settings} from '../utils';
+import {getUserLanguage, isSystemLightMode, saveConfigs, Settings} from '../utils';
 import {WindowSetDarkTheme, WindowSetLightTheme} from '../../wailsjs/runtime';
 
 export enum ModelStatus {
@@ -84,7 +84,7 @@ class CommonStore {
   modelSourceManifestList: string = 'https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/manifest.json;';
   modelSourceList: ModelSourceItem[] = [];
   settings: Settings = {
-    language: getNavigatorLanguage() as Language,
+    language: getUserLanguage(),
     darkMode: !isSystemLightMode(),
     autoUpdatesCheck: true
   };

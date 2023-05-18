@@ -17,7 +17,7 @@ export const Settings: FC = observer(() => {
         <Labeled label={t('Language')} flex spaceBetween content={
           <Dropdown style={{minWidth: 0}} listbox={{style: {minWidth: 0}}}
                     value={Languages[commonStore.settings.language]}
-                    selectedOptions={[Languages[commonStore.settings.language]]}
+                    selectedOptions={[commonStore.settings.language]}
                     onOptionSelect={(_, data) => {
                       if (data.optionValue) {
                         const lang = data.optionValue as Language;
