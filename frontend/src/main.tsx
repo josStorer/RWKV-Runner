@@ -1,6 +1,6 @@
 import React from 'react';
 import {createRoot} from 'react-dom/client';
-import './style.css';
+import './style.scss';
 import 'react-toastify/dist/ReactToastify.css';
 import App from './App';
 import {HashRouter} from 'react-router-dom';

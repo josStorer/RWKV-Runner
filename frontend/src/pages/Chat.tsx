@@ -1,7 +1,7 @@
-import React, {FC, useRef, useState} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {RunButton} from '../components/RunButton';
-import {Avatar, Divider, Input, PresenceBadge, Text} from '@fluentui/react-components';
+import {Avatar, Divider, PresenceBadge, Text, Textarea} from '@fluentui/react-components';
 import commonStore, {ModelStatus} from '../stores/commonStore';
 import {observer} from 'mobx-react-lite';
 import {PresenceBadgeStatus} from '@fluentui/react-badge';
@@ -11,6 +11,7 @@ import classnames from 'classnames';
 import {fetchEventSource} from '@microsoft/fetch-event-source';
 import {ConversationPair, getConversationPairs, Record} from '../utils/get-conversation-pairs';
 import logo from '../../../build/appicon.png';
+import MarkdownRender from '../components/MarkdownRender';
 
 const userName = 'M E';
 const botName = 'A I';
@@ -45,7 +46,13 @@ const ChatPanel: FC = observer(() => {
   const [conversations, setConversations] = useState<Conversations>({});
   const [conversationsOrder, setConversationsOrder] = useState<string[]>([]);
   const bodyRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const port = commonStore.getCurrentModelConfig().apiParameters.apiPort;
+
+  useEffect(() => {
+    if (inputRef.current)
+      inputRef.current.style.maxHeight = '16rem';
+  }, []);
 
   const scrollToBottom = () => {
     if (bodyRef.current)
@@ -159,7 +166,7 @@ const ChatPanel: FC = observer(() => {
           return <div
             key={uuid}
             className={classnames(
-              'flex gap-2 mb-2',
+              'flex gap-2 mb-2 overflow-hidden',
               conversation.side === 'left' ? 'flex-row' : 'flex-row-reverse'
             )}
           >
@@ -170,12 +177,12 @@ const ChatPanel: FC = observer(() => {
             />
             <div
               className={classnames(
-                'p-2 rounded-lg',
+                'p-2 rounded-lg overflow-hidden',
                 conversation.side === 'left' ? 'bg-gray-200' : 'bg-blue-500',
                 conversation.side === 'left' ? 'text-gray-600' : 'text-white'
               )}
             >
-              {conversation.content}
+              <MarkdownRender>{conversation.content}</MarkdownRender>
             </div>
             {(conversation.type === MessageType.Error || !conversation.done) &&
               <PresenceBadge status={
@@ -185,17 +192,18 @@ const ChatPanel: FC = observer(() => {
           </div>;
         })}
       </div>
-      <div className="flex">
+      <div className="flex items-end">
         <button className="bg-blue-500 text-white rounded-lg py-2 px-4 mr-2" onClick={() => {
           setConversations({});
           setConversationsOrder([]);
         }}>
           {t('Clear')}
         </button>
-        <form onSubmit={handleSubmit} className="flex grow">
-          <Input
-            type="text"
-            className="grow mr-2"
+        <form onSubmit={handleSubmit} className="flex items-end grow gap-2">
+          <Textarea
+            ref={inputRef}
+            className="grow"
+            resize="vertical"
             placeholder={t('Type your message here')!}
             value={message}
             onChange={(e) => setMessage(e.target.value)}

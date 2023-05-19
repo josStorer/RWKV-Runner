@@ -1,0 +1,94 @@
+[data-theme='dark'] {
+  @import 'highlight.js/scss/github-dark.scss';
+  @import 'github-markdown-css/github-markdown-dark.css';
+  --color-neutral-muted: rgba(110, 118, 129, 0.4);
+}
+
+[data-theme='light'] {
+  @import 'highlight.js/scss/github.scss';
+  @import 'github-markdown-css/github-markdown-light.css';
+  --color-neutral-muted: rgba(150, 160, 170, 0.3);
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+* {
+  scrollbar-width: thin;
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 9px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(155, 155, 155, 0.5);
+  border-radius: 20px;
+  border: transparent;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.markdown-body {
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  ul,
+  ol {
+    padding-left: 1.5em;
+  }
+
+  ol {
+    list-style: none;
+    counter-reset: item;
+
+    li {
+      counter-increment: item;
+
+      &::marker {
+        content: counter(item) '. ';
+      }
+    }
+  }
+
+  pre {
+    padding: 0;
+
+    code {
+      font-size: 14px;
+    }
+  }
+
+  p {
+    margin: 0 0 10px;
+  }
+
+  code {
+    padding: 0 0.4em;
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    border-radius: 8px;
+    background-color: var(--color-neutral-muted);
+    font-size: 11px;
+
+    .hljs {
+      padding: 0;
+    }
+  }
+}
