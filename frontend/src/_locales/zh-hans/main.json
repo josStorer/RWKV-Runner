@@ -66,5 +66,7 @@
   "Model Status": "模型状态",
   "Clear": "清除",
   "Send": "发送",
-  "Type your message here": "在此输入消息"
+  "Type your message here": "在此输入消息",
+  "Copy": "复制",
+  "Read Aloud": "朗读"
 }

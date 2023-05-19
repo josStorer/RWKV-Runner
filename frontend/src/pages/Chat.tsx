@@ -14,6 +14,8 @@ import logo from '../../../build/appicon.png';
 import MarkdownRender from '../components/MarkdownRender';
 import {ToolTipButton} from '../components/ToolTipButton';
 import {ArrowCircleUp28Regular, Delete28Regular, RecordStop28Regular} from '@fluentui/react-icons';
+import {CopyButton} from '../components/CopyButton';
+import {ReadButton} from '../components/ReadButton';
 
 const userName = 'M E';
 const botName = 'A I';
@@ -189,6 +191,14 @@ const ChatPanel: FC = observer(() => {
               'flex gap-2 mb-2 overflow-hidden',
               conversation.side === 'left' ? 'flex-row' : 'flex-row-reverse'
             )}
+            onMouseEnter={() => {
+              const utils = document.getElementById('utils-' + uuid);
+              if (utils) utils.classList.remove('invisible');
+            }}
+            onMouseLeave={() => {
+              const utils = document.getElementById('utils-' + uuid);
+              if (utils) utils.classList.add('invisible');
+            }}
           >
             <Avatar
               color={conversation.color}
@@ -204,11 +214,18 @@ const ChatPanel: FC = observer(() => {
             >
               <MarkdownRender>{conversation.content}</MarkdownRender>
             </div>
-            {(conversation.type === MessageType.Error || !conversation.done) &&
-              <PresenceBadge status={
-                conversation.type === MessageType.Error ? 'busy' : 'away'
-              }/>
-            }
+            <div className="flex flex-col gap-1 items-start">
+              <div className="grow"/>
+              {(conversation.type === MessageType.Error || !conversation.done) &&
+                <PresenceBadge size="extra-small" status={
+                  conversation.type === MessageType.Error ? 'busy' : 'away'
+                }/>
+              }
+              <div className="flex invisible" id={'utils-' + uuid}>
+                <ReadButton content={conversation.content}/>
+                <CopyButton content={conversation.content}/>
+              </div>
+            </div>
           </div>;
         })}
       </div>

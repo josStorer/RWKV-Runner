@@ -12,6 +12,7 @@
     "@fluentui/react-components": "^9.20.0",
     "@fluentui/react-icons": "^2.0.201",
     "@microsoft/fetch-event-source": "^2.0.1",
+    "@primer/octicons-react": "^19.1.0",
     "classnames": "^2.3.2",
     "github-markdown-css": "^5.2.0",
     "i18next": "^22.4.15",
