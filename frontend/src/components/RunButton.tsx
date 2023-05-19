@@ -1,4 +1,4 @@
-import React, {FC, MouseEventHandler} from 'react';
+import React, {FC, MouseEventHandler, ReactElement} from 'react';
 import commonStore, {ModelStatus} from '../stores/commonStore';
 import {StartServer} from '../../wailsjs/go/backend_golang/App';
 import {Button} from '@fluentui/react-components';
@@ -9,12 +9,21 @@ import manifest from '../../../manifest.json';
 import {getStrategy} from '../utils';
 import {useTranslation} from 'react-i18next';
 import {t} from 'i18next';
+import {ToolTipButton} from './ToolTipButton';
+import {Play16Regular, Stop16Regular} from '@fluentui/react-icons';
 
 const mainButtonText = {
   [ModelStatus.Offline]: 'Run',
   [ModelStatus.Starting]: 'Starting',
   [ModelStatus.Loading]: 'Loading',
   [ModelStatus.Working]: 'Stop'
+};
+
+const iconModeButtonIcon: { [modelStatus: number]: ReactElement } = {
+  [ModelStatus.Offline]: <Play16Regular/>,
+  [ModelStatus.Starting]: <Stop16Regular/>,
+  [ModelStatus.Loading]: <Stop16Regular/>,
+  [ModelStatus.Working]: <Stop16Regular/>
 };
 
 const onClickMainButton = async () => {
@@ -74,17 +83,28 @@ const onClickMainButton = async () => {
   }
 };
 
-export const RunButton: FC<{ onClickRun?: MouseEventHandler }> = observer(({onClickRun}) => {
+export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean }>
+  = observer(({
+                onClickRun,
+                iconMode
+              }) => {
   const {t} = useTranslation();
 
-  return (
-    <Button disabled={commonStore.modelStatus === ModelStatus.Starting} appearance="primary" size="large"
-            onClick={async (e) => {
-              if (commonStore.modelStatus === ModelStatus.Offline)
-                await onClickRun?.(e);
-              await onClickMainButton();
-            }}>
-      {t(mainButtonText[commonStore.modelStatus])}
-    </Button>
+  const onClick = async (e: any) => {
+    if (commonStore.modelStatus === ModelStatus.Offline)
+      await onClickRun?.(e);
+    await onClickMainButton();
+  };
+
+  return (iconMode ?
+      <ToolTipButton disabled={commonStore.modelStatus === ModelStatus.Starting}
+                     icon={iconModeButtonIcon[commonStore.modelStatus]}
+                     desc={t(mainButtonText[commonStore.modelStatus])}
+                     size="small" onClick={onClick}/>
+      :
+      <Button disabled={commonStore.modelStatus === ModelStatus.Starting} appearance="primary" size="large"
+              onClick={onClick}>
+        {t(mainButtonText[commonStore.modelStatus])}
+      </Button>
   );
 });

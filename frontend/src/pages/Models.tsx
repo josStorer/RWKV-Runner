@@ -149,7 +149,7 @@ export const Models: FC = observer(() => {
     <Page title={t('Models')} content={
       <div className="flex flex-col gap-2 overflow-hidden">
         <div className="flex flex-col gap-1">
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center">
             <Text weight="medium">{t('Model Source Manifest List')}</Text>
             <ToolTipButton desc={t('Refresh')} icon={<ArrowClockwise20Regular/>} onClick={() => {
               refreshModels(false);

@@ -7,8 +7,10 @@
   "Manage your configs": "管理你的配置",
   "Manage models": "管理模型",
   "Run": "运行",
+  "Offline": "离线",
   "Starting": "启动中",
   "Loading": "读取模型中",
+  "Working": "运行中",
   "Stop": "停止",
   "Enable High Precision For Last Layer": "输出层使用高精度",
   "Stored Layers": "载入显存层数",
@@ -60,5 +62,6 @@
   "Start Converting": "开始转换",
   "Convert Success": "转换成功",
   "Convert Failed": "转换失败",
-  "Model Not Found": "模型不存在"
+  "Model Not Found": "模型不存在",
+  "Model Status": "模型状态"
 }

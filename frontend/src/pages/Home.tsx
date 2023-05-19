@@ -1,4 +1,4 @@
-import {CompoundButton, Dropdown, Link, Option, Text} from '@fluentui/react-components';
+import {CompoundButton, Link, Text} from '@fluentui/react-components';
 import React, {FC, ReactElement} from 'react';
 import banner from '../assets/images/banner.jpg';
 import {
@@ -8,12 +8,12 @@ import {
   Storage20Regular
 } from '@fluentui/react-icons';
 import {useNavigate} from 'react-router';
-import commonStore from '../stores/commonStore';
 import {observer} from 'mobx-react-lite';
 import {RunButton} from '../components/RunButton';
 import manifest from '../../../manifest.json';
 import {BrowserOpenURL} from '../../wailsjs/runtime';
 import {useTranslation} from 'react-i18next';
+import {ConfigSelector} from '../components/ConfigSelector';
 
 type NavCard = {
   label: string;
@@ -78,17 +78,7 @@ export const Home: FC = observer(() => {
       <div className="flex flex-col gap-2">
         <div className="flex flex-row-reverse sm:fixed bottom-2 right-2">
           <div className="flex gap-3">
-            <Dropdown style={{minWidth: 0}} listbox={{style: {minWidth: 0}}}
-                      value={commonStore.getCurrentModelConfig().name}
-                      selectedOptions={[commonStore.currentModelConfigIndex.toString()]}
-                      onOptionSelect={(_, data) => {
-                        if (data.optionValue)
-                          commonStore.setCurrentConfigIndex(Number(data.optionValue));
-                      }}>
-              {commonStore.modelConfigs.map((config, index) =>
-                <Option key={index} value={index.toString()}>{config.name}</Option>
-              )}
-            </Dropdown>
+            <ConfigSelector/>
             <RunButton/>
           </div>
         </div>
