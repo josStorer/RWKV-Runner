@@ -55,8 +55,8 @@
     {
       "name": "RWKV-4-Raven-3B-v11-Eng99%-Other1%-20230425-ctx4096.pth",
       "desc": {
-        "en": "",
-        "zh": ""
+        "en": "English 3B v11",
+        "zh": "英文 3B v11"
       },
       "size": 5969345074,
       "SHA256": "982ad3d794efe58992db23c6d694c57a9e62d54718264ec6d6acfae5eb0eea12",
@@ -65,46 +65,10 @@
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-3B-v11-Eng99%25-Other1%25-20230425-ctx4096.pth"
     },
     {
-      "name": "Q8_0-RWKV-4-Raven-14B-v11x-Eng99%-Other1%-20230501-ctx8192.bin",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 16374220069,
-      "SHA256": "1cb56cd7784264a8f0ed2efd17a97f4866075915f2b1a8497c1abb826edade8b",
-      "lastUpdated": "2023-05-02T10:04:01",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/Q8_0-RWKV-4-Raven-14B-v11x-Eng99%25-Other1%25-20230501-ctx8192.bin",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/Q8_0-RWKV-4-Raven-14B-v11x-Eng99%25-Other1%25-20230501-ctx8192.bin"
-    },
-    {
-      "name": "RWKV-4-Raven-7B-v10-Eng99%-Other1%-20230418-ctx8192.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 14785389874,
-      "SHA256": "5c50ad861a16267ec45853bad106b6f6975c49f66e27fe2b01d555834be88492",
-      "lastUpdated": "2023-04-19T16:06:23",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-7B-v10-Eng99%25-Other1%25-20230418-ctx8192.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v10-Eng99%25-Other1%25-20230418-ctx8192.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-3B-v7-Eng-20230404-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 5969345074,
-      "SHA256": "18278e84764fdc39b3aae3b132703bd92579ef464a0eecdfd7000d63d09aeaa5",
-      "lastUpdated": "2023-04-05T03:48:39",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-3B-v7-Eng-20230404-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-3B-v7-Eng-20230404-ctx4096.pth"
-    },
-    {
       "name": "RWKV-4-Raven-7B-v10x-Eng49%-Chn50%-Other1%-20230423-ctx4096.pth",
       "desc": {
-        "en": "",
-        "zh": ""
+        "en": "Chinese 7B v10x",
+        "zh": "中文 7B v10x"
       },
       "size": 14785389874,
       "SHA256": "7aaf40bb3d440a949db3a146b0a5bbb3e925942b496775b51f5630a582fc236d",
@@ -113,70 +77,10 @@
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v10x-Eng49%25-Chn50%25-Other1%25-20230423-ctx4096.pth"
     },
     {
-      "name": "RWKV-4-Raven-7B-v8-Eng49%-Chn50%-Other1%-20230412-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 14785389618,
-      "SHA256": "791a2efd9bdad97dba7db38be67d8c5c53c33db1a23f6cee44345d16ce98f924",
-      "lastUpdated": "2023-04-12T16:02:37",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-7B-v8-Eng49%25-Chn50%25-Other1%25-20230412-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v8-Eng49%25-Chn50%25-Other1%25-20230412-ctx4096.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-3B-v8-Eng-20230408-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 5969345074,
-      "SHA256": "d5ab422185f759abfde4a4f50ea6f4fb0e3d7c6f43b144bb84dc4c54db195ced",
-      "lastUpdated": "2023-04-08T14:42:18",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-3B-v8-Eng-20230408-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-3B-v8-Eng-20230408-ctx4096.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-3B-v7-EngAndMore-20230404-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 5969345074,
-      "SHA256": "d7a3bbf302b451aa31b9d4d28d918b2d656c279b5c7483e1196af1b64b6ef367",
-      "lastUpdated": "2023-04-05T03:48:39",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-3B-v7-EngAndMore-20230404-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-3B-v7-EngAndMore-20230404-ctx4096.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-7B-v10-Eng89%-Jpn10%-Other1%-20230420-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 14785389874,
-      "SHA256": "465e88cd3b8c3f1ebebe3b900e4581b6f224812e5a6d25818836b1aa743d8144",
-      "lastUpdated": "2023-04-21T07:57:27",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-7B-v10-Eng89%25-Jpn10%25-Other1%25-20230420-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v10-Eng89%25-Jpn10%25-Other1%25-20230420-ctx4096.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-7B-v9-Eng99%-Other1%-20230412-ctx8192.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 14785389874,
-      "SHA256": "0fe3064cb460d6fe9b9a197db92e9fa598503de65b88e0671ab6f689a3aa34eb",
-      "lastUpdated": "2023-04-12T08:09:44",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-7B-v9-Eng99%25-Other1%25-20230412-ctx8192.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v9-Eng99%25-Other1%25-20230412-ctx8192.pth"
-    },
-    {
       "name": "RWKV-4-Raven-7B-v11-Eng49%-Chn49%-Jpn1%-Other1%-20230430-ctx8192.pth",
       "desc": {
-        "en": "",
-        "zh": ""
+        "en": "Chinese 7B v11",
+        "zh": "中文 7B v11"
       },
       "size": 14785389874,
       "SHA256": "9e67a74964abcb4463711e447ddf47735561d7b40592d2d02b29d2e796a4fd14",
@@ -185,202 +89,10 @@
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v11-Eng49%25-Chn49%25-Jpn1%25-Other1%25-20230430-ctx8192.pth"
     },
     {
-      "name": "RWKV-4-Raven-3B-v9-Eng99%-Other1%-20230411-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 5969345074,
-      "SHA256": "d23f72aaca7001fbf0e2c83b526e96fcc35b03e58b21aacaf071ed99de3208cc",
-      "lastUpdated": "2023-04-12T08:09:44",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-3B-v9-Eng99%25-Other1%25-20230411-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-3B-v9-Eng99%25-Other1%25-20230411-ctx4096.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-3B-v8-EngAndMore-20230408-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 5969345074,
-      "SHA256": "3408fd7ba129c0407eb2882c075466c1ebf8f193d3f3a047ca1fe5b9346c7957",
-      "lastUpdated": "2023-04-08T14:42:18",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-3B-v8-EngAndMore-20230408-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-3B-v8-EngAndMore-20230408-ctx4096.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-7B-v6-Eng-20230401-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 14785389618,
-      "SHA256": "51b280a66da4de176cb58e39ce45549c332a46864604fbef6cf2a7333214d30b",
-      "lastUpdated": "2023-04-01T19:46:58",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-7B-v6-Eng-20230401-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v6-Eng-20230401-ctx4096.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-7B-v8-EngAndMore-20230408-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 14785389618,
-      "SHA256": "1f7f66bd6a6b47823d461955855ca2b531f23c8406fcf0afff80559f58e3315a",
-      "lastUpdated": "2023-04-08T14:42:18",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-7B-v8-EngAndMore-20230408-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v8-EngAndMore-20230408-ctx4096.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-7B-v6-EngChnJpn-20230401-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 14785389618,
-      "SHA256": "6ef2011cfa2bdf54c9ead6ebc88a8aa8c5c2b3494e51f973f0a739e6fef2cea0",
-      "lastUpdated": "2023-04-01T20:48:09",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-7B-v6-EngChnJpn-20230401-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v6-EngChnJpn-20230401-ctx4096.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-3B-v9x-Eng49%-Chn50%-Other1%-20230417-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 5969345074,
-      "SHA256": "60ceaf0f2c477cc33422c1b8878d66868aa6abdcca7aacb35e9fe0b40662fe25",
-      "lastUpdated": "2023-04-17T14:55:48",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-3B-v9x-Eng49%25-Chn50%25-Other1%25-20230417-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-3B-v9x-Eng49%25-Chn50%25-Other1%25-20230417-ctx4096.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-3B-v7-ChnEng-20230404-ctx2048.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 5969345074,
-      "SHA256": "f91fc367c65baa1260c6eddbdcce720fca403f183ae135b53e357dd473bea394",
-      "lastUpdated": "2023-04-04T12:39:16",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-3B-v7-ChnEng-20230404-ctx2048.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-3B-v7-ChnEng-20230404-ctx2048.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-3B-v6-ChnEng-20230401-ctx2048.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 5969345074,
-      "SHA256": "e72b1861f24de1c763d3d4f95959c9e3ad4f8513dd57a8a6c4b1bc1ea930e359",
-      "lastUpdated": "2023-04-02T18:54:54",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-3B-v6-ChnEng-20230401-ctx2048.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-3B-v6-ChnEng-20230401-ctx2048.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-14B-v10-Eng99%-Other1%-20230427-ctx8192.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 28297309490,
-      "SHA256": "5d373d9e88dbcdf4272ba80e1f7b3ab7d7af21b813cb8474a44b1738cb926255",
-      "lastUpdated": "2023-04-27T14:26:04",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-14B-v10-Eng99%25-Other1%25-20230427-ctx8192.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-14B-v10-Eng99%25-Other1%25-20230427-ctx8192.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-7B-v10-Eng49%-Chn50%-Other1%-20230420-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 14785389874,
-      "SHA256": "41021c8e5617259084955326957714e6206399b6e8c325e3afcd47e674dc9454",
-      "lastUpdated": "2023-04-21T07:26:22",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-7B-v10-Eng49%25-Chn50%25-Other1%25-20230420-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v10-Eng49%25-Chn50%25-Other1%25-20230420-ctx4096.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-14B-v8-Eng87%-Chn10%-Jpn1%-Other2%-20230412-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 28297309490,
-      "SHA256": "3633b0771b4dd88994dbb17df6b45fa9a458191b32d2838720602904b4010102",
-      "lastUpdated": "2023-04-13T07:56:59",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-14B-v8-Eng87%25-Chn10%25-Jpn1%25-Other2%25-20230412-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-14B-v8-Eng87%25-Chn10%25-Jpn1%25-Other2%25-20230412-ctx4096.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-7B-v9-Eng49%-Chn50%-Other1%-20230414-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 14785389618,
-      "SHA256": "a655c846a3e6acace3f8ae1590223fa6d82fc1740aba0eecbd3636fbe4fd22a9",
-      "lastUpdated": "2023-04-14T18:34:47",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-7B-v9-Eng49%25-Chn50%25-Other1%25-20230414-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v9-Eng49%25-Chn50%25-Other1%25-20230414-ctx4096.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-7B-v8-Eng49%-Chn50%-Other1%-20230412-AltVersion-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 14785389618,
-      "SHA256": "259291f897f1ced9691d8c5dd3c7c91cbf40ce74eb5e6bad42a227c6bf272547",
-      "lastUpdated": "2023-04-12T21:30:35",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-7B-v8-Eng49%25-Chn50%25-Other1%25-20230412-AltVersion-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v8-Eng49%25-Chn50%25-Other1%25-20230412-AltVersion-ctx4096.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-7B-v7-ChnEng-20230404-ctx2048.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 14785389618,
-      "SHA256": "aa2aa20523ce25b704af103b5e52620d56e88665a3d2d8c2c40ae39432e21da0",
-      "lastUpdated": "2023-04-05T03:48:39",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-7B-v7-ChnEng-20230404-ctx2048.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v7-ChnEng-20230404-ctx2048.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-7B-v7-EngAndMore-20230404-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 14785389618,
-      "SHA256": "14179469f7349ca9e438340f4361bd1345cc105c5ac33b79115bb4ce55eb0810",
-      "lastUpdated": "2023-04-04T10:32:04",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-7B-v7-EngAndMore-20230404-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v7-EngAndMore-20230404-ctx4096.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-7B-v9x-Eng49%-Chn50%-Other1%-20230418-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 14785389618,
-      "SHA256": "7760f6a285bb398d7bcb7ba59fc1a55a0e4904fa5c4f2810b7fe12ca3ee16f7a",
-      "lastUpdated": "2023-04-18T08:51:59",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-7B-v9x-Eng49%25-Chn50%25-Other1%25-20230418-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v9x-Eng49%25-Chn50%25-Other1%25-20230418-ctx4096.pth"
-    },
-    {
       "name": "RWKV-4-Raven-7B-v11x-Eng99%-Other1%-20230429-ctx8192.pth",
       "desc": {
-        "en": "",
-        "zh": ""
+        "en": "English 7B v11x",
+        "zh": "英文 7B v11x"
       },
       "size": 14785389874,
       "SHA256": "f00d5c75b453f2b20ad875fb5a324564c34024eea25a015f5eb441e4f364c3fe",
@@ -389,22 +101,10 @@
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v11x-Eng99%25-Other1%25-20230429-ctx8192.pth"
     },
     {
-      "name": "RWKV-4-Raven-7B-v11-Eng99%-Other1%-20230427-ctx8192.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 14785389874,
-      "SHA256": "a25009ffe6e0f3f2d3f0d9cd8c720edf7cb5d06c0a2a7d21dec8702e94d7210d",
-      "lastUpdated": "2023-04-27T12:38:14",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-7B-v11-Eng99%25-Other1%25-20230427-ctx8192.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v11-Eng99%25-Other1%25-20230427-ctx8192.pth"
-    },
-    {
       "name": "RWKV-4-Raven-1B5-v11-Eng99%-Other1%-20230425-ctx4096.pth",
       "desc": {
-        "en": "",
-        "zh": ""
+        "en": "English 1.5B v11",
+        "zh": "英文 1.5B v11"
       },
       "size": 3030279730,
       "SHA256": "4ac715aecc5b1c90e8e37eebb8163392699066ec23b18144416e91cb4e78675a",
@@ -413,106 +113,10 @@
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-1B5-v11-Eng99%25-Other1%25-20230425-ctx4096.pth"
     },
     {
-      "name": "RWKV-4-Raven-3B-v10x-Eng49%-Chn50%-Other1%-20230423-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 5969345074,
-      "SHA256": "b3723a5aefa2ca15a7d21b792dd4078bb03da1c53d374603a252b1bfb3f73cae",
-      "lastUpdated": "2023-04-24T07:48:55",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-3B-v10x-Eng49%25-Chn50%25-Other1%25-20230423-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-3B-v10x-Eng49%25-Chn50%25-Other1%25-20230423-ctx4096.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-3B-v10-Eng49%-Chn50%-Other1%-20230419-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 5969345074,
-      "SHA256": "1a1e0e6e3b93581ffcb0898e8c280155959250a45589e09b908c473372a9491a",
-      "lastUpdated": "2023-04-21T07:26:22",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-3B-v10-Eng49%25-Chn50%25-Other1%25-20230419-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-3B-v10-Eng49%25-Chn50%25-Other1%25-20230419-ctx4096.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-1B5-v8-Eng-20230408-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 3030279730,
-      "SHA256": "46295c89fe5615c08dbc529825d15799a625dca50433d9f0175d25efe852a4ef",
-      "lastUpdated": "2023-04-08T20:02:35",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-1B5-v8-Eng-20230408-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-1B5-v8-Eng-20230408-ctx4096.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-1B5-v10-Eng99%-Other1%-20230418-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 3030279730,
-      "SHA256": "6b7934367317bc800d75d6e9942d3fdf543b4598d94ef0ba6c1de61f43402e91",
-      "lastUpdated": "2023-04-18T08:51:59",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-1B5-v10-Eng99%25-Other1%25-20230418-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-1B5-v10-Eng99%25-Other1%25-20230418-ctx4096.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-14B-v9-Eng99%-Other1%-20230412-ctx8192.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 28297309490,
-      "SHA256": "7f73e66f93eaba30f117d021da8bb586af6f1f9101ce26671a94106ccec772c2",
-      "lastUpdated": "2023-04-12T17:14:26",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-14B-v9-Eng99%25-Other1%25-20230412-ctx8192.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-14B-v9-Eng99%25-Other1%25-20230412-ctx8192.pth"
-    },
-    {
-      "name": "Q8_0-RWKV-4-Raven-7B-v11-Eng49%-Chn49%-Jpn1%-Other1%-20230430-ctx8192.bin",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 8681332157,
-      "SHA256": "ee4a6e7fbf9c2bd3558e4a92dbf16fd25d8599c7bef379ba91054981a8f665e0",
-      "lastUpdated": "2023-05-01T21:25:52",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/Q8_0-RWKV-4-Raven-7B-v11-Eng49%25-Chn49%25-Jpn1%25-Other1%25-20230430-ctx8192.bin",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/Q8_0-RWKV-4-Raven-7B-v11-Eng49%25-Chn49%25-Jpn1%25-Other1%25-20230430-ctx8192.bin"
-    },
-    {
-      "name": "RWKV-4-Raven-7B-v7-Eng-20230404-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 14785389618,
-      "SHA256": "e53ce267a7a357dd65b048a7813cb8e9e5af82ac3eef218837a33e406908e964",
-      "lastUpdated": "2023-04-04T06:13:52",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-7B-v7-Eng-20230404-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v7-Eng-20230404-ctx4096.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-7B-v9-Eng86%-Chn10%-JpnEspKor2%-Other2%-20230414-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 14785389618,
-      "SHA256": "c51bac3e6f959580663ca1f551cc2b2c5be4ff663410d2175b292b5d3ff81d20",
-      "lastUpdated": "2023-04-15T10:41:27",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-7B-v9-Eng86%25-Chn10%25-JpnEspKor2%25-Other2%25-20230414-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v9-Eng86%25-Chn10%25-JpnEspKor2%25-Other2%25-20230414-ctx4096.pth"
-    },
-    {
       "name": "RWKV-4-Raven-3B-v11-Eng49%-Chn49%-Jpn1%-Other1%-20230429-ctx4096.pth",
       "desc": {
-        "en": "",
-        "zh": ""
+        "en": "Chinese 3B v11",
+        "zh": "中文 3B v11"
       },
       "size": 5969345074,
       "SHA256": "af12300d9875e0e166c23d6e9b20928db435073060bf1d36f874060de92ada98",
@@ -521,148 +125,16 @@
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-3B-v11-Eng49%25-Chn49%25-Jpn1%25-Other1%25-20230429-ctx4096.pth"
     },
     {
-      "name": "RWKV-4-Raven-7B-v6-ChnEng-20230401-ctx2048.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 14785389618,
-      "SHA256": "f7c25e8819b72988d3861a462721b6e0f6e88a3913f00f738e04b1a3dcc42130",
-      "lastUpdated": "2023-04-02T06:14:02",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-7B-v6-ChnEng-20230401-ctx2048.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v6-ChnEng-20230401-ctx2048.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-14B-v6-Eng-20230401-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 28297309490,
-      "SHA256": "becb0bb987abee77b308aadd1045bd6368cd5b6923f4ccf46eee6b9dc58e76da",
-      "lastUpdated": "2023-04-01T22:25:41",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-14B-v6-Eng-20230401-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-14B-v6-Eng-20230401-ctx4096.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-14B-v8-EngAndMore-20230408-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 28297309490,
-      "SHA256": "1d94a0c38f9081a28b5863c9f218f4fe5924ed7f6781ee1e84c290b36653e9ee",
-      "lastUpdated": "2023-04-08T17:04:02",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-14B-v8-EngAndMore-20230408-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-14B-v8-EngAndMore-20230408-ctx4096.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-1B5-v9-Eng99%-Other1%-20230411-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 3030279730,
-      "SHA256": "29b20ed6bc64b4cfe3a64c8136c88b5d106881e5d8562bdfeee570a873d5cf59",
-      "lastUpdated": "2023-04-12T08:09:44",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-1B5-v9-Eng99%25-Other1%25-20230411-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-1B5-v9-Eng99%25-Other1%25-20230411-ctx4096.pth"
-    },
-    {
       "name": "RWKV-4-Raven-14B-v11x-Eng99%-Other1%-20230501-ctx8192.pth",
       "desc": {
-        "en": "",
-        "zh": ""
+        "en": "English 14B v11x",
+        "zh": "英文 14B v11x"
       },
       "size": 28297309490,
       "SHA256": "c4bc72406c3c62613e8e2592e8d07ac045f8a88381c728f8eb60af890e299f4d",
       "lastUpdated": "2023-05-02T09:43:33",
       "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-14B-v11x-Eng99%25-Other1%25-20230501-ctx8192.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-14B-v11x-Eng99%25-Other1%25-20230501-ctx8192.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-14B-v7-Eng-20230404-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 28297309490,
-      "SHA256": "b62124d50423cf1381df942aa30b2124c7e7e6b7529312b0eba02ba066d321bd",
-      "lastUpdated": "2023-04-04T10:49:45",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-14B-v7-Eng-20230404-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-14B-v7-Eng-20230404-ctx4096.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-14B-v8-Eng-20230408-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 28297309490,
-      "SHA256": "c2edd57b31435ff624bd1639b1e10ce7b4c74df7c22ffffde315ea62aa8b4ca2",
-      "lastUpdated": "2023-04-08T15:55:56",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-14B-v8-Eng-20230408-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-14B-v8-Eng-20230408-ctx4096.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-14B-v6-EngChnJpn-20230401-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 28297309490,
-      "SHA256": "02e9113f9e0e6c3ca4498135632e2b5fd4bc414367a90268b1e65598a0161c9b",
-      "lastUpdated": "2023-04-02T06:38:45",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-14B-v6-EngChnJpn-20230401-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-14B-v6-EngChnJpn-20230401-ctx4096.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-14B-v7-EngAndMore-20230404-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 28297309490,
-      "SHA256": "61d7087a1011be31025b8e0eed25bed854e3dda0a6d777e762fe0166ed656edf",
-      "lastUpdated": "2023-04-04T20:11:02",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-14B-v7-EngAndMore-20230404-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-14B-v7-EngAndMore-20230404-ctx4096.pth"
-    },
-    {
-      "name": "RWKV-4-Raven-7B-v8-Eng-20230408-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 14785389618,
-      "SHA256": "f4377be0702e8d46a4b48faa88bc06540483c4a3fecedd4b41f9a3993d69e515",
-      "lastUpdated": "2023-04-08T14:42:18",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-7B-v8-Eng-20230408-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v8-Eng-20230408-ctx4096.pth"
-    },
-    {
-      "name": "Q8_0-RWKV-4-Raven-7B-v11x-Eng99%-Other1%-20230429-ctx8192.bin",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 8681332157,
-      "SHA256": "75d252da63405e9897bff2957f9b6b1c94d496a50e4772d5fc1ec22fb048f9b5",
-      "lastUpdated": "2023-05-01T21:18:02",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/Q8_0-RWKV-4-Raven-7B-v11x-Eng99%25-Other1%25-20230429-ctx8192.bin",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/Q8_0-RWKV-4-Raven-7B-v11x-Eng99%25-Other1%25-20230429-ctx8192.bin"
-    },
-    {
-      "name": "RWKV-4-Raven-3B-v10-Eng99%-Other1%-20230418-ctx4096.pth",
-      "desc": {
-        "en": "",
-        "zh": ""
-      },
-      "size": 5969345074,
-      "SHA256": "042fa6ca7619df661c1df6271140a60d06315ee291216275c0056191c4ecf137",
-      "lastUpdated": "2023-04-18T08:51:59",
-      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-3B-v10-Eng99%25-Other1%25-20230418-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-3B-v10-Eng99%25-Other1%25-20230418-ctx4096.pth"
     }
   ]
 }

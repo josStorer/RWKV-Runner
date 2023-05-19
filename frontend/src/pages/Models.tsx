@@ -50,9 +50,9 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
 
       if (a.desc && b.desc) {
         if (lang in a.desc && lang in b.desc)
-          return a.desc[lang].localeCompare(b.desc[lang]);
+          return b.desc[lang].localeCompare(a.desc[lang]);
         else if ('en' in a.desc && 'en' in b.desc)
-          return a.desc['en'].localeCompare(b.desc['en']);
+          return b.desc['en'].localeCompare(a.desc['en']);
       }
       return 0;
     },
