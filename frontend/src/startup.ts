@@ -5,12 +5,25 @@ import {getStatus} from './apis';
 
 export async function startup() {
   downloadProgramFiles();
+
+  initRemoteText();
   initCache();
   await initConfig();
+
   getStatus(500).then(status => {
     if (status)
       commonStore.setModelStatus(status);
   });
+}
+
+async function initRemoteText() {
+  await fetch('https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/manifest.json', {cache: 'no-cache'})
+    .then(r => r.json()).then((data) => {
+      if (data.introduction)
+        commonStore.setIntroduction(data.introduction);
+      if (data.about)
+        commonStore.setAbout(data.about);
+    });
 }
 
 async function initConfig() {

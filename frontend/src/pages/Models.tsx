@@ -46,10 +46,15 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
   createTableColumn<ModelSourceItem>({
     columnId: 'desc',
     compare: (a, b) => {
-      if (a.desc && b.desc)
-        return a.desc['en'].localeCompare(b.desc['en']);
-      else
-        return 0;
+      const lang: string = commonStore.settings.language;
+
+      if (a.desc && b.desc) {
+        if (lang in a.desc && lang in b.desc)
+          return a.desc[lang].localeCompare(b.desc[lang]);
+        else if ('en' in a.desc && 'en' in b.desc)
+          return a.desc['en'].localeCompare(b.desc['en']);
+      }
+      return 0;
     },
     renderHeaderCell: () => {
       const {t} = useTranslation();

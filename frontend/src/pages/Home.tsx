@@ -14,6 +14,8 @@ import manifest from '../../../manifest.json';
 import {BrowserOpenURL} from '../../wailsjs/runtime';
 import {useTranslation} from 'react-i18next';
 import {ConfigSelector} from '../components/ConfigSelector';
+import MarkdownRender from '../components/MarkdownRender';
+import commonStore from '../stores/commonStore';
 
 type NavCard = {
   label: string;
@@ -52,6 +54,7 @@ const navCards: NavCard[] = [
 export const Home: FC = observer(() => {
   const {t} = useTranslation();
   const navigate = useNavigate();
+  const lang: string = commonStore.settings.language;
 
   const onClickNavCard = (path: string) => {
     navigate({pathname: path});
@@ -62,9 +65,10 @@ export const Home: FC = observer(() => {
       <img className="rounded-xl select-none hidden sm:block" src={banner}/>
       <div className="flex flex-col gap-2">
         <Text size={600} weight="medium">{t('Introduction')}</Text>
-        <div className="h-40 overflow-y-auto p-1">
-          {t('RWKV is an RNN with Transformer-level LLM performance, which can also be directly trained like a GPT transformer (parallelizable). And it\'s 100% attention-free. You only need the hidden state at position t to compute the state at position t+1. You can use the "GPT" mode to quickly compute the hidden state for the "RNN" mode. <br/> So it\'s combining the best of RNN and transformer - great performance, fast inference, saves VRAM, fast training, "infinite" ctx_len, and free sentence embedding (using the final hidden state).')}
-          {/*TODO Markdown*/}
+        <div className="h-40 overflow-y-auto overflow-x-hidden p-1">
+          <MarkdownRender>
+            {lang in commonStore.introduction ? commonStore.introduction[lang] : commonStore.introduction['en']}
+          </MarkdownRender>
         </div>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">

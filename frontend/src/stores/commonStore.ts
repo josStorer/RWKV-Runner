@@ -1,6 +1,7 @@
 import {makeAutoObservable} from 'mobx';
 import {getUserLanguage, isSystemLightMode, saveConfigs, Settings} from '../utils';
 import {WindowSetDarkTheme, WindowSetLightTheme} from '../../wailsjs/runtime';
+import manifest from '../../../manifest.json';
 
 export enum ModelStatus {
   Offline,
@@ -88,6 +89,8 @@ class CommonStore {
     darkMode: !isSystemLightMode(),
     autoUpdatesCheck: true
   };
+  introduction: { [lang: string]: string } = manifest.introduction;
+  about: { [lang: string]: string } = manifest.about;
 
   getCurrentModelConfig = () => {
     return this.modelConfigs[this.currentModelConfigIndex];
@@ -156,6 +159,14 @@ class CommonStore {
 
     if (saveConfig)
       saveConfigs();
+  };
+
+  setIntroduction = (value: { [lang: string]: string }) => {
+    this.introduction = value;
+  };
+
+  setAbout = (value: { [lang: string]: string }) => {
+    this.about = value;
   };
 }
 

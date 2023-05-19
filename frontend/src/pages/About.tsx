@@ -1,13 +1,21 @@
 import React, {FC} from 'react';
-import {Text} from '@fluentui/react-components';
 import {useTranslation} from 'react-i18next';
+import {Page} from '../components/Page';
+import MarkdownRender from '../components/MarkdownRender';
+import {observer} from 'mobx-react-lite';
+import commonStore from '../stores/commonStore';
 
-export const About: FC = () => {
+export const About: FC = observer(() => {
   const {t} = useTranslation();
+  const lang: string = commonStore.settings.language;
 
   return (
-    <div className="flex flex-col box-border gap-5 p-2">
-      <Text size={600}>{t('In Development')}</Text>
-    </div>
+    <Page title={t('About')} content={
+      <div className="overflow-y-auto overflow-x-hidden p-1">
+        <MarkdownRender>
+          {lang in commonStore.about ? commonStore.about[lang] : commonStore.about['en']}
+        </MarkdownRender>
+      </div>
+    }/>
   );
-};
+});
