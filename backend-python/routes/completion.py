@@ -56,7 +56,7 @@ async def completions(body: CompletionBody, request: Request):
                 set_rwkv_config(model, body)
                 if body.stream:
                     for response, delta in rwkv_generate(
-                        model, completion_text, stop="Bob:"
+                        model, completion_text, stop="\n\nBob"
                     ):
                         if await request.is_disconnected():
                             break
@@ -90,7 +90,7 @@ async def completions(body: CompletionBody, request: Request):
                 else:
                     response = None
                     for response, delta in rwkv_generate(
-                        model, completion_text, stop="Bob:"
+                        model, completion_text, stop="\n\nBob"
                     ):
                         pass
                     yield {

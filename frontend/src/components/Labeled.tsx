@@ -1,5 +1,6 @@
 import {FC, ReactElement} from 'react';
 import {Label, Tooltip} from '@fluentui/react-components';
+import classnames from 'classnames';
 
 export const Labeled: FC<{
   label: string; desc?: string, content: ReactElement, flex?: boolean, spaceBetween?: boolean
@@ -11,10 +12,10 @@ export const Labeled: FC<{
         spaceBetween
       }) => {
   return (
-    <div className={
-      (flex ? 'flex' : 'grid grid-cols-2') + ' ' +
-      (spaceBetween ? 'justify-between' : '') + ' ' +
-      'items-center'
+    <div className={classnames(
+      'items-center',
+      flex ? 'flex' : 'grid grid-cols-2',
+      spaceBetween && 'justify-between')
     }>
       {desc ?
         <Tooltip content={desc} showDelay={0} hideDelay={0} relationship="description">

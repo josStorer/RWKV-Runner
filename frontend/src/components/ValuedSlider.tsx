@@ -1,5 +1,4 @@
-import React, * as React_2 from 'react';
-import {FC, useEffect, useRef} from 'react';
+import React, {FC, useEffect, useRef} from 'react';
 import {Slider, Text} from '@fluentui/react-components';
 import {SliderOnChangeData} from '@fluentui/react-slider';
 import {NumberInput} from './NumberInput';
@@ -10,7 +9,7 @@ export const ValuedSlider: FC<{
   max: number,
   step?: number,
   input?: boolean
-  onChange?: (ev: React_2.ChangeEvent<HTMLInputElement>, data: SliderOnChangeData) => void
+  onChange?: (ev: React.ChangeEvent<HTMLInputElement>, data: SliderOnChangeData) => void
 }> = ({value, min, max, step, input, onChange}) => {
   const sliderRef = useRef<HTMLInputElement>(null);
   useEffect(() => {

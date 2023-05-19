@@ -1,5 +1,4 @@
-import React, * as React_2 from 'react';
-import {CSSProperties, FC} from 'react';
+import React, {CSSProperties, FC} from 'react';
 import {Input} from '@fluentui/react-components';
 import {SliderOnChangeData} from '@fluentui/react-slider';
 
@@ -8,7 +7,7 @@ export const NumberInput: FC<{
   min: number,
   max: number,
   step?: number,
-  onChange?: (ev: React_2.ChangeEvent<HTMLInputElement>, data: SliderOnChangeData) => void
+  onChange?: (ev: React.ChangeEvent<HTMLInputElement>, data: SliderOnChangeData) => void
   style?: CSSProperties
 }> = ({value, min, max, step, onChange, style}) => {
   return (

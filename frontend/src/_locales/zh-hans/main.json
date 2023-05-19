@@ -63,5 +63,8 @@
   "Convert Success": "转换成功",
   "Convert Failed": "转换失败",
   "Model Not Found": "模型不存在",
-  "Model Status": "模型状态"
+  "Model Status": "模型状态",
+  "Clear": "清除",
+  "Send": "发送",
+  "Type your message here": "在此输入消息"
 }
