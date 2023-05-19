@@ -47,8 +47,19 @@ type Conversations = {
 const ChatPanel: FC = observer(() => {
   const {t} = useTranslation();
   const [message, setMessage] = useState('');
-  const [conversations, setConversations] = useState<Conversations>({});
-  const [conversationsOrder, setConversationsOrder] = useState<string[]>([]);
+  const [conversations, setConversations] = useState<Conversations>({
+    'welcome': {
+      sender: botName,
+      type: MessageType.Normal,
+      color: 'colorful',
+      avatarImg: logo,
+      time: new Date().toISOString(),
+      content: t('Hello! I\'m RWKV, an open-source and commercially available large language model.'),
+      side: 'left',
+      done: true
+    }
+  });
+  const [conversationsOrder, setConversationsOrder] = useState<string[]>(['welcome']);
   const bodyRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const port = commonStore.getCurrentModelConfig().apiParameters.apiPort;
@@ -284,6 +295,7 @@ const badgeStatus: { [modelStatus: number]: PresenceBadgeStatus } = {
 
 export const Chat: FC = observer(() => {
   const {t} = useTranslation();
+  const port = commonStore.getCurrentModelConfig().apiParameters.apiPort;
 
   return (
     <div className="flex flex-col gap-1 p-2 h-full overflow-hidden">
@@ -297,6 +309,9 @@ export const Chat: FC = observer(() => {
           <RunButton iconMode/>
         </div>
       </div>
+      <Text size={100}>
+        {t('This tool’s API is compatible with OpenAI API. It can be used with any ChatGPT tool you like. Go to the settings of some ChatGPT tool, replace the \'https://api.openai.com\' part in the API address with \'') + `http://127.0.0.1:${port}` + '\'.'}
+      </Text>
       <Divider style={{flexGrow: 0}}/>
       <ChatPanel/>
     </div>
