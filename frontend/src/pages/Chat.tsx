@@ -12,6 +12,8 @@ import {fetchEventSource} from '@microsoft/fetch-event-source';
 import {ConversationPair, getConversationPairs, Record} from '../utils/get-conversation-pairs';
 import logo from '../../../build/appicon.png';
 import MarkdownRender from '../components/MarkdownRender';
+import {ToolTipButton} from '../components/ToolTipButton';
+import {ArrowCircleUp28Regular, Delete28Regular, RecordStop28Regular} from '@fluentui/react-icons';
 
 const userName = 'M E';
 const botName = 'A I';
@@ -48,6 +50,16 @@ const ChatPanel: FC = observer(() => {
   const bodyRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const port = commonStore.getCurrentModelConfig().apiParameters.apiPort;
+  const sseControllerRef = useRef<AbortController | null>(null);
+
+  let lastMessageId: string;
+  let generating: boolean = false;
+  if (conversationsOrder.length > 0) {
+    lastMessageId = conversationsOrder[conversationsOrder.length - 1];
+    const lastMessage = conversations[lastMessageId];
+    if (lastMessage.sender === botName)
+      generating = !lastMessage.done;
+  }
 
   useEffect(() => {
     if (inputRef.current)
@@ -59,103 +71,111 @@ const ChatPanel: FC = observer(() => {
       bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
   };
 
-  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (message !== '') {
+  const handleKeyDownOrClick = (e: any) => {
+    e.stopPropagation();
+    if (e.type === 'click' || (e.keyCode === 13 && !e.shiftKey)) {
+      e.preventDefault();
+      if (!message) return;
+      onSubmit(message);
       setMessage('');
-      const newId = uuid();
-      conversations[newId] = {
-        sender: userName,
-        type: MessageType.Normal,
-        color: 'brand',
-        time: new Date().toISOString(),
-        content: message,
-        side: 'right',
-        done: true
-      };
-      setConversations(conversations);
-      conversationsOrder.push(newId);
-      setConversationsOrder(conversationsOrder);
+    }
+  };
 
-      const records: Record[] = [];
-      conversationsOrder.forEach((uuid, index) => {
-        const conversation = conversations[uuid];
-        if (conversation.done && conversation.type === MessageType.Normal && conversation.sender === botName) {
-          if (index > 0) {
-            const questionId = conversationsOrder[index - 1];
-            const question = conversations[questionId];
-            if (question.done && question.type === MessageType.Normal && question.sender === userName) {
-              records.push({question: question.content, answer: conversation.content});
-            }
+  const onSubmit = (message: string) => {
+    const newId = uuid();
+    conversations[newId] = {
+      sender: userName,
+      type: MessageType.Normal,
+      color: 'brand',
+      time: new Date().toISOString(),
+      content: message,
+      side: 'right',
+      done: true
+    };
+    setConversations(conversations);
+    conversationsOrder.push(newId);
+    setConversationsOrder(conversationsOrder);
+
+    const records: Record[] = [];
+    conversationsOrder.forEach((uuid, index) => {
+      const conversation = conversations[uuid];
+      if (conversation.done && conversation.type === MessageType.Normal && conversation.sender === botName) {
+        if (index > 0) {
+          const questionId = conversationsOrder[index - 1];
+          const question = conversations[questionId];
+          if (question.done && question.type === MessageType.Normal && question.sender === userName) {
+            records.push({question: question.content, answer: conversation.content});
           }
         }
-      });
-      const messages = getConversationPairs(records, false);
-      (messages as ConversationPair[]).push({role: 'user', content: message});
+      }
+    });
+    const messages = getConversationPairs(records, false);
+    (messages as ConversationPair[]).push({role: 'user', content: message});
 
-      const answerId = uuid();
-      conversations[answerId] = {
-        sender: botName,
-        type: MessageType.Normal,
-        color: 'colorful',
-        avatarImg: logo,
-        time: new Date().toISOString(),
-        content: '',
-        side: 'left',
-        done: false
-      };
-      setConversations(conversations);
-      conversationsOrder.push(answerId);
-      setConversationsOrder(conversationsOrder);
-      setTimeout(scrollToBottom);
-      let answer = '';
-      fetchEventSource(`http://127.0.0.1:${port}/chat/completions`, // https://api.openai.com/v1/chat/completions || http://127.0.0.1:${port}/chat/completions
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer sk-`
-          },
-          body: JSON.stringify({
-            messages,
-            stream: true,
-            model: 'gpt-3.5-turbo'
-          }),
-          onmessage(e) {
-            console.log('sse message', e);
-            scrollToBottom();
-            if (e.data === '[DONE]') {
-              conversations[answerId].done = true;
-              setConversations(conversations);
-              setConversationsOrder([...conversationsOrder]);
-              return;
-            }
-            let data;
-            try {
-              data = JSON.parse(e.data);
-            } catch (error) {
-              console.debug('json error', error);
-              return;
-            }
-            if (data.choices && Array.isArray(data.choices) && data.choices.length > 0) {
-              answer += data.choices[0]?.delta?.content || '';
-              conversations[answerId].content = answer;
-              setConversations(conversations);
-              setConversationsOrder([...conversationsOrder]);
-            }
-          },
-          onclose() {
-            console.log('Connection closed');
-          },
-          onerror(err) {
-            conversations[answerId].type = MessageType.Error;
+    const answerId = uuid();
+    conversations[answerId] = {
+      sender: botName,
+      type: MessageType.Normal,
+      color: 'colorful',
+      avatarImg: logo,
+      time: new Date().toISOString(),
+      content: '',
+      side: 'left',
+      done: false
+    };
+    setConversations(conversations);
+    conversationsOrder.push(answerId);
+    setConversationsOrder(conversationsOrder);
+    setTimeout(scrollToBottom);
+    let answer = '';
+    sseControllerRef.current = new AbortController();
+    fetchEventSource(`http://127.0.0.1:${port}/chat/completions`, // https://api.openai.com/v1/chat/completions || http://127.0.0.1:${port}/chat/completions
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer sk-`
+        },
+        body: JSON.stringify({
+          messages,
+          stream: true,
+          model: 'gpt-3.5-turbo'
+        }),
+        signal: sseControllerRef.current?.signal,
+        onmessage(e) {
+          console.log('sse message', e);
+          scrollToBottom();
+          if (e.data === '[DONE]') {
             conversations[answerId].done = true;
             setConversations(conversations);
             setConversationsOrder([...conversationsOrder]);
-            throw err;
+            return;
           }
-        });
-    }
+          let data;
+          try {
+            data = JSON.parse(e.data);
+          } catch (error) {
+            console.debug('json error', error);
+            return;
+          }
+          if (data.choices && Array.isArray(data.choices) && data.choices.length > 0) {
+            answer += data.choices[0]?.delta?.content || '';
+            conversations[answerId].content = answer;
+            setConversations(conversations);
+            setConversationsOrder([...conversationsOrder]);
+          }
+        },
+        onclose() {
+          console.log('Connection closed');
+        },
+        onerror(err) {
+          conversations[answerId].type = MessageType.Error;
+          conversations[answerId].done = true;
+          setConversations(conversations);
+          setConversationsOrder([...conversationsOrder]);
+          throw err;
+        }
+      });
   };
 
   return (
@@ -192,26 +212,40 @@ const ChatPanel: FC = observer(() => {
           </div>;
         })}
       </div>
-      <div className="flex items-end">
-        <button className="bg-blue-500 text-white rounded-lg py-2 px-4 mr-2" onClick={() => {
-          setConversations({});
-          setConversationsOrder([]);
-        }}>
-          {t('Clear')}
-        </button>
-        <form onSubmit={handleSubmit} className="flex items-end grow gap-2">
-          <Textarea
-            ref={inputRef}
-            className="grow"
-            resize="vertical"
-            placeholder={t('Type your message here')!}
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-          <button type="submit" className="bg-blue-500 text-white rounded-lg py-2 px-4">
-            {t('Send')}
-          </button>
-        </form>
+      <div className="flex items-end gap-2">
+        <ToolTipButton desc={t('Clear')}
+                       icon={<Delete28Regular/>}
+                       size="large" shape="circular" appearance="subtle"
+                       onClick={(e) => {
+                         setConversations({});
+                         setConversationsOrder([]);
+                       }}
+        />
+        <Textarea
+          ref={inputRef}
+          className="grow"
+          resize="vertical"
+          placeholder={t('Type your message here')!}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={handleKeyDownOrClick}
+        />
+        <ToolTipButton desc={generating ? t('Stop') : t('Send')}
+                       icon={generating ? <RecordStop28Regular/> : <ArrowCircleUp28Regular/>}
+                       size="large" shape="circular" appearance="subtle"
+                       onClick={(e) => {
+                         if (generating) {
+                           sseControllerRef.current?.abort();
+                           if (lastMessageId) {
+                             conversations[lastMessageId].type = MessageType.Error;
+                             conversations[lastMessageId].done = true;
+                             setConversations(conversations);
+                             setConversationsOrder([...conversationsOrder]);
+                           }
+                         } else {
+                           handleKeyDownOrClick(e);
+                         }
+                       }}/>
       </div>
     </div>
   );

@@ -6,6 +6,8 @@ export const ToolTipButton: FC<{
   desc: string,
   icon?: ReactElement,
   size?: 'small' | 'medium' | 'large',
+  shape?: 'rounded' | 'circular' | 'square';
+  appearance?: 'secondary' | 'primary' | 'outline' | 'subtle' | 'transparent';
   disabled?: boolean,
   onClick?: MouseEventHandler
 }> = ({
@@ -13,12 +15,15 @@ export const ToolTipButton: FC<{
         desc,
         icon,
         size,
+        shape,
+        appearance,
         disabled,
         onClick
       }) => {
   return (
     <Tooltip content={desc} showDelay={0} hideDelay={0} relationship="label">
-      <Button disabled={disabled} icon={icon} onClick={onClick} size={size}>{text}</Button>
+      <Button disabled={disabled} icon={icon} onClick={onClick} size={size} shape={shape}
+              appearance={appearance}>{text}</Button>
     </Tooltip>
   );
 };
