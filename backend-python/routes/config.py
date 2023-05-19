@@ -59,3 +59,8 @@ def update_config(body: ModelConfigBody):
     global_var.set(global_var.Model_Config, body)
 
     return "success"
+
+
+@router.get("/status")
+def status():
+    return {"status": global_var.get(global_var.Model_Status)}

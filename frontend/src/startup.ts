@@ -1,11 +1,16 @@
 import commonStore, {defaultModelConfigs} from './stores/commonStore';
 import {ReadJson} from '../wailsjs/go/backend_golang/App';
 import {downloadProgramFiles, LocalConfig, refreshModels} from './utils';
+import {getStatus} from './apis';
 
 export async function startup() {
   downloadProgramFiles();
   initCache();
   await initConfig();
+  getStatus(500).then(status => {
+    if (status)
+      commonStore.setModelStatus(status);
+  });
 }
 
 async function initConfig() {

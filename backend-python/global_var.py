@@ -6,9 +6,9 @@ Model_Config = "model_config"
 
 
 class ModelStatus(Enum):
-    Offline = auto()
-    Loading = auto()
-    Working = auto()
+    Offline = 0
+    Loading = 2
+    Working = 3
 
 
 def init():
