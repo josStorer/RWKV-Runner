@@ -4,9 +4,8 @@ import {Dropdown, Option, Switch} from '@fluentui/react-components';
 import {Labeled} from '../components/Labeled';
 import commonStore from '../stores/commonStore';
 import {observer} from 'mobx-react-lite';
-import {UpdateApp} from '../../wailsjs/go/backend_golang/App';
 import {useTranslation} from 'react-i18next';
-import {Language, Languages} from '../utils';
+import {checkUpdate, Language, Languages} from '../utils';
 
 export const Settings: FC = observer(() => {
   const {t, i18n} = useTranslation();
@@ -48,7 +47,7 @@ export const Settings: FC = observer(() => {
                       autoUpdatesCheck: data.checked
                     });
                     if (data.checked)
-                      UpdateApp('http://localhost:34115/dist/RWKV-Runner.exe'); //TODO
+                      checkUpdate();
                   }}/>
         }/>
       </div>

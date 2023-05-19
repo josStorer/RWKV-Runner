@@ -1,6 +1,6 @@
 import commonStore, {defaultModelConfigs} from './stores/commonStore';
 import {ReadJson} from '../wailsjs/go/backend_golang/App';
-import {downloadProgramFiles, LocalConfig, refreshModels} from './utils';
+import {checkUpdate, downloadProgramFiles, LocalConfig, refreshModels} from './utils';
 import {getStatus} from './apis';
 
 export async function startup() {
@@ -9,6 +9,9 @@ export async function startup() {
   initRemoteText();
   initCache();
   await initConfig();
+
+  if (commonStore.settings.autoUpdatesCheck)
+    checkUpdate();
 
   getStatus(500).then(status => {
     if (status)

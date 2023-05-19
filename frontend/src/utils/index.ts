@@ -1,6 +1,8 @@
 import {DownloadFile, FileExists, ListDirFiles, ReadJson, SaveJson} from '../../wailsjs/go/backend_golang/App';
 import manifest from '../../../manifest.json';
 import commonStore, {ModelConfig, ModelParameters, ModelSourceItem} from '../stores/commonStore';
+import {toast} from 'react-toastify';
+import {t} from 'i18next';
 
 export const Languages = {
   dev: 'English', // i18n default
@@ -175,4 +177,27 @@ export function forceDownloadProgramFiles() {
   manifest.programFiles.forEach(({url, path}) => {
     DownloadFile(path, url);
   });
+}
+
+export async function checkUpdate() {
+  let updateUrl = '';
+  await fetch('https://api.github.com/repos/josstorer/RWKV-Runner/releases/latest').then((r) => {
+      if (r.ok) {
+        r.json().then((data) => {
+          if (data.tag_name) {
+            const versionTag = data.tag_name;
+            if (versionTag.replace('v', '') > manifest.version)
+              updateUrl = `https://github.com/josStorer/RWKV-Runner/releases/download/${versionTag}/RWKV-Runner_windows_x64.exe`;
+          } else {
+            throw new Error('Invalid response.');
+          }
+        });
+      } else {
+        throw new Error('Network response was not ok.');
+      }
+    }
+  ).catch((e) => {
+    toast(t('Updates Check Error') + ' - ' + e.message, {type: 'error', position: 'bottom-left'});
+  });
+  return updateUrl;
 }
