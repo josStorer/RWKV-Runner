@@ -13,7 +13,8 @@ export const Downloads: FC = observer(() => {
   const {t} = useTranslation();
   const finishedDownloads = commonStore.downloadList.filter((status) => status.done).length;
   useEffect(() => {
-    refreshLocalModels({models: commonStore.modelSourceList}, false);
+    if (finishedDownloads > 0)
+      refreshLocalModels({models: commonStore.modelSourceList}, false);
     console.log('finishedDownloads:', finishedDownloads);
   }, [finishedDownloads]);
 
