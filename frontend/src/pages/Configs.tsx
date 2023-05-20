@@ -203,7 +203,7 @@ export const Configs: FC = observer(() => {
                     toast(t('Start Converting'), {autoClose: 1000, type: 'info'});
                     ConvertModel(modelPath, strategy, newModelPath).then(() => {
                       toast(`${t('Convert Success')} - ${newModelPath}`, {type: 'success'});
-                      refreshLocalModels({models: commonStore.modelSourceList});
+                      refreshLocalModels({models: commonStore.modelSourceList}, false);
                     }).catch(e => {
                       toast(`${t('Convert Failed')} - ${e}`, {type: 'error'});
                     });

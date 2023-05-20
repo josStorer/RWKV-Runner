@@ -55,5 +55,5 @@ async function initConfig() {
 }
 
 async function initCache() {
-  await refreshModels(true);
+  await refreshModels(false);
 }

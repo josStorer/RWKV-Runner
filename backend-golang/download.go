@@ -102,6 +102,8 @@ func (a *App) AddToDownloadList(path string, url string) {
 			Downloading: true,
 			Done:        false,
 		})
+	} else {
+		a.ContinueDownload(url)
 	}
 }
 

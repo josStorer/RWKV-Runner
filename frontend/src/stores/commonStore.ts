@@ -19,7 +19,6 @@ export type ModelSourceItem = {
   url?: string;
   downloadUrl?: string;
   isLocal?: boolean;
-  isDownloading?: boolean;
   lastUpdatedMs?: number;
 };
 

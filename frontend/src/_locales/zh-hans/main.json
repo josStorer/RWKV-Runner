@@ -87,5 +87,6 @@
   "Whether to use CPU to calculate the last output layer of the neural network with FP32 precision to obtain better quality.": "是否使用cpu以fp32精度计算神经网络的最后一层输出层, 以获得更好的质量",
   "Downloads": "下载",
   "Pause": "暂停",
-  "Continue": "继续"
+  "Continue": "继续",
+  "Check": "查看"
 }

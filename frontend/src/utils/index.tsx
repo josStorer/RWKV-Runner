@@ -56,8 +56,9 @@ export async function refreshBuiltInModels(readCache: boolean = false) {
   return cache;
 }
 
-export async function refreshLocalModels(cache: Cache) {
-  cache.models = cache.models.filter(m => !m.isLocal);
+export async function refreshLocalModels(cache: Cache, filter: boolean = true) {
+  if (filter)
+    cache.models = cache.models.filter(m => !m.isLocal); //TODO BUG cause local but in manifest files to be removed, so currently cache is disabled
 
   await ListDirFiles(manifest.localModelDir).then((data) => {
     cache.models.push(...data.flatMap(d => {

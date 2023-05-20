@@ -19,10 +19,10 @@ import commonStore, {ModelSourceItem} from '../stores/commonStore';
 import {BrowserOpenURL} from '../../wailsjs/runtime';
 import {AddToDownloadList, OpenFileFolder} from '../../wailsjs/go/backend_golang/App';
 import manifest from '../../../manifest.json';
-import {toast} from 'react-toastify';
 import {Page} from '../components/Page';
-import {bytesToGb, refreshModels, saveConfigs} from '../utils';
+import {bytesToGb, refreshModels, saveConfigs, toastWithButton} from '../utils';
 import {useTranslation} from 'react-i18next';
+import {useNavigate} from 'react-router';
 
 const columns: TableColumnDefinition<ModelSourceItem>[] = [
   createTableColumn<ModelSourceItem>({
@@ -113,7 +113,7 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
   createTableColumn<ModelSourceItem>({
     columnId: 'actions',
     compare: (a, b) => {
-      return a.isDownloading ? 0 : a.isLocal ? -1 : 1;
+      return a.isLocal ? -1 : 1;
     },
     renderHeaderCell: () => {
       const {t} = useTranslation();
@@ -122,6 +122,7 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
     },
     renderCell: (item) => {
       const {t} = useTranslation();
+      const navigate = useNavigate();
 
       return (
         <TableCellLayout>
@@ -134,7 +135,10 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
             }
             {item.downloadUrl && !item.isLocal &&
               <ToolTipButton desc={t('Download')} icon={<ArrowDownload20Regular/>} onClick={() => {
-                toast(`${t('Downloading')} ${item.name}`, {type: 'info'});
+                toastWithButton(`${t('Downloading')} ${item.name}`, t('Check'), () => {
+                    navigate({pathname: '/downloads'});
+                  },
+                  {autoClose: 3000, position: 'top-center'});
                 AddToDownloadList(`./${manifest.localModelDir}/${item.name}`, item.downloadUrl!);
               }}/>}
             {item.url && <ToolTipButton desc={t('Open Url')} icon={<Open20Regular/>} onClick={() => {
