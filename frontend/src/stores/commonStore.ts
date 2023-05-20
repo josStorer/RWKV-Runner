@@ -24,6 +24,7 @@ class CommonStore {
 
   // global
   modelStatus: ModelStatus = ModelStatus.Offline;
+  depComplete: boolean = false;
 
   // home
   introduction: IntroductionContent = manifest.introduction;
@@ -128,6 +129,10 @@ class CommonStore {
 
   setAbout = (value: AboutContent) => {
     this.about = value;
+  };
+
+  setDepComplete = (value: boolean) => {
+    this.depComplete = value;
   };
 
   setDownloadList = (value: DownloadStatus[]) => {

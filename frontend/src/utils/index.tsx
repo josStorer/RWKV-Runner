@@ -1,4 +1,5 @@
 import {
+  AddToDownloadList,
   DeleteFile,
   DownloadFile,
   FileExists,
@@ -23,6 +24,7 @@ export type Cache = {
   models: ModelSourceItem[]
   introduction: IntroductionContent,
   about: AboutContent
+  depComplete: boolean
 }
 
 export type LocalConfig = {
@@ -153,7 +155,8 @@ export const saveCache = async () => {
   const data: Cache = {
     models: commonStore.modelSourceList,
     introduction: commonStore.introduction,
-    about: commonStore.about
+    about: commonStore.about,
+    depComplete: commonStore.depComplete
   };
   return SaveJson('cache.json', data);
 };
@@ -175,7 +178,7 @@ export function downloadProgramFiles() {
   manifest.programFiles.forEach(({url, path}) => {
     FileExists(path).then(exists => {
       if (!exists)
-        DownloadFile(path, url);
+        AddToDownloadList(path, url);
     });
   });
 }
@@ -188,7 +191,7 @@ export function forceDownloadProgramFiles() {
 
 export function deletePythonProgramFiles() {
   manifest.programFiles.forEach(({path}) => {
-    if (path.endsWith('.py'))
+    if (path.endsWith('.py') && !path.includes('get-pip.py'))
       DeleteFile(path);
   });
 }
@@ -199,6 +202,10 @@ export function bytesToGb(size: number) {
 
 export function bytesToMb(size: number) {
   return (size / 1024 / 1024).toFixed(2);
+}
+
+export function bytesToKb(size: number) {
+  return (size / 1024).toFixed(2);
 }
 
 export async function checkUpdate() {
@@ -214,7 +221,7 @@ export async function checkUpdate() {
                 deletePythonProgramFiles();
                 setTimeout(() => {
                   UpdateApp(updateUrl).catch((e) => {
-                    toast(t('Update Error, Please restart this program') + ' - ' + e.message, {
+                    toast(t('Update Error, Please restart this program') + ' - ' + e.message || e, {
                       type: 'error',
                       position: 'bottom-left',
                       autoClose: false
@@ -235,7 +242,7 @@ export async function checkUpdate() {
       }
     }
   ).catch((e) => {
-    toast(t('Updates Check Error') + ' - ' + e.message, {type: 'error', position: 'bottom-left'});
+    toast(t('Updates Check Error') + ' - ' + e.message || e, {type: 'error', position: 'bottom-left'});
   });
   return updateUrl;
 }

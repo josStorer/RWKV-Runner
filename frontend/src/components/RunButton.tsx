@@ -1,12 +1,12 @@
 import React, {FC, MouseEventHandler, ReactElement} from 'react';
 import commonStore, {ModelStatus} from '../stores/commonStore';
-import {AddToDownloadList, FileExists, StartServer} from '../../wailsjs/go/backend_golang/App';
+import {AddToDownloadList, DepCheck, FileExists, InstallPyDep, StartServer} from '../../wailsjs/go/backend_golang/App';
 import {Button} from '@fluentui/react-components';
 import {observer} from 'mobx-react-lite';
 import {exit, readRoot, switchModel, updateConfig} from '../apis';
 import {toast} from 'react-toastify';
 import manifest from '../../../manifest.json';
-import {getStrategy, toastWithButton} from '../utils';
+import {getStrategy, saveCache, toastWithButton} from '../utils';
 import {useTranslation} from 'react-i18next';
 import {ToolTipButton} from './ToolTipButton';
 import {Play16Regular, Stop16Regular} from '@fluentui/react-icons';
@@ -38,6 +38,32 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
     const modelConfig = commonStore.getCurrentModelConfig();
     const modelName = modelConfig.modelParameters.modelName;
     const modelPath = `./${manifest.localModelDir}/${modelName}`;
+
+    if (!commonStore.depComplete) {
+      let depErrorMsg = '';
+      await DepCheck().catch((e) => {
+        depErrorMsg = e.message || e;
+        if (depErrorMsg === 'python zip not found') {
+          toastWithButton(t('Python target not found, would you like to download it?'), t('Download'), () => {
+            toastWithButton(`${t('Downloading')} Python`, t('Check'), () => {
+              navigate({pathname: '/downloads'});
+            }, {autoClose: 3000});
+            AddToDownloadList('python-3.10.11-embed-amd64.zip', 'https://www.python.org/ftp/python/3.10.11/python-3.10.11-embed-amd64.zip');
+          });
+        } else if (depErrorMsg.includes('DepCheck Error')) {
+          toastWithButton(t('Python dependencies are incomplete, would you like to install them?'), t('Install'), () => {
+            InstallPyDep();
+          });
+        } else {
+          toast(depErrorMsg, {type: 'error'});
+        }
+      });
+      if (depErrorMsg) {
+        return;
+      }
+      commonStore.setDepComplete(true);
+      saveCache();
+    }
 
     if (!await FileExists(modelPath)) {
       toastWithButton(t('Model file not found'), t('Download'), () => {

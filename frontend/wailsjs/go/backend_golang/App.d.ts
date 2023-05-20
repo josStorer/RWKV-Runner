@@ -10,9 +10,15 @@ export function ConvertModel(arg1:string,arg2:string,arg3:string):Promise<string
 
 export function DeleteFile(arg1:string):Promise<void>;
 
+export function DepCheck():Promise<void>;
+
 export function DownloadFile(arg1:string,arg2:string):Promise<void>;
 
 export function FileExists(arg1:string):Promise<boolean>;
+
+export function GetPlatform():Promise<string>;
+
+export function InstallPyDep():Promise<string>;
 
 export function ListDirFiles(arg1:string):Promise<Array<backend_golang.FileInfo>>;
 

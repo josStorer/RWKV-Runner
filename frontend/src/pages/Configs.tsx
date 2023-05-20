@@ -256,7 +256,7 @@ export const Configs: FC = observer(() => {
                       toast(`${t('Convert Success')} - ${newModelPath}`, {type: 'success'});
                       refreshLocalModels({models: commonStore.modelSourceList}, false);
                     }).catch(e => {
-                      toast(`${t('Convert Failed')} - ${e}`, {type: 'error'});
+                      toast(`${t('Convert Failed')} - ${e.message || e}`, {type: 'error'});
                     });
                   } else {
                     toast(`${t('Model Not Found')} - ${modelPath}`, {type: 'error'});

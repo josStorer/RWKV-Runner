@@ -90,5 +90,8 @@
   "Continue": "继续",
   "Check": "查看",
   "Model file not found": "模型文件不存在",
-  "Can not find download url": "找不到下载地址"
+  "Can not find download url": "找不到下载地址",
+  "Python target not found, would you like to download it?": "没有找到目标Python, 是否下载?",
+  "Python dependencies are incomplete, would you like to install them?": "Python依赖缺失, 是否安装?",
+  "Install": "安装"
 }

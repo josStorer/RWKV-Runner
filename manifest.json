@@ -61,6 +61,10 @@
     {
       "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/backend-python/20B_tokenizer.json",
       "path": "backend-python/20B_tokenizer.json"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/pypa/get-pip/main/public/get-pip.py",
+      "path": "backend-python/get-pip.py"
     }
   ],
   "models": [

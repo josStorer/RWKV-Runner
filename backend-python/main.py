@@ -1,7 +1,9 @@
 import os
-import psutil
 import sys
 
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+
+import psutil
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn

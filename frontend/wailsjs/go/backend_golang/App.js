@@ -18,12 +18,24 @@ export function DeleteFile(arg1) {
   return window['go']['backend_golang']['App']['DeleteFile'](arg1);
 }
 
+export function DepCheck() {
+  return window['go']['backend_golang']['App']['DepCheck']();
+}
+
 export function DownloadFile(arg1, arg2) {
   return window['go']['backend_golang']['App']['DownloadFile'](arg1, arg2);
 }
 
 export function FileExists(arg1) {
   return window['go']['backend_golang']['App']['FileExists'](arg1);
+}
+
+export function GetPlatform() {
+  return window['go']['backend_golang']['App']['GetPlatform']();
+}
+
+export function InstallPyDep() {
+  return window['go']['backend_golang']['App']['InstallPyDep']();
 }
 
 export function ListDirFiles(arg1) {

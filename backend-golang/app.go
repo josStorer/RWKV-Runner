@@ -5,9 +5,10 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"runtime"
 
 	"github.com/minio/selfupdate"
-	"github.com/wailsapp/wails/v2/pkg/runtime"
+	wruntime "github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 // App struct
@@ -46,6 +47,10 @@ func (a *App) UpdateApp(url string) (broken bool, err error) {
 		return false, err
 	}
 	exec.Command(name, os.Args[1:]...).Start()
-	runtime.Quit(a.ctx)
+	wruntime.Quit(a.ctx)
 	return false, nil
+}
+
+func (a *App) GetPlatform() string {
+	return runtime.GOOS
 }

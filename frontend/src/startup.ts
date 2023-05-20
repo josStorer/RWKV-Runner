@@ -1,28 +1,27 @@
 import commonStore from './stores/commonStore';
 import {ReadJson} from '../wailsjs/go/backend_golang/App';
-import {Cache, checkUpdate, downloadProgramFiles, LocalConfig, refreshModels} from './utils';
+import {Cache, checkUpdate, downloadProgramFiles, LocalConfig, refreshModels, saveCache} from './utils';
 import {getStatus} from './apis';
 import {EventsOn} from '../wailsjs/runtime';
 import {defaultModelConfigs} from './pages/Configs';
 
 export async function startup() {
   downloadProgramFiles();
-
-  initRemoteText();
-  initCache();
-  await initConfig();
-
-  if (commonStore.settings.autoUpdatesCheck)
-    checkUpdate();
-
-  getStatus(500).then(status => {
-    if (status)
-      commonStore.setModelStatus(status);
-  });
-
   EventsOn('downloadList', (data) => {
     if (data)
       commonStore.setDownloadList(data);
+  });
+
+  initCache().then(initRemoteText);
+
+  await initConfig();
+
+  if (commonStore.settings.autoUpdatesCheck) // depends on config settings
+    checkUpdate();
+
+  getStatus(500).then(status => { // depends on config api port
+    if (status)
+      commonStore.setModelStatus(status);
   });
 }
 
@@ -33,7 +32,7 @@ async function initRemoteText() {
         commonStore.setIntroduction(data.introduction);
       if (data.about)
         commonStore.setAbout(data.about);
-    });
+    }).then(saveCache);
 }
 
 async function initConfig() {
@@ -61,6 +60,8 @@ async function initCache() {
       commonStore.setIntroduction(cacheData.introduction);
     if (cacheData.about)
       commonStore.setAbout(cacheData.about);
+    if (cacheData.depComplete)
+      commonStore.setDepComplete(cacheData.depComplete);
   }).catch(() => {
   });
   await refreshModels(false);
