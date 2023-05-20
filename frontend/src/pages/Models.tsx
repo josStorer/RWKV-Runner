@@ -21,7 +21,7 @@ import {AddToDownloadList, OpenFileFolder} from '../../wailsjs/go/backend_golang
 import manifest from '../../../manifest.json';
 import {toast} from 'react-toastify';
 import {Page} from '../components/Page';
-import {refreshModels, saveConfigs} from '../utils';
+import {bytesToGb, refreshModels, saveConfigs} from '../utils';
 import {useTranslation} from 'react-i18next';
 
 const columns: TableColumnDefinition<ModelSourceItem>[] = [
@@ -86,7 +86,7 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
     renderCell: (item) => {
       return (
         <TableCellLayout>
-          {(item.size / (1024 * 1024 * 1024)).toFixed(2) + 'GB'}
+          {bytesToGb(item.size) + 'GB'}
         </TableCellLayout>
       );
     }

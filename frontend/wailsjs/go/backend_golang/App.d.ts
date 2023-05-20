@@ -4,6 +4,8 @@ import {backend_golang} from '../models';
 
 export function AddToDownloadList(arg1:string,arg2:string):Promise<void>;
 
+export function ContinueDownload(arg1:string):Promise<void>;
+
 export function ConvertModel(arg1:string,arg2:string,arg3:string):Promise<string>;
 
 export function DeleteFile(arg1:string):Promise<void>;
@@ -15,6 +17,8 @@ export function FileExists(arg1:string):Promise<boolean>;
 export function ListDirFiles(arg1:string):Promise<Array<backend_golang.FileInfo>>;
 
 export function OpenFileFolder(arg1:string):Promise<void>;
+
+export function PauseDownload(arg1:string):Promise<void>;
 
 export function ReadFileInfo(arg1:string):Promise<backend_golang.FileInfo>;
 

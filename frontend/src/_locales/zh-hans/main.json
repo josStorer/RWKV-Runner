@@ -84,5 +84,8 @@
   "Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.": "频率惩罚. 正值根据新token在至今的文本中出现的频率/次数, 来对其进行惩罚, 从而减少模型原封不动地重复相同句子的可能性",
   "int8 uses less VRAM, and is faster, but has slightly lower quality. fp16 has higher quality, and fp32 has the best quality.": "int8占用显存更低, 速度更快, 但质量略微下降. fp16质量更好, fp32质量最好",
   "Number of the neural network layers loaded into VRAM, the more you load, the faster the speed, but it consumes more VRAM.": "载入显存的神经网络层数, 载入越多, 速度越快, 但显存消耗越大",
-  "Whether to use CPU to calculate the last output layer of the neural network with FP32 precision to obtain better quality.": "是否使用cpu以fp32精度计算神经网络的最后一层输出层, 以获得更好的质量"
+  "Whether to use CPU to calculate the last output layer of the neural network with FP32 precision to obtain better quality.": "是否使用cpu以fp32精度计算神经网络的最后一层输出层, 以获得更好的质量",
+  "Downloads": "下载",
+  "Pause": "暂停",
+  "Continue": "继续"
 }

@@ -60,6 +60,7 @@ export type DownloadStatus = {
   size: number;
   speed: number;
   progress: number;
+  downloading: boolean;
   done: boolean;
 }
 

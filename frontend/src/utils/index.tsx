@@ -196,6 +196,14 @@ export function deletePythonProgramFiles() {
   });
 }
 
+export function bytesToGb(size: number) {
+  return (size / 1024 / 1024 / 1024).toFixed(2);
+}
+
+export function bytesToMb(size: number) {
+  return (size / 1024 / 1024).toFixed(2);
+}
+
 export async function checkUpdate() {
   let updateUrl = '';
   await fetch('https://api.github.com/repos/josstorer/RWKV-Runner/releases/latest').then((r) => {

@@ -6,6 +6,10 @@ export function AddToDownloadList(arg1, arg2) {
   return window['go']['backend_golang']['App']['AddToDownloadList'](arg1, arg2);
 }
 
+export function ContinueDownload(arg1) {
+  return window['go']['backend_golang']['App']['ContinueDownload'](arg1);
+}
+
 export function ConvertModel(arg1, arg2, arg3) {
   return window['go']['backend_golang']['App']['ConvertModel'](arg1, arg2, arg3);
 }
@@ -28,6 +32,10 @@ export function ListDirFiles(arg1) {
 
 export function OpenFileFolder(arg1) {
   return window['go']['backend_golang']['App']['OpenFileFolder'](arg1);
+}
+
+export function PauseDownload(arg1) {
+  return window['go']['backend_golang']['App']['PauseDownload'](arg1);
 }
 
 export function ReadFileInfo(arg1) {
