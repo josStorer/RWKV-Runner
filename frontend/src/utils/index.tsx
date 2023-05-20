@@ -1,4 +1,5 @@
 import {
+  DeleteFile,
   DownloadFile,
   FileExists,
   ListDirFiles,
@@ -188,6 +189,13 @@ export function forceDownloadProgramFiles() {
   });
 }
 
+export function deletePythonProgramFiles() {
+  manifest.programFiles.forEach(({path}) => {
+    if (path.endsWith('.py'))
+      DeleteFile(path);
+  });
+}
+
 export async function checkUpdate() {
   let updateUrl = '';
   await fetch('https://api.github.com/repos/josstorer/RWKV-Runner/releases/latest').then((r) => {
@@ -198,7 +206,16 @@ export async function checkUpdate() {
             if (versionTag.replace('v', '') > manifest.version) {
               updateUrl = `https://github.com/josStorer/RWKV-Runner/releases/download/${versionTag}/RWKV-Runner_windows_x64.exe`;
               toastWithButton(t('New Version Available') + ': ' + versionTag, t('Update'), () => {
-                UpdateApp(updateUrl);
+                deletePythonProgramFiles();
+                setTimeout(() => {
+                  UpdateApp(updateUrl).catch((e) => {
+                    toast(t('Update Error, Please restart this program') + ' - ' + e.message, {
+                      type: 'error',
+                      position: 'bottom-left',
+                      autoClose: false
+                    });
+                  });
+                }, 500);
               });
             }
           } else {

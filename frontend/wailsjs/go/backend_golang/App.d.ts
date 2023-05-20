@@ -4,6 +4,8 @@ import {backend_golang} from '../models';
 
 export function ConvertModel(arg1:string,arg2:string,arg3:string):Promise<string>;
 
+export function DeleteFile(arg1:string):Promise<void>;
+
 export function DownloadFile(arg1:string,arg2:string):Promise<void>;
 
 export function FileExists(arg1:string):Promise<boolean>;

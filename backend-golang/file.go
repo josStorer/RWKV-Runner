@@ -94,6 +94,14 @@ func (a *App) DownloadFile(path string, url string) error {
 	return nil
 }
 
+func (a *App) DeleteFile(path string) error {
+	err := os.Remove(path)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *App) OpenFileFolder(path string) error {
 	absPath, err := filepath.Abs(path)
 	if err != nil {

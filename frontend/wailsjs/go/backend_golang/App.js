@@ -6,6 +6,10 @@ export function ConvertModel(arg1, arg2, arg3) {
   return window['go']['backend_golang']['App']['ConvertModel'](arg1, arg2, arg3);
 }
 
+export function DeleteFile(arg1) {
+  return window['go']['backend_golang']['App']['DeleteFile'](arg1);
+}
+
 export function DownloadFile(arg1, arg2) {
   return window['go']['backend_golang']['App']['DownloadFile'](arg1, arg2);
 }
