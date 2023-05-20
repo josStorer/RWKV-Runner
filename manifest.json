@@ -15,8 +15,12 @@
       "path": "cmd-helper.bat"
     },
     {
-      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/backend-python/20B_tokenizer.json",
-      "path": "backend-python/20B_tokenizer.json"
+      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/backend-python/requirements.txt",
+      "path": "backend-python/requirements.txt"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/backend-python/requirements_versions.txt",
+      "path": "backend-python/requirements_versions.txt"
     },
     {
       "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/backend-python/main.py",
@@ -29,6 +33,10 @@
     {
       "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/backend-python/convert_model.py",
       "path": "backend-python/convert_model.py"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/backend-python/dep_check.py",
+      "path": "backend-python/dep_check.py"
     },
     {
       "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/backend-python/routes/completion.py",
@@ -49,6 +57,10 @@
     {
       "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/backend-python/utils/torch.py",
       "path": "backend-python/utils/torch.py"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/backend-python/20B_tokenizer.json",
+      "path": "backend-python/20B_tokenizer.json"
     }
   ],
   "models": [
