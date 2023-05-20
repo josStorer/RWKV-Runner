@@ -71,5 +71,7 @@
   "Copy": "复制",
   "Read Aloud": "朗读",
   "Hello! I'm RWKV, an open-source and commercially available large language model.": "你好! 我是RWKV, 一个开源可商用的大语言模型.",
-  "This tool’s API is compatible with OpenAI API. It can be used with any ChatGPT tool you like. Go to the settings of some ChatGPT tool, replace the 'https://api.openai.com' part in the API address with '": "本工具的API与OpenAI API兼容. 因此可以配合任意你喜欢的ChatGPT工具使用. 打开某个ChatGPT工具的设置, 将API地址中的'https://api.openai.com'部分替换为'"
+  "This tool’s API is compatible with OpenAI API. It can be used with any ChatGPT tool you like. Go to the settings of some ChatGPT tool, replace the 'https://api.openai.com' part in the API address with '": "本工具的API与OpenAI API兼容. 因此可以配合任意你喜欢的ChatGPT工具使用. 打开某个ChatGPT工具的设置, 将API地址中的'https://api.openai.com'部分替换为'",
+  "New Version Available": "新版本可用",
+  "Update": "更新"
 }

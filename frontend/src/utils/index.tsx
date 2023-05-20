@@ -1,8 +1,17 @@
-import {DownloadFile, FileExists, ListDirFiles, ReadJson, SaveJson} from '../../wailsjs/go/backend_golang/App';
+import {
+  DownloadFile,
+  FileExists,
+  ListDirFiles,
+  ReadJson,
+  SaveJson,
+  UpdateApp
+} from '../../wailsjs/go/backend_golang/App';
 import manifest from '../../../manifest.json';
 import commonStore, {ModelConfig, ModelParameters, ModelSourceItem} from '../stores/commonStore';
 import {toast} from 'react-toastify';
 import {t} from 'i18next';
+import {ToastOptions} from 'react-toastify/dist/types';
+import {Button} from '@fluentui/react-components';
 
 export const Languages = {
   dev: 'English', // i18n default
@@ -186,8 +195,12 @@ export async function checkUpdate() {
         r.json().then((data) => {
           if (data.tag_name) {
             const versionTag = data.tag_name;
-            if (versionTag.replace('v', '') > manifest.version)
+            if (versionTag.replace('v', '') > manifest.version) {
               updateUrl = `https://github.com/josStorer/RWKV-Runner/releases/download/${versionTag}/RWKV-Runner_windows_x64.exe`;
+              toastWithButton(t('New Version Available') + ': ' + versionTag, t('Update'), () => {
+                UpdateApp(updateUrl);
+              });
+            }
           } else {
             throw new Error('Invalid response.');
           }
@@ -200,4 +213,18 @@ export async function checkUpdate() {
     toast(t('Updates Check Error') + ' - ' + e.message, {type: 'error', position: 'bottom-left'});
   });
   return updateUrl;
+}
+
+export function toastWithButton(text: string, buttonText: string, onClickButton: () => void, options?: ToastOptions) {
+  return toast(
+    <div className="flex flex-row items-center justify-between">
+      <div>{text}</div>
+      <Button appearance="primary" onClick={onClickButton}>{buttonText}</Button>
+    </div>,
+    {
+      autoClose: false,
+      position: 'bottom-left',
+      type: 'info',
+      ...options
+    });
 }
