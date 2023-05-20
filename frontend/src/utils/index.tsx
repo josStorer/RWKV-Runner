@@ -8,27 +8,17 @@ import {
   UpdateApp
 } from '../../wailsjs/go/backend_golang/App';
 import manifest from '../../../manifest.json';
-import commonStore, {ModelConfig, ModelParameters, ModelSourceItem} from '../stores/commonStore';
+import commonStore from '../stores/commonStore';
 import {toast} from 'react-toastify';
 import {t} from 'i18next';
 import {ToastOptions} from 'react-toastify/dist/types';
 import {Button} from '@fluentui/react-components';
-
-export const Languages = {
-  dev: 'English', // i18n default
-  zh: '简体中文'
-};
-
-export type Language = keyof typeof Languages;
+import {Language, Languages, Settings} from '../pages/Settings';
+import {ModelSourceItem} from '../pages/Models';
+import {ModelConfig, ModelParameters} from '../pages/Configs';
 
 export type Cache = {
   models: ModelSourceItem[]
-}
-
-export type Settings = {
-  language: Language,
-  darkMode: boolean
-  autoUpdatesCheck: boolean
 }
 
 export type LocalConfig = {

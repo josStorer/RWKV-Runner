@@ -5,7 +5,20 @@ import {Labeled} from '../components/Labeled';
 import commonStore from '../stores/commonStore';
 import {observer} from 'mobx-react-lite';
 import {useTranslation} from 'react-i18next';
-import {checkUpdate, Language, Languages} from '../utils';
+import {checkUpdate} from '../utils';
+
+export const Languages = {
+  dev: 'English', // i18n default
+  zh: '简体中文'
+};
+
+export type Language = keyof typeof Languages;
+
+export type Settings = {
+  language: Language,
+  darkMode: boolean
+  autoUpdatesCheck: boolean
+}
 
 export const Settings: FC = observer(() => {
   const {t, i18n} = useTranslation();

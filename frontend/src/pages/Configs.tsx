@@ -4,7 +4,7 @@ import React, {FC} from 'react';
 import {Section} from '../components/Section';
 import {Labeled} from '../components/Labeled';
 import {ToolTipButton} from '../components/ToolTipButton';
-import commonStore, {ApiParameters, Device, ModelParameters, Precision} from '../stores/commonStore';
+import commonStore from '../stores/commonStore';
 import {observer} from 'mobx-react-lite';
 import {toast} from 'react-toastify';
 import {ValuedSlider} from '../components/ValuedSlider';
@@ -17,6 +17,57 @@ import {ConvertModel, FileExists} from '../../wailsjs/go/backend_golang/App';
 import manifest from '../../../manifest.json';
 import {getStrategy, refreshLocalModels} from '../utils';
 import {useTranslation} from 'react-i18next';
+
+export type ApiParameters = {
+  apiPort: number
+  maxResponseToken: number;
+  temperature: number;
+  topP: number;
+  presencePenalty: number;
+  frequencyPenalty: number;
+}
+
+export type Device = 'CPU' | 'CUDA';
+export type Precision = 'fp16' | 'int8' | 'fp32';
+
+export type ModelParameters = {
+  // different models can not have the same name
+  modelName: string;
+  device: Device;
+  precision: Precision;
+  storedLayers: number;
+  maxStoredLayers: number;
+  enableHighPrecisionForLastLayer: boolean;
+}
+
+export type ModelConfig = {
+  // different configs can have the same name
+  name: string;
+  apiParameters: ApiParameters
+  modelParameters: ModelParameters
+}
+
+export const defaultModelConfigs: ModelConfig[] = [
+  {
+    name: 'Default',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1,
+      topP: 1,
+      presencePenalty: 0,
+      frequencyPenalty: 0
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-1B5-v11-Eng99%-Other1%-20230425-ctx4096.pth',
+      device: 'CUDA',
+      precision: 'fp16',
+      storedLayers: 25,
+      maxStoredLayers: 25,
+      enableHighPrecisionForLastLayer: false
+    }
+  }
+];
 
 export const Configs: FC = observer(() => {
   const {t} = useTranslation();

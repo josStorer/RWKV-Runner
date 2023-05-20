@@ -18,19 +18,19 @@ import {CopyButton} from '../components/CopyButton';
 import {ReadButton} from '../components/ReadButton';
 import {toast} from 'react-toastify';
 
-const userName = 'M E';
-const botName = 'A I';
+export const userName = 'M E';
+export const botName = 'A I';
 
-enum MessageType {
+export enum MessageType {
   Normal,
   Error
 }
 
-type Side = 'left' | 'right'
+export type Side = 'left' | 'right'
 
-type Color = 'neutral' | 'brand' | 'colorful'
+export type Color = 'neutral' | 'brand' | 'colorful'
 
-type MessageItem = {
+export type MessageItem = {
   sender: string,
   type: MessageType,
   color: Color,
@@ -41,26 +41,13 @@ type MessageItem = {
   done: boolean
 }
 
-type Conversations = {
+export type Conversations = {
   [uuid: string]: MessageItem
 }
 
 const ChatPanel: FC = observer(() => {
   const {t} = useTranslation();
   const [message, setMessage] = useState('');
-  const [conversations, setConversations] = useState<Conversations>({
-    'welcome': {
-      sender: botName,
-      type: MessageType.Normal,
-      color: 'colorful',
-      avatarImg: logo,
-      time: new Date().toISOString(),
-      content: t('Hello! I\'m RWKV, an open-source and commercially available large language model.'),
-      side: 'left',
-      done: true
-    }
-  });
-  const [conversationsOrder, setConversationsOrder] = useState<string[]>(['welcome']);
   const bodyRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const port = commonStore.getCurrentModelConfig().apiParameters.apiPort;
@@ -68,9 +55,9 @@ const ChatPanel: FC = observer(() => {
 
   let lastMessageId: string;
   let generating: boolean = false;
-  if (conversationsOrder.length > 0) {
-    lastMessageId = conversationsOrder[conversationsOrder.length - 1];
-    const lastMessage = conversations[lastMessageId];
+  if (commonStore.conversationsOrder.length > 0) {
+    lastMessageId = commonStore.conversationsOrder[commonStore.conversationsOrder.length - 1];
+    const lastMessage = commonStore.conversations[lastMessageId];
     if (lastMessage.sender === botName)
       generating = !lastMessage.done;
   }
@@ -78,6 +65,24 @@ const ChatPanel: FC = observer(() => {
   useEffect(() => {
     if (inputRef.current)
       inputRef.current.style.maxHeight = '16rem';
+  }, []);
+
+  useEffect(() => {
+    if (commonStore.conversationsOrder.length === 0) {
+      commonStore.setConversationsOrder(['welcome']);
+      commonStore.setConversations({
+        'welcome': {
+          sender: botName,
+          type: MessageType.Normal,
+          color: 'colorful',
+          avatarImg: logo,
+          time: new Date().toISOString(),
+          content: t('Hello! I\'m RWKV, an open-source and commercially available large language model.'),
+          side: 'left',
+          done: true
+        }
+      });
+    }
   }, []);
 
   const scrollToBottom = () => {
@@ -101,7 +106,7 @@ const ChatPanel: FC = observer(() => {
 
   const onSubmit = (message: string) => {
     const newId = uuid();
-    conversations[newId] = {
+    commonStore.conversations[newId] = {
       sender: userName,
       type: MessageType.Normal,
       color: 'brand',
@@ -110,17 +115,17 @@ const ChatPanel: FC = observer(() => {
       side: 'right',
       done: true
     };
-    setConversations(conversations);
-    conversationsOrder.push(newId);
-    setConversationsOrder(conversationsOrder);
+    commonStore.setConversations(commonStore.conversations);
+    commonStore.conversationsOrder.push(newId);
+    commonStore.setConversationsOrder(commonStore.conversationsOrder);
 
     const records: Record[] = [];
-    conversationsOrder.forEach((uuid, index) => {
-      const conversation = conversations[uuid];
+    commonStore.conversationsOrder.forEach((uuid, index) => {
+      const conversation = commonStore.conversations[uuid];
       if (conversation.done && conversation.type === MessageType.Normal && conversation.sender === botName) {
         if (index > 0) {
-          const questionId = conversationsOrder[index - 1];
-          const question = conversations[questionId];
+          const questionId = commonStore.conversationsOrder[index - 1];
+          const question = commonStore.conversations[questionId];
           if (question.done && question.type === MessageType.Normal && question.sender === userName) {
             records.push({question: question.content, answer: conversation.content});
           }
@@ -131,7 +136,7 @@ const ChatPanel: FC = observer(() => {
     (messages as ConversationPair[]).push({role: 'user', content: message});
 
     const answerId = uuid();
-    conversations[answerId] = {
+    commonStore.conversations[answerId] = {
       sender: botName,
       type: MessageType.Normal,
       color: 'colorful',
@@ -141,9 +146,9 @@ const ChatPanel: FC = observer(() => {
       side: 'left',
       done: false
     };
-    setConversations(conversations);
-    conversationsOrder.push(answerId);
-    setConversationsOrder(conversationsOrder);
+    commonStore.setConversations(commonStore.conversations);
+    commonStore.conversationsOrder.push(answerId);
+    commonStore.setConversationsOrder(commonStore.conversationsOrder);
     setTimeout(scrollToBottom);
     let answer = '';
     sseControllerRef.current = new AbortController();
@@ -164,9 +169,9 @@ const ChatPanel: FC = observer(() => {
           console.log('sse message', e);
           scrollToBottom();
           if (e.data === '[DONE]') {
-            conversations[answerId].done = true;
-            setConversations(conversations);
-            setConversationsOrder([...conversationsOrder]);
+            commonStore.conversations[answerId].done = true;
+            commonStore.setConversations(commonStore.conversations);
+            commonStore.setConversationsOrder([...commonStore.conversationsOrder]);
             return;
           }
           let data;
@@ -178,19 +183,19 @@ const ChatPanel: FC = observer(() => {
           }
           if (data.choices && Array.isArray(data.choices) && data.choices.length > 0) {
             answer += data.choices[0]?.delta?.content || '';
-            conversations[answerId].content = answer;
-            setConversations(conversations);
-            setConversationsOrder([...conversationsOrder]);
+            commonStore.conversations[answerId].content = answer;
+            commonStore.setConversations(commonStore.conversations);
+            commonStore.setConversationsOrder([...commonStore.conversationsOrder]);
           }
         },
         onclose() {
           console.log('Connection closed');
         },
         onerror(err) {
-          conversations[answerId].type = MessageType.Error;
-          conversations[answerId].done = true;
-          setConversations(conversations);
-          setConversationsOrder([...conversationsOrder]);
+          commonStore.conversations[answerId].type = MessageType.Error;
+          commonStore.conversations[answerId].done = true;
+          commonStore.setConversations(commonStore.conversations);
+          commonStore.setConversationsOrder([...commonStore.conversationsOrder]);
           throw err;
         }
       });
@@ -199,8 +204,8 @@ const ChatPanel: FC = observer(() => {
   return (
     <div className="flex flex-col w-full grow gap-4 pt-4 overflow-hidden">
       <div ref={bodyRef} className="grow overflow-y-scroll overflow-x-hidden pr-2">
-        {conversationsOrder.map((uuid, index) => {
-          const conversation = conversations[uuid];
+        {commonStore.conversationsOrder.map((uuid, index) => {
+          const conversation = commonStore.conversations[uuid];
           return <div
             key={uuid}
             className={classnames(
@@ -250,8 +255,8 @@ const ChatPanel: FC = observer(() => {
                        icon={<Delete28Regular/>}
                        size="large" shape="circular" appearance="subtle"
                        onClick={(e) => {
-                         setConversations({});
-                         setConversationsOrder([]);
+                         commonStore.setConversations({});
+                         commonStore.setConversationsOrder([]);
                        }}
         />
         <Textarea
@@ -270,10 +275,10 @@ const ChatPanel: FC = observer(() => {
                          if (generating) {
                            sseControllerRef.current?.abort();
                            if (lastMessageId) {
-                             conversations[lastMessageId].type = MessageType.Error;
-                             conversations[lastMessageId].done = true;
-                             setConversations(conversations);
-                             setConversationsOrder([...conversationsOrder]);
+                             commonStore.conversations[lastMessageId].type = MessageType.Error;
+                             commonStore.conversations[lastMessageId].done = true;
+                             commonStore.setConversations(commonStore.conversations);
+                             commonStore.setConversationsOrder([...commonStore.conversationsOrder]);
                            }
                          } else {
                            handleKeyDownOrClick(e);

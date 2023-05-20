@@ -1,7 +1,12 @@
 import {makeAutoObservable} from 'mobx';
-import {getUserLanguage, isSystemLightMode, saveConfigs, Settings} from '../utils';
+import {getUserLanguage, isSystemLightMode, saveConfigs} from '../utils';
 import {WindowSetDarkTheme, WindowSetLightTheme} from '../../wailsjs/runtime';
 import manifest from '../../../manifest.json';
+import {defaultModelConfigs, ModelConfig} from '../pages/Configs';
+import {Conversations} from '../pages/Chat';
+import {ModelSourceItem} from '../pages/Models';
+import {DownloadStatus} from '../pages/Downloads';
+import {Settings} from '../pages/Settings';
 
 export enum ModelStatus {
   Offline,
@@ -10,99 +15,41 @@ export enum ModelStatus {
   Working,
 }
 
-export type ModelSourceItem = {
-  name: string;
-  size: number;
-  lastUpdated: string;
-  desc?: { [lang: string]: string; };
-  SHA256?: string;
-  url?: string;
-  downloadUrl?: string;
-  isLocal?: boolean;
-  lastUpdatedMs?: number;
-};
-
-export type ApiParameters = {
-  apiPort: number
-  maxResponseToken: number;
-  temperature: number;
-  topP: number;
-  presencePenalty: number;
-  frequencyPenalty: number;
-}
-
-export type Device = 'CPU' | 'CUDA';
-export type Precision = 'fp16' | 'int8' | 'fp32';
-
-export type ModelParameters = {
-  // different models can not have the same name
-  modelName: string;
-  device: Device;
-  precision: Precision;
-  storedLayers: number;
-  maxStoredLayers: number;
-  enableHighPrecisionForLastLayer: boolean;
-}
-
-export type ModelConfig = {
-  // different configs can have the same name
-  name: string;
-  apiParameters: ApiParameters
-  modelParameters: ModelParameters
-}
-
-export type DownloadStatus = {
-  name: string;
-  path: string;
-  url: string;
-  transferred: number;
-  size: number;
-  speed: number;
-  progress: number;
-  downloading: boolean;
-  done: boolean;
-}
-
-export const defaultModelConfigs: ModelConfig[] = [
-  {
-    name: 'Default',
-    apiParameters: {
-      apiPort: 8000,
-      maxResponseToken: 4100,
-      temperature: 1,
-      topP: 1,
-      presencePenalty: 0,
-      frequencyPenalty: 0
-    },
-    modelParameters: {
-      modelName: 'RWKV-4-Raven-1B5-v11-Eng99%-Other1%-20230425-ctx4096.pth',
-      device: 'CUDA',
-      precision: 'fp16',
-      storedLayers: 25,
-      maxStoredLayers: 25,
-      enableHighPrecisionForLastLayer: false
-    }
-  }
-];
-
 class CommonStore {
   constructor() {
     makeAutoObservable(this);
   }
 
+  // global
   modelStatus: ModelStatus = ModelStatus.Offline;
+
+  // home
+  introduction: { [lang: string]: string } = manifest.introduction;
+
+  // chat
+  conversations: Conversations = {};
+  conversationsOrder: string[] = [];
+
+  // configs
   currentModelConfigIndex: number = 0;
   modelConfigs: ModelConfig[] = [];
+
+  // models
   modelSourceManifestList: string = 'https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/manifest.json;';
   modelSourceList: ModelSourceItem[] = [];
+
+  // downloads
+  downloadList: DownloadStatus[] = [];
+
+  // settings
   settings: Settings = {
     language: getUserLanguage(),
     darkMode: !isSystemLightMode(),
     autoUpdatesCheck: true
   };
-  introduction: { [lang: string]: string } = manifest.introduction;
+
+  // about
   about: { [lang: string]: string } = manifest.about;
-  downloadList: DownloadStatus[] = [];
 
   getCurrentModelConfig = () => {
     return this.modelConfigs[this.currentModelConfigIndex];
@@ -183,6 +130,14 @@ class CommonStore {
 
   setDownloadList = (value: DownloadStatus[]) => {
     this.downloadList = value;
+  };
+
+  setConversations = (value: Conversations) => {
+    this.conversations = value;
+  };
+
+  setConversationsOrder = (value: string[]) => {
+    this.conversationsOrder = value;
   };
 }
 

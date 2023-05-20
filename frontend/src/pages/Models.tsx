@@ -15,7 +15,7 @@ import {
 import {ToolTipButton} from '../components/ToolTipButton';
 import {ArrowClockwise20Regular, ArrowDownload20Regular, Folder20Regular, Open20Regular} from '@fluentui/react-icons';
 import {observer} from 'mobx-react-lite';
-import commonStore, {ModelSourceItem} from '../stores/commonStore';
+import commonStore from '../stores/commonStore';
 import {BrowserOpenURL} from '../../wailsjs/runtime';
 import {AddToDownloadList, OpenFileFolder} from '../../wailsjs/go/backend_golang/App';
 import manifest from '../../../manifest.json';
@@ -23,6 +23,18 @@ import {Page} from '../components/Page';
 import {bytesToGb, refreshModels, saveConfigs, toastWithButton} from '../utils';
 import {useTranslation} from 'react-i18next';
 import {useNavigate} from 'react-router';
+
+export type ModelSourceItem = {
+  name: string;
+  size: number;
+  lastUpdated: string;
+  desc?: { [lang: string]: string; };
+  SHA256?: string;
+  url?: string;
+  downloadUrl?: string;
+  isLocal?: boolean;
+  lastUpdatedMs?: number;
+};
 
 const columns: TableColumnDefinition<ModelSourceItem>[] = [
   createTableColumn<ModelSourceItem>({
