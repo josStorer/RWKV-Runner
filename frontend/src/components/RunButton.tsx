@@ -94,6 +94,9 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
                   commonStore.setModelStatus(ModelStatus.Offline);
                   toast(t('Failed to switch model'), {type: 'error'});
                 }
+              }).catch(() => {
+                commonStore.setModelStatus(ModelStatus.Offline);
+                toast(t('Failed to switch model'), {type: 'error'});
               });
             }
           }).catch(() => {

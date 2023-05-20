@@ -93,6 +93,7 @@ const App: FC = observer(() => {
         }}
         position="top-center"
         autoClose={4000}
+        pauseOnHover={true}
         hideProgressBar={true}
         newestOnTop={true}
         closeOnClick={false}
