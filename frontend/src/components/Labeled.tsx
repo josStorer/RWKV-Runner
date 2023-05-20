@@ -3,7 +3,7 @@ import {Label, Tooltip} from '@fluentui/react-components';
 import classnames from 'classnames';
 
 export const Labeled: FC<{
-  label: string; desc?: string, content: ReactElement, flex?: boolean, spaceBetween?: boolean
+  label: string; desc?: string | null, content: ReactElement, flex?: boolean, spaceBetween?: boolean
 }> = ({
         label,
         desc,

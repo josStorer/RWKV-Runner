@@ -22,8 +22,8 @@ export const Configs: FC = observer(() => {
   const {t} = useTranslation();
   const [selectedIndex, setSelectedIndex] = React.useState(commonStore.currentModelConfigIndex);
   const [selectedConfig, setSelectedConfig] = React.useState(commonStore.modelConfigs[selectedIndex]);
-
   const navigate = useNavigate();
+  const port = selectedConfig.apiParameters.apiPort;
 
   const updateSelectedIndex = (newIndex: number) => {
     setSelectedIndex(newIndex);
@@ -104,55 +104,72 @@ export const Configs: FC = observer(() => {
             desc={t('Hover your mouse over the text to view a detailed description. Settings marked with * will take effect immediately after being saved.')}
             content={
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                <Labeled label={t('API Port')} desc={`127.0.0.1:${selectedConfig.apiParameters.apiPort}`} content={
-                  <NumberInput value={selectedConfig.apiParameters.apiPort} min={1} max={65535} step={1}
-                               onChange={(e, data) => {
-                                 setSelectedConfigApiParams({
-                                   apiPort: data.value
-                                 });
-                               }}/>
-                }/>
-                <Labeled label={t('Max Response Token *')} content={
-                  <ValuedSlider value={selectedConfig.apiParameters.maxResponseToken} min={100} max={8100} step={400}
-                                input
-                                onChange={(e, data) => {
-                                  setSelectedConfigApiParams({
-                                    maxResponseToken: data.value
-                                  });
-                                }}/>
-                }/>
-                <Labeled label={t('Temperature *')} content={
-                  <ValuedSlider value={selectedConfig.apiParameters.temperature} min={0} max={2} step={0.1} input
-                                onChange={(e, data) => {
-                                  setSelectedConfigApiParams({
-                                    temperature: data.value
-                                  });
-                                }}/>
-                }/>
-                <Labeled label={t('Top_P *')} content={
-                  <ValuedSlider value={selectedConfig.apiParameters.topP} min={0} max={1} step={0.1} input
-                                onChange={(e, data) => {
-                                  setSelectedConfigApiParams({
-                                    topP: data.value
-                                  });
-                                }}/>
-                }/>
-                <Labeled label={t('Presence Penalty *')} content={
-                  <ValuedSlider value={selectedConfig.apiParameters.presencePenalty} min={-2} max={2} step={0.1} input
-                                onChange={(e, data) => {
-                                  setSelectedConfigApiParams({
-                                    presencePenalty: data.value
-                                  });
-                                }}/>
-                }/>
-                <Labeled label={t('Frequency Penalty *')} content={
-                  <ValuedSlider value={selectedConfig.apiParameters.frequencyPenalty} min={-2} max={2} step={0.1} input
-                                onChange={(e, data) => {
-                                  setSelectedConfigApiParams({
-                                    frequencyPenalty: data.value
-                                  });
-                                }}/>
-                }/>
+                <Labeled label={t('API Port')}
+                         desc={t('Open the following URL with your browser to view the API documentation') + `: http://127.0.0.1:${port}/docs. ` +
+                           t('This tool’s API is compatible with OpenAI API. It can be used with any ChatGPT tool you like. Go to the settings of some ChatGPT tool, replace the \'https://api.openai.com\' part in the API address with \'') + `http://127.0.0.1:${port}` + '\'.'}
+                         content={
+                           <NumberInput value={port} min={1} max={65535} step={1}
+                                        onChange={(e, data) => {
+                                          setSelectedConfigApiParams({
+                                            apiPort: data.value
+                                          });
+                                        }}/>
+                         }/>
+                <Labeled label={t('Max Response Token *')}
+                         desc={t('By default, the maximum number of tokens that can be answered in a single response, it can be changed by the user by specifying API parameters.')}
+                         content={
+                           <ValuedSlider value={selectedConfig.apiParameters.maxResponseToken} min={100} max={8100}
+                                         step={400}
+                                         input
+                                         onChange={(e, data) => {
+                                           setSelectedConfigApiParams({
+                                             maxResponseToken: data.value
+                                           });
+                                         }}/>
+                         }/>
+                <Labeled label={t('Temperature *')}
+                         desc={t('Sampling temperature, the higher the stronger the randomness and creativity, while the lower, the more focused and deterministic it will be.')}
+                         content={
+                           <ValuedSlider value={selectedConfig.apiParameters.temperature} min={0} max={2} step={0.1}
+                                         input
+                                         onChange={(e, data) => {
+                                           setSelectedConfigApiParams({
+                                             temperature: data.value
+                                           });
+                                         }}/>
+                         }/>
+                <Labeled label={t('Top_P *')}
+                         desc={t('Consider the results of the top n% probability mass, 0.1 considers the top 10%, with higher quality but more conservative, 1 considers all results, with lower quality but more diverse.')}
+                         content={
+                           <ValuedSlider value={selectedConfig.apiParameters.topP} min={0} max={1} step={0.1} input
+                                         onChange={(e, data) => {
+                                           setSelectedConfigApiParams({
+                                             topP: data.value
+                                           });
+                                         }}/>
+                         }/>
+                <Labeled label={t('Presence Penalty *')}
+                         desc={t('Positive values penalize new tokens based on whether they appear in the text so far, increasing the model\'s likelihood to talk about new topics.')}
+                         content={
+                           <ValuedSlider value={selectedConfig.apiParameters.presencePenalty} min={-2} max={2}
+                                         step={0.1} input
+                                         onChange={(e, data) => {
+                                           setSelectedConfigApiParams({
+                                             presencePenalty: data.value
+                                           });
+                                         }}/>
+                         }/>
+                <Labeled label={t('Frequency Penalty *')}
+                         desc={t('Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model\'s likelihood to repeat the same line verbatim.')}
+                         content={
+                           <ValuedSlider value={selectedConfig.apiParameters.frequencyPenalty} min={-2} max={2}
+                                         step={0.1} input
+                                         onChange={(e, data) => {
+                                           setSelectedConfigApiParams({
+                                             frequencyPenalty: data.value
+                                           });
+                                         }}/>
+                         }/>
               </div>
             }
           />
@@ -208,38 +225,45 @@ export const Configs: FC = observer(() => {
                     <Option>CUDA</Option>
                   </Dropdown>
                 }/>
-                <Labeled label={t('Precision')} content={
-                  <Dropdown style={{minWidth: 0}} className="grow" value={selectedConfig.modelParameters.precision}
-                            selectedOptions={[selectedConfig.modelParameters.precision]}
-                            onOptionSelect={(_, data) => {
-                              if (data.optionText) {
-                                setSelectedConfigModelParams({
-                                  precision: data.optionText as Precision
-                                });
-                              }
-                            }}>
-                    <Option>fp16</Option>
-                    <Option>int8</Option>
-                    <Option>fp32</Option>
-                  </Dropdown>
-                }/>
-                <Labeled label={t('Stored Layers')} content={
-                  <ValuedSlider value={selectedConfig.modelParameters.storedLayers} min={0}
-                                max={selectedConfig.modelParameters.maxStoredLayers} step={1} input
-                                onChange={(e, data) => {
-                                  setSelectedConfigModelParams({
-                                    storedLayers: data.value
-                                  });
-                                }}/>
-                }/>
-                <Labeled label={t('Enable High Precision For Last Layer')} content={
-                  <Switch checked={selectedConfig.modelParameters.enableHighPrecisionForLastLayer}
-                          onChange={(e, data) => {
-                            setSelectedConfigModelParams({
-                              enableHighPrecisionForLastLayer: data.checked
-                            });
-                          }}/>
-                }/>
+                <Labeled label={t('Precision')}
+                         desc={t('int8 uses less VRAM, and is faster, but has slightly lower quality. fp16 has higher quality, and fp32 has the best quality.')}
+                         content={
+                           <Dropdown style={{minWidth: 0}} className="grow"
+                                     value={selectedConfig.modelParameters.precision}
+                                     selectedOptions={[selectedConfig.modelParameters.precision]}
+                                     onOptionSelect={(_, data) => {
+                                       if (data.optionText) {
+                                         setSelectedConfigModelParams({
+                                           precision: data.optionText as Precision
+                                         });
+                                       }
+                                     }}>
+                             <Option>fp16</Option>
+                             <Option>int8</Option>
+                             <Option>fp32</Option>
+                           </Dropdown>
+                         }/>
+                <Labeled label={t('Stored Layers')}
+                         desc={t('Number of the neural network layers loaded into VRAM, the more you load, the faster the speed, but it consumes more VRAM.')}
+                         content={
+                           <ValuedSlider value={selectedConfig.modelParameters.storedLayers} min={0}
+                                         max={selectedConfig.modelParameters.maxStoredLayers} step={1} input
+                                         onChange={(e, data) => {
+                                           setSelectedConfigModelParams({
+                                             storedLayers: data.value
+                                           });
+                                         }}/>
+                         }/>
+                <Labeled label={t('Enable High Precision For Last Layer')}
+                         desc={t('Whether to use CPU to calculate the last output layer of the neural network with FP32 precision to obtain better quality.')}
+                         content={
+                           <Switch checked={selectedConfig.modelParameters.enableHighPrecisionForLastLayer}
+                                   onChange={(e, data) => {
+                                     setSelectedConfigModelParams({
+                                       enableHighPrecisionForLastLayer: data.checked
+                                     });
+                                   }}/>
+                         }/>
               </div>
             }
           />
