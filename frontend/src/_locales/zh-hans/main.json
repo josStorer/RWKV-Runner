@@ -88,5 +88,7 @@
   "Downloads": "下载",
   "Pause": "暂停",
   "Continue": "继续",
-  "Check": "查看"
+  "Check": "查看",
+  "Model file not found": "模型文件不存在",
+  "Can not find download url": "找不到下载地址"
 }

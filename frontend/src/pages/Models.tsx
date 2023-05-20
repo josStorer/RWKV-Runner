@@ -138,7 +138,7 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
                 toastWithButton(`${t('Downloading')} ${item.name}`, t('Check'), () => {
                     navigate({pathname: '/downloads'});
                   },
-                  {autoClose: 3000, position: 'top-center'});
+                  {autoClose: 3000});
                 AddToDownloadList(`./${manifest.localModelDir}/${item.name}`, item.downloadUrl!);
               }}/>}
             {item.url && <ToolTipButton desc={t('Open Url')} icon={<Open20Regular/>} onClick={() => {

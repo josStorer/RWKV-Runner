@@ -225,6 +225,9 @@ export async function checkUpdate() {
                     });
                   });
                 }, 500);
+              }, {
+                autoClose: false,
+                position: 'bottom-left'
               });
             }
           } else {
@@ -248,8 +251,6 @@ export function toastWithButton(text: string, buttonText: string, onClickButton:
       <Button appearance="primary" onClick={onClickButton}>{buttonText}</Button>
     </div>,
     {
-      autoClose: false,
-      position: 'bottom-left',
       type: 'info',
       ...options
     });
