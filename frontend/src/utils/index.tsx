@@ -131,7 +131,7 @@ export const getStrategy = (modelConfig: ModelConfig | undefined = undefined) =>
   else params = commonStore.getCurrentModelConfig().modelParameters;
   let strategy = '';
   strategy += (params.device === 'CPU' ? 'cpu' : 'cuda') + ' ';
-  strategy += (params.precision === 'fp16' ? 'fp16' : params.precision === 'int8' ? 'fp16i8' : 'fp32');
+  strategy += params.device === 'CPU' ? 'fp32' : (params.precision === 'fp16' ? 'fp16' : params.precision === 'int8' ? 'fp16i8' : 'fp32');
   if (params.storedLayers < params.maxStoredLayers)
     strategy += ` *${params.storedLayers}+`;
   if (params.enableHighPrecisionForLastLayer)
