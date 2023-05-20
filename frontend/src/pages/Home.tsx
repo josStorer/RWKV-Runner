@@ -17,6 +17,8 @@ import {ConfigSelector} from '../components/ConfigSelector';
 import MarkdownRender from '../components/MarkdownRender';
 import commonStore from '../stores/commonStore';
 
+export type IntroductionContent = { [lang: string]: string }
+
 type NavCard = {
   label: string;
   desc: string;

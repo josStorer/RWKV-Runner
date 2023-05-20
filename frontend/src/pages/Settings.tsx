@@ -14,7 +14,7 @@ export const Languages = {
 
 export type Language = keyof typeof Languages;
 
-export type Settings = {
+export type SettingsType = {
   language: Language,
   darkMode: boolean
   autoUpdatesCheck: boolean

@@ -13,32 +13,36 @@ import {toast} from 'react-toastify';
 import {t} from 'i18next';
 import {ToastOptions} from 'react-toastify/dist/types';
 import {Button} from '@fluentui/react-components';
-import {Language, Languages, Settings} from '../pages/Settings';
+import {Language, Languages, SettingsType} from '../pages/Settings';
 import {ModelSourceItem} from '../pages/Models';
 import {ModelConfig, ModelParameters} from '../pages/Configs';
+import {IntroductionContent} from '../pages/Home';
+import {AboutContent} from '../pages/About';
 
 export type Cache = {
   models: ModelSourceItem[]
+  introduction: IntroductionContent,
+  about: AboutContent
 }
 
 export type LocalConfig = {
   modelSourceManifestList: string
   currentModelConfigIndex: number
   modelConfigs: ModelConfig[]
-  settings: Settings
+  settings: SettingsType
 }
 
 export async function refreshBuiltInModels(readCache: boolean = false) {
-  let cache: Cache = {models: []};
+  let cache: { models: ModelSourceItem[] } = {models: []};
   if (readCache)
     await ReadJson('cache.json').then((cacheData: Cache) => {
-      cache = cacheData;
-    }).catch(
-      async () => {
-        cache = {models: manifest.models};
-      }
-    );
-  else cache = {models: manifest.models};
+      if (cacheData.models)
+        cache.models = cacheData.models;
+      else cache.models = manifest.models;
+    }).catch(() => {
+      cache.models = manifest.models;
+    });
+  else cache.models = manifest.models;
 
   commonStore.setModelSourceList(cache.models);
   await saveCache().catch(() => {
@@ -46,7 +50,7 @@ export async function refreshBuiltInModels(readCache: boolean = false) {
   return cache;
 }
 
-export async function refreshLocalModels(cache: Cache, filter: boolean = true) {
+export async function refreshLocalModels(cache: { models: ModelSourceItem[] }, filter: boolean = true) {
   if (filter)
     cache.models = cache.models.filter(m => !m.isLocal); //TODO BUG cause local but in manifest files to be removed, so currently cache is disabled
 
@@ -90,7 +94,7 @@ export async function refreshLocalModels(cache: Cache, filter: boolean = true) {
   });
 }
 
-export async function refreshRemoteModels(cache: Cache) {
+export async function refreshRemoteModels(cache: { models: ModelSourceItem[] }) {
   const manifestUrls = commonStore.modelSourceManifestList.split(/[,，;；\n]/);
   const requests = manifestUrls.filter(url => url.endsWith('.json')).map(
     url => fetch(url, {cache: 'no-cache'}).then(r => r.json()));
@@ -147,7 +151,9 @@ export const saveConfigs = async () => {
 
 export const saveCache = async () => {
   const data: Cache = {
-    models: commonStore.modelSourceList
+    models: commonStore.modelSourceList,
+    introduction: commonStore.introduction,
+    about: commonStore.about
   };
   return SaveJson('cache.json', data);
 };

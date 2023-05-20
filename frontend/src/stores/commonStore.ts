@@ -6,7 +6,9 @@ import {defaultModelConfigs, ModelConfig} from '../pages/Configs';
 import {Conversations} from '../pages/Chat';
 import {ModelSourceItem} from '../pages/Models';
 import {DownloadStatus} from '../pages/Downloads';
-import {Settings} from '../pages/Settings';
+import {SettingsType} from '../pages/Settings';
+import {IntroductionContent} from '../pages/Home';
+import {AboutContent} from '../pages/About';
 
 export enum ModelStatus {
   Offline,
@@ -24,7 +26,7 @@ class CommonStore {
   modelStatus: ModelStatus = ModelStatus.Offline;
 
   // home
-  introduction: { [lang: string]: string } = manifest.introduction;
+  introduction: IntroductionContent = manifest.introduction;
 
   // chat
   conversations: Conversations = {};
@@ -42,14 +44,14 @@ class CommonStore {
   downloadList: DownloadStatus[] = [];
 
   // settings
-  settings: Settings = {
+  settings: SettingsType = {
     language: getUserLanguage(),
     darkMode: !isSystemLightMode(),
     autoUpdatesCheck: true
   };
 
   // about
-  about: { [lang: string]: string } = manifest.about;
+  about: AboutContent = manifest.about;
 
   getCurrentModelConfig = () => {
     return this.modelConfigs[this.currentModelConfigIndex];
@@ -108,7 +110,7 @@ class CommonStore {
     this.modelSourceList = value;
   };
 
-  setSettings = (value: Partial<Settings>, saveConfig: boolean = true) => {
+  setSettings = (value: Partial<SettingsType>, saveConfig: boolean = true) => {
     this.settings = {...this.settings, ...value};
 
     if (this.settings.darkMode)
@@ -120,11 +122,11 @@ class CommonStore {
       saveConfigs();
   };
 
-  setIntroduction = (value: { [lang: string]: string }) => {
+  setIntroduction = (value: IntroductionContent) => {
     this.introduction = value;
   };
 
-  setAbout = (value: { [lang: string]: string }) => {
+  setAbout = (value: AboutContent) => {
     this.about = value;
   };
 
