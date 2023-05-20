@@ -77,7 +77,7 @@ export async function refreshLocalModels(cache: { models: ModelSourceItem[] }, f
         cache.models[j].lastUpdatedMs = Date.parse(cache.models[j].lastUpdated);
 
       if (cache.models[i].name === cache.models[j].name) {
-        if (cache.models[i].size === cache.models[j].size) {
+        if (cache.models[i].size <= cache.models[j].size) { // j is local file
           if (cache.models[i].lastUpdatedMs! < cache.models[j].lastUpdatedMs!) {
             cache.models[i] = Object.assign({}, cache.models[i], cache.models[j]);
           } else {
