@@ -8,8 +8,6 @@ import (
 	"path/filepath"
 	"runtime"
 	"time"
-
-	"github.com/cavaliergopher/grab/v3"
 )
 
 func (a *App) SaveJson(fileName string, jsonData any) error {
@@ -84,14 +82,6 @@ func (a *App) ListDirFiles(dirPath string) ([]FileInfo, error) {
 		})
 	}
 	return filesInfo, nil
-}
-
-func (a *App) DownloadFile(path string, url string) error {
-	_, err := grab.Get(path, url)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 func (a *App) DeleteFile(path string) error {

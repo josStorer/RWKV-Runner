@@ -24,6 +24,8 @@ func NewApp() *App {
 // so we can call the runtime methods
 func (a *App) OnStartup(ctx context.Context) {
 	a.ctx = ctx
+
+	a.downloadLoop()
 }
 
 func (a *App) UpdateApp(url string) (broken bool, err error) {

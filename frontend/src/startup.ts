@@ -2,6 +2,7 @@ import commonStore, {defaultModelConfigs} from './stores/commonStore';
 import {ReadJson} from '../wailsjs/go/backend_golang/App';
 import {checkUpdate, downloadProgramFiles, LocalConfig, refreshModels} from './utils';
 import {getStatus} from './apis';
+import {EventsOn} from '../wailsjs/runtime';
 
 export async function startup() {
   downloadProgramFiles();
@@ -16,6 +17,11 @@ export async function startup() {
   getStatus(500).then(status => {
     if (status)
       commonStore.setModelStatus(status);
+  });
+
+  EventsOn('downloadList', (data) => {
+    if (data)
+      commonStore.setDownloadList(data);
   });
 }
 

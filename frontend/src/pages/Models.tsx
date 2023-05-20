@@ -17,7 +17,7 @@ import {ArrowClockwise20Regular, ArrowDownload20Regular, Folder20Regular, Open20
 import {observer} from 'mobx-react-lite';
 import commonStore, {ModelSourceItem} from '../stores/commonStore';
 import {BrowserOpenURL} from '../../wailsjs/runtime';
-import {DownloadFile, OpenFileFolder} from '../../wailsjs/go/backend_golang/App';
+import {AddToDownloadList, OpenFileFolder} from '../../wailsjs/go/backend_golang/App';
 import manifest from '../../../manifest.json';
 import {toast} from 'react-toastify';
 import {Page} from '../components/Page';
@@ -135,7 +135,7 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
             {item.downloadUrl && !item.isLocal &&
               <ToolTipButton desc={t('Download')} icon={<ArrowDownload20Regular/>} onClick={() => {
                 toast(`${t('Downloading')} ${item.name}`, {type: 'info'});
-                DownloadFile(`./${manifest.localModelDir}/${item.name}`, item.downloadUrl!);
+                AddToDownloadList(`./${manifest.localModelDir}/${item.name}`, item.downloadUrl!);
               }}/>}
             {item.url && <ToolTipButton desc={t('Open Url')} icon={<Open20Regular/>} onClick={() => {
               BrowserOpenURL(item.url!);

@@ -52,6 +52,17 @@ export type ModelConfig = {
   modelParameters: ModelParameters
 }
 
+export type DownloadStatus = {
+  name: string;
+  path: string;
+  url: string;
+  transferred: number;
+  size: number;
+  speed: number;
+  progress: number;
+  done: boolean;
+}
+
 export const defaultModelConfigs: ModelConfig[] = [
   {
     name: 'Default',
@@ -91,6 +102,7 @@ class CommonStore {
   };
   introduction: { [lang: string]: string } = manifest.introduction;
   about: { [lang: string]: string } = manifest.about;
+  downloadList: DownloadStatus[] = [];
 
   getCurrentModelConfig = () => {
     return this.modelConfigs[this.currentModelConfigIndex];
@@ -167,6 +179,10 @@ class CommonStore {
 
   setAbout = (value: { [lang: string]: string }) => {
     this.about = value;
+  };
+
+  setDownloadList = (value: DownloadStatus[]) => {
+    this.downloadList = value;
   };
 }
 
