@@ -134,7 +134,7 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
             }
             {item.downloadUrl && !item.isLocal &&
               <ToolTipButton desc={t('Download')} icon={<ArrowDownload20Regular/>} onClick={() => {
-                toast(`${t('Downloading')} ${item.name}`);
+                toast(`${t('Downloading')} ${item.name}`, {type: 'info'});
                 DownloadFile(`./${manifest.localModelDir}/${item.name}`, item.downloadUrl!);
               }}/>}
             {item.url && <ToolTipButton desc={t('Open Url')} icon={<Open20Regular/>} onClick={() => {

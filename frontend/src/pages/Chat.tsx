@@ -16,6 +16,7 @@ import {ToolTipButton} from '../components/ToolTipButton';
 import {ArrowCircleUp28Regular, Delete28Regular, RecordStop28Regular} from '@fluentui/react-icons';
 import {CopyButton} from '../components/CopyButton';
 import {ReadButton} from '../components/ReadButton';
+import {toast} from 'react-toastify';
 
 const userName = 'M E';
 const botName = 'A I';
@@ -88,6 +89,10 @@ const ChatPanel: FC = observer(() => {
     e.stopPropagation();
     if (e.type === 'click' || (e.keyCode === 13 && !e.shiftKey)) {
       e.preventDefault();
+      if (commonStore.modelStatus === ModelStatus.Offline) {
+        toast(t('Please click the button in the top right corner to start the model'), {type: 'warning'});
+        return;
+      }
       if (!message) return;
       onSubmit(message);
       setMessage('');
