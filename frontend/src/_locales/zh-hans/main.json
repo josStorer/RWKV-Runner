@@ -95,5 +95,6 @@
   "Python dependencies are incomplete, would you like to install them?": "Python依赖缺失, 是否安装?",
   "Install": "安装",
   "This is the latest version": "已是最新版",
-  "Use Tsinghua Pip Mirrors": "使用清华大学Pip镜像源"
+  "Use Tsinghua Pip Mirrors": "使用清华大学Pip镜像源",
+  "Model Config Exception": "模型配置异常"
 }
