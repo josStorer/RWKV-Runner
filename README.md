@@ -57,24 +57,24 @@ English | [简体中文](README_ZH.md)
 
 ### Homepage
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/9d25380a-a17b-443f-b823-86c754ebebf0)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/60efbb65-29e3-4346-a597-5bdcd099251c)
 
 ### Chat
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/0e66d5fa-f34a-409f-9cd4-d880815733f3)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/6cde9c45-51bb-4dee-b1fe-746862448520)
 
 ### Configuration
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/ad9921fc-7248-40a3-9e18-03445b86e4bf)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/93270a68-9d6d-4247-b6a3-e543c65a876b)
 
 ### Model Management
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/7c36f15f-3e77-49cd-a16d-99a29f870bdf)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/6f96fdd3-fdf5-4b78-af80-2afbd1ad173b)
 
 ### Download Management
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/32fde30b-11dd-43b9-9667-ad6975be2106)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/6982e7ee-bace-4a88-bb47-92379185bf9d)
 
 ### Settings
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/e8a0f746-9da7-48e3-b3fc-e1453ac50de2)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/b3b2ab46-344c-4f04-b066-1503f776eeb9)
