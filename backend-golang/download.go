@@ -86,12 +86,8 @@ func (a *App) ContinueDownload(url string) {
 
 func (a *App) AddToDownloadList(path string, url string) {
 	if !existsInDownloadList(url) {
-		client := grab.NewClient()
-		req, _ := grab.NewRequest(path, url)
-		resp := client.Do(req)
-
 		downloadList = append(downloadList, DownloadStatus{
-			resp:        resp,
+			resp:        nil,
 			Name:        filepath.Base(path),
 			Path:        path,
 			Url:         url,
@@ -102,6 +98,7 @@ func (a *App) AddToDownloadList(path string, url string) {
 			Downloading: true,
 			Done:        false,
 		})
+		a.ContinueDownload(url)
 	} else {
 		a.ContinueDownload(url)
 	}
