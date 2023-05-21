@@ -13,3 +13,4 @@ __pycache__
 /backend-python/get-pip.py
 /py310
 *.zip
+/cmd-helper.bat
