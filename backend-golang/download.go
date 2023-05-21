@@ -43,19 +43,16 @@ func existsInDownloadList(url string) bool {
 func (a *App) PauseDownload(url string) {
 	for i, ds := range downloadList {
 		if ds.Url == url {
-			ds.resp.Cancel()
+			if ds.resp != nil {
+				ds.resp.Cancel()
+			}
 
 			downloadList[i] = DownloadStatus{
-				resp:        ds.resp,
+				resp:        nil,
 				Name:        ds.Name,
 				Path:        ds.Path,
 				Url:         ds.Url,
-				Transferred: ds.Transferred,
-				Size:        ds.Size,
-				Speed:       0,
-				Progress:    ds.Progress,
 				Downloading: false,
-				Done:        ds.Done,
 			}
 		}
 	}
@@ -73,12 +70,7 @@ func (a *App) ContinueDownload(url string) {
 				Name:        ds.Name,
 				Path:        ds.Path,
 				Url:         ds.Url,
-				Transferred: ds.Transferred,
-				Size:        ds.Size,
-				Speed:       ds.Speed,
-				Progress:    ds.Progress,
 				Downloading: true,
-				Done:        ds.Done,
 			}
 		}
 	}
@@ -91,12 +83,7 @@ func (a *App) AddToDownloadList(path string, url string) {
 			Name:        filepath.Base(path),
 			Path:        path,
 			Url:         url,
-			Transferred: 0,
-			Size:        0,
-			Speed:       0,
-			Progress:    0,
 			Downloading: true,
-			Done:        false,
 		})
 		a.ContinueDownload(url)
 	} else {
@@ -110,17 +97,31 @@ func (a *App) downloadLoop() {
 		for {
 			<-ticker.C
 			for i, ds := range downloadList {
+				transferred := int64(0)
+				size := int64(0)
+				speed := float64(0)
+				progress := float64(0)
+				downloading := ds.Downloading
+				done := false
+				if ds.resp != nil {
+					transferred = ds.resp.BytesComplete()
+					size = ds.resp.Size()
+					speed = ds.resp.BytesPerSecond()
+					progress = 100 * ds.resp.Progress()
+					downloading = !ds.resp.IsComplete()
+					done = ds.resp.Progress() == 1
+				}
 				downloadList[i] = DownloadStatus{
 					resp:        ds.resp,
 					Name:        ds.Name,
 					Path:        ds.Path,
 					Url:         ds.Url,
-					Transferred: ds.resp.BytesComplete(),
-					Size:        ds.resp.Size(),
-					Speed:       ds.resp.BytesPerSecond(),
-					Progress:    100 * ds.resp.Progress(),
-					Downloading: !ds.resp.IsComplete(),
-					Done:        ds.resp.Progress() == 1,
+					Transferred: transferred,
+					Size:        size,
+					Speed:       speed,
+					Progress:    progress,
+					Downloading: downloading,
+					Done:        done,
 				}
 			}
 			runtime.EventsEmit(a.ctx, "downloadList", downloadList)
