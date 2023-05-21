@@ -6,14 +6,14 @@
 
 <div align="center">
 
-This project aims to eliminate the barriers of using large language models by automating everything for you. All you need is a lightweight executable program of just a few megabytes. Additionally, this project provides an interface compatible with the OpenAI API, which means that every ChatGPT client is an RWKV client.
+本项目旨在消除大语言模型的使用门槛，全自动为你处理一切，你只需要一个仅仅几MB的可执行程序。此外本项目提供了与OpenAI API兼容的接口，这意味着一切ChatGPT客户端都是RWKV客户端。
 
 [![license][license-image]][license-url]
 [![release][release-image]][release-url]
 
-English | [简体中文](README_ZH.md)
+[English](README.md) | 简体中文
 
-[Preview](#Preview) | [Download][download-url]
+[预览](#Preview) | [下载][download-url]
 
 [license-image]: http://img.shields.io/badge/license-MIT-blue.svg
 
@@ -27,27 +27,27 @@ English | [简体中文](README_ZH.md)
 
 </div>
 
-## Features
+## 功能
 
-- RWKV model management and one-click startup
-- Fully compatible with the OpenAI API, making every ChatGPT client an RWKV client
-- Automatic dependency installation, requiring only a lightweight executable program
-- User-friendly chat interaction interface included
-- Easy-to-understand and operate parameter configuration
-- Built-in model conversion tool
-- Built-in download management and remote model inspection
-- Multilingual localization
-- Theme switching
-- Automatic updates
+- RWKV模型管理，一键启动
+- 与OpenAI API完全兼容，一切ChatGPT客户端，都是RWKV客户端
+- 全自动依赖安装，你只需要一个轻巧的可执行程序
+- 自带用户友好的聊天交互页面
+- 易于理解和操作的参数配置
+- 内置模型转换工具
+- 内置下载管理和远程模型检视
+- 多语言本地化
+- 主题切换
+- 自动更新
 
 ## Todo
 
-- Model training functionality
-- CUDA operator int8 acceleration
-- macOS support
-- Linux support
+- 模型训练功能
+- CUDA算子int8提速
+- macOS支持
+- linux支持
 
-## Related Repositories:
+## 相关仓库:
 
 - RWKV-4-Raven: https://huggingface.co/BlinkDL/rwkv-4-raven/tree/main
 - ChatRWKV: https://github.com/BlinkDL/ChatRWKV
@@ -55,26 +55,26 @@ English | [简体中文](README_ZH.md)
 
 ## Preview
 
-### Homepage
+### 主页
 
 ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/9d25380a-a17b-443f-b823-86c754ebebf0)
 
-### Chat
+### 聊天
 
 ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/0e66d5fa-f34a-409f-9cd4-d880815733f3)
 
-### Configuration
+### 配置
 
 ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/ad9921fc-7248-40a3-9e18-03445b86e4bf)
 
-### Model Management
+### 模型管理
 
 ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/7c36f15f-3e77-49cd-a16d-99a29f870bdf)
 
-### Download Management
+### 下载管理
 
 ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/32fde30b-11dd-43b9-9667-ad6975be2106)
 
-### Settings
+### 设置
 
 ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/e8a0f746-9da7-48e3-b3fc-e1453ac50de2)
