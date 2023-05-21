@@ -53,7 +53,7 @@ func (a *App) InstallPyDep(cnMirror bool) (string, error) {
 		return "", err
 	}
 	if cnMirror {
-		return Cmd(python, "-m", "pip", "install", "-r", "./backend-python/requirements_versions.txt", "-i", "https://pypi.tuna.tsinghua.edu.cn/simple")
+		return Cmd(python, "-m", "pip", "install", "-r", "./backend-python/requirements.txt", "-i", "https://pypi.tuna.tsinghua.edu.cn/simple")
 	} else {
 		return Cmd(python, "-m", "pip", "install", "-r", "./backend-python/requirements_versions.txt")
 	}
