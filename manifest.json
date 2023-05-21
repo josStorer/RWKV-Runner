@@ -59,7 +59,7 @@
       "path": "backend-python/20B_tokenizer.json"
     },
     {
-      "url": "https://bootstrap.pypa.io/get-pip.py",
+      "url": "https://cdn.jsdelivr.net/gh/pypa/get-pip/public/get-pip.py",
       "path": "backend-python/get-pip.py"
     }
   ],
