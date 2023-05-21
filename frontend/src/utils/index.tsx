@@ -208,7 +208,7 @@ export function bytesToKb(size: number) {
   return (size / 1024).toFixed(2);
 }
 
-export async function checkUpdate() {
+export async function checkUpdate(notifyEvenLatest: boolean = false) {
   let updateUrl = '';
   await fetch('https://api.github.com/repos/josstorer/RWKV-Runner/releases/latest').then((r) => {
       if (r.ok) {
@@ -232,6 +232,10 @@ export async function checkUpdate() {
                 autoClose: false,
                 position: 'bottom-left'
               });
+            } else {
+              if (notifyEvenLatest) {
+                toast(t('This is the latest version'), {type: 'success', position: 'bottom-left', autoClose: 2000});
+              }
             }
           } else {
             throw new Error('Invalid response.');

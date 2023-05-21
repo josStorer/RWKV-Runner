@@ -60,7 +60,7 @@ export const Settings: FC = observer(() => {
                       autoUpdatesCheck: data.checked
                     });
                     if (data.checked)
-                      checkUpdate();
+                      checkUpdate(true);
                   }}/>
         }/>
       </div>

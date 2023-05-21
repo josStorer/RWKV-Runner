@@ -93,5 +93,6 @@
   "Can not find download url": "找不到下载地址",
   "Python target not found, would you like to download it?": "没有找到目标Python, 是否下载?",
   "Python dependencies are incomplete, would you like to install them?": "Python依赖缺失, 是否安装?",
-  "Install": "安装"
+  "Install": "安装",
+  "This is the latest version": "已是最新版"
 }
