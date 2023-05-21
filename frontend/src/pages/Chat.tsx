@@ -1,22 +1,22 @@
-import React, {FC, useEffect, useRef, useState} from 'react';
-import {useTranslation} from 'react-i18next';
-import {RunButton} from '../components/RunButton';
-import {Avatar, Divider, PresenceBadge, Text, Textarea} from '@fluentui/react-components';
-import commonStore, {ModelStatus} from '../stores/commonStore';
-import {observer} from 'mobx-react-lite';
-import {PresenceBadgeStatus} from '@fluentui/react-badge';
-import {ConfigSelector} from '../components/ConfigSelector';
-import {v4 as uuid} from 'uuid';
+import React, { FC, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { RunButton } from '../components/RunButton';
+import { Avatar, Divider, PresenceBadge, Text, Textarea } from '@fluentui/react-components';
+import commonStore, { ModelStatus } from '../stores/commonStore';
+import { observer } from 'mobx-react-lite';
+import { PresenceBadgeStatus } from '@fluentui/react-badge';
+import { ConfigSelector } from '../components/ConfigSelector';
+import { v4 as uuid } from 'uuid';
 import classnames from 'classnames';
-import {fetchEventSource} from '@microsoft/fetch-event-source';
-import {ConversationPair, getConversationPairs, Record} from '../utils/get-conversation-pairs';
+import { fetchEventSource } from '@microsoft/fetch-event-source';
+import { ConversationPair, getConversationPairs, Record } from '../utils/get-conversation-pairs';
 import logo from '../../../build/appicon.png';
 import MarkdownRender from '../components/MarkdownRender';
-import {ToolTipButton} from '../components/ToolTipButton';
-import {ArrowCircleUp28Regular, Delete28Regular, RecordStop28Regular} from '@fluentui/react-icons';
-import {CopyButton} from '../components/CopyButton';
-import {ReadButton} from '../components/ReadButton';
-import {toast} from 'react-toastify';
+import { ToolTipButton } from '../components/ToolTipButton';
+import { ArrowCircleUp28Regular, Delete28Regular, RecordStop28Regular } from '@fluentui/react-icons';
+import { CopyButton } from '../components/CopyButton';
+import { ReadButton } from '../components/ReadButton';
+import { toast } from 'react-toastify';
 
 export const userName = 'M E';
 export const botName = 'A I';
@@ -46,7 +46,7 @@ export type Conversations = {
 }
 
 const ChatPanel: FC = observer(() => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [message, setMessage] = useState('');
   const bodyRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -95,7 +95,7 @@ const ChatPanel: FC = observer(() => {
     if (e.type === 'click' || (e.keyCode === 13 && !e.shiftKey)) {
       e.preventDefault();
       if (commonStore.modelStatus === ModelStatus.Offline) {
-        toast(t('Please click the button in the top right corner to start the model'), {type: 'warning'});
+        toast(t('Please click the button in the top right corner to start the model'), { type: 'warning' });
         return;
       }
       if (!message) return;
@@ -127,13 +127,13 @@ const ChatPanel: FC = observer(() => {
           const questionId = commonStore.conversationsOrder[index - 1];
           const question = commonStore.conversations[questionId];
           if (question.done && question.type === MessageType.Normal && question.sender === userName) {
-            records.push({question: question.content, answer: conversation.content});
+            records.push({ question: question.content, answer: conversation.content });
           }
         }
       }
     });
     const messages = getConversationPairs(records, false);
-    (messages as ConversationPair[]).push({role: 'user', content: message});
+    (messages as ConversationPair[]).push({ role: 'user', content: message });
 
     const answerId = uuid();
     commonStore.conversations[answerId] = {
@@ -224,7 +224,7 @@ const ChatPanel: FC = observer(() => {
             <Avatar
               color={conversation.color}
               name={conversation.sender}
-              image={conversation.avatarImg ? {src: conversation.avatarImg} : undefined}
+              image={conversation.avatarImg ? { src: conversation.avatarImg } : undefined}
             />
             <div
               className={classnames(
@@ -236,15 +236,15 @@ const ChatPanel: FC = observer(() => {
               <MarkdownRender>{conversation.content}</MarkdownRender>
             </div>
             <div className="flex flex-col gap-1 items-start">
-              <div className="grow"/>
+              <div className="grow" />
               {(conversation.type === MessageType.Error || !conversation.done) &&
                 <PresenceBadge size="extra-small" status={
                   conversation.type === MessageType.Error ? 'busy' : 'away'
-                }/>
+                } />
               }
               <div className="flex invisible" id={'utils-' + uuid}>
-                <ReadButton content={conversation.content}/>
-                <CopyButton content={conversation.content}/>
+                <ReadButton content={conversation.content} />
+                <CopyButton content={conversation.content} />
               </div>
             </div>
           </div>;
@@ -252,12 +252,14 @@ const ChatPanel: FC = observer(() => {
       </div>
       <div className="flex items-end gap-2">
         <ToolTipButton desc={t('Clear')}
-                       icon={<Delete28Regular/>}
-                       size="large" shape="circular" appearance="subtle"
-                       onClick={(e) => {
-                         commonStore.setConversations({});
-                         commonStore.setConversationsOrder([]);
-                       }}
+          icon={<Delete28Regular />}
+          size="large" shape="circular" appearance="subtle"
+          onClick={(e) => {
+            if (generating)
+              sseControllerRef.current?.abort();
+            commonStore.setConversations({});
+            commonStore.setConversationsOrder([]);
+          }}
         />
         <Textarea
           ref={inputRef}
@@ -269,21 +271,21 @@ const ChatPanel: FC = observer(() => {
           onKeyDown={handleKeyDownOrClick}
         />
         <ToolTipButton desc={generating ? t('Stop') : t('Send')}
-                       icon={generating ? <RecordStop28Regular/> : <ArrowCircleUp28Regular/>}
-                       size="large" shape="circular" appearance="subtle"
-                       onClick={(e) => {
-                         if (generating) {
-                           sseControllerRef.current?.abort();
-                           if (lastMessageId) {
-                             commonStore.conversations[lastMessageId].type = MessageType.Error;
-                             commonStore.conversations[lastMessageId].done = true;
-                             commonStore.setConversations(commonStore.conversations);
-                             commonStore.setConversationsOrder([...commonStore.conversationsOrder]);
-                           }
-                         } else {
-                           handleKeyDownOrClick(e);
-                         }
-                       }}/>
+          icon={generating ? <RecordStop28Regular /> : <ArrowCircleUp28Regular />}
+          size="large" shape="circular" appearance="subtle"
+          onClick={(e) => {
+            if (generating) {
+              sseControllerRef.current?.abort();
+              if (lastMessageId) {
+                commonStore.conversations[lastMessageId].type = MessageType.Error;
+                commonStore.conversations[lastMessageId].done = true;
+                commonStore.setConversations(commonStore.conversations);
+                commonStore.setConversationsOrder([...commonStore.conversationsOrder]);
+              }
+            } else {
+              handleKeyDownOrClick(e);
+            }
+          }} />
       </div>
     </div>
   );
@@ -304,26 +306,26 @@ const badgeStatus: { [modelStatus: number]: PresenceBadgeStatus } = {
 };
 
 export const Chat: FC = observer(() => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const port = commonStore.getCurrentModelConfig().apiParameters.apiPort;
 
   return (
     <div className="flex flex-col gap-1 p-2 h-full overflow-hidden">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <PresenceBadge status={badgeStatus[commonStore.modelStatus]}/>
+          <PresenceBadge status={badgeStatus[commonStore.modelStatus]} />
           <Text size={100}>{t('Model Status') + ': ' + t(statusText[commonStore.modelStatus])}</Text>
         </div>
         <div className="flex items-center gap-2">
-          <ConfigSelector size="small"/>
-          <RunButton iconMode/>
+          <ConfigSelector size="small" />
+          <RunButton iconMode />
         </div>
       </div>
       <Text size={100}>
         {t('This tool’s API is compatible with OpenAI API. It can be used with any ChatGPT tool you like. Go to the settings of some ChatGPT tool, replace the \'https://api.openai.com\' part in the API address with \'') + `http://127.0.0.1:${port}` + '\'.'}
       </Text>
-      <Divider style={{flexGrow: 0}}/>
-      <ChatPanel/>
+      <Divider style={{ flexGrow: 0 }} />
+      <ChatPanel />
     </div>
   );
 });
