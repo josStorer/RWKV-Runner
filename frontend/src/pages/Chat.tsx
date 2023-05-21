@@ -170,6 +170,7 @@ const ChatPanel: FC = observer(() => {
           scrollToBottom();
           if (e.data === '[DONE]') {
             commonStore.conversations[answerId].done = true;
+            commonStore.conversations[answerId].content = commonStore.conversations[answerId].content.trim();
             commonStore.setConversations(commonStore.conversations);
             commonStore.setConversationsOrder([...commonStore.conversationsOrder]);
             return;
