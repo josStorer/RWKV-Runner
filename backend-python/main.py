@@ -53,5 +53,16 @@ def exit():
     parent.kill()
 
 
+def debug():
+    model = RWKV(
+        model="../models/RWKV-4-Raven-7B-v11-Eng49%-Chn49%-Jpn1%-Other1%-20230430-ctx8192.pth",
+        strategy="cuda fp16",
+        tokens_path="20B_tokenizer.json",
+    )
+    d = model.tokenizer.decode([])
+    print(d)
+
+
 if __name__ == "__main__":
     uvicorn.run("main:app", port=8000 if len(sys.argv) == 1 else int(sys.argv[1]))
+    # debug()

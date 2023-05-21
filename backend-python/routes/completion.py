@@ -42,9 +42,23 @@ async def completions(body: CompletionBody, request: Request):
     completion_text = ""
     for message in body.messages:
         if message.role == "user":
-            completion_text += "Bob: " + message.content + "\n\n"
+            completion_text += (
+                "Bob: "
+                + message.content.replace("\\n", "\n")
+                .replace("\r\n", "\n")
+                .replace("\n\n", "\n")
+                .strip()
+                + "\n\n"
+            )
         elif message.role == "assistant":
-            completion_text += "Alice: " + message.content + "\n\n"
+            completion_text += (
+                "Alice: "
+                + message.content.replace("\\n", "\n")
+                .replace("\r\n", "\n")
+                .replace("\n\n", "\n")
+                .strip()
+                + "\n\n"
+            )
     completion_text += "Alice:"
 
     async def eval_rwkv():
