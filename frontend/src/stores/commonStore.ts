@@ -1,14 +1,14 @@
-import {makeAutoObservable} from 'mobx';
-import {getUserLanguage, isSystemLightMode, saveConfigs} from '../utils';
-import {WindowSetDarkTheme, WindowSetLightTheme} from '../../wailsjs/runtime';
+import { makeAutoObservable } from 'mobx';
+import { getUserLanguage, isSystemLightMode, saveConfigs } from '../utils';
+import { WindowSetDarkTheme, WindowSetLightTheme } from '../../wailsjs/runtime';
 import manifest from '../../../manifest.json';
-import {defaultModelConfigs, ModelConfig} from '../pages/Configs';
-import {Conversations} from '../pages/Chat';
-import {ModelSourceItem} from '../pages/Models';
-import {DownloadStatus} from '../pages/Downloads';
-import {SettingsType} from '../pages/Settings';
-import {IntroductionContent} from '../pages/Home';
-import {AboutContent} from '../pages/About';
+import { defaultModelConfigs, ModelConfig } from '../pages/Configs';
+import { Conversations } from '../pages/Chat';
+import { ModelSourceItem } from '../pages/Models';
+import { DownloadStatus } from '../pages/Downloads';
+import { SettingsType } from '../pages/Settings';
+import { IntroductionContent } from '../pages/Home';
+import { AboutContent } from '../pages/About';
 import i18n from 'i18next';
 
 export enum ModelStatus {
@@ -50,6 +50,7 @@ class CommonStore {
     language: getUserLanguage(),
     darkMode: !isSystemLightMode(),
     autoUpdatesCheck: true,
+    giteeUpdatesSource: getUserLanguage() === 'zh',
     cnMirror: getUserLanguage() === 'zh'
   };
 
@@ -114,7 +115,7 @@ class CommonStore {
   };
 
   setSettings = (value: Partial<SettingsType>, saveConfig: boolean = true) => {
-    this.settings = {...this.settings, ...value};
+    this.settings = { ...this.settings, ...value };
 
     if (this.settings.darkMode)
       WindowSetDarkTheme();

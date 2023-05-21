@@ -96,5 +96,6 @@
   "Install": "安装",
   "This is the latest version": "已是最新版",
   "Use Tsinghua Pip Mirrors": "使用清华大学Pip镜像源",
-  "Model Config Exception": "模型配置异常"
+  "Model Config Exception": "模型配置异常",
+  "Use Gitee Updates Source": "使用Gitee更新源"
 }
