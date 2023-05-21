@@ -51,63 +51,71 @@ async def completions(body: CompletionBody, request: Request):
         while completion_lock.locked():
             await asyncio.sleep(0.1)
         else:
-            with completion_lock:
-                set_rwkv_config(model, global_var.get(global_var.Model_Config))
-                set_rwkv_config(model, body)
-                if body.stream:
-                    for response, delta in rwkv_generate(
-                        model, completion_text, stop="\n\nBob"
-                    ):
-                        if await request.is_disconnected():
-                            break
-                        yield json.dumps(
-                            {
-                                "response": response,
-                                "model": "rwkv",
-                                "choices": [
-                                    {
-                                        "delta": {"content": delta},
-                                        "index": 0,
-                                        "finish_reason": None,
-                                    }
-                                ],
-                            }
-                        )
+            completion_lock.acquire()
+            set_rwkv_config(model, global_var.get(global_var.Model_Config))
+            set_rwkv_config(model, body)
+            if body.stream:
+                for response, delta in rwkv_generate(
+                    model, completion_text, stop="\n\nBob"
+                ):
+                    if await request.is_disconnected():
+                        break
                     yield json.dumps(
                         {
                             "response": response,
                             "model": "rwkv",
                             "choices": [
                                 {
-                                    "delta": {},
+                                    "delta": {"content": delta},
                                     "index": 0,
-                                    "finish_reason": "stop",
+                                    "finish_reason": None,
                                 }
                             ],
                         }
                     )
-                    yield "[DONE]"
-                else:
-                    response = None
-                    for response, delta in rwkv_generate(
-                        model, completion_text, stop="\n\nBob"
-                    ):
-                        pass
-                    yield {
+                if await request.is_disconnected():
+                    completion_lock.release()
+                    return
+                yield json.dumps(
+                    {
                         "response": response,
                         "model": "rwkv",
                         "choices": [
                             {
-                                "message": {
-                                    "role": "assistant",
-                                    "content": response,
-                                },
+                                "delta": {},
                                 "index": 0,
                                 "finish_reason": "stop",
                             }
                         ],
                     }
-                # torch_gc()
+                )
+                yield "[DONE]"
+            else:
+                response = None
+                for response, delta in rwkv_generate(
+                    model, completion_text, stop="\n\nBob"
+                ):
+                    if await request.is_disconnected():
+                        break
+                if await request.is_disconnected():
+                    completion_lock.release()
+                    return
+                yield {
+                    "response": response,
+                    "model": "rwkv",
+                    "choices": [
+                        {
+                            "message": {
+                                "role": "assistant",
+                                "content": response,
+                            },
+                            "index": 0,
+                            "finish_reason": "stop",
+                        }
+                    ],
+                }
+            # torch_gc()
+            completion_lock.release()
 
     if body.stream:
         return EventSourceResponse(eval_rwkv())
