@@ -9,6 +9,7 @@ import {DownloadStatus} from '../pages/Downloads';
 import {SettingsType} from '../pages/Settings';
 import {IntroductionContent} from '../pages/Home';
 import {AboutContent} from '../pages/About';
+import i18n from 'i18next';
 
 export enum ModelStatus {
   Offline,
@@ -119,6 +120,9 @@ class CommonStore {
       WindowSetDarkTheme();
     else
       WindowSetLightTheme();
+
+    if (this.settings.language)
+      i18n.changeLanguage(this.settings.language);
 
     if (saveConfig)
       saveConfigs();
