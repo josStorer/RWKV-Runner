@@ -18,6 +18,7 @@ export type SettingsType = {
   language: Language,
   darkMode: boolean
   autoUpdatesCheck: boolean
+  cnMirror: boolean
 }
 
 export const Settings: FC = observer(() => {
@@ -63,6 +64,17 @@ export const Settings: FC = observer(() => {
                       checkUpdate(true);
                   }}/>
         }/>
+        {
+          commonStore.settings.language === 'zh' &&
+          <Labeled label={t('Use Tsinghua Pip Mirrors')} flex spaceBetween content={
+            <Switch checked={commonStore.settings.cnMirror}
+                    onChange={(e, data) => {
+                      commonStore.setSettings({
+                        cnMirror: data.checked
+                      });
+                    }}/>
+          }/>
+        }
       </div>
     }/>
   );

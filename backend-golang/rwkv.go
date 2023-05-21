@@ -34,12 +34,16 @@ func (a *App) DepCheck() error {
 	return nil
 }
 
-func (a *App) InstallPyDep() (string, error) {
+func (a *App) InstallPyDep(cnMirror bool) (string, error) {
 	python, err := GetPython()
 	if err != nil {
 		return "", err
 	}
-	_, err = Cmd(python, "./backend-python/get-pip.py")
+	if cnMirror {
+		_, err = Cmd(python, "./backend-python/get-pip.py", "-i", "https://pypi.tuna.tsinghua.edu.cn/simple")
+	} else {
+		_, err = Cmd(python, "./backend-python/get-pip.py")
+	}
 	if err != nil {
 		return "", err
 	}
@@ -48,5 +52,9 @@ func (a *App) InstallPyDep() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return Cmd(python, "-m", "pip", "install", "-r", "./backend-python/requirements_versions.txt")
+	if cnMirror {
+		return Cmd(python, "-m", "pip", "install", "-r", "./backend-python/requirements_versions.txt", "-i", "https://pypi.tuna.tsinghua.edu.cn/simple")
+	} else {
+		return Cmd(python, "-m", "pip", "install", "-r", "./backend-python/requirements_versions.txt")
+	}
 }

@@ -52,7 +52,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
           });
         } else if (depErrorMsg.includes('DepCheck Error')) {
           toastWithButton(t('Python dependencies are incomplete, would you like to install them?'), t('Install'), () => {
-            InstallPyDep();
+            InstallPyDep(commonStore.settings.cnMirror);
           });
         } else {
           toast(depErrorMsg, {type: 'error'});

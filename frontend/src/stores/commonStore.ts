@@ -48,7 +48,8 @@ class CommonStore {
   settings: SettingsType = {
     language: getUserLanguage(),
     darkMode: !isSystemLightMode(),
-    autoUpdatesCheck: true
+    autoUpdatesCheck: true,
+    cnMirror: getUserLanguage() === 'zh'
   };
 
   // about
