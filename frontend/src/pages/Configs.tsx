@@ -50,21 +50,496 @@ export type ModelConfig = {
 
 export const defaultModelConfigs: ModelConfig[] = [
   {
-    name: 'Default',
+    name: 'GPU-2G-1B5-EN',
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
       temperature: 1,
-      topP: 1,
-      presencePenalty: 0,
-      frequencyPenalty: 0
+      topP: 0.7,
+      presencePenalty: 0.1,
+      frequencyPenalty: 0.1
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-1B5-v11-Eng99%-Other1%-20230425-ctx4096.pth',
+      device: 'CUDA',
+      precision: 'int8',
+      storedLayers: 4,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: true
+    }
+  },
+  {
+    name: 'GPU-4G-1B5-EN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1,
+      topP: 0.7,
+      presencePenalty: 0.1,
+      frequencyPenalty: 0.1
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-1B5-v11-Eng99%-Other1%-20230425-ctx4096.pth',
+      device: 'CUDA',
+      precision: 'int8',
+      storedLayers: 41,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: false
+    }
+  },
+  {
+    name: 'GPU-4G-3B-EN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1,
+      topP: 0.7,
+      presencePenalty: 0.1,
+      frequencyPenalty: 0.1
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-3B-v11-Eng99%-Other1%-20230425-ctx4096.pth',
+      device: 'CUDA',
+      precision: 'int8',
+      storedLayers: 24,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: true
+    }
+  },
+  {
+    name: 'GPU-4G-3B-CN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1,
+      topP: 0.7,
+      presencePenalty: 0.1,
+      frequencyPenalty: 0.1
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-3B-v11-Eng49%-Chn49%-Jpn1%-Other1%-20230429-ctx4096.pth',
+      device: 'CUDA',
+      precision: 'int8',
+      storedLayers: 24,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: true
+    }
+  },
+  {
+    name: 'GPU-4G-7B-EN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1,
+      topP: 0.7,
+      presencePenalty: 0.1,
+      frequencyPenalty: 0.1
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-7B-v11x-Eng99%-Other1%-20230429-ctx8192.pth',
+      device: 'CUDA',
+      precision: 'int8',
+      storedLayers: 8,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: true
+    }
+  },
+  {
+    name: 'GPU-4G-7B-CN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1,
+      topP: 0.7,
+      presencePenalty: 0.1,
+      frequencyPenalty: 0.1
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-7B-v11-Eng49%-Chn49%-Jpn1%-Other1%-20230430-ctx8192.pth',
+      device: 'CUDA',
+      precision: 'int8',
+      storedLayers: 8,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: true
+    }
+  },
+  {
+    name: 'GPU-6G-1B5-EN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1,
+      topP: 0.7,
+      presencePenalty: 0.1,
+      frequencyPenalty: 0.1
     },
     modelParameters: {
       modelName: 'RWKV-4-Raven-1B5-v11-Eng99%-Other1%-20230425-ctx4096.pth',
       device: 'CUDA',
       precision: 'fp16',
-      storedLayers: 25,
-      maxStoredLayers: 25,
+      storedLayers: 41,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: false
+    }
+  },
+  {
+    name: 'GPU-6G-3B-EN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1,
+      topP: 0.7,
+      presencePenalty: 0.1,
+      frequencyPenalty: 0.1
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-3B-v11-Eng99%-Other1%-20230425-ctx4096.pth',
+      device: 'CUDA',
+      precision: 'int8',
+      storedLayers: 41,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: false
+    }
+  },
+  {
+    name: 'GPU-6G-3B-CN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1,
+      topP: 0.7,
+      presencePenalty: 0.1,
+      frequencyPenalty: 0.1
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-3B-v11-Eng49%-Chn49%-Jpn1%-Other1%-20230429-ctx4096.pth',
+      device: 'CUDA',
+      precision: 'int8',
+      storedLayers: 41,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: false
+    }
+  },
+  {
+    name: 'GPU-6G-7B-EN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1,
+      topP: 0.7,
+      presencePenalty: 0.1,
+      frequencyPenalty: 0.1
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-7B-v11x-Eng99%-Other1%-20230429-ctx8192.pth',
+      device: 'CUDA',
+      precision: 'int8',
+      storedLayers: 18,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: true
+    }
+  },
+  {
+    name: 'GPU-6G-7B-CN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1,
+      topP: 0.7,
+      presencePenalty: 0.1,
+      frequencyPenalty: 0.1
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-7B-v11-Eng49%-Chn49%-Jpn1%-Other1%-20230430-ctx8192.pth',
+      device: 'CUDA',
+      precision: 'int8',
+      storedLayers: 18,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: true
+    }
+  },
+  {
+    name: 'GPU-8G-3B-EN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1,
+      topP: 0.7,
+      presencePenalty: 0.1,
+      frequencyPenalty: 0.1
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-3B-v11-Eng99%-Other1%-20230425-ctx4096.pth',
+      device: 'CUDA',
+      precision: 'fp16',
+      storedLayers: 41,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: false
+    }
+  },
+  {
+    name: 'GPU-8G-3B-CN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1,
+      topP: 0.7,
+      presencePenalty: 0.1,
+      frequencyPenalty: 0.1
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-3B-v11-Eng49%-Chn49%-Jpn1%-Other1%-20230429-ctx4096.pth',
+      device: 'CUDA',
+      precision: 'fp16',
+      storedLayers: 41,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: false
+    }
+  },
+  {
+    name: 'GPU-10G-7B-EN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1,
+      topP: 0.7,
+      presencePenalty: 0.1,
+      frequencyPenalty: 0.1
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-7B-v11x-Eng99%-Other1%-20230429-ctx8192.pth',
+      device: 'CUDA',
+      precision: 'int8',
+      storedLayers: 41,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: false
+    }
+  },
+  {
+    name: 'GPU-10G-7B-CN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1,
+      topP: 0.7,
+      presencePenalty: 0.1,
+      frequencyPenalty: 0.1
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-7B-v11-Eng49%-Chn49%-Jpn1%-Other1%-20230430-ctx8192.pth',
+      device: 'CUDA',
+      precision: 'int8',
+      storedLayers: 41,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: false
+    }
+  },
+  {
+    name: 'GPU-12G-7B-EN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1,
+      topP: 0.7,
+      presencePenalty: 0.1,
+      frequencyPenalty: 0.1
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-7B-v11x-Eng99%-Other1%-20230429-ctx8192.pth',
+      device: 'CUDA',
+      precision: 'fp16',
+      storedLayers: 22,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: false
+    }
+  },
+  {
+    name: 'GPU-12G-7B-CN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1,
+      topP: 0.7,
+      presencePenalty: 0.1,
+      frequencyPenalty: 0.1
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-7B-v11-Eng49%-Chn49%-Jpn1%-Other1%-20230430-ctx8192.pth',
+      device: 'CUDA',
+      precision: 'fp16',
+      storedLayers: 22,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: false
+    }
+  },
+  {
+    name: 'GPU-16G-7B-EN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1,
+      topP: 0.7,
+      presencePenalty: 0.1,
+      frequencyPenalty: 0.1
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-7B-v11x-Eng99%-Other1%-20230429-ctx8192.pth',
+      device: 'CUDA',
+      precision: 'fp16',
+      storedLayers: 41,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: false
+    }
+  },
+  {
+    name: 'GPU-12G-7B-CN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1,
+      topP: 0.7,
+      presencePenalty: 0.1,
+      frequencyPenalty: 0.1
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-7B-v11-Eng49%-Chn49%-Jpn1%-Other1%-20230430-ctx8192.pth',
+      device: 'CUDA',
+      precision: 'fp16',
+      storedLayers: 41,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: false
+    }
+  },
+  {
+    name: 'GPU-18G-14B-EN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1,
+      topP: 0.7,
+      presencePenalty: 0.1,
+      frequencyPenalty: 0.1
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-14B-v11x-Eng99%-Other1%-20230501-ctx8192.pth',
+      device: 'CUDA',
+      precision: 'int8',
+      storedLayers: 41,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: false
+    }
+  },
+  {
+    name: 'GPU-32G-14B-EN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1,
+      topP: 0.7,
+      presencePenalty: 0.1,
+      frequencyPenalty: 0.1
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-14B-v11x-Eng99%-Other1%-20230501-ctx8192.pth',
+      device: 'CUDA',
+      precision: 'fp16',
+      storedLayers: 41,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: false
+    }
+  },
+  {
+    name: 'CPU-6G-1B5-EN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1,
+      topP: 0.7,
+      presencePenalty: 0.1,
+      frequencyPenalty: 0.1
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-1B5-v11-Eng99%-Other1%-20230425-ctx4096.pth',
+      device: 'CPU',
+      precision: 'fp32',
+      storedLayers: 41,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: false
+    }
+  },
+  {
+    name: 'CPU-12G-3B-EN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1,
+      topP: 0.7,
+      presencePenalty: 0.1,
+      frequencyPenalty: 0.1
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-3B-v11-Eng99%-Other1%-20230425-ctx4096.pth',
+      device: 'CPU',
+      precision: 'fp32',
+      storedLayers: 41,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: false
+    }
+  },
+  {
+    name: 'CPU-12G-3B-CN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1,
+      topP: 0.7,
+      presencePenalty: 0.1,
+      frequencyPenalty: 0.1
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-3B-v11-Eng49%-Chn49%-Jpn1%-Other1%-20230429-ctx4096.pth',
+      device: 'CPU',
+      precision: 'fp32',
+      storedLayers: 41,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: false
+    }
+  },
+  {
+    name: 'CPU-28G-7B-EN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1,
+      topP: 0.7,
+      presencePenalty: 0.1,
+      frequencyPenalty: 0.1
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-7B-v11x-Eng99%-Other1%-20230429-ctx8192.pth',
+      device: 'CPU',
+      precision: 'fp32',
+      storedLayers: 41,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: false
+    }
+  },
+  {
+    name: 'CPU-28G-7B-CN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1,
+      topP: 0.7,
+      presencePenalty: 0.1,
+      frequencyPenalty: 0.1
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-7B-v11-Eng49%-Chn49%-Jpn1%-Other1%-20230430-ctx8192.pth',
+      device: 'CPU',
+      precision: 'fp32',
+      storedLayers: 41,
+      maxStoredLayers: 41,
       enableHighPrecisionForLastLayer: false
     }
   }
