@@ -48,7 +48,7 @@ func (a *App) PauseDownload(url string) {
 			}
 
 			downloadList[i] = DownloadStatus{
-				resp:        nil,
+				resp:        ds.resp,
 				Name:        ds.Name,
 				Path:        ds.Path,
 				Url:         ds.Url,
