@@ -392,7 +392,7 @@ export const defaultModelConfigs: ModelConfig[] = [
     }
   },
   {
-    name: 'GPU-12G-7B-CN',
+    name: 'GPU-16G-7B-CN',
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
