@@ -11,10 +11,6 @@
   "localModelDir": "models",
   "programFiles": [
     {
-      "url": "https://raw.githubusercontent.com/josStorer/RWKV-Runner/master/cmd-helper.bat",
-      "path": "cmd-helper.bat"
-    },
-    {
       "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/backend-python/requirements.txt",
       "path": "backend-python/requirements.txt"
     },
@@ -63,7 +59,7 @@
       "path": "backend-python/20B_tokenizer.json"
     },
     {
-      "url": "https://raw.githubusercontent.com/pypa/get-pip/main/public/get-pip.py",
+      "url": "https://bootstrap.pypa.io/get-pip.py",
       "path": "backend-python/get-pip.py"
     }
   ],

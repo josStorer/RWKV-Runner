@@ -13,6 +13,12 @@ import (
 )
 
 func Cmd(args ...string) (string, error) {
+	_, err := os.Stat("cmd-helper.bat")
+	if err != nil {
+		if err := os.WriteFile("./cmd-helper.bat", []byte("start %*"), 0644); err != nil {
+			return "", err
+		}
+	}
 	cmdHelper, err := filepath.Abs("./cmd-helper")
 	if err != nil {
 		return "", err
