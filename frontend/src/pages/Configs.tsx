@@ -734,7 +734,7 @@ export const Configs: FC = observer(() => {
                     }).catch(e => {
                       toast(`${t('Convert Failed')} - ${e.message || e}`, { type: 'error' });
                     });
-                    setTimeout(WindowShow, 1000)
+                    setTimeout(WindowShow, 1000);
                   } else {
                     toast(`${t('Model Not Found')} - ${modelPath}`, { type: 'error' });
                   }

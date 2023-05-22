@@ -1,10 +1,10 @@
-import {FC, ReactElement} from 'react';
-import {Card, Text} from '@fluentui/react-components';
+import { FC, ReactElement } from 'react';
+import { Card, Text } from '@fluentui/react-components';
 
 export const Section: FC<{
   title: string; desc?: string | null, content: ReactElement, outline?: boolean
 }> =
-  ({title, desc, content, outline = true}) => {
+  ({ title, desc, content, outline = true }) => {
     return (
       <Card size="small" appearance={outline ? 'outline' : 'subtle'}>
         <div className="flex flex-col gap-5">

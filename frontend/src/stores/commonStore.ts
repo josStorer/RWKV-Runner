@@ -19,32 +19,22 @@ export enum ModelStatus {
 }
 
 class CommonStore {
-  constructor() {
-    makeAutoObservable(this);
-  }
-
   // global
   modelStatus: ModelStatus = ModelStatus.Offline;
   depComplete: boolean = false;
-
   // home
   introduction: IntroductionContent = manifest.introduction;
-
   // chat
   conversations: Conversations = {};
   conversationsOrder: string[] = [];
-
   // configs
   currentModelConfigIndex: number = 0;
   modelConfigs: ModelConfig[] = [];
-
   // models
   modelSourceManifestList: string = 'https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/manifest.json;';
   modelSourceList: ModelSourceItem[] = [];
-
   // downloads
   downloadList: DownloadStatus[] = [];
-
   // settings
   settings: SettingsType = {
     language: getUserLanguage(),
@@ -53,9 +43,12 @@ class CommonStore {
     giteeUpdatesSource: getUserLanguage() === 'zh',
     cnMirror: getUserLanguage() === 'zh'
   };
-
   // about
   about: AboutContent = manifest.about;
+
+  constructor() {
+    makeAutoObservable(this);
+  }
 
   getCurrentModelConfig = () => {
     return this.modelConfigs[this.currentModelConfigIndex];

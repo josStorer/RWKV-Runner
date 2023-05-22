@@ -1,13 +1,13 @@
-import React, {FC, useEffect} from 'react';
-import {useTranslation} from 'react-i18next';
-import {Page} from '../components/Page';
-import {observer} from 'mobx-react-lite';
+import React, { FC, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Page } from '../components/Page';
+import { observer } from 'mobx-react-lite';
 import commonStore from '../stores/commonStore';
-import {Divider, Field, ProgressBar} from '@fluentui/react-components';
-import {bytesToGb, bytesToKb, bytesToMb, refreshLocalModels} from '../utils';
-import {ToolTipButton} from '../components/ToolTipButton';
-import {Folder20Regular, Pause20Regular, Play20Regular} from '@fluentui/react-icons';
-import {ContinueDownload, OpenFileFolder, PauseDownload} from '../../wailsjs/go/backend_golang/App';
+import { Divider, Field, ProgressBar } from '@fluentui/react-components';
+import { bytesToGb, bytesToKb, bytesToMb, refreshLocalModels } from '../utils';
+import { ToolTipButton } from '../components/ToolTipButton';
+import { Folder20Regular, Pause20Regular, Play20Regular } from '@fluentui/react-icons';
+import { ContinueDownload, OpenFileFolder, PauseDownload } from '../../wailsjs/go/backend_golang/App';
 
 export type DownloadStatus = {
   name: string;
@@ -22,11 +22,11 @@ export type DownloadStatus = {
 }
 
 export const Downloads: FC = observer(() => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const finishedModelsLen = commonStore.downloadList.filter((status) => status.done && status.name.endsWith('.pth')).length;
   useEffect(() => {
     if (finishedModelsLen > 0)
-      refreshLocalModels({models: commonStore.modelSourceList}, false);
+      refreshLocalModels({ models: commonStore.modelSourceList }, false);
     console.log('finishedModelsLen:', finishedModelsLen);
   }, [finishedModelsLen]);
 
@@ -51,26 +51,26 @@ export const Downloads: FC = observer(() => {
               validationState={status.done ? 'success' : 'none'}
             >
               <div className="flex items-center gap-2">
-                <ProgressBar className="grow" value={status.progress} max={100}/>
+                <ProgressBar className="grow" value={status.progress} max={100} />
                 {!status.done &&
                   <ToolTipButton desc={status.downloading ? t('Pause') : t('Continue')}
-                                 icon={status.downloading ? <Pause20Regular/> : <Play20Regular/>}
-                                 onClick={() => {
-                                   if (status.downloading)
-                                     PauseDownload(status.url);
-                                   else
-                                     ContinueDownload(status.url);
-                                 }}/>}
-                <ToolTipButton desc={t('Open Folder')} icon={<Folder20Regular/>} onClick={() => {
+                    icon={status.downloading ? <Pause20Regular /> : <Play20Regular />}
+                    onClick={() => {
+                      if (status.downloading)
+                        PauseDownload(status.url);
+                      else
+                        ContinueDownload(status.url);
+                    }} />}
+                <ToolTipButton desc={t('Open Folder')} icon={<Folder20Regular />} onClick={() => {
                   OpenFileFolder(status.path);
-                }}/>
+                }} />
               </div>
             </Field>
-            <Divider style={{flexGrow: 0}}/>
+            <Divider style={{ flexGrow: 0 }} />
           </div>;
         })
         }
       </div>
-    }/>
+    } />
   );
 });

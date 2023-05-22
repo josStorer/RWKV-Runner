@@ -23,18 +23,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import {FluentProvider, Tab, TabList, webDarkTheme, webLightTheme} from '@fluentui/react-components';
-import {FC, useEffect, useState} from 'react';
-import {Route, Routes, useLocation, useNavigate} from 'react-router';
-import {pages} from './pages';
-import {useMediaQuery} from 'usehooks-ts';
-import {ToastContainer} from 'react-toastify';
+import { FluentProvider, Tab, TabList, webDarkTheme, webLightTheme } from '@fluentui/react-components';
+import { FC, useEffect, useState } from 'react';
+import { Route, Routes, useLocation, useNavigate } from 'react-router';
+import { pages } from './pages';
+import { useMediaQuery } from 'usehooks-ts';
+import { ToastContainer } from 'react-toastify';
 import commonStore from './stores/commonStore';
-import {observer} from 'mobx-react-lite';
-import {useTranslation} from 'react-i18next';
+import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
 
 const App: FC = observer(() => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const mq = useMediaQuery('(min-width: 640px)');
@@ -42,24 +42,24 @@ const App: FC = observer(() => {
   const [path, setPath] = useState<string>(pages[0].path);
 
   const selectTab = (selectedPath: unknown) =>
-    typeof selectedPath === 'string' ? navigate({pathname: selectedPath}) : null;
+    typeof selectedPath === 'string' ? navigate({ pathname: selectedPath }) : null;
 
   useEffect(() => setPath(location.pathname), [location]);
 
   return (
     <FluentProvider className="h-screen"
-                    theme={commonStore.settings.darkMode ? webDarkTheme : webLightTheme}
-                    data-theme={commonStore.settings.darkMode ? 'dark' : 'light'}>
+      theme={commonStore.settings.darkMode ? webDarkTheme : webLightTheme}
+      data-theme={commonStore.settings.darkMode ? 'dark' : 'light'}>
       <div className="flex h-full">
         <div className="flex flex-col w-16 sm:w-48 p-2 justify-between">
           <TabList
             size="large"
             appearance="subtle"
             selectedValue={path}
-            onTabSelect={(_, {value}) => selectTab(value)}
+            onTabSelect={(_, { value }) => selectTab(value)}
             vertical
           >
-            {pages.filter(page => page.top).map(({label, path, icon}, index) => (
+            {pages.filter(page => page.top).map(({ label, path, icon }, index) => (
               <Tab icon={icon} key={`${path}-${index}`} value={path}>
                 {mq && t(label)}
               </Tab>
@@ -69,10 +69,10 @@ const App: FC = observer(() => {
             size="large"
             appearance="subtle"
             selectedValue={path}
-            onTabSelect={(_, {value}) => selectTab(value)}
+            onTabSelect={(_, { value }) => selectTab(value)}
             vertical
           >
-            {pages.filter(page => !page.top).map(({label, path, icon}, index) => (
+            {pages.filter(page => !page.top).map(({ label, path, icon }, index) => (
               <Tab icon={icon} key={`${path}-${index}`} value={path}>
                 {mq && t(label)}
               </Tab>
@@ -81,8 +81,8 @@ const App: FC = observer(() => {
         </div>
         <div className="h-full w-full p-2 box-border overflow-y-hidden">
           <Routes>
-            {pages.map(({path, element}, index) => (
-              <Route key={`${path}-${index}`} path={path} element={element}/>
+            {pages.map(({ path, element }, index) => (
+              <Route key={`${path}-${index}`} path={path} element={element} />
             ))}
           </Routes>
         </div>

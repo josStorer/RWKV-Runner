@@ -1,4 +1,4 @@
-import commonStore, {ModelStatus} from '../stores/commonStore';
+import commonStore, { ModelStatus } from '../stores/commonStore';
 
 export const readRoot = async () => {
   const port = commonStore.getCurrentModelConfig().apiParameters.apiPort;
@@ -11,7 +11,7 @@ export const exit = async (timeout?: number) => {
     setTimeout(() => controller.abort(), timeout);
 
   const port = commonStore.getCurrentModelConfig().apiParameters.apiPort;
-  return fetch(`http://127.0.0.1:${port}/exit`, {method: 'POST', signal: controller.signal});
+  return fetch(`http://127.0.0.1:${port}/exit`, { method: 'POST', signal: controller.signal });
 };
 
 export const switchModel = async (body: any) => {
@@ -43,7 +43,7 @@ export const getStatus = async (timeout?: number): Promise<ModelStatus | undefin
 
   const port = commonStore.getCurrentModelConfig().apiParameters.apiPort;
   let ret: ModelStatus | undefined;
-  await fetch(`http://127.0.0.1:${port}/status`, {signal: controller.signal}).then(r => r.json()).then(data => {
+  await fetch(`http://127.0.0.1:${port}/status`, { signal: controller.signal }).then(r => r.json()).then(data => {
     ret = data.status;
   }).catch(() => {
   });

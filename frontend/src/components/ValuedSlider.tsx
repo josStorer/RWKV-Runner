@@ -1,7 +1,7 @@
-import React, {FC, useEffect, useRef} from 'react';
-import {Slider, Text} from '@fluentui/react-components';
-import {SliderOnChangeData} from '@fluentui/react-slider';
-import {NumberInput} from './NumberInput';
+import React, { FC, useEffect, useRef } from 'react';
+import { Slider, Text } from '@fluentui/react-components';
+import { SliderOnChangeData } from '@fluentui/react-slider';
+import { NumberInput } from './NumberInput';
 
 export const ValuedSlider: FC<{
   value: number,
@@ -10,7 +10,7 @@ export const ValuedSlider: FC<{
   step?: number,
   input?: boolean
   onChange?: (ev: React.ChangeEvent<HTMLInputElement>, data: SliderOnChangeData) => void
-}> = ({value, min, max, step, input, onChange}) => {
+}> = ({ value, min, max, step, input, onChange }) => {
   const sliderRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     if (step && sliderRef.current && sliderRef.current.parentElement) {
@@ -21,11 +21,11 @@ export const ValuedSlider: FC<{
 
   return (
     <div className="flex items-center">
-      <Slider ref={sliderRef} className="grow" style={{minWidth: '50%'}} value={value} min={min}
-              max={max} step={step}
-              onChange={onChange}/>
+      <Slider ref={sliderRef} className="grow" style={{ minWidth: '50%' }} value={value} min={min}
+        max={max} step={step}
+        onChange={onChange} />
       {input
-        ? <NumberInput style={{minWidth: 0}} value={value} min={min} max={max} step={step} onChange={onChange}/>
+        ? <NumberInput style={{ minWidth: 0 }} value={value} min={min} max={max} step={step} onChange={onChange} />
         : <Text>{value}</Text>}
     </div>
   );

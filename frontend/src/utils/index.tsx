@@ -102,15 +102,15 @@ export async function refreshRemoteModels(cache: { models: ModelSourceItem[] }) 
     url => fetch(url, { cache: 'no-cache' }).then(r => r.json()));
 
   await Promise.allSettled(requests)
-    .then((data: PromiseSettledResult<Cache>[]) => {
-      cache.models.push(...data.flatMap(d => {
-        if (d.status === 'fulfilled')
-          return d.value.models;
-        return [];
-      }));
-    })
-    .catch(() => {
-    });
+  .then((data: PromiseSettledResult<Cache>[]) => {
+    cache.models.push(...data.flatMap(d => {
+      if (d.status === 'fulfilled')
+        return d.value.models;
+      return [];
+    }));
+  })
+  .catch(() => {
+  });
   cache.models = cache.models.filter((model, index, self) => {
     return model.name.endsWith('.pth')
       && index === self.findIndex(
@@ -214,42 +214,42 @@ export async function checkUpdate(notifyEvenLatest: boolean = false) {
     'https://api.github.com/repos/josstorer/RWKV-Runner/releases/latest' :
     'https://gitee.com/api/v5/repos/josc146/RWKV-Runner/releases/latest'
   ).then((r) => {
-    if (r.ok) {
-      r.json().then((data) => {
-        if (data.tag_name) {
-          const versionTag = data.tag_name;
-          if (versionTag.replace('v', '') > manifest.version) {
-            updateUrl = !commonStore.settings.giteeUpdatesSource ?
-              `https://github.com/josStorer/RWKV-Runner/releases/download/${versionTag}/RWKV-Runner_windows_x64.exe` :
-              `https://gitee.com/josc146/RWKV-Runner/releases/download/${versionTag}/RWKV-Runner_windows_x64.exe`;
-            toastWithButton(t('New Version Available') + ': ' + versionTag, t('Update'), () => {
-              deletePythonProgramFiles();
-              setTimeout(() => {
-                UpdateApp(updateUrl).catch((e) => {
-                  toast(t('Update Error, Please restart this program') + ' - ' + e.message || e, {
-                    type: 'error',
-                    position: 'bottom-left',
-                    autoClose: false
+      if (r.ok) {
+        r.json().then((data) => {
+          if (data.tag_name) {
+            const versionTag = data.tag_name;
+            if (versionTag.replace('v', '') > manifest.version) {
+              updateUrl = !commonStore.settings.giteeUpdatesSource ?
+                `https://github.com/josStorer/RWKV-Runner/releases/download/${versionTag}/RWKV-Runner_windows_x64.exe` :
+                `https://gitee.com/josc146/RWKV-Runner/releases/download/${versionTag}/RWKV-Runner_windows_x64.exe`;
+              toastWithButton(t('New Version Available') + ': ' + versionTag, t('Update'), () => {
+                deletePythonProgramFiles();
+                setTimeout(() => {
+                  UpdateApp(updateUrl).catch((e) => {
+                    toast(t('Update Error, Please restart this program') + ' - ' + e.message || e, {
+                      type: 'error',
+                      position: 'bottom-left',
+                      autoClose: false
+                    });
                   });
-                });
-              }, 500);
-            }, {
-              autoClose: false,
-              position: 'bottom-left'
-            });
-          } else {
-            if (notifyEvenLatest) {
-              toast(t('This is the latest version'), { type: 'success', position: 'bottom-left', autoClose: 2000 });
+                }, 500);
+              }, {
+                autoClose: false,
+                position: 'bottom-left'
+              });
+            } else {
+              if (notifyEvenLatest) {
+                toast(t('This is the latest version'), { type: 'success', position: 'bottom-left', autoClose: 2000 });
+              }
             }
+          } else {
+            throw new Error('Invalid response.');
           }
-        } else {
-          throw new Error('Invalid response.');
-        }
-      });
-    } else {
-      throw new Error('Network response was not ok.');
+        });
+      } else {
+        throw new Error('Network response was not ok.');
+      }
     }
-  }
   ).catch((e) => {
     toast(t('Updates Check Error') + ' - ' + e.message || e, { type: 'error', position: 'bottom-left' });
   });

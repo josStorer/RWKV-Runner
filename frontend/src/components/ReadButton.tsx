@@ -1,14 +1,14 @@
-import {FC, useState} from 'react';
-import {MuteIcon, UnmuteIcon} from '@primer/octicons-react';
-import {useTranslation} from 'react-i18next';
-import {ToolTipButton} from './ToolTipButton';
+import { FC, useState } from 'react';
+import { MuteIcon, UnmuteIcon } from '@primer/octicons-react';
+import { useTranslation } from 'react-i18next';
+import { ToolTipButton } from './ToolTipButton';
 import commonStore from '../stores/commonStore';
-import {observer} from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
 
 const synth = window.speechSynthesis;
 
-export const ReadButton: FC<{ content: string }> = observer(({content}) => {
-  const {t} = useTranslation();
+export const ReadButton: FC<{ content: string }> = observer(({ content }) => {
+  const { t } = useTranslation();
   const [speaking, setSpeaking] = useState(false);
   let lang: string = commonStore.settings.language;
   if (lang === 'dev')
@@ -46,7 +46,8 @@ export const ReadButton: FC<{ content: string }> = observer(({content}) => {
   };
 
   return (
-    <ToolTipButton desc={t('Read Aloud')} size="small" appearance="subtle" icon={speaking ? <MuteIcon/> : <UnmuteIcon/>}
-                   onClick={speaking ? stopSpeak : startSpeak}/>
+    <ToolTipButton desc={t('Read Aloud')} size="small" appearance="subtle"
+      icon={speaking ? <MuteIcon /> : <UnmuteIcon />}
+      onClick={speaking ? stopSpeak : startSpeak} />
   );
 });

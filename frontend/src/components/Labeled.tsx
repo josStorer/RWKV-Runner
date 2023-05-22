@@ -1,16 +1,16 @@
-import {FC, ReactElement} from 'react';
-import {Label, Tooltip} from '@fluentui/react-components';
+import { FC, ReactElement } from 'react';
+import { Label, Tooltip } from '@fluentui/react-components';
 import classnames from 'classnames';
 
 export const Labeled: FC<{
   label: string; desc?: string | null, content: ReactElement, flex?: boolean, spaceBetween?: boolean
 }> = ({
-        label,
-        desc,
-        content,
-        flex,
-        spaceBetween
-      }) => {
+  label,
+  desc,
+  content,
+  flex,
+  spaceBetween
+}) => {
   return (
     <div className={classnames(
       'items-center',

@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, { FC } from 'react';
 import {
   createTableColumn,
   DataGrid,
@@ -12,17 +12,17 @@ import {
   Text,
   Textarea
 } from '@fluentui/react-components';
-import {ToolTipButton} from '../components/ToolTipButton';
-import {ArrowClockwise20Regular, ArrowDownload20Regular, Folder20Regular, Open20Regular} from '@fluentui/react-icons';
-import {observer} from 'mobx-react-lite';
+import { ToolTipButton } from '../components/ToolTipButton';
+import { ArrowClockwise20Regular, ArrowDownload20Regular, Folder20Regular, Open20Regular } from '@fluentui/react-icons';
+import { observer } from 'mobx-react-lite';
 import commonStore from '../stores/commonStore';
-import {BrowserOpenURL} from '../../wailsjs/runtime';
-import {AddToDownloadList, OpenFileFolder} from '../../wailsjs/go/backend_golang/App';
+import { BrowserOpenURL } from '../../wailsjs/runtime';
+import { AddToDownloadList, OpenFileFolder } from '../../wailsjs/go/backend_golang/App';
 import manifest from '../../../manifest.json';
-import {Page} from '../components/Page';
-import {bytesToGb, refreshModels, saveConfigs, toastWithButton} from '../utils';
-import {useTranslation} from 'react-i18next';
-import {useNavigate} from 'react-router';
+import { Page } from '../components/Page';
+import { bytesToGb, refreshModels, saveConfigs, toastWithButton } from '../utils';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
 
 export type ModelSourceItem = {
   name: string;
@@ -43,7 +43,7 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
       return a.name.localeCompare(b.name);
     },
     renderHeaderCell: () => {
-      const {t} = useTranslation();
+      const { t } = useTranslation();
 
       return t('File');
     },
@@ -69,7 +69,7 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
       return 0;
     },
     renderHeaderCell: () => {
-      const {t} = useTranslation();
+      const { t } = useTranslation();
 
       return t('Desc');
     },
@@ -91,7 +91,7 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
       return a.size - b.size;
     },
     renderHeaderCell: () => {
-      const {t} = useTranslation();
+      const { t } = useTranslation();
 
       return t('Size');
     },
@@ -113,7 +113,7 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
       return b.lastUpdatedMs - a.lastUpdatedMs;
     },
     renderHeaderCell: () => {
-      const {t} = useTranslation();
+      const { t } = useTranslation();
 
       return t('Last updated');
     },
@@ -128,12 +128,12 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
       return a.isLocal ? -1 : 1;
     },
     renderHeaderCell: () => {
-      const {t} = useTranslation();
+      const { t } = useTranslation();
 
       return t('Actions');
     },
     renderCell: (item) => {
-      const {t} = useTranslation();
+      const { t } = useTranslation();
       const navigate = useNavigate();
 
       return (
@@ -141,21 +141,21 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
           <div className="flex gap-1">
             {
               item.isLocal &&
-              <ToolTipButton desc={t('Open Folder')} icon={<Folder20Regular/>} onClick={() => {
+              <ToolTipButton desc={t('Open Folder')} icon={<Folder20Regular />} onClick={() => {
                 OpenFileFolder(`./${manifest.localModelDir}/${item.name}`);
-              }}/>
+              }} />
             }
             {item.downloadUrl && !item.isLocal &&
-              <ToolTipButton desc={t('Download')} icon={<ArrowDownload20Regular/>} onClick={() => {
+              <ToolTipButton desc={t('Download')} icon={<ArrowDownload20Regular />} onClick={() => {
                 toastWithButton(`${t('Downloading')} ${item.name}`, t('Check'), () => {
-                    navigate({pathname: '/downloads'});
+                    navigate({ pathname: '/downloads' });
                   },
-                  {autoClose: 3000});
+                  { autoClose: 3000 });
                 AddToDownloadList(`./${manifest.localModelDir}/${item.name}`, item.downloadUrl!);
-              }}/>}
-            {item.url && <ToolTipButton desc={t('Open Url')} icon={<Open20Regular/>} onClick={() => {
+              }} />}
+            {item.url && <ToolTipButton desc={t('Open Url')} icon={<Open20Regular />} onClick={() => {
               BrowserOpenURL(item.url!);
-            }}/>}
+            }} />}
           </div>
         </TableCellLayout>
       );
@@ -164,7 +164,7 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
 ];
 
 export const Models: FC = observer(() => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <Page title={t('Models')} content={
@@ -172,39 +172,39 @@ export const Models: FC = observer(() => {
         <div className="flex flex-col gap-1">
           <div className="flex justify-between items-center">
             <Text weight="medium">{t('Model Source Manifest List')}</Text>
-            <ToolTipButton desc={t('Refresh')} icon={<ArrowClockwise20Regular/>} onClick={() => {
+            <ToolTipButton desc={t('Refresh')} icon={<ArrowClockwise20Regular />} onClick={() => {
               refreshModels(false);
               saveConfigs();
-            }}/>
+            }} />
           </div>
           <Text size={100}>
             {t('Provide JSON file URLs for the models manifest. Separate URLs with semicolons. The "models" field in JSON files will be parsed into the following table.')}
           </Text>
           <Textarea size="large" resize="vertical"
-                    value={commonStore.modelSourceManifestList}
-                    onChange={(e, data) => commonStore.setModelSourceManifestList(data.value)}/>
+            value={commonStore.modelSourceManifestList}
+            onChange={(e, data) => commonStore.setModelSourceManifestList(data.value)} />
         </div>
         <div className="flex grow overflow-hidden">
           <DataGrid
             items={commonStore.modelSourceList}
             columns={columns}
             sortable={true}
-            defaultSortState={{sortColumn: 'actions', sortDirection: 'ascending'}}
-            style={{display: 'flex'}}
+            defaultSortState={{ sortColumn: 'actions', sortDirection: 'ascending' }}
+            style={{ display: 'flex' }}
             className="flex-col w-full"
           >
             <DataGridHeader>
               <DataGridRow>
-                {({renderHeaderCell}) => (
+                {({ renderHeaderCell }) => (
                   <DataGridHeaderCell>{renderHeaderCell()}</DataGridHeaderCell>
                 )}
               </DataGridRow>
             </DataGridHeader>
             <div className="overflow-y-auto overflow-x-hidden">
               <DataGridBody<ModelSourceItem>>
-                {({item, rowId}) => (
+                {({ item, rowId }) => (
                   <DataGridRow<ModelSourceItem> key={rowId}>
-                    {({renderCell}) => (
+                    {({ renderCell }) => (
                       <DataGridCell>{renderCell(item)}</DataGridCell>
                     )}
                   </DataGridRow>
@@ -214,6 +214,6 @@ export const Models: FC = observer(() => {
           </DataGrid>
         </div>
       </div>
-    }/>
+    } />
   );
 });

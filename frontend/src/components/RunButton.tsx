@@ -1,6 +1,12 @@
 import React, { FC, MouseEventHandler, ReactElement } from 'react';
 import commonStore, { ModelStatus } from '../stores/commonStore';
-import { AddToDownloadList, DepCheck, FileExists, InstallPyDep, StartServer } from '../../wailsjs/go/backend_golang/App';
+import {
+  AddToDownloadList,
+  DepCheck,
+  FileExists,
+  InstallPyDep,
+  StartServer
+} from '../../wailsjs/go/backend_golang/App';
 import { Button } from '@fluentui/react-components';
 import { observer } from 'mobx-react-lite';
 import { exit, readRoot, switchModel, updateConfig } from '../apis';
@@ -29,141 +35,141 @@ const iconModeButtonIcon: { [modelStatus: number]: ReactElement } = {
 
 export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean }>
   = observer(({
-    onClickRun,
-    iconMode
-  }) => {
-    const { t } = useTranslation();
-    const navigate = useNavigate();
+  onClickRun,
+  iconMode
+}) => {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
 
-    const onClickMainButton = async () => {
-      if (commonStore.modelStatus === ModelStatus.Offline) {
-        commonStore.setModelStatus(ModelStatus.Starting);
+  const onClickMainButton = async () => {
+    if (commonStore.modelStatus === ModelStatus.Offline) {
+      commonStore.setModelStatus(ModelStatus.Starting);
 
-        const modelConfig = commonStore.getCurrentModelConfig();
-        let modelName = ''
-        let modelPath = ''
-        if (modelConfig && modelConfig.modelParameters) {
-          modelName = modelConfig.modelParameters.modelName;
-          modelPath = `./${manifest.localModelDir}/${modelName}`;
-        } else {
-          toast(t('Model Config Exception'), { type: 'error' });
+      const modelConfig = commonStore.getCurrentModelConfig();
+      let modelName = '';
+      let modelPath = '';
+      if (modelConfig && modelConfig.modelParameters) {
+        modelName = modelConfig.modelParameters.modelName;
+        modelPath = `./${manifest.localModelDir}/${modelName}`;
+      } else {
+        toast(t('Model Config Exception'), { type: 'error' });
+        commonStore.setModelStatus(ModelStatus.Offline);
+        return;
+      }
+
+      if (!commonStore.depComplete) {
+        let depErrorMsg = '';
+        await DepCheck().catch((e) => {
+          depErrorMsg = e.message || e;
+          WindowShow();
+          if (depErrorMsg === 'python zip not found') {
+            toastWithButton(t('Python target not found, would you like to download it?'), t('Download'), () => {
+              toastWithButton(`${t('Downloading')} Python`, t('Check'), () => {
+                navigate({ pathname: '/downloads' });
+              }, { autoClose: 3000 });
+              AddToDownloadList('python-3.10.11-embed-amd64.zip', 'https://www.python.org/ftp/python/3.10.11/python-3.10.11-embed-amd64.zip');
+            });
+          } else if (depErrorMsg.includes('DepCheck Error')) {
+            toastWithButton(t('Python dependencies are incomplete, would you like to install them?'), t('Install'), () => {
+              InstallPyDep(commonStore.settings.cnMirror);
+              setTimeout(WindowShow, 1000);
+            });
+          } else {
+            toast(depErrorMsg, { type: 'error' });
+          }
+        });
+        if (depErrorMsg) {
           commonStore.setModelStatus(ModelStatus.Offline);
           return;
         }
+        commonStore.setDepComplete(true);
+        saveCache();
+      }
 
-        if (!commonStore.depComplete) {
-          let depErrorMsg = '';
-          await DepCheck().catch((e) => {
-            depErrorMsg = e.message || e;
-            WindowShow();
-            if (depErrorMsg === 'python zip not found') {
-              toastWithButton(t('Python target not found, would you like to download it?'), t('Download'), () => {
-                toastWithButton(`${t('Downloading')} Python`, t('Check'), () => {
-                  navigate({ pathname: '/downloads' });
-                }, { autoClose: 3000 });
-                AddToDownloadList('python-3.10.11-embed-amd64.zip', 'https://www.python.org/ftp/python/3.10.11/python-3.10.11-embed-amd64.zip');
-              });
-            } else if (depErrorMsg.includes('DepCheck Error')) {
-              toastWithButton(t('Python dependencies are incomplete, would you like to install them?'), t('Install'), () => {
-                InstallPyDep(commonStore.settings.cnMirror);
-                setTimeout(WindowShow, 1000)
-              });
-            } else {
-              toast(depErrorMsg, { type: 'error' });
-            }
-          });
-          if (depErrorMsg) {
-            commonStore.setModelStatus(ModelStatus.Offline);
-            return;
-          }
-          commonStore.setDepComplete(true);
-          saveCache();
-        }
-
-        if (!await FileExists(modelPath)) {
-          toastWithButton(t('Model file not found'), t('Download'), () => {
-            const downloadUrl = commonStore.modelSourceList.find(item => item.name === modelName)?.downloadUrl;
-            if (downloadUrl) {
-              toastWithButton(`${t('Downloading')} ${modelName}`, t('Check'), () => {
+      if (!await FileExists(modelPath)) {
+        toastWithButton(t('Model file not found'), t('Download'), () => {
+          const downloadUrl = commonStore.modelSourceList.find(item => item.name === modelName)?.downloadUrl;
+          if (downloadUrl) {
+            toastWithButton(`${t('Downloading')} ${modelName}`, t('Check'), () => {
                 navigate({ pathname: '/downloads' });
               },
-                { autoClose: 3000 });
-              AddToDownloadList(modelPath, downloadUrl);
-            } else {
-              toast(t('Can not find download url'), { type: 'error' });
-            }
-          });
-
-          commonStore.setModelStatus(ModelStatus.Offline);
-          return;
-        }
-
-        const port = modelConfig.apiParameters.apiPort;
-
-        await exit(1000).catch(() => {
+              { autoClose: 3000 });
+            AddToDownloadList(modelPath, downloadUrl);
+          } else {
+            toast(t('Can not find download url'), { type: 'error' });
+          }
         });
-        StartServer(port);
-        setTimeout(WindowShow, 1000)
 
-        let timeoutCount = 6;
-        let loading = false;
-        const intervalId = setInterval(() => {
-          readRoot()
-            .then(r => {
-              if (r.ok && !loading) {
-                clearInterval(intervalId);
-                commonStore.setModelStatus(ModelStatus.Loading);
-                loading = true;
+        commonStore.setModelStatus(ModelStatus.Offline);
+        return;
+      }
+
+      const port = modelConfig.apiParameters.apiPort;
+
+      await exit(1000).catch(() => {
+      });
+      StartServer(port);
+      setTimeout(WindowShow, 1000);
+
+      let timeoutCount = 6;
+      let loading = false;
+      const intervalId = setInterval(() => {
+        readRoot()
+        .then(r => {
+          if (r.ok && !loading) {
+            clearInterval(intervalId);
+            commonStore.setModelStatus(ModelStatus.Loading);
+            loading = true;
+            toast(t('Loading Model'), { type: 'info' });
+            updateConfig({
+              max_tokens: modelConfig.apiParameters.maxResponseToken,
+              temperature: modelConfig.apiParameters.temperature,
+              top_p: modelConfig.apiParameters.topP,
+              presence_penalty: modelConfig.apiParameters.presencePenalty,
+              frequency_penalty: modelConfig.apiParameters.frequencyPenalty
+            });
+            switchModel({
+              model: `${manifest.localModelDir}/${modelConfig.modelParameters.modelName}`,
+              strategy: getStrategy(modelConfig)
+            }).then((r) => {
+              if (r.ok) {
+                commonStore.setModelStatus(ModelStatus.Working);
+                toastWithButton(t('Startup Completed'), t('Chat'), () => {
+                  navigate({ pathname: '/chat' });
+                }, { type: 'success', autoClose: 3000 });
+              } else if (r.status === 304) {
                 toast(t('Loading Model'), { type: 'info' });
-                updateConfig({
-                  max_tokens: modelConfig.apiParameters.maxResponseToken,
-                  temperature: modelConfig.apiParameters.temperature,
-                  top_p: modelConfig.apiParameters.topP,
-                  presence_penalty: modelConfig.apiParameters.presencePenalty,
-                  frequency_penalty: modelConfig.apiParameters.frequencyPenalty
-                });
-                switchModel({
-                  model: `${manifest.localModelDir}/${modelConfig.modelParameters.modelName}`,
-                  strategy: getStrategy(modelConfig)
-                }).then((r) => {
-                  if (r.ok) {
-                    commonStore.setModelStatus(ModelStatus.Working);
-                    toastWithButton(t('Startup Completed'), t('Chat'), () => {
-                      navigate({ pathname: '/chat' });
-                    }, { type: 'success', autoClose: 3000 });
-                  } else if (r.status === 304) {
-                    toast(t('Loading Model'), { type: 'info' });
-                  } else {
-                    commonStore.setModelStatus(ModelStatus.Offline);
-                    toast(t('Failed to switch model'), { type: 'error' });
-                  }
-                }).catch(() => {
-                  commonStore.setModelStatus(ModelStatus.Offline);
-                  toast(t('Failed to switch model'), { type: 'error' });
-                });
+              } else {
+                commonStore.setModelStatus(ModelStatus.Offline);
+                toast(t('Failed to switch model'), { type: 'error' });
               }
             }).catch(() => {
-              if (timeoutCount <= 0) {
-                clearInterval(intervalId);
-                commonStore.setModelStatus(ModelStatus.Offline);
-              }
+              commonStore.setModelStatus(ModelStatus.Offline);
+              toast(t('Failed to switch model'), { type: 'error' });
             });
+          }
+        }).catch(() => {
+          if (timeoutCount <= 0) {
+            clearInterval(intervalId);
+            commonStore.setModelStatus(ModelStatus.Offline);
+          }
+        });
 
-          timeoutCount--;
-        }, 1000);
-      } else {
-        commonStore.setModelStatus(ModelStatus.Offline);
-        exit();
-      }
-    };
+        timeoutCount--;
+      }, 1000);
+    } else {
+      commonStore.setModelStatus(ModelStatus.Offline);
+      exit();
+    }
+  };
 
-    const onClick = async (e: any) => {
-      if (commonStore.modelStatus === ModelStatus.Offline)
-        await onClickRun?.(e);
-      await onClickMainButton();
-    };
+  const onClick = async (e: any) => {
+    if (commonStore.modelStatus === ModelStatus.Offline)
+      await onClickRun?.(e);
+    await onClickMainButton();
+  };
 
-    return (iconMode ?
+  return (iconMode ?
       <ToolTipButton disabled={commonStore.modelStatus === ModelStatus.Starting}
         icon={iconModeButtonIcon[commonStore.modelStatus]}
         desc={t(mainButtonText[commonStore.modelStatus])}
@@ -173,5 +179,5 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
         onClick={onClick}>
         {t(mainButtonText[commonStore.modelStatus])}
       </Button>
-    );
-  });
+  );
+});

@@ -1,4 +1,4 @@
-import zhHans from './zh-hans/main.json'
+import zhHans from './zh-hans/main.json';
 
 export const resources = {
   zh: {
@@ -34,4 +34,4 @@ export const resources = {
   // zhHant: {
   //   translation: zhHant,
   // },
-}
+};

@@ -1,9 +1,9 @@
 import commonStore from './stores/commonStore';
-import {ReadJson} from '../wailsjs/go/backend_golang/App';
-import {Cache, checkUpdate, downloadProgramFiles, LocalConfig, refreshModels, saveCache} from './utils';
-import {getStatus} from './apis';
-import {EventsOn} from '../wailsjs/runtime';
-import {defaultModelConfigs} from './pages/Configs';
+import { ReadJson } from '../wailsjs/go/backend_golang/App';
+import { Cache, checkUpdate, downloadProgramFiles, LocalConfig, refreshModels, saveCache } from './utils';
+import { getStatus } from './apis';
+import { EventsOn } from '../wailsjs/runtime';
+import { defaultModelConfigs } from './pages/Configs';
 
 export async function startup() {
   downloadProgramFiles();
@@ -26,13 +26,13 @@ export async function startup() {
 }
 
 async function initRemoteText() {
-  await fetch('https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/manifest.json', {cache: 'no-cache'})
-    .then(r => r.json()).then((data) => {
-      if (data.introduction)
-        commonStore.setIntroduction(data.introduction);
-      if (data.about)
-        commonStore.setAbout(data.about);
-    }).then(saveCache);
+  await fetch('https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/manifest.json', { cache: 'no-cache' })
+  .then(r => r.json()).then((data) => {
+    if (data.introduction)
+      commonStore.setIntroduction(data.introduction);
+    if (data.about)
+      commonStore.setAbout(data.about);
+  }).then(saveCache);
 }
 
 async function initConfig() {
