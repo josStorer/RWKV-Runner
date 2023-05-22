@@ -21,6 +21,7 @@ class ChatCompletionBody(ModelConfigBody):
     messages: List[Message]
     model: str = "rwkv"
     stream: bool = False
+    stop: str = None
 
 
 completion_lock = Lock()
@@ -70,7 +71,9 @@ async def chat_completions(body: ChatCompletionBody, request: Request):
             set_rwkv_config(model, body)
             if body.stream:
                 for response, delta in rwkv_generate(
-                    model, completion_text, stop="\n\nBob"
+                    model,
+                    completion_text,
+                    stop="\n\nBob" if body.stop is None else body.stop,
                 ):
                     if await request.is_disconnected():
                         break
@@ -107,7 +110,9 @@ async def chat_completions(body: ChatCompletionBody, request: Request):
             else:
                 response = None
                 for response, delta in rwkv_generate(
-                    model, completion_text, stop="\n\nBob"
+                    model,
+                    completion_text,
+                    stop="\n\nBob" if body.stop is None else body.stop,
                 ):
                     if await request.is_disconnected():
                         break
