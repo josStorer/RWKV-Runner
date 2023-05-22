@@ -633,7 +633,7 @@ export const Configs: FC = observer(() => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <Labeled label={t('API Port')}
                   desc={t('Open the following URL with your browser to view the API documentation') + `: http://127.0.0.1:${port}/docs. ` +
-                    t('This tool’s API is compatible with OpenAI API. It can be used with any ChatGPT tool you like. Go to the settings of some ChatGPT tool, replace the \'https://api.openai.com\' part in the API address with \'') + `http://127.0.0.1:${port}` + '\'.'}
+                    t('This tool\'s API is compatible with OpenAI API. It can be used with any ChatGPT tool you like. Go to the settings of some ChatGPT tool, replace the \'https://api.openai.com\' part in the API address with \'') + `http://127.0.0.1:${port}` + '\'.'}
                   content={
                     <NumberInput value={port} min={1} max={65535} step={1}
                       onChange={(e, data) => {

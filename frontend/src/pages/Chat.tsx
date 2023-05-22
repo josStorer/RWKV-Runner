@@ -323,7 +323,7 @@ export const Chat: FC = observer(() => {
         </div>
       </div>
       <Text size={100}>
-        {t('This tool’s API is compatible with OpenAI API. It can be used with any ChatGPT tool you like. Go to the settings of some ChatGPT tool, replace the \'https://api.openai.com\' part in the API address with \'') + `http://127.0.0.1:${port}` + '\'.'}
+        {t('This tool\'s API is compatible with OpenAI API. It can be used with any ChatGPT tool you like. Go to the settings of some ChatGPT tool, replace the \'https://api.openai.com\' part in the API address with \'') + `http://127.0.0.1:${port}` + '\'.'}
       </Text>
       <Divider style={{ flexGrow: 0 }} />
       <ChatPanel />
