@@ -6,7 +6,8 @@
 
 <div align="center">
 
-本项目旨在消除大语言模型的使用门槛，全自动为你处理一切，你只需要一个仅仅几MB的可执行程序。此外本项目提供了与OpenAI API兼容的接口，这意味着一切ChatGPT客户端都是RWKV客户端。
+本项目旨在消除大语言模型的使用门槛，全自动为你处理一切，你只需要一个仅仅几MB的可执行程序。此外本项目提供了与OpenAI
+API兼容的接口，这意味着一切ChatGPT客户端都是RWKV客户端。
 
 [![license][license-image]][license-url]
 [![release][release-image]][release-url]
@@ -30,7 +31,7 @@
 ## 功能
 
 - RWKV模型管理，一键启动
-- 与OpenAI API完全兼容，一切ChatGPT客户端，都是RWKV客户端
+- 与OpenAI API完全兼容，一切ChatGPT客户端，都是RWKV客户端。启动模型后，打开 http://127.0.0.1:8000/docs 查看详细内容
 - 全自动依赖安装，你只需要一个轻巧的可执行程序
 - 自带用户友好的聊天交互页面
 - 易于理解和操作的参数配置

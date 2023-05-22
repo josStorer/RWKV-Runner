@@ -6,7 +6,9 @@
 
 <div align="center">
 
-This project aims to eliminate the barriers of using large language models by automating everything for you. All you need is a lightweight executable program of just a few megabytes. Additionally, this project provides an interface compatible with the OpenAI API, which means that every ChatGPT client is an RWKV client.
+This project aims to eliminate the barriers of using large language models by automating everything for you. All you
+need is a lightweight executable program of just a few megabytes. Additionally, this project provides an interface
+compatible with the OpenAI API, which means that every ChatGPT client is an RWKV client.
 
 [![license][license-image]][license-url]
 [![release][release-image]][release-url]
@@ -30,7 +32,8 @@ English | [简体中文](README_ZH.md)
 ## Features
 
 - RWKV model management and one-click startup
-- Fully compatible with the OpenAI API, making every ChatGPT client an RWKV client
+- Fully compatible with the OpenAI API, making every ChatGPT client an RWKV client. After starting the model,
+  open http://127.0.0.1:8000/docs to view more details.
 - Automatic dependency installation, requiring only a lightweight executable program
 - User-friendly chat interaction interface included
 - Easy-to-understand and operate parameter configuration
