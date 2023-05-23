@@ -31,6 +31,8 @@ English | [简体中文](README_ZH.md)
 
 #### Default configs do not enable custom CUDA kernel acceleration, but I strongly recommend that you enable it and run with int8 precision, which is much faster and consumes much less VRAM. Go to the Configs page and turn on `Use Custom CUDA kernel to Accelerate`.
 
+#### For different tasks, adjusting API parameters can achieve better results. For example, for translation tasks, you can try setting Temperature to 1 and Top_P to 0.3.
+
 ## Features
 
 - RWKV model management and one-click startup
