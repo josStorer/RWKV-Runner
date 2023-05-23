@@ -1,3 +1,5 @@
+import os
+import pathlib
 from typing import Dict
 from langchain.llms import RWKV
 from pydantic import BaseModel
@@ -32,6 +34,10 @@ def get_rwkv_config(model: RWKV) -> ModelConfigBody:
         presence_penalty=model.penalty_alpha_presence,
         frequency_penalty=model.penalty_alpha_frequency,
     )
+
+
+# os.environ["RWKV_CUDA_ON"] = '1'
+# os.environ["TORCH_EXTENSIONS_DIR"] = f"{pathlib.Path(__file__).parent.parent.resolve()}"
 
 
 def rwkv_generate(model: RWKV, prompt: str, stop: str = None):
