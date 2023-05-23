@@ -65,6 +65,7 @@ const ChatPanel: FC = observer(() => {
   useEffect(() => {
     if (inputRef.current)
       inputRef.current.style.maxHeight = '16rem';
+    scrollToBottom();
   }, []);
 
   useEffect(() => {
