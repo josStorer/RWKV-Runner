@@ -119,13 +119,13 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
         readRoot()
         .then(async r => {
           if (r.ok && !loading) {
+            loading = true;
             clearInterval(intervalId);
             await getStatus().then(status => {
               if (status)
                 commonStore.setStatus(status);
             });
             commonStore.setStatus({ modelStatus: ModelStatus.Loading });
-            loading = true;
             toast(t('Loading Model'), { type: 'info' });
             updateConfig({
               max_tokens: modelConfig.apiParameters.maxResponseToken,
