@@ -189,9 +189,9 @@ export function forceDownloadProgramFiles() {
   });
 }
 
-export function deletePythonProgramFiles() {
+export function deleteDynamicProgramFiles() {
   manifest.programFiles.forEach(({ path }) => {
-    if (path.endsWith('.py') && !path.includes('get-pip.py'))
+    if ((path.endsWith('.py') && !path.includes('get-pip.py')) || path.includes('requirements'))
       DeleteFile(path);
   });
 }
@@ -223,7 +223,7 @@ export async function checkUpdate(notifyEvenLatest: boolean = false) {
                 `https://github.com/josStorer/RWKV-Runner/releases/download/${versionTag}/RWKV-Runner_windows_x64.exe` :
                 `https://gitee.com/josc146/RWKV-Runner/releases/download/${versionTag}/RWKV-Runner_windows_x64.exe`;
               toastWithButton(t('New Version Available') + ': ' + versionTag, t('Update'), () => {
-                deletePythonProgramFiles();
+                deleteDynamicProgramFiles();
                 setTimeout(() => {
                   UpdateApp(updateUrl).catch((e) => {
                     toast(t('Update Error, Please restart this program') + ' - ' + e.message || e, {

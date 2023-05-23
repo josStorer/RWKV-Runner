@@ -6,6 +6,7 @@ from langchain.llms import RWKV
 from utils.rwkv import *
 from utils.torch import *
 import global_var
+import GPUtil
 
 router = APIRouter()
 
@@ -25,8 +26,8 @@ def switch_model(body: SwitchModelBody, response: Response):
     global_var.set(global_var.Model_Status, global_var.ModelStatus.Offline)
     global_var.set(global_var.Model, None)
     torch_gc()
-    
-    os.environ["RWKV_CUDA_ON"] = '1' if body.customCuda else '0'
+
+    os.environ["RWKV_CUDA_ON"] = "1" if body.customCuda else "0"
 
     global_var.set(global_var.Model_Status, global_var.ModelStatus.Loading)
     try:
@@ -66,4 +67,13 @@ def update_config(body: ModelConfigBody):
 
 @router.get("/status")
 def status():
-    return {"status": global_var.get(global_var.Model_Status)}
+    gpus = GPUtil.getGPUs()
+    if len(gpus) == 0:
+        device_name = "CPU"
+    else:
+        device_name = gpus[0].name
+    return {
+        "status": global_var.get(global_var.Model_Status),
+        "pid": os.getpid(),
+        "device_name": device_name,
+    }
