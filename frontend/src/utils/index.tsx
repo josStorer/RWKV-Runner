@@ -190,6 +190,7 @@ export function forceDownloadProgramFiles() {
 }
 
 export function deleteDynamicProgramFiles() {
+  DeleteFile('cache.json');
   manifest.programFiles.forEach(({ path }) => {
     if ((path.endsWith('.py') && !path.includes('get-pip.py')) || path.includes('requirements'))
       DeleteFile(path);
