@@ -24,7 +24,7 @@ API兼容的接口，这意味着一切ChatGPT客户端都是RWKV客户端。
 
 [release-url]: https://github.com/josStorer/RWKV-Runner/releases/latest
 
-[download-url]: https://github.com/josStorer/RWKV-Runner/releases/download/v1.0.0/RWKV-Runner_windows_x64.exe
+[download-url]: https://github.com/josStorer/RWKV-Runner/releases/download/v1.0.2/RWKV-Runner_windows_x64.exe
 
 </div>
 
