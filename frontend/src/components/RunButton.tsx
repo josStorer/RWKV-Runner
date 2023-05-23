@@ -9,7 +9,7 @@ import {
 } from '../../wailsjs/go/backend_golang/App';
 import { Button } from '@fluentui/react-components';
 import { observer } from 'mobx-react-lite';
-import { exit, readRoot, switchModel, updateConfig } from '../apis';
+import { exit, getStatus, readRoot, switchModel, updateConfig } from '../apis';
 import { toast } from 'react-toastify';
 import manifest from '../../../manifest.json';
 import { getStrategy, saveCache, toastWithButton } from '../utils';
@@ -115,9 +115,13 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
       let loading = false;
       const intervalId = setInterval(() => {
         readRoot()
-        .then(r => {
+        .then(async r => {
           if (r.ok && !loading) {
             clearInterval(intervalId);
+            await getStatus().then(status => {
+              if (status)
+                commonStore.setStatus(status);
+            });
             commonStore.setStatus({ modelStatus: ModelStatus.Loading });
             loading = true;
             toast(t('Loading Model'), { type: 'info' });
@@ -130,7 +134,8 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
             });
             switchModel({
               model: `${manifest.localModelDir}/${modelConfig.modelParameters.modelName}`,
-              strategy: getStrategy(modelConfig)
+              strategy: getStrategy(modelConfig),
+              customCuda: !!modelConfig.modelParameters.useCustomCuda
             }).then((r) => {
               if (r.ok) {
                 commonStore.setStatus({ modelStatus: ModelStatus.Working });

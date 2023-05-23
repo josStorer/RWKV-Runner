@@ -39,6 +39,7 @@ export type ModelParameters = {
   storedLayers: number;
   maxStoredLayers: number;
   enableHighPrecisionForLastLayer: boolean;
+  useCustomCuda?: boolean;
 }
 
 export type ModelConfig = {
@@ -754,7 +755,7 @@ export const Configs: FC = observer(() => {
                   </Dropdown>
                 } />
                 <Labeled label={t('Precision')}
-                  desc={t('int8 uses less VRAM, and is faster, but has slightly lower quality. fp16 has higher quality, and fp32 has the best quality.')}
+                  desc={t('int8 uses less VRAM, but has slightly lower quality. fp16 has higher quality, and fp32 has the best quality.')}
                   content={
                     <Dropdown style={{ minWidth: 0 }} className="grow"
                       value={selectedConfig.modelParameters.precision}
@@ -771,6 +772,7 @@ export const Configs: FC = observer(() => {
                       <Option>fp32</Option>
                     </Dropdown>
                   } />
+                <div />
                 <Labeled label={t('Stored Layers')}
                   desc={t('Number of the neural network layers loaded into VRAM, the more you load, the faster the speed, but it consumes more VRAM.')}
                   content={
@@ -789,6 +791,16 @@ export const Configs: FC = observer(() => {
                       onChange={(e, data) => {
                         setSelectedConfigModelParams({
                           enableHighPrecisionForLastLayer: data.checked
+                        });
+                      }} />
+                  } />
+                <Labeled label={t('Use Custom CUDA kernel to Accelerate')}
+                  desc={t('Enabling this option can greatly improve inference speed, but there may be compatibility issues. If it fails to start, please turn off this option.')}
+                  content={
+                    <Switch checked={selectedConfig.modelParameters.useCustomCuda}
+                      onChange={(e, data) => {
+                        setSelectedConfigModelParams({
+                          useCustomCuda: data.checked
                         });
                       }} />
                   } />
