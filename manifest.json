@@ -6,7 +6,7 @@
   },
   "about": {
     "en": "<div align=\"center\">\n\nProject Source Code:\nhttps://github.com/josStorer/RWKV-Runner\nAuthor: [@josStorer](https://github.com/josStorer)\n\nRelated Repositories:\nRWKV-4-Raven: https://huggingface.co/BlinkDL/rwkv-4-raven/tree/main\nChatRWKV: https://github.com/BlinkDL/ChatRWKV\nRWKV-LM: https://github.com/BlinkDL/RWKV-LM\n\n</div>",
-    "zh": "<div align=\"center\">\n\n本项目源码:\nhttps://github.com/josStorer/RWKV-Runner\n作者: [@josStorer](https://github.com/josStorer)\n\n相关仓库:\nRWKV-4-Raven: https://huggingface.co/BlinkDL/rwkv-4-raven/tree/main\nChatRWKV: https://github.com/BlinkDL/ChatRWKV\nRWKV-LM: https://github.com/BlinkDL/RWKV-LM\n\n</div>"
+    "zh": "<div align=\"center\">\n\n本项目源码:\nhttps://github.com/josStorer/RWKV-Runner\n作者: [@josStorer](https://github.com/josStorer)\n演示与常见问题说明视频: https://www.bilibili.com/video/BV1hM4y1v76R\n\n相关仓库:\nRWKV-4-Raven: https://huggingface.co/BlinkDL/rwkv-4-raven/tree/main\nChatRWKV: https://github.com/BlinkDL/ChatRWKV\nRWKV-LM: https://github.com/BlinkDL/RWKV-LM\n\n</div>"
   },
   "localModelDir": "models",
   "programFiles": [
