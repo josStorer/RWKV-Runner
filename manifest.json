@@ -55,6 +55,18 @@
       "path": "backend-python/utils/torch.py"
     },
     {
+      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/backend-python/wkv_cuda_utils/wkv_cuda10_30.pyd",
+      "path": "backend-python/wkv_cuda_utils/wkv_cuda10_30.pyd"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/backend-python/wkv_cuda_utils/wkv_cuda40.pyd",
+      "path": "backend-python/wkv_cuda_utils/wkv_cuda40.pyd"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/backend-python/wkv_cuda_utils/wkv_cuda_model.py",
+      "path": "backend-python/wkv_cuda_utils/wkv_cuda_model.py"
+    },
+    {
       "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/backend-python/20B_tokenizer.json",
       "path": "backend-python/20B_tokenizer.json"
     },
