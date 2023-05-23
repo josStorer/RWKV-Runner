@@ -3,6 +3,7 @@ package backend_golang
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -86,6 +87,26 @@ func (a *App) ListDirFiles(dirPath string) ([]FileInfo, error) {
 
 func (a *App) DeleteFile(path string) error {
 	err := os.Remove(path)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *App) CopyFile(src string, dst string) error {
+	sourceFile, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+	defer sourceFile.Close()
+
+	destFile, err := os.Create(dst)
+	if err != nil {
+		return err
+	}
+	defer destFile.Close()
+
+	_, err = io.Copy(sourceFile, destFile)
 	if err != nil {
 		return err
 	}

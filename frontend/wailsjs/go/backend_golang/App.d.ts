@@ -8,6 +8,8 @@ export function ContinueDownload(arg1:string):Promise<void>;
 
 export function ConvertModel(arg1:string,arg2:string,arg3:string):Promise<string>;
 
+export function CopyFile(arg1:string,arg2:string):Promise<void>;
+
 export function DeleteFile(arg1:string):Promise<void>;
 
 export function DepCheck():Promise<void>;

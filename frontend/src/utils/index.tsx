@@ -268,3 +268,12 @@ export function toastWithButton(text: string, buttonText: string, onClickButton:
       ...options
     });
 }
+
+export function getSupportedCustomCudaFile() {
+  if ([' 10', ' 20', ' 30'].some(v => commonStore.status.device_name.includes(v)))
+    return './backend-python/wkv_cuda_utils/wkv_cuda10_30.pyd';
+  else if ([' 40'].some(v => commonStore.status.device_name.includes(v)))
+    return './backend-python/wkv_cuda_utils/wkv_cuda40.pyd';
+  else
+    return '';
+}

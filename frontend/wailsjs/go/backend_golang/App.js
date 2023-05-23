@@ -14,6 +14,10 @@ export function ConvertModel(arg1, arg2, arg3) {
   return window['go']['backend_golang']['App']['ConvertModel'](arg1, arg2, arg3);
 }
 
+export function CopyFile(arg1, arg2) {
+  return window['go']['backend_golang']['App']['CopyFile'](arg1, arg2);
+}
+
 export function DeleteFile(arg1) {
   return window['go']['backend_golang']['App']['DeleteFile'](arg1);
 }

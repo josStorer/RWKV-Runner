@@ -2,6 +2,7 @@ import React, { FC, MouseEventHandler, ReactElement } from 'react';
 import commonStore, { ModelStatus } from '../stores/commonStore';
 import {
   AddToDownloadList,
+  CopyFile,
   DepCheck,
   FileExists,
   InstallPyDep,
@@ -12,7 +13,7 @@ import { observer } from 'mobx-react-lite';
 import { exit, getStatus, readRoot, switchModel, updateConfig } from '../apis';
 import { toast } from 'react-toastify';
 import manifest from '../../../manifest.json';
-import { getStrategy, saveCache, toastWithButton } from '../utils';
+import { getStrategy, getSupportedCustomCudaFile, saveCache, toastWithButton } from '../utils';
 import { useTranslation } from 'react-i18next';
 import { ToolTipButton } from './ToolTipButton';
 import { Play16Regular, Stop16Regular } from '@fluentui/react-icons';
@@ -83,6 +84,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
           return;
         }
         commonStore.setDepComplete(true);
+        CopyFile('./backend-python/wkv_cuda_utils/wkv_cuda_model.py', './py310/Lib/site-packages/rwkv/model.py');
         saveCache();
       }
 
@@ -132,10 +134,23 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
               presence_penalty: modelConfig.apiParameters.presencePenalty,
               frequency_penalty: modelConfig.apiParameters.frequencyPenalty
             });
+
+            let customCudaFile = '';
+            if (modelConfig.modelParameters.useCustomCuda) {
+              customCudaFile = getSupportedCustomCudaFile();
+              if (customCudaFile)
+                await CopyFile(customCudaFile, './py310/Lib/site-packages/rwkv/wkv_cuda.pyd').catch(() => {
+                  customCudaFile = '';
+                  toast(t('Failed to copy custom cuda file'), { type: 'error' });
+                });
+              else
+                toast(t('Supported custom cuda file not found'), { type: 'warning' });
+            }
+
             switchModel({
               model: `${manifest.localModelDir}/${modelConfig.modelParameters.modelName}`,
               strategy: getStrategy(modelConfig),
-              customCuda: !!modelConfig.modelParameters.useCustomCuda
+              customCuda: customCudaFile !== ''
             }).then((r) => {
               if (r.ok) {
                 commonStore.setStatus({ modelStatus: ModelStatus.Working });
