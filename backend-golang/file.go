@@ -106,7 +106,7 @@ func (a *App) CopyFile(src string, dst string) error {
 	}
 	defer destFile.Close()
 
-	_, err = io.Copy(sourceFile, destFile)
+	_, err = io.Copy(destFile, sourceFile)
 	if err != nil {
 		return err
 	}
