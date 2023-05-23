@@ -45,10 +45,10 @@ English | [简体中文](README_ZH.md)
 
 ## Todo
 
-- Model training functionality
-- CUDA operator int8 acceleration
-- macOS support
-- Linux support
+- [ ] Model training functionality
+- [x] CUDA operator int8 acceleration
+- [ ] macOS support
+- [ ] Linux support
 
 ## Related Repositories:
 

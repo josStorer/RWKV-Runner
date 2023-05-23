@@ -45,10 +45,10 @@ API兼容的接口，这意味着一切ChatGPT客户端都是RWKV客户端。
 
 ## Todo
 
-- 模型训练功能
-- CUDA算子int8提速
-- macOS支持
-- linux支持
+- [ ] 模型训练功能
+- [x] CUDA算子int8提速
+- [ ] macOS支持
+- [ ] linux支持
 
 ## 相关仓库:
 
