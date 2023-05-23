@@ -21,7 +21,7 @@ export async function startup() {
 
   getStatus(500).then(status => { // depends on config api port
     if (status)
-      commonStore.setModelStatus(status);
+      commonStore.setStatus(status);
   });
 }
 

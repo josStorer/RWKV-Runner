@@ -18,9 +18,19 @@ export enum ModelStatus {
   Working,
 }
 
+export type Status = {
+  modelStatus: ModelStatus;
+  pid: number;
+  device_name: string;
+}
+
 class CommonStore {
   // global
-  modelStatus: ModelStatus = ModelStatus.Offline;
+  status: Status = {
+    modelStatus: ModelStatus.Offline,
+    pid: 0,
+    device_name: 'CPU'
+  };
   depComplete: boolean = false;
   // home
   introduction: IntroductionContent = manifest.introduction;
@@ -54,8 +64,8 @@ class CommonStore {
     return this.modelConfigs[this.currentModelConfigIndex];
   };
 
-  setModelStatus = (status: ModelStatus) => {
-    this.modelStatus = status;
+  setStatus = (status: Partial<Status>) => {
+    this.status = { ...this.status, ...status };
   };
 
   setCurrentConfigIndex = (index: number, saveConfig: boolean = true) => {

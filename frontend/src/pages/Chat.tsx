@@ -95,7 +95,7 @@ const ChatPanel: FC = observer(() => {
     e.stopPropagation();
     if (e.type === 'click' || (e.keyCode === 13 && !e.shiftKey)) {
       e.preventDefault();
-      if (commonStore.modelStatus === ModelStatus.Offline) {
+      if (commonStore.status.modelStatus === ModelStatus.Offline) {
         toast(t('Please click the button in the top right corner to start the model'), { type: 'warning' });
         return;
       }
@@ -315,8 +315,8 @@ export const Chat: FC = observer(() => {
     <div className="flex flex-col gap-1 p-2 h-full overflow-hidden">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <PresenceBadge status={badgeStatus[commonStore.modelStatus]} />
-          <Text size={100}>{t('Model Status') + ': ' + t(statusText[commonStore.modelStatus])}</Text>
+          <PresenceBadge status={badgeStatus[commonStore.status.modelStatus]} />
+          <Text size={100}>{t('Model Status') + ': ' + t(statusText[commonStore.status.modelStatus])}</Text>
         </div>
         <div className="flex items-center gap-2">
           <ConfigSelector size="small" />

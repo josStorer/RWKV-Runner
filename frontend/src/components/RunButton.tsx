@@ -42,8 +42,8 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
   const navigate = useNavigate();
 
   const onClickMainButton = async () => {
-    if (commonStore.modelStatus === ModelStatus.Offline) {
-      commonStore.setModelStatus(ModelStatus.Starting);
+    if (commonStore.status.modelStatus === ModelStatus.Offline) {
+      commonStore.setStatus({ modelStatus: ModelStatus.Starting });
 
       const modelConfig = commonStore.getCurrentModelConfig();
       let modelName = '';
@@ -53,7 +53,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
         modelPath = `./${manifest.localModelDir}/${modelName}`;
       } else {
         toast(t('Model Config Exception'), { type: 'error' });
-        commonStore.setModelStatus(ModelStatus.Offline);
+        commonStore.setStatus({ modelStatus: ModelStatus.Offline });
         return;
       }
 
@@ -79,7 +79,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
           }
         });
         if (depErrorMsg) {
-          commonStore.setModelStatus(ModelStatus.Offline);
+          commonStore.setStatus({ modelStatus: ModelStatus.Offline });
           return;
         }
         commonStore.setDepComplete(true);
@@ -100,7 +100,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
           }
         });
 
-        commonStore.setModelStatus(ModelStatus.Offline);
+        commonStore.setStatus({ modelStatus: ModelStatus.Offline });
         return;
       }
 
@@ -118,7 +118,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
         .then(r => {
           if (r.ok && !loading) {
             clearInterval(intervalId);
-            commonStore.setModelStatus(ModelStatus.Loading);
+            commonStore.setStatus({ modelStatus: ModelStatus.Loading });
             loading = true;
             toast(t('Loading Model'), { type: 'info' });
             updateConfig({
@@ -133,51 +133,51 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
               strategy: getStrategy(modelConfig)
             }).then((r) => {
               if (r.ok) {
-                commonStore.setModelStatus(ModelStatus.Working);
+                commonStore.setStatus({ modelStatus: ModelStatus.Working });
                 toastWithButton(t('Startup Completed'), t('Chat'), () => {
                   navigate({ pathname: '/chat' });
                 }, { type: 'success', autoClose: 3000 });
               } else if (r.status === 304) {
                 toast(t('Loading Model'), { type: 'info' });
               } else {
-                commonStore.setModelStatus(ModelStatus.Offline);
+                commonStore.setStatus({ modelStatus: ModelStatus.Offline });
                 toast(t('Failed to switch model'), { type: 'error' });
               }
             }).catch(() => {
-              commonStore.setModelStatus(ModelStatus.Offline);
+              commonStore.setStatus({ modelStatus: ModelStatus.Offline });
               toast(t('Failed to switch model'), { type: 'error' });
             });
           }
         }).catch(() => {
           if (timeoutCount <= 0) {
             clearInterval(intervalId);
-            commonStore.setModelStatus(ModelStatus.Offline);
+            commonStore.setStatus({ modelStatus: ModelStatus.Offline });
           }
         });
 
         timeoutCount--;
       }, 1000);
     } else {
-      commonStore.setModelStatus(ModelStatus.Offline);
+      commonStore.setStatus({ modelStatus: ModelStatus.Offline });
       exit();
     }
   };
 
   const onClick = async (e: any) => {
-    if (commonStore.modelStatus === ModelStatus.Offline)
+    if (commonStore.status.modelStatus === ModelStatus.Offline)
       await onClickRun?.(e);
     await onClickMainButton();
   };
 
   return (iconMode ?
-      <ToolTipButton disabled={commonStore.modelStatus === ModelStatus.Starting}
-        icon={iconModeButtonIcon[commonStore.modelStatus]}
-        desc={t(mainButtonText[commonStore.modelStatus])}
+      <ToolTipButton disabled={commonStore.status.modelStatus === ModelStatus.Starting}
+        icon={iconModeButtonIcon[commonStore.status.modelStatus]}
+        desc={t(mainButtonText[commonStore.status.modelStatus])}
         size="small" onClick={onClick} />
       :
-      <Button disabled={commonStore.modelStatus === ModelStatus.Starting} appearance="primary" size="large"
+      <Button disabled={commonStore.status.modelStatus === ModelStatus.Starting} appearance="primary" size="large"
         onClick={onClick}>
-        {t(mainButtonText[commonStore.modelStatus])}
+        {t(mainButtonText[commonStore.status.modelStatus])}
       </Button>
   );
 });
