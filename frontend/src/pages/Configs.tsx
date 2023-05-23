@@ -61,7 +61,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 0.4
     },
     modelParameters: {
-      modelName: 'RWKV-4-Raven-1B5-v11-Eng99%-Other1%-20230425-ctx4096.pth',
+      modelName: 'RWKV-4-Raven-1B5-v12-Eng98%-Other2%-20230520-ctx4096.pth',
       device: 'CUDA',
       precision: 'int8',
       storedLayers: 4,
@@ -80,7 +80,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 0.4
     },
     modelParameters: {
-      modelName: 'RWKV-4-Raven-1B5-v11-Eng99%-Other1%-20230425-ctx4096.pth',
+      modelName: 'RWKV-4-Raven-1B5-v12-Eng98%-Other2%-20230520-ctx4096.pth',
       device: 'CUDA',
       precision: 'int8',
       storedLayers: 41,
@@ -99,7 +99,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 0.4
     },
     modelParameters: {
-      modelName: 'RWKV-4-Raven-3B-v11-Eng99%-Other1%-20230425-ctx4096.pth',
+      modelName: 'RWKV-4-Raven-3B-v12-Eng98%-Other2%-20230520-ctx4096.pth',
       device: 'CUDA',
       precision: 'int8',
       storedLayers: 24,
@@ -137,7 +137,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 0.4
     },
     modelParameters: {
-      modelName: 'RWKV-4-Raven-7B-v11x-Eng99%-Other1%-20230429-ctx8192.pth',
+      modelName: 'RWKV-4-Raven-7B-v12-Eng98%-Other2%-20230521-ctx8192.pth',
       device: 'CUDA',
       precision: 'int8',
       storedLayers: 8,
@@ -175,7 +175,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 0.4
     },
     modelParameters: {
-      modelName: 'RWKV-4-Raven-1B5-v11-Eng99%-Other1%-20230425-ctx4096.pth',
+      modelName: 'RWKV-4-Raven-1B5-v12-Eng98%-Other2%-20230520-ctx4096.pth',
       device: 'CUDA',
       precision: 'fp16',
       storedLayers: 41,
@@ -194,7 +194,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 0.4
     },
     modelParameters: {
-      modelName: 'RWKV-4-Raven-3B-v11-Eng99%-Other1%-20230425-ctx4096.pth',
+      modelName: 'RWKV-4-Raven-3B-v12-Eng98%-Other2%-20230520-ctx4096.pth',
       device: 'CUDA',
       precision: 'int8',
       storedLayers: 41,
@@ -232,7 +232,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 0.4
     },
     modelParameters: {
-      modelName: 'RWKV-4-Raven-7B-v11x-Eng99%-Other1%-20230429-ctx8192.pth',
+      modelName: 'RWKV-4-Raven-7B-v12-Eng98%-Other2%-20230521-ctx8192.pth',
       device: 'CUDA',
       precision: 'int8',
       storedLayers: 18,
@@ -270,7 +270,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 0.4
     },
     modelParameters: {
-      modelName: 'RWKV-4-Raven-3B-v11-Eng99%-Other1%-20230425-ctx4096.pth',
+      modelName: 'RWKV-4-Raven-3B-v12-Eng98%-Other2%-20230520-ctx4096.pth',
       device: 'CUDA',
       precision: 'fp16',
       storedLayers: 41,
@@ -308,7 +308,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 0.4
     },
     modelParameters: {
-      modelName: 'RWKV-4-Raven-7B-v11x-Eng99%-Other1%-20230429-ctx8192.pth',
+      modelName: 'RWKV-4-Raven-7B-v12-Eng98%-Other2%-20230521-ctx8192.pth',
       device: 'CUDA',
       precision: 'int8',
       storedLayers: 41,
@@ -346,7 +346,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 0.4
     },
     modelParameters: {
-      modelName: 'RWKV-4-Raven-7B-v11x-Eng99%-Other1%-20230429-ctx8192.pth',
+      modelName: 'RWKV-4-Raven-7B-v12-Eng98%-Other2%-20230521-ctx8192.pth',
       device: 'CUDA',
       precision: 'fp16',
       storedLayers: 22,
@@ -384,7 +384,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 0.4
     },
     modelParameters: {
-      modelName: 'RWKV-4-Raven-7B-v11x-Eng99%-Other1%-20230429-ctx8192.pth',
+      modelName: 'RWKV-4-Raven-7B-v12-Eng98%-Other2%-20230521-ctx8192.pth',
       device: 'CUDA',
       precision: 'fp16',
       storedLayers: 41,
@@ -422,7 +422,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 0.4
     },
     modelParameters: {
-      modelName: 'RWKV-4-Raven-14B-v11x-Eng99%-Other1%-20230501-ctx8192.pth',
+      modelName: 'RWKV-4-Raven-14B-v12-Eng98%-Other2%-20230523-ctx8192.pth',
       device: 'CUDA',
       precision: 'int8',
       storedLayers: 41,
@@ -441,7 +441,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 0.4
     },
     modelParameters: {
-      modelName: 'RWKV-4-Raven-14B-v11x-Eng99%-Other1%-20230501-ctx8192.pth',
+      modelName: 'RWKV-4-Raven-14B-v12-Eng98%-Other2%-20230523-ctx8192.pth',
       device: 'CUDA',
       precision: 'fp16',
       storedLayers: 41,
@@ -460,7 +460,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 0.4
     },
     modelParameters: {
-      modelName: 'RWKV-4-Raven-1B5-v11-Eng99%-Other1%-20230425-ctx4096.pth',
+      modelName: 'RWKV-4-Raven-1B5-v12-Eng98%-Other2%-20230520-ctx4096.pth',
       device: 'CPU',
       precision: 'fp32',
       storedLayers: 41,
@@ -479,7 +479,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 0.4
     },
     modelParameters: {
-      modelName: 'RWKV-4-Raven-3B-v11-Eng99%-Other1%-20230425-ctx4096.pth',
+      modelName: 'RWKV-4-Raven-3B-v12-Eng98%-Other2%-20230520-ctx4096.pth',
       device: 'CPU',
       precision: 'fp32',
       storedLayers: 41,
@@ -517,7 +517,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 0.4
     },
     modelParameters: {
-      modelName: 'RWKV-4-Raven-7B-v11x-Eng99%-Other1%-20230429-ctx8192.pth',
+      modelName: 'RWKV-4-Raven-7B-v12-Eng98%-Other2%-20230521-ctx8192.pth',
       device: 'CPU',
       precision: 'fp32',
       storedLayers: 41,
