@@ -41,7 +41,7 @@ class CommonStore {
   currentModelConfigIndex: number = 0;
   modelConfigs: ModelConfig[] = [];
   // models
-  modelSourceManifestList: string = 'https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/manifest.json;';
+  modelSourceManifestList: string = 'https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/manifest.json;';
   modelSourceList: ModelSourceItem[] = [];
   // downloads
   downloadList: DownloadStatus[] = [];

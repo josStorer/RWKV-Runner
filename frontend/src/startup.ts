@@ -26,7 +26,7 @@ export async function startup() {
 }
 
 async function initRemoteText() {
-  await fetch('https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner/manifest.json', { cache: 'no-cache' })
+  await fetch('https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/manifest.json', { cache: 'no-cache' })
   .then(r => r.json()).then((data) => {
     if (data.introduction)
       commonStore.setIntroduction(data.introduction);
