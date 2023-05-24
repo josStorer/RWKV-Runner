@@ -70,6 +70,10 @@ API兼容的接口，这意味着一切ChatGPT客户端都是RWKV客户端。
 
 ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/0e66d5fa-f34a-409f-9cd4-d880815733f3)
 
+### 补全
+
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/d4178ee9-a188-4878-9777-25c916872c29)
+
 ### 配置
 
 ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/ad9921fc-7248-40a3-9e18-03445b86e4bf)
