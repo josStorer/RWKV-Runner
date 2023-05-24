@@ -178,14 +178,14 @@ export function downloadProgramFiles() {
   manifest.programFiles.forEach(({ url, path }) => {
     FileExists(path).then(exists => {
       if (!exists)
-        AddToDownloadList(path, url);
+        AddToDownloadList(path, url.replace('@master', '@v' + manifest.version));
     });
   });
 }
 
 export function forceDownloadProgramFiles() {
   manifest.programFiles.forEach(({ url, path }) => {
-    DownloadFile(path, url);
+    DownloadFile(path, url.replace('@master', '@v' + manifest.version));
   });
 }
 
@@ -228,7 +228,7 @@ export async function checkUpdate(notifyEvenLatest: boolean = false) {
                 toast(t('Downloading update, please wait. If it is not completed, please manually download the program from GitHub and replace the original program.'), {
                   type: 'info',
                   position: 'bottom-left',
-                  autoClose: 6000
+                  autoClose: 10000
                 });
                 setTimeout(() => {
                   UpdateApp(updateUrl).catch((e) => {
