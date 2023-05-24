@@ -137,6 +137,7 @@ const CompletionPanel: FC = observer(() => {
   const onSubmit = (prompt: string) => {
     if (commonStore.status.modelStatus === ModelStatus.Offline) {
       toast(t('Please click the button in the top right corner to start the model'), { type: 'warning' });
+      commonStore.setCompletionGenerating(false);
       return;
     }
 
