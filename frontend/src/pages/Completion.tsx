@@ -20,7 +20,7 @@ export type CompletionPreset = {
 
 export const defaultPresets: CompletionPreset[] = [{
   name: 'Writer',
-  prompt: '以下是不朽的科幻史诗巨著，描写细腻，刻画了宏大的星际文明战争。\n第一章\n',
+  prompt: 'The following is an epic science fiction masterpiece that is immortalized, with delicate descriptions and grand depictions of interstellar civilization wars.\nChapter 1.\n',
   params: {
     maxResponseToken: 4100,
     temperature: 1,
@@ -103,8 +103,15 @@ const CompletionPanel: FC = observer(() => {
     scrollToBottom();
   }, []);
 
+  const setPreset = (preset: CompletionPreset) => {
+    commonStore.setCompletionPreset({
+      ...preset,
+      prompt: t(preset.prompt)
+    });
+  };
+
   if (!commonStore.completionPreset)
-    commonStore.setCompletionPreset(defaultPresets[0]);
+    setPreset(defaultPresets[0]);
 
   const name = commonStore.completionPreset!.name;
 
@@ -197,7 +204,7 @@ const CompletionPanel: FC = observer(() => {
           selectedOptions={[commonStore.completionPreset!.name]}
           onOptionSelect={(_, data) => {
             if (data.optionValue) {
-              commonStore.setCompletionPreset(defaultPresets.find((preset) => preset.name === data.optionValue)!);
+              setPreset(defaultPresets.find((preset) => preset.name === data.optionValue)!);
             }
           }}>
           {
@@ -275,7 +282,7 @@ const CompletionPanel: FC = observer(() => {
         <div className="grow" />
         <div className="flex justify-between gap-2">
           <Button className="grow" onClick={() => {
-            commonStore.setCompletionPreset(defaultPresets.find((preset) => preset.name === name)!);
+            setPreset(defaultPresets.find((preset) => preset.name === name)!);
           }}>{t('Reset')}</Button>
           <Button className="grow" appearance="primary" onClick={() => {
             if (commonStore.completionGenerating) {
