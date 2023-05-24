@@ -3,18 +3,25 @@ import { Label, Tooltip } from '@fluentui/react-components';
 import classnames from 'classnames';
 
 export const Labeled: FC<{
-  label: string; desc?: string | null, content: ReactElement, flex?: boolean, spaceBetween?: boolean
+  label: string;
+  desc?: string | null,
+  content: ReactElement,
+  flex?: boolean,
+  spaceBetween?: boolean,
+  breakline?: boolean
 }> = ({
   label,
   desc,
   content,
   flex,
-  spaceBetween
+  spaceBetween,
+  breakline
 }) => {
   return (
     <div className={classnames(
-      'items-center',
+      !breakline ? 'items-center' : '',
       flex ? 'flex' : 'grid grid-cols-2',
+      breakline ? 'flex-col' : '',
       spaceBetween && 'justify-between')
     }>
       {desc ?

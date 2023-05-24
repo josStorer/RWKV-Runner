@@ -1,11 +1,8 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { RunButton } from '../components/RunButton';
-import { Avatar, Divider, PresenceBadge, Text, Textarea } from '@fluentui/react-components';
+import { Avatar, PresenceBadge, Textarea } from '@fluentui/react-components';
 import commonStore, { ModelStatus } from '../stores/commonStore';
 import { observer } from 'mobx-react-lite';
-import { PresenceBadgeStatus } from '@fluentui/react-badge';
-import { ConfigSelector } from '../components/ConfigSelector';
 import { v4 as uuid } from 'uuid';
 import classnames from 'classnames';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
@@ -17,6 +14,7 @@ import { ArrowCircleUp28Regular, Delete28Regular, RecordStop28Regular } from '@f
 import { CopyButton } from '../components/CopyButton';
 import { ReadButton } from '../components/ReadButton';
 import { toast } from 'react-toastify';
+import { WorkHeader } from '../components/WorkHeader';
 
 export const userName = 'M E';
 export const botName = 'A I';
@@ -293,40 +291,10 @@ const ChatPanel: FC = observer(() => {
   );
 });
 
-const statusText = {
-  [ModelStatus.Offline]: 'Offline',
-  [ModelStatus.Starting]: 'Starting',
-  [ModelStatus.Loading]: 'Loading',
-  [ModelStatus.Working]: 'Working'
-};
-
-const badgeStatus: { [modelStatus: number]: PresenceBadgeStatus } = {
-  [ModelStatus.Offline]: 'unknown',
-  [ModelStatus.Starting]: 'away',
-  [ModelStatus.Loading]: 'away',
-  [ModelStatus.Working]: 'available'
-};
-
 export const Chat: FC = observer(() => {
-  const { t } = useTranslation();
-  const port = commonStore.getCurrentModelConfig().apiParameters.apiPort;
-
   return (
     <div className="flex flex-col gap-1 p-2 h-full overflow-hidden">
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <PresenceBadge status={badgeStatus[commonStore.status.modelStatus]} />
-          <Text size={100}>{t('Model Status') + ': ' + t(statusText[commonStore.status.modelStatus])}</Text>
-        </div>
-        <div className="flex items-center gap-2">
-          <ConfigSelector size="small" />
-          <RunButton iconMode />
-        </div>
-      </div>
-      <Text size={100}>
-        {t('This tool\'s API is compatible with OpenAI API. It can be used with any ChatGPT tool you like. Go to the settings of some ChatGPT tool, replace the \'https://api.openai.com\' part in the API address with \'') + `http://127.0.0.1:${port}` + '\'.'}
-      </Text>
-      <Divider style={{ flexGrow: 0 }} />
+      <WorkHeader />
       <ChatPanel />
     </div>
   );

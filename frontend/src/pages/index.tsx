@@ -3,6 +3,7 @@ import { Configs } from './Configs';
 import {
   ArrowDownload20Regular,
   Chat20Regular,
+  ClipboardEdit20Regular,
   DataUsageSettings20Regular,
   DocumentSettings20Regular,
   Home20Regular,
@@ -17,6 +18,7 @@ import { Train } from './Train';
 import { Settings } from './Settings';
 import { About } from './About';
 import { Downloads } from './Downloads';
+import { Completion } from './Completion';
 
 type NavigationItem = {
   label: string;
@@ -39,6 +41,13 @@ export const pages: NavigationItem[] = [
     path: '/chat',
     icon: <Chat20Regular />,
     element: <Chat />,
+    top: true
+  },
+  {
+    label: 'Completion',
+    path: '/completion',
+    icon: <ClipboardEdit20Regular />,
+    element: <Completion />,
     top: true
   },
   {

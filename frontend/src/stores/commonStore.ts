@@ -10,6 +10,7 @@ import { SettingsType } from '../pages/Settings';
 import { IntroductionContent } from '../pages/Home';
 import { AboutContent } from '../pages/About';
 import i18n from 'i18next';
+import { CompletionPreset } from '../pages/Completion';
 
 export enum ModelStatus {
   Offline,
@@ -37,6 +38,9 @@ class CommonStore {
   // chat
   conversations: Conversations = {};
   conversationsOrder: string[] = [];
+  // completion
+  completionPreset: CompletionPreset | null = null;
+  completionGenerating: boolean = false;
   // configs
   currentModelConfigIndex: number = 0;
   modelConfigs: ModelConfig[] = [];
@@ -155,6 +159,14 @@ class CommonStore {
   setConversationsOrder = (value: string[]) => {
     this.conversationsOrder = value;
   };
+
+  setCompletionPreset(value: CompletionPreset) {
+    this.completionPreset = value;
+  }
+
+  setCompletionGenerating(value: boolean) {
+    this.completionGenerating = value;
+  }
 }
 
 export default new CommonStore();

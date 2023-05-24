@@ -643,7 +643,7 @@ export const Configs: FC = observer(() => {
                         });
                       }} />
                   } />
-                <Labeled label={t('Max Response Token *')}
+                <Labeled label={t('Max Response Token') + ' *'}
                   desc={t('By default, the maximum number of tokens that can be answered in a single response, it can be changed by the user by specifying API parameters.')}
                   content={
                     <ValuedSlider value={selectedConfig.apiParameters.maxResponseToken} min={100} max={8100}
@@ -655,7 +655,7 @@ export const Configs: FC = observer(() => {
                         });
                       }} />
                   } />
-                <Labeled label={t('Temperature *')}
+                <Labeled label={t('Temperature') + ' *'}
                   desc={t('Sampling temperature, the higher the stronger the randomness and creativity, while the lower, the more focused and deterministic it will be.')}
                   content={
                     <ValuedSlider value={selectedConfig.apiParameters.temperature} min={0} max={2} step={0.1}
@@ -666,7 +666,7 @@ export const Configs: FC = observer(() => {
                         });
                       }} />
                   } />
-                <Labeled label={t('Top_P *')}
+                <Labeled label={t('Top_P') + ' *'}
                   desc={t('Consider the results of the top n% probability mass, 0.1 considers the top 10%, with higher quality but more conservative, 1 considers all results, with lower quality but more diverse.')}
                   content={
                     <ValuedSlider value={selectedConfig.apiParameters.topP} min={0} max={1} step={0.1} input
@@ -676,7 +676,7 @@ export const Configs: FC = observer(() => {
                         });
                       }} />
                   } />
-                <Labeled label={t('Presence Penalty *')}
+                <Labeled label={t('Presence Penalty') + ' *'}
                   desc={t('Positive values penalize new tokens based on whether they appear in the text so far, increasing the model\'s likelihood to talk about new topics.')}
                   content={
                     <ValuedSlider value={selectedConfig.apiParameters.presencePenalty} min={-2} max={2}
@@ -687,7 +687,7 @@ export const Configs: FC = observer(() => {
                         });
                       }} />
                   } />
-                <Labeled label={t('Frequency Penalty *')}
+                <Labeled label={t('Frequency Penalty') + ' *'}
                   desc={t('Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model\'s likelihood to repeat the same line verbatim.')}
                   content={
                     <ValuedSlider value={selectedConfig.apiParameters.frequencyPenalty} min={-2} max={2}
