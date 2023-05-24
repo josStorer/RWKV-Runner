@@ -64,5 +64,9 @@ def debug():
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", port=8000 if len(sys.argv) == 1 else int(sys.argv[1]))
+    uvicorn.run(
+        "main:app",
+        port=8000 if len(sys.argv) < 2 else int(sys.argv[1]),
+        host="127.0.0.1" if len(sys.argv) < 3 else sys.argv[2],
+    )
     # debug()

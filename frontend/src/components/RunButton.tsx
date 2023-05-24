@@ -110,7 +110,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
 
       await exit(1000).catch(() => {
       });
-      StartServer(port);
+      StartServer(port, commonStore.settings.host);
       setTimeout(WindowShow, 1000);
 
       let timeoutCount = 6;

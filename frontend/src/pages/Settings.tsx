@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Page } from '../components/Page';
-import { Dropdown, Option, Switch } from '@fluentui/react-components';
+import { Dropdown, Input, Option, Switch } from '@fluentui/react-components';
 import { Labeled } from '../components/Labeled';
 import commonStore from '../stores/commonStore';
 import { observer } from 'mobx-react-lite';
@@ -20,6 +20,7 @@ export type SettingsType = {
   autoUpdatesCheck: boolean
   giteeUpdatesSource: boolean
   cnMirror: boolean
+  host: string
 }
 
 export const Settings: FC = observer(() => {
@@ -87,6 +88,14 @@ export const Settings: FC = observer(() => {
               }} />
           } />
         }
+        <Labeled label={t('API Host')} flex spaceBetween content={
+          <Input value={commonStore.settings.host}
+            onChange={(e, data) => {
+              commonStore.setSettings({
+                host: data.value
+              });
+            }} />
+        } />
       </div>
     } />
   );

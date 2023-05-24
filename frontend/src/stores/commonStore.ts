@@ -55,7 +55,8 @@ class CommonStore {
     darkMode: !isSystemLightMode(),
     autoUpdatesCheck: true,
     giteeUpdatesSource: getUserLanguage() === 'zh',
-    cnMirror: getUserLanguage() === 'zh'
+    cnMirror: getUserLanguage() === 'zh',
+    host: '127.0.0.1'
   };
   // about
   about: AboutContent = manifest.about;

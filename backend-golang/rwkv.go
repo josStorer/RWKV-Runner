@@ -6,12 +6,12 @@ import (
 	"strconv"
 )
 
-func (a *App) StartServer(port int) (string, error) {
+func (a *App) StartServer(port int, host string) (string, error) {
 	python, err := GetPython()
 	if err != nil {
 		return "", err
 	}
-	return Cmd(python, "./backend-python/main.py", strconv.Itoa(port))
+	return Cmd(python, "./backend-python/main.py", strconv.Itoa(port), host)
 }
 
 func (a *App) ConvertModel(modelPath string, strategy string, outPath string) (string, error) {
