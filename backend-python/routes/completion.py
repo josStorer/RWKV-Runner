@@ -90,8 +90,9 @@ async def chat_completions(body: ChatCompletionBody, request: Request):
                             ],
                         }
                     )
+                # torch_gc()
+                completion_lock.release()
                 if await request.is_disconnected():
-                    completion_lock.release()
                     return
                 yield json.dumps(
                     {
@@ -116,8 +117,9 @@ async def chat_completions(body: ChatCompletionBody, request: Request):
                 ):
                     if await request.is_disconnected():
                         break
+                # torch_gc()
+                completion_lock.release()
                 if await request.is_disconnected():
-                    completion_lock.release()
                     return
                 yield {
                     "response": response,
@@ -133,8 +135,6 @@ async def chat_completions(body: ChatCompletionBody, request: Request):
                         }
                     ],
                 }
-            # torch_gc()
-            completion_lock.release()
 
     if body.stream:
         return EventSourceResponse(eval_rwkv())
@@ -182,8 +182,9 @@ async def completions(body: CompletionBody, request: Request):
                             ],
                         }
                     )
+                # torch_gc()
+                completion_lock.release()
                 if await request.is_disconnected():
-                    completion_lock.release()
                     return
                 yield json.dumps(
                     {
@@ -206,8 +207,9 @@ async def completions(body: CompletionBody, request: Request):
                 ):
                     if await request.is_disconnected():
                         break
+                # torch_gc()
+                completion_lock.release()
                 if await request.is_disconnected():
-                    completion_lock.release()
                     return
                 yield {
                     "response": response,
@@ -220,8 +222,6 @@ async def completions(body: CompletionBody, request: Request):
                         }
                     ],
                 }
-            # torch_gc()
-            completion_lock.release()
 
     if body.stream:
         return EventSourceResponse(eval_rwkv())
