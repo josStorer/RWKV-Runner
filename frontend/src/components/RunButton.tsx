@@ -144,8 +144,12 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
                   if (!exist) CopyFile('./backend-python/wkv_cuda_utils/wkv_cuda_model.py', './py310/Lib/site-packages/rwkv/model.py');
                 });
                 await CopyFile(customCudaFile, './py310/Lib/site-packages/rwkv/wkv_cuda.pyd').catch(() => {
-                  customCudaFile = '';
-                  toast(t('Failed to copy custom cuda file'), { type: 'error' });
+                  FileExists('./py310/Lib/site-packages/rwkv/wkv_cuda.pyd').then((exist) => {
+                    if (!exist) {
+                      customCudaFile = '';
+                      toast(t('Failed to copy custom cuda file'), { type: 'error' });
+                    }
+                  });
                 });
               } else
                 toast(t('Supported custom cuda file not found'), { type: 'warning' });

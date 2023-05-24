@@ -188,6 +188,16 @@ export function forceDownloadProgramFiles() {
   });
 }
 
+export async function deleteDynamicProgramFiles() {
+  let promises: Promise<void>[] = [];
+  manifest.programFiles.forEach(({ path }) => {
+    if ((path.endsWith('.py') && !path.includes('get-pip.py')) || path.includes('requirements') || path.endsWith('.pyd'))
+      promises.push(DeleteFile(path));
+  });
+  return await Promise.allSettled(promises).catch(() => {
+  });
+}
+
 export function bytesToGb(size: number) {
   return (size / 1024 / 1024 / 1024).toFixed(2);
 }

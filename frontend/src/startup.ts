@@ -3,8 +3,8 @@ import { FileExists, ReadJson } from '../wailsjs/go/backend_golang/App';
 import {
   Cache,
   checkUpdate,
+  deleteDynamicProgramFiles,
   downloadProgramFiles,
-  forceDownloadProgramFiles,
   LocalConfig,
   refreshModels,
   saveCache
@@ -17,8 +17,9 @@ export async function startup() {
   FileExists('cache.json').then((exists) => {
     if (exists)
       downloadProgramFiles();
-    else
-      forceDownloadProgramFiles();
+    else {
+      deleteDynamicProgramFiles().then(downloadProgramFiles);
+    }
   });
   EventsOn('downloadList', (data) => {
     if (data)
