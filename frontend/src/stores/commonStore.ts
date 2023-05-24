@@ -20,7 +20,7 @@ export enum ModelStatus {
 }
 
 export type Status = {
-  modelStatus: ModelStatus;
+  status: ModelStatus;
   pid: number;
   device_name: string;
 }
@@ -28,7 +28,7 @@ export type Status = {
 class CommonStore {
   // global
   status: Status = {
-    modelStatus: ModelStatus.Offline,
+    status: ModelStatus.Offline,
     pid: 0,
     device_name: 'CPU'
   };

@@ -33,7 +33,7 @@ export async function startup() {
   if (commonStore.settings.autoUpdatesCheck) // depends on config settings
     checkUpdate();
 
-  getStatus(500).then(status => { // depends on config api port
+  getStatus(1000).then(status => { // depends on config api port
     if (status)
       commonStore.setStatus(status);
   });

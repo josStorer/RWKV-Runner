@@ -29,8 +29,8 @@ export const WorkHeader: FC = observer(() => {
     <div className="flex flex-col gap-1">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <PresenceBadge status={badgeStatus[commonStore.status.modelStatus]} />
-          <Text size={100}>{t('Model Status') + ': ' + t(statusText[commonStore.status.modelStatus])}</Text>
+          <PresenceBadge status={badgeStatus[commonStore.status.status]} />
+          <Text size={100}>{t('Model Status') + ': ' + t(statusText[commonStore.status.status])}</Text>
         </div>
         <div className="flex items-center gap-2">
           <ConfigSelector size="small" />

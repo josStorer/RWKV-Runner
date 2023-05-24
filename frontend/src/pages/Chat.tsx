@@ -93,7 +93,7 @@ const ChatPanel: FC = observer(() => {
     e.stopPropagation();
     if (e.type === 'click' || (e.keyCode === 13 && !e.shiftKey)) {
       e.preventDefault();
-      if (commonStore.status.modelStatus === ModelStatus.Offline) {
+      if (commonStore.status.status === ModelStatus.Offline) {
         toast(t('Please click the button in the top right corner to start the model'), { type: 'warning' });
         return;
       }
