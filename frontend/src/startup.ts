@@ -1,12 +1,25 @@
 import commonStore from './stores/commonStore';
-import { ReadJson } from '../wailsjs/go/backend_golang/App';
-import { Cache, checkUpdate, downloadProgramFiles, LocalConfig, refreshModels, saveCache } from './utils';
+import { FileExists, ReadJson } from '../wailsjs/go/backend_golang/App';
+import {
+  Cache,
+  checkUpdate,
+  downloadProgramFiles,
+  forceDownloadProgramFiles,
+  LocalConfig,
+  refreshModels,
+  saveCache
+} from './utils';
 import { getStatus } from './apis';
 import { EventsOn } from '../wailsjs/runtime';
 import { defaultModelConfigs } from './pages/Configs';
 
 export async function startup() {
-  downloadProgramFiles();
+  FileExists('cache.json').then((exists) => {
+    if (exists)
+      downloadProgramFiles();
+    else
+      forceDownloadProgramFiles();
+  });
   EventsOn('downloadList', (data) => {
     if (data)
       commonStore.setDownloadList(data);

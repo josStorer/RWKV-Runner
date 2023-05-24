@@ -1,7 +1,6 @@
 import {
   AddToDownloadList,
   DeleteFile,
-  DownloadFile,
   FileExists,
   ListDirFiles,
   ReadJson,
@@ -185,15 +184,7 @@ export function downloadProgramFiles() {
 
 export function forceDownloadProgramFiles() {
   manifest.programFiles.forEach(({ url, path }) => {
-    DownloadFile(path, url.replace('@master', '@v' + manifest.version));
-  });
-}
-
-export function deleteDynamicProgramFiles() {
-  DeleteFile('cache.json');
-  manifest.programFiles.forEach(({ path }) => {
-    if ((path.endsWith('.py') && !path.includes('get-pip.py')) || path.includes('requirements'))
-      DeleteFile(path);
+    AddToDownloadList(path, url.replace('@master', '@v' + manifest.version));
   });
 }
 
@@ -224,7 +215,7 @@ export async function checkUpdate(notifyEvenLatest: boolean = false) {
                 `https://github.com/josStorer/RWKV-Runner/releases/download/${versionTag}/RWKV-Runner_windows_x64.exe` :
                 `https://gitee.com/josc146/RWKV-Runner/releases/download/${versionTag}/RWKV-Runner_windows_x64.exe`;
               toastWithButton(t('New Version Available') + ': ' + versionTag, t('Update'), () => {
-                deleteDynamicProgramFiles();
+                DeleteFile('cache.json');
                 toast(t('Downloading update, please wait. If it is not completed, please manually download the program from GitHub and replace the original program.'), {
                   type: 'info',
                   position: 'bottom-left',
@@ -232,7 +223,7 @@ export async function checkUpdate(notifyEvenLatest: boolean = false) {
                 });
                 setTimeout(() => {
                   UpdateApp(updateUrl).catch((e) => {
-                    toast(t('Update Error, Please restart this program') + ' - ' + e.message || e, {
+                    toast(t('Update Error') + ' - ' + e.message || e, {
                       type: 'error',
                       position: 'bottom-left',
                       autoClose: false

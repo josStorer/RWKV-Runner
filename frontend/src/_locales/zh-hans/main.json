@@ -75,7 +75,7 @@
   "New Version Available": "新版本可用",
   "Update": "更新",
   "Please click the button in the top right corner to start the model": "请点击右上角的按钮启动模型",
-  "Update Error, Please restart this program": "更新出错, 请重启本程序",
+  "Update Error": "更新出错",
   "Open the following URL with your browser to view the API documentation": "使用浏览器打开以下地址查看API文档",
   "By default, the maximum number of tokens that can be answered in a single response, it can be changed by the user by specifying API parameters.": "默认情况下, 单个回复最多回答的token数目, 用户可以通过自行指定API参数改变这个值",
   "Sampling temperature, the higher the stronger the randomness and creativity, while the lower, the more focused and deterministic it will be.": "采样温度, 越大随机性越强, 更具创造力, 越小则越保守稳定",
