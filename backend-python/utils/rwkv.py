@@ -78,5 +78,3 @@ def rwkv_generate(model: RWKV, prompt: str, stop: str = None):
                     break
             yield response, delta
             out_last = begin + i + 1
-            if i >= model.max_tokens_per_generation - 100:
-                break

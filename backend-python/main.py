@@ -14,7 +14,6 @@ from utils.ngrok import *
 from routes import completion, config
 import global_var
 
-
 app = FastAPI()
 
 app.add_middleware(
