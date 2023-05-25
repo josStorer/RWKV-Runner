@@ -207,6 +207,54 @@
       "lastUpdated": "2023-05-02T09:43:33",
       "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-14B-v11x-Eng99%25-Other1%25-20230501-ctx8192.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-14B-v11x-Eng99%25-Other1%25-20230501-ctx8192.pth"
+    },
+    {
+      "name": "RWKV-4-Novel-7B-v1-Chn-20230426-ctx8192.pth",
+      "desc": {
+        "en": "Chinese Novel 7B v1",
+        "zh": "中文小说 7B v1"
+      },
+      "size": 14785389864,
+      "SHA256": "5fced44febdf80d303250eef9c020f087abded43aaecc8caaea8a9e7f1fb771e",
+      "lastUpdated": "2023-04-26T18:57:01",
+      "url": "https://huggingface.co/BlinkDL/rwkv-4-novel/blob/main/RWKV-4-Novel-7B-v1-Chn-20230426-ctx8192.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-novel/resolve/main/RWKV-4-Novel-7B-v1-Chn-20230426-ctx8192.pth"
+    },
+    {
+      "name": "RWKV-4-Novel-3B-v1-Chn-20230412-ctx4096.pth",
+      "desc": {
+        "en": "Chinese Novel 3B v1",
+        "zh": "中文小说 3B v1"
+      },
+      "size": 5969345064,
+      "SHA256": "c41e0af2cbc66e94121377680e8224a1504fac6c9ea620c395f0a79281db26e7",
+      "lastUpdated": "2023-04-12T13:18:29",
+      "url": "https://huggingface.co/BlinkDL/rwkv-4-novel/blob/main/RWKV-4-Novel-3B-v1-Chn-20230412-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-novel/resolve/main/RWKV-4-Novel-3B-v1-Chn-20230412-ctx4096.pth"
+    },
+    {
+      "name": "RWKV-4-Novel-3B-v1-ChnEng-20230412-ctx4096.pth",
+      "desc": {
+        "en": "English Novel 3B v1",
+        "zh": "英文小说 3B v1"
+      },
+      "size": 5969345064,
+      "SHA256": "283c6e6fa10c52a93e9a01d9630f288473267ea152a49c6579b5c0427bdc9c61",
+      "lastUpdated": "2023-04-12T13:18:29",
+      "url": "https://huggingface.co/BlinkDL/rwkv-4-novel/blob/main/RWKV-4-Novel-3B-v1-ChnEng-20230412-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-novel/resolve/main/RWKV-4-Novel-3B-v1-ChnEng-20230412-ctx4096.pth"
+    },
+    {
+      "name": "RWKV-4-Novel-7B-v1-ChnEng-20230426-ctx8192.pth",
+      "desc": {
+        "en": "English Novel 7B v1",
+        "zh": "英文小说 7B v1"
+      },
+      "size": 14785389864,
+      "SHA256": "bd08c75a296bd193dcfadb993fe06d7f9dd91ca3385231f24c592c89d25cd596",
+      "lastUpdated": "2023-04-26T18:57:01",
+      "url": "https://huggingface.co/BlinkDL/rwkv-4-novel/blob/main/RWKV-4-Novel-7B-v1-ChnEng-20230426-ctx8192.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-novel/resolve/main/RWKV-4-Novel-7B-v1-ChnEng-20230426-ctx8192.pth"
     }
   ]
 }
