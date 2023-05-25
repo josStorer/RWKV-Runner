@@ -66,7 +66,8 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 4,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: true
+      enableHighPrecisionForLastLayer: true,
+      useCustomCuda: true
     }
   },
   {
@@ -85,7 +86,8 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 41,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false
+      enableHighPrecisionForLastLayer: false,
+      useCustomCuda: true
     }
   },
   {
@@ -104,7 +106,8 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 24,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: true
+      enableHighPrecisionForLastLayer: true,
+      useCustomCuda: true
     }
   },
   {
@@ -123,7 +126,8 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 24,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: true
+      enableHighPrecisionForLastLayer: true,
+      useCustomCuda: true
     }
   },
   {
@@ -142,7 +146,8 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 8,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: true
+      enableHighPrecisionForLastLayer: true,
+      useCustomCuda: true
     }
   },
   {
@@ -161,7 +166,8 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 8,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: true
+      enableHighPrecisionForLastLayer: true,
+      useCustomCuda: true
     }
   },
   {
@@ -180,7 +186,8 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'fp16',
       storedLayers: 41,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false
+      enableHighPrecisionForLastLayer: false,
+      useCustomCuda: true
     }
   },
   {
@@ -199,7 +206,8 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 41,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false
+      enableHighPrecisionForLastLayer: false,
+      useCustomCuda: true
     }
   },
   {
@@ -218,7 +226,8 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 41,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false
+      enableHighPrecisionForLastLayer: false,
+      useCustomCuda: true
     }
   },
   {
@@ -237,7 +246,8 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 18,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: true
+      enableHighPrecisionForLastLayer: true,
+      useCustomCuda: true
     }
   },
   {
@@ -256,7 +266,8 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 18,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: true
+      enableHighPrecisionForLastLayer: true,
+      useCustomCuda: true
     }
   },
   {
@@ -275,7 +286,8 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'fp16',
       storedLayers: 41,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false
+      enableHighPrecisionForLastLayer: false,
+      useCustomCuda: true
     }
   },
   {
@@ -294,7 +306,48 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'fp16',
       storedLayers: 41,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false
+      enableHighPrecisionForLastLayer: false,
+      useCustomCuda: true
+    }
+  },
+  {
+    name: 'GPU-8G-7B-EN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1.2,
+      topP: 0.5,
+      presencePenalty: 0.4,
+      frequencyPenalty: 0.4
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-7B-v12-Eng98%-Other2%-20230521-ctx8192.pth',
+      device: 'CUDA',
+      precision: 'int8',
+      storedLayers: 27,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: false,
+      useCustomCuda: true
+    }
+  },
+  {
+    name: 'GPU-8G-7B-CN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1.2,
+      topP: 0.5,
+      presencePenalty: 0.4,
+      frequencyPenalty: 0.4
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-7B-v11-Eng49%-Chn49%-Jpn1%-Other1%-20230430-ctx8192.pth',
+      device: 'CUDA',
+      precision: 'int8',
+      storedLayers: 27,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: false,
+      useCustomCuda: true
     }
   },
   {
@@ -313,7 +366,8 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 41,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false
+      enableHighPrecisionForLastLayer: false,
+      useCustomCuda: true
     }
   },
   {
@@ -332,11 +386,12 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 41,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false
+      enableHighPrecisionForLastLayer: false,
+      useCustomCuda: true
     }
   },
   {
-    name: 'GPU-12G-7B-EN',
+    name: 'GPU-12G-14B-EN',
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
@@ -346,31 +401,13 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 0.4
     },
     modelParameters: {
-      modelName: 'RWKV-4-Raven-7B-v12-Eng98%-Other2%-20230521-ctx8192.pth',
+      modelName: 'RWKV-4-Raven-14B-v12-Eng98%-Other2%-20230523-ctx8192.pth',
       device: 'CUDA',
-      precision: 'fp16',
-      storedLayers: 22,
+      precision: 'int8',
+      storedLayers: 24,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false
-    }
-  },
-  {
-    name: 'GPU-12G-7B-CN',
-    apiParameters: {
-      apiPort: 8000,
-      maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
-    },
-    modelParameters: {
-      modelName: 'RWKV-4-Raven-7B-v11-Eng49%-Chn49%-Jpn1%-Other1%-20230430-ctx8192.pth',
-      device: 'CUDA',
-      precision: 'fp16',
-      storedLayers: 22,
-      maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false
+      enableHighPrecisionForLastLayer: false,
+      useCustomCuda: true
     }
   },
   {
@@ -389,7 +426,8 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'fp16',
       storedLayers: 41,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false
+      enableHighPrecisionForLastLayer: false,
+      useCustomCuda: true
     }
   },
   {
@@ -408,7 +446,28 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'fp16',
       storedLayers: 41,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false
+      enableHighPrecisionForLastLayer: false,
+      useCustomCuda: true
+    }
+  },
+  {
+    name: 'GPU-16G-14B-EN',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1.2,
+      topP: 0.5,
+      presencePenalty: 0.4,
+      frequencyPenalty: 0.4
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-Raven-14B-v12-Eng98%-Other2%-20230523-ctx8192.pth',
+      device: 'CUDA',
+      precision: 'int8',
+      storedLayers: 37,
+      maxStoredLayers: 41,
+      enableHighPrecisionForLastLayer: false,
+      useCustomCuda: true
     }
   },
   {
@@ -427,7 +486,8 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 41,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false
+      enableHighPrecisionForLastLayer: false,
+      useCustomCuda: true
     }
   },
   {
@@ -446,7 +506,8 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'fp16',
       storedLayers: 41,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false
+      enableHighPrecisionForLastLayer: false,
+      useCustomCuda: true
     }
   },
   {
