@@ -10,7 +10,11 @@ import commonStore, { ModelStatus } from '../stores/commonStore';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { toast } from 'react-toastify';
 
-export type CompletionParams = Omit<ApiParameters, 'apiPort'> & { stop: string }
+export type CompletionParams = Omit<ApiParameters, 'apiPort'> & {
+  stop: string,
+  injectStart: string,
+  injectEnd: string
+};
 
 export type CompletionPreset = {
   name: string,
@@ -22,67 +26,80 @@ export const defaultPresets: CompletionPreset[] = [{
   name: 'Writer',
   prompt: 'The following is an epic science fiction masterpiece that is immortalized, with delicate descriptions and grand depictions of interstellar civilization wars.\nChapter 1.\n',
   params: {
-    maxResponseToken: 4100,
-    temperature: 1,
+    maxResponseToken: 500,
+    temperature: 1.2,
     topP: 0.5,
     presencePenalty: 0.4,
     frequencyPenalty: 0.4,
-    stop: ''
+    stop: '\\n\\nBob',
+    injectStart: '',
+    injectEnd: ''
   }
 }, {
   name: 'Translator',
-  prompt: '',
+  prompt: 'Translate this into Chinese.\n\nEnglish: What rooms do you have available?',
   params: {
-    maxResponseToken: 4100,
+    maxResponseToken: 500,
     temperature: 1,
-    topP: 0.5,
+    topP: 0.3,
     presencePenalty: 0.4,
     frequencyPenalty: 0.4,
-    stop: ''
+    stop: '\\nEnglish',
+    injectStart: '\\nChinese: ',
+    injectEnd: '\\nEnglish: '
   }
 }, {
   name: 'Catgirl',
-  prompt: '',
+  prompt: 'The following is a conversation between a cat girl and her owner. The cat girl is a humanized creature that behaves like a cat but is humanoid. At the end of each sentence in the dialogue, she will add \"Meow~\". In the following content, Bob represents the owner and Alice represents the cat girl.\n\nBob: Hello.\n\nAlice: I\'m here, meow~.\n\nBob: Can you tell jokes?',
   params: {
-    maxResponseToken: 4100,
-    temperature: 1,
+    maxResponseToken: 500,
+    temperature: 1.2,
     topP: 0.5,
     presencePenalty: 0.4,
     frequencyPenalty: 0.4,
-    stop: ''
+    stop: '\\n\\nBob',
+    injectStart: '\\n\\nAlice: ',
+    injectEnd: '\\n\\nBob: '
   }
 }, {
-  name: 'Explain Code',
-  prompt: '',
-  params: {
-    maxResponseToken: 4100,
-    temperature: 1,
-    topP: 0.5,
-    presencePenalty: 0.4,
-    frequencyPenalty: 0.4,
-    stop: ''
-  }
-}, {
+// }, {
+//   name: 'Explain Code',
+//   prompt: 'export async function startup() {\n  FileExists(\'cache.json\').then((exists) => {\n    if (exists)\n      downloadProgramFiles();\n    else {\n      deleteDynamicProgramFiles().then(downloadProgramFiles);\n    }\n  });\n  EventsOn(\'downloadList\', (data) => {\n    if (data)\n      commonStore.setDownloadList(data);\n  });\n\n  initCache().then(initRemoteText);\n\n  await initConfig();\n\n  if (commonStore.settings.autoUpdatesCheck) // depends on config settings\n    checkUpdate();\n\n  getStatus(1000).then(status => { // depends on config api port\n    if (status)\n      commonStore.setStatus(status);\n  });\n}\n\n\"\"\"\nHere\'s what the above code is doing, explained in a concise way:\n',
+//   params: {
+//     maxResponseToken: 500,
+//     temperature: 0.8,
+//     topP: 0.7,
+//     presencePenalty: 0.4,
+//     frequencyPenalty: 0.4,
+//     stop: '\\n\\n',
+//     injectStart: '',
+//     injectEnd: ''
+//   }
+// }, {
   name: 'Werewolf',
-  prompt: '',
+  prompt: 'There is currently a game of Werewolf with six players, including a Seer (who can check identities at night), two Werewolves (who can choose someone to kill at night), a Bodyguard (who can choose someone to protect at night), two Villagers (with no special abilities), and a game host. Bob will play as Player 1, Alice will play as Players 2-6 and the game host, and they will begin playing together. Every night, the host will ask Bob for his action and simulate the actions of the other players. During the day, the host will oversee the voting process and ask Bob for his vote. \n\nAlice: Next, I will act as the game host and assign everyone their roles, including randomly assigning yours. Then, I will simulate the actions of Players 2-6 and let you know what happens each day. Based on your assigned role, you can tell me your actions and I will let you know the corresponding results each day.\n\nBob: Okay, I understand. Let\'s begin. Please assign me a role. Am I the Seer, Werewolf, Villager, or Bodyguard?\n\nAlice: You are the Seer. Now that night has fallen, please choose a player to check his identity.\n\nBob: Tonight, I want to check Player 2 and find out his role.',
   params: {
-    maxResponseToken: 4100,
-    temperature: 1,
-    topP: 0.5,
-    presencePenalty: 0.4,
-    frequencyPenalty: 0.4,
-    stop: ''
+    maxResponseToken: 500,
+    temperature: 1.2,
+    topP: 0.4,
+    presencePenalty: 0.5,
+    frequencyPenalty: 0.5,
+    stop: '\\n\\nBob',
+    injectStart: '\\n\\nAlice: ',
+    injectEnd: '\\n\\nBob: '
   }
 }, {
   name: 'Blank',
   prompt: '',
   params: {
-    maxResponseToken: 4100,
+    maxResponseToken: 500,
     temperature: 1,
     topP: 0.5,
     presencePenalty: 0.4,
     frequencyPenalty: 0.4,
-    stop: ''
+    stop: '',
+    injectStart: '',
+    injectEnd: ''
   }
 }];
 
@@ -141,6 +158,8 @@ const CompletionPanel: FC = observer(() => {
       return;
     }
 
+    prompt += params.injectStart.replaceAll('\\n', '\n');
+
     let answer = '';
     sseControllerRef.current = new AbortController();
     fetchEventSource(`http://127.0.0.1:${port}/completions`, // https://api.openai.com/v1/completions || http://127.0.0.1:${port}/completions
@@ -159,7 +178,7 @@ const CompletionPanel: FC = observer(() => {
           top_p: params.topP,
           presence_penalty: params.presencePenalty,
           frequency_penalty: params.frequencyPenalty,
-          stop: params.stop || undefined
+          stop: params.stop.replaceAll('\\n', '\n') || undefined
         }),
         signal: sseControllerRef.current?.signal,
         onmessage(e) {
@@ -178,7 +197,7 @@ const CompletionPanel: FC = observer(() => {
           }
           if (data.choices && Array.isArray(data.choices) && data.choices.length > 0) {
             answer += data.choices[0].text;
-            setPrompt(prompt + answer);
+            setPrompt(prompt + answer.trim() + params.injectEnd.replaceAll('\\n', '\n'));
           }
         },
         onclose() {
@@ -276,6 +295,26 @@ const CompletionPanel: FC = observer(() => {
                 onChange={(e, data) => {
                   setParams({
                     stop: data.value
+                  });
+                }} />
+            } />
+          <Labeled flex breakline label={t('Inject start text')}
+            desc={t('Before the response starts, inject this content.')}
+            content={
+              <Input value={params.injectStart}
+                onChange={(e, data) => {
+                  setParams({
+                    injectStart: data.value
+                  });
+                }} />
+            } />
+          <Labeled flex breakline label={t('Inject end text')}
+            desc={t('When response finished, inject this content.')}
+            content={
+              <Input value={params.injectEnd}
+                onChange={(e, data) => {
+                  setParams({
+                    injectEnd: data.value
                   });
                 }} />
             } />
