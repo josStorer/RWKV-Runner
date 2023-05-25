@@ -25,7 +25,7 @@ English | [简体中文](README_ZH.md)
 
 [release-url]: https://github.com/josStorer/RWKV-Runner/releases/latest
 
-[download-url]: https://github.com/josStorer/RWKV-Runner/releases/download/v1.0.2/RWKV-Runner_windows_x64.exe
+[download-url]: https://github.com/josStorer/RWKV-Runner/releases
 
 </div>
 
