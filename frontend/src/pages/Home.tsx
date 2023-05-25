@@ -3,9 +3,9 @@ import React, { FC, ReactElement } from 'react';
 import banner from '../assets/images/banner.jpg';
 import {
   Chat20Regular,
+  ClipboardEdit20Regular,
   DataUsageSettings20Regular,
-  DocumentSettings20Regular,
-  Storage20Regular
+  DocumentSettings20Regular
 } from '@fluentui/react-icons';
 import { useNavigate } from 'react-router';
 import { observer } from 'mobx-react-lite';
@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { ConfigSelector } from '../components/ConfigSelector';
 import MarkdownRender from '../components/MarkdownRender';
 import commonStore from '../stores/commonStore';
+import { Completion } from './Completion';
 
 export type IntroductionContent = { [lang: string]: string }
 
@@ -34,6 +35,12 @@ const navCards: NavCard[] = [
     icon: <Chat20Regular />
   },
   {
+    label: 'Completion',
+    desc: 'Writer, Translator, Role-playing',
+    path: '/completion',
+    icon: <ClipboardEdit20Regular />
+  },
+  {
     label: 'Configs',
     desc: 'Manage your configs',
     path: '/configs',
@@ -44,12 +51,6 @@ const navCards: NavCard[] = [
     desc: 'Manage models',
     path: '/models',
     icon: <DataUsageSettings20Regular />
-  },
-  {
-    label: 'Train',
-    desc: '',
-    path: '/train',
-    icon: <Storage20Regular />
   }
 ];
 
