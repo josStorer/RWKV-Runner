@@ -62,6 +62,19 @@ export const defaultPresets: CompletionPreset[] = [{
     injectEnd: '\\n\\nBob: '
   }
 }, {
+  name: 'Chinese Kongfu',
+  prompt: 'Bob: 请你扮演一个文本冒险游戏，我是游戏主角。这是一个玄幻修真世界，有四大门派。我输入我的行动，请你显示行动结果，并具体描述环境。我的第一个行动是“醒来”，请开始故事。',
+  params: {
+    maxResponseToken: 500,
+    temperature: 1.1,
+    topP: 0.7,
+    presencePenalty: 0.3,
+    frequencyPenalty: 0.3,
+    stop: '\\n\\nBob',
+    injectStart: '\\n\\nAlice: ',
+    injectEnd: '\\n\\nBob: '
+  }
+}, {
 // }, {
 //   name: 'Explain Code',
 //   prompt: 'export async function startup() {\n  FileExists(\'cache.json\').then((exists) => {\n    if (exists)\n      downloadProgramFiles();\n    else {\n      deleteDynamicProgramFiles().then(downloadProgramFiles);\n    }\n  });\n  EventsOn(\'downloadList\', (data) => {\n    if (data)\n      commonStore.setDownloadList(data);\n  });\n\n  initCache().then(initRemoteText);\n\n  await initConfig();\n\n  if (commonStore.settings.autoUpdatesCheck) // depends on config settings\n    checkUpdate();\n\n  getStatus(1000).then(status => { // depends on config api port\n    if (status)\n      commonStore.setStatus(status);\n  });\n}\n\n\"\"\"\nHere\'s what the above code is doing, explained in a concise way:\n',
