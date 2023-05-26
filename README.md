@@ -47,6 +47,25 @@ English | [简体中文](README_ZH.md)
 - Theme switching
 - Automatic updates
 
+## API Concurrency Stress Testing
+
+```bash
+ab -p body.json -T application/json -c 20 -n 100 -l http://127.0.0.1:8000/chat/completions
+```
+
+body.json:
+
+```json
+{
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hello"
+    }
+  ]
+}
+```
+
 ## Todo
 
 - [ ] Model training functionality

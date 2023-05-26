@@ -47,6 +47,25 @@ API兼容的接口，这意味着一切ChatGPT客户端都是RWKV客户端。
 - 主题切换
 - 自动更新
 
+## API并发压力测试
+
+```bash
+ab -p body.json -T application/json -c 20 -n 100 -l http://127.0.0.1:8000/chat/completions
+```
+
+body.json:
+
+```json
+{
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hello"
+    }
+  ]
+}
+```
+
 ## Todo
 
 - [ ] 模型训练功能
