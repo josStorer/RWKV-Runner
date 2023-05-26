@@ -15,7 +15,7 @@ compatible with the OpenAI API, which means that every ChatGPT client is an RWKV
 
 English | [简体中文](README_ZH.md)
 
-[Preview](#Preview) | [Download][download-url]
+[FAQs](https://github.com/josStorer/RWKV-Runner/wiki/FAQs) | [Preview](#Preview) | [Download][download-url]
 
 [license-image]: http://img.shields.io/badge/license-MIT-blue.svg
 
