@@ -255,6 +255,18 @@
       "lastUpdated": "2023-04-26T18:57:01",
       "url": "https://huggingface.co/BlinkDL/rwkv-4-novel/blob/main/RWKV-4-Novel-7B-v1-ChnEng-20230426-ctx8192.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-novel/resolve/main/RWKV-4-Novel-7B-v1-ChnEng-20230426-ctx8192.pth"
+    },
+    {
+      "name": "RWKV-4-World-0.1B-v1-20230520-ctx4096.pth",
+      "desc": {
+        "en": "+100 Languages 0.1B v1",
+        "zh": "+100种语言 0.1B v1"
+      },
+      "size": 385594610,
+      "SHA256": "a10ef99df2a8f8a6801edf4fc92a9c49bedd63dcb900d3e5667a2136b3d671e7",
+      "lastUpdated": "2023-05-25T09:21:27",
+      "url": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-0.1B-v1-20230520-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-0.1B-v1-20230520-ctx4096.pth"
     }
   ]
 }
