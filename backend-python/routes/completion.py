@@ -93,6 +93,8 @@ The following is a coherent verbose detailed conversation between a girl named {
 
     async def eval_rwkv():
         while completion_lock.locked():
+            if await request.is_disconnected():
+                return
             await asyncio.sleep(0.1)
         else:
             completion_lock.acquire()
@@ -184,9 +186,14 @@ async def completions(body: CompletionBody, request: Request):
     model: RWKV = global_var.get(global_var.Model)
     if model is None:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "model not loaded")
+    
+    if body.prompt is None or body.prompt == "":
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "prompt not found")
 
     async def eval_rwkv():
         while completion_lock.locked():
+            if await request.is_disconnected():
+                return
             await asyncio.sleep(0.1)
         else:
             completion_lock.acquire()
