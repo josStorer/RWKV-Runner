@@ -13,22 +13,32 @@ import (
 )
 
 func Cmd(args ...string) (string, error) {
-	_, err := os.Stat("cmd-helper.bat")
-	if err != nil {
-		if err := os.WriteFile("./cmd-helper.bat", []byte("start %*"), 0644); err != nil {
+	if runtime.GOOS == "windows" {
+		_, err := os.Stat("cmd-helper.bat")
+		if err != nil {
+			if err := os.WriteFile("./cmd-helper.bat", []byte("start %*"), 0644); err != nil {
+				return "", err
+			}
+		}
+		cmdHelper, err := filepath.Abs("./cmd-helper")
+		if err != nil {
 			return "", err
 		}
+		cmd := exec.Command(cmdHelper, args...)
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			return "", err
+		}
+		return string(out), nil
+	} else {
+		cmd := exec.Command(args[0], args[1:]...)
+		err := cmd.Start()
+		if err != nil {
+			return "", err
+		}
+		cmd.Wait()
+		return "", nil
 	}
-	cmdHelper, err := filepath.Abs("./cmd-helper")
-	if err != nil {
-		return "", err
-	}
-	cmd := exec.Command(cmdHelper, args...)
-	out, err := cmd.CombinedOutput()
-	if err != nil {
-		return "", err
-	}
-	return string(out), nil
 }
 
 func GetPython() (string, error) {

@@ -3,6 +3,7 @@ package backend_golang
 import (
 	"errors"
 	"os/exec"
+	"runtime"
 	"strconv"
 )
 
@@ -39,6 +40,9 @@ func (a *App) InstallPyDep(cnMirror bool) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	if runtime.GOOS == "windows" {
+		ChangeFileLine("./py310/python310._pth", 3, "Lib\\site-packages")
+	}
 	if cnMirror {
 		_, err = Cmd(python, "./backend-python/get-pip.py", "-i", "https://pypi.tuna.tsinghua.edu.cn/simple")
 	} else {
@@ -47,7 +51,6 @@ func (a *App) InstallPyDep(cnMirror bool) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	ChangeFileLine("./py310/python310._pth", 3, "Lib\\site-packages")
 	_, err = Cmd(python, "-m", "pip", "install", "torch==1.13.1", "torchvision==0.14.1", "torchaudio==0.13.1", "--index-url", "https://download.pytorch.org/whl/cu117")
 	if err != nil {
 		return "", err
