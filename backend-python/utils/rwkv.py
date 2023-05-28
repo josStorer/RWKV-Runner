@@ -47,6 +47,32 @@ class RWKV:
             assert len(dd) == 1
             self.AVOID_REPEAT_TOKENS += dd
 
+        self.preload()
+
+    def preload(self):
+        if self.user == "Bob":
+            bot = self.bot
+            user = self.user
+            preset_system = f"""
+The following is a coherent verbose detailed conversation between a girl named {bot} and her friend {user}. \
+{bot} is very intelligent, creative and friendly. \
+{bot} is unlikely to disagree with {user}, and {bot} doesn't like to ask {user} questions. \
+{bot} likes to tell {user} a lot about herself and her opinions. \
+{bot} usually gives {user} kind, helpful and informative advices.\n
+"""
+            logits = self.run_rnn(self.pipeline.encode(preset_system))
+            try:
+                state_cache.add_state(
+                    state_cache.AddStateBody(
+                        prompt=preset_system,
+                        tokens=self.model_tokens,
+                        state=self.model_state,
+                        logits=logits,
+                    )
+                )
+            except HTTPException:
+                pass
+
     def run_rnn(self, _tokens: List[str], newline_adj: int = 0):
         tokens = [int(x) for x in _tokens]
         self.model_tokens += tokens
