@@ -113,7 +113,7 @@ export async function refreshRemoteModels(cache: { models: ModelSourceItem[] }) 
   cache.models = cache.models.filter((model, index, self) => {
     return model.name.endsWith('.pth')
       && index === self.findIndex(
-        m => m.name === model.name || (m.SHA256 === model.SHA256 && m.size === model.size));
+        m => m.name === model.name || (m.SHA256 && m.SHA256 === model.SHA256 && m.size === model.size));
   });
   commonStore.setModelSourceList(cache.models);
   await saveCache().catch(() => {
