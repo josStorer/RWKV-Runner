@@ -14,7 +14,7 @@ router = APIRouter()
 def get_tokens_path(model_path: str):
     model_path = model_path.lower()
     default_tokens_path = (
-        f"{pathlib.Path(__file__).parent.parent.resolve()}/20B_tokenizer.json"
+        f"{pathlib.Path(__file__).parent.parent.resolve()}/rwkv_pip/20B_tokenizer.json"
     )
     if "raven" in model_path:
         return default_tokens_path

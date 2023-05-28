@@ -11,7 +11,7 @@ import uvicorn
 from utils.rwkv import *
 from utils.torch import *
 from utils.ngrok import *
-from routes import completion, config
+from routes import completion, config, state_cache
 import global_var
 
 app = FastAPI()
@@ -26,11 +26,13 @@ app.add_middleware(
 
 app.include_router(completion.router)
 app.include_router(config.router)
+app.include_router(state_cache.router)
 
 
 @app.on_event("startup")
 def init():
     global_var.init()
+    state_cache.init()
 
     set_torch()
 
