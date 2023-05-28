@@ -775,6 +775,10 @@ export const Configs: FC = observer(() => {
                           modelName: data.value
                         });
                       }}>
+                      {!commonStore.modelSourceList.find(item => item.name === selectedConfig.modelParameters.modelName)?.isLocal
+                        && <option key={-1}
+                          value={selectedConfig.modelParameters.modelName}>{selectedConfig.modelParameters.modelName}
+                        </option>}
                       {commonStore.modelSourceList.map((modelItem, index) =>
                         modelItem.isLocal && <option key={index} value={modelItem.name}>{modelItem.name}</option>
                       )}
