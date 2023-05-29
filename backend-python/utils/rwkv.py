@@ -138,6 +138,7 @@ The following is a coherent verbose detailed conversation between a girl named {
             )
 
             if token == END_OF_TEXT:
+                yield response, ""
                 break
             if token not in occurrence:
                 occurrence[token] = 1
