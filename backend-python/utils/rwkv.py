@@ -34,8 +34,8 @@ class RWKV:
 
         self.interface = ":"
         if "rwkv_vocab" in tokens_path:
-            self.user = "Human"
-            self.bot = "Bot"
+            self.user = "Question"
+            self.bot = "Answer"
         else:
             self.user = "Bob"
             self.bot = "Alice"
