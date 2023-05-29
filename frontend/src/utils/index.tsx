@@ -169,18 +169,20 @@ export function isSystemLightMode() {
 
 export function downloadProgramFiles() {
   manifest.programFiles.forEach(({ url, path }) => {
-    ReadFileInfo(path).then(info => {
-      if (info.size == 0 && url)
-        AddToDownloadList(path, url.replace('@master', '@v' + manifest.version));
-    }).catch(() => {
-      AddToDownloadList(path, url.replace('@master', '@v' + manifest.version));
-    });
+    if (path)
+      ReadFileInfo(path).then(info => {
+        if (info.size == 0 && url)
+          AddToDownloadList(path, url.replace('@master', '@v' + manifest.version));
+      }).catch(() => {
+        if (url)
+          AddToDownloadList(path, url.replace('@master', '@v' + manifest.version));
+      });
   });
 }
 
 export function forceDownloadProgramFiles() {
   manifest.programFiles.forEach(({ url, path }) => {
-    if (url)
+    if (path && url)
       AddToDownloadList(path, url.replace('@master', '@v' + manifest.version));
   });
 }
