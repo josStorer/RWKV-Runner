@@ -1,8 +1,8 @@
 import {
   AddToDownloadList,
   DeleteFile,
-  FileExists,
   ListDirFiles,
+  ReadFileInfo,
   ReadJson,
   SaveJson,
   UpdateApp
@@ -175,9 +175,11 @@ export function isSystemLightMode() {
 
 export function downloadProgramFiles() {
   manifest.programFiles.forEach(({ url, path }) => {
-    FileExists(path).then(exists => {
-      if (!exists && url)
+    ReadFileInfo(path).then(info => {
+      if (info.size == 0 && url)
         AddToDownloadList(path, url.replace('@master', '@v' + manifest.version));
+    }).catch(() => {
+      AddToDownloadList(path, url.replace('@master', '@v' + manifest.version));
     });
   });
 }
