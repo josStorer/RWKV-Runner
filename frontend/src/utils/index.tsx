@@ -214,8 +214,7 @@ export function bytesToKb(size: number) {
 }
 
 export async function checkUpdate(notifyEvenLatest: boolean = false) {
-  let updateUrl = '';
-  await fetch(!commonStore.settings.giteeUpdatesSource ?
+  fetch(!commonStore.settings.giteeUpdatesSource ?
     'https://api.github.com/repos/josstorer/RWKV-Runner/releases/latest' :
     'https://gitee.com/api/v5/repos/josc146/RWKV-Runner/releases/latest'
   ).then((r) => {
@@ -224,28 +223,45 @@ export async function checkUpdate(notifyEvenLatest: boolean = false) {
           if (data.tag_name) {
             const versionTag = data.tag_name;
             if (versionTag.replace('v', '') > manifest.version) {
-              updateUrl = !commonStore.settings.giteeUpdatesSource ?
-                `https://github.com/josStorer/RWKV-Runner/releases/download/${versionTag}/RWKV-Runner_windows_x64.exe` :
-                `https://gitee.com/josc146/RWKV-Runner/releases/download/${versionTag}/RWKV-Runner_windows_x64.exe`;
-              toastWithButton(t('New Version Available') + ': ' + versionTag, t('Update'), () => {
-                DeleteFile('cache.json');
-                toast(t('Downloading update, please wait. If it is not completed, please manually download the program from GitHub and replace the original program.'), {
-                  type: 'info',
-                  position: 'bottom-left',
-                  autoClose: 10000
-                });
-                setTimeout(() => {
-                  UpdateApp(updateUrl).catch((e) => {
-                    toast(t('Update Error') + ' - ' + e.message || e, {
-                      type: 'error',
-                      position: 'bottom-left',
-                      autoClose: false
-                    });
+              const verifyUrl = !commonStore.settings.giteeUpdatesSource ?
+                `https://api.github.com/repos/josstorer/RWKV-Runner/releases/tags/${versionTag}` :
+                `https://gitee.com/api/v5/repos/josc146/RWKV-Runner/releases/tags/${versionTag}`;
+
+              fetch(verifyUrl).then((r) => {
+                if (r.ok) {
+                  r.json().then((data) => {
+                    if (data.assets && data.assets.length > 0) {
+                      const asset = data.assets.find((a: any) => a.name.toLowerCase().includes(commonStore.platform.toLowerCase()));
+                      if (asset) {
+                        const updateUrl = !commonStore.settings.giteeUpdatesSource ?
+                          `https://github.com/josStorer/RWKV-Runner/releases/download/${versionTag}/${asset.name}` :
+                          `https://gitee.com/josc146/RWKV-Runner/releases/download/${versionTag}/${asset.name}`;
+                        toastWithButton(t('New Version Available') + ': ' + versionTag, t('Update'), () => {
+                          DeleteFile('cache.json');
+                          toast(t('Downloading update, please wait. If it is not completed, please manually download the program from GitHub and replace the original program.'), {
+                            type: 'info',
+                            position: 'bottom-left',
+                            autoClose: 10000
+                          });
+                          setTimeout(() => {
+                            UpdateApp(updateUrl).catch((e) => {
+                              toast(t('Update Error') + ' - ' + e.message || e, {
+                                type: 'error',
+                                position: 'bottom-left',
+                                autoClose: false
+                              });
+                            });
+                          }, 500);
+                        }, {
+                          autoClose: false,
+                          position: 'bottom-left'
+                        });
+                      }
+                    }
                   });
-                }, 500);
-              }, {
-                autoClose: false,
-                position: 'bottom-left'
+                } else {
+                  throw new Error('Verify response was not ok.');
+                }
               });
             } else {
               if (notifyEvenLatest) {
@@ -263,7 +279,6 @@ export async function checkUpdate(notifyEvenLatest: boolean = false) {
   ).catch((e) => {
     toast(t('Updates Check Error') + ' - ' + e.message || e, { type: 'error', position: 'bottom-left' });
   });
-  return updateUrl;
 }
 
 export function toastWithButton(text: string, buttonText: string, onClickButton: () => void, options?: ToastOptions) {
