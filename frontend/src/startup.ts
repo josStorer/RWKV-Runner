@@ -1,6 +1,6 @@
 import commonStore from './stores/commonStore';
 import { GetPlatform, ReadJson } from '../wailsjs/go/backend_golang/App';
-import { Cache, checkUpdate, downloadProgramFiles, LocalConfig, refreshModels, saveCache } from './utils';
+import { Cache, checkUpdate, downloadProgramFiles, LocalConfig, refreshModels } from './utils';
 import { getStatus } from './apis';
 import { EventsOn } from '../wailsjs/runtime';
 import { defaultModelConfigs } from './pages/Configs';
@@ -35,7 +35,6 @@ async function initRemoteText() {
         commonStore.setIntroduction(data.introduction);
       if (data.about)
         commonStore.setAbout(data.about);
-      saveCache();
     }
   });
 }
@@ -61,10 +60,6 @@ async function initConfig() {
 
 async function initCache() {
   await ReadJson('cache.json').then((cacheData: Cache) => {
-    if (cacheData.introduction)
-      commonStore.setIntroduction(cacheData.introduction);
-    if (cacheData.about)
-      commonStore.setAbout(cacheData.about);
     if (cacheData.depComplete)
       commonStore.setDepComplete(cacheData.depComplete);
   }).catch(() => {

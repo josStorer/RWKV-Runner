@@ -16,13 +16,9 @@ import { Button } from '@fluentui/react-components';
 import { Language, Languages, SettingsType } from '../pages/Settings';
 import { ModelSourceItem } from '../pages/Models';
 import { ModelConfig, ModelParameters } from '../pages/Configs';
-import { IntroductionContent } from '../pages/Home';
-import { AboutContent } from '../pages/About';
 
 export type Cache = {
   models: ModelSourceItem[]
-  introduction: IntroductionContent,
-  about: AboutContent
   depComplete: boolean
 }
 
@@ -153,8 +149,6 @@ export const saveConfigs = async () => {
 export const saveCache = async () => {
   const data: Cache = {
     models: commonStore.modelSourceList,
-    introduction: commonStore.introduction,
-    about: commonStore.about,
     depComplete: commonStore.depComplete
   };
   return SaveJson('cache.json', data);
