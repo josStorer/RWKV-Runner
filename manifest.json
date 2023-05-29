@@ -17,6 +17,18 @@
   ],
   "models": [
     {
+      "name": "RWKV-4-Raven-3B-v12-Eng49%-Chn49%-Jpn1%-Other1%-20230527-ctx4096.pth",
+      "desc": {
+        "en": "Chinese 3B v12",
+        "zh": "中文 3B v12"
+      },
+      "size": 5969345330,
+      "SHA256": "c0abb4b745ba3523b9d8b3e1293110867ee55b1ef3dc8c122212f78396755721",
+      "lastUpdated": "2023-05-28T11:51:12",
+      "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-3B-v12-Eng49%25-Chn49%25-Jpn1%25-Other1%25-20230527-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-3B-v12-Eng49%25-Chn49%25-Jpn1%25-Other1%25-20230527-ctx4096.pth"
+    },
+    {
       "name": "RWKV-4-Raven-3B-v11-Eng99%-Other1%-20230425-ctx4096.pth",
       "desc": {
         "en": "English 3B v11",
