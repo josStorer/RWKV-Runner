@@ -33,6 +33,7 @@ class CommonStore {
     device_name: 'CPU'
   };
   depComplete: boolean = false;
+  platform: string = 'windows';
   // home
   introduction: IntroductionContent = manifest.introduction;
   // chat
@@ -167,6 +168,10 @@ class CommonStore {
 
   setCompletionGenerating(value: boolean) {
     this.completionGenerating = value;
+  }
+
+  setPlatform(value: string) {
+    this.platform = value;
   }
 }
 

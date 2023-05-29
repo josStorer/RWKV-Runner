@@ -1,5 +1,5 @@
 import commonStore from './stores/commonStore';
-import { ReadJson } from '../wailsjs/go/backend_golang/App';
+import { GetPlatform, ReadJson } from '../wailsjs/go/backend_golang/App';
 import { Cache, checkUpdate, downloadProgramFiles, LocalConfig, refreshModels, saveCache } from './utils';
 import { getStatus } from './apis';
 import { EventsOn } from '../wailsjs/runtime';
@@ -15,6 +15,7 @@ export async function startup() {
 
   initCache().then(initRemoteText);
 
+  await GetPlatform().then(commonStore.setPlatform);
   await initConfig();
 
   if (commonStore.settings.autoUpdatesCheck) // depends on config settings
