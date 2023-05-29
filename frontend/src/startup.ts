@@ -15,7 +15,7 @@ export async function startup() {
 
   initCache().then(initRemoteText);
 
-  await GetPlatform().then(commonStore.setPlatform);
+  await GetPlatform().then(p => commonStore.setPlatform(p));
   await initConfig();
 
   if (commonStore.settings.autoUpdatesCheck) // depends on config settings
