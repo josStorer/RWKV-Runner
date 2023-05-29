@@ -23,9 +23,9 @@ var cyacInfo embed.FS
 var py embed.FS
 
 func main() {
-	go backend.CopyEmbed(cyac)
-	go backend.CopyEmbed(cyacInfo)
-	go backend.CopyEmbed(py)
+	backend.CopyEmbed(cyac)
+	backend.CopyEmbed(cyacInfo)
+	backend.CopyEmbed(py)
 
 	// Create an instance of the app structure
 	app := backend.NewApp()

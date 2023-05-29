@@ -4,6 +4,7 @@ import { Cache, checkUpdate, downloadProgramFiles, LocalConfig, refreshModels, s
 import { getStatus } from './apis';
 import { EventsOn } from '../wailsjs/runtime';
 import { defaultModelConfigs } from './pages/Configs';
+import manifest from '../../manifest.json';
 
 export async function startup() {
   downloadProgramFiles();
@@ -28,11 +29,14 @@ export async function startup() {
 async function initRemoteText() {
   await fetch('https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/manifest.json', { cache: 'no-cache' })
   .then(r => r.json()).then((data) => {
-    if (data.introduction)
-      commonStore.setIntroduction(data.introduction);
-    if (data.about)
-      commonStore.setAbout(data.about);
-  }).then(saveCache);
+    if (data.version > manifest.version) {
+      if (data.introduction)
+        commonStore.setIntroduction(data.introduction);
+      if (data.about)
+        commonStore.setAbout(data.about);
+      saveCache();
+    }
+  });
 }
 
 async function initConfig() {
