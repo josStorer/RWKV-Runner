@@ -10,8 +10,6 @@ __pycache__
 /cache.json
 /frontend/stats.html
 /frontend/package.json.md5
-/backend-python/get-pip.py
-/backend-python/.get-pip.py
 /py310
 *.zip
 /cmd-helper.bat

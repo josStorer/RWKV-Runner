@@ -11,16 +11,8 @@
   "localModelDir": "models",
   "programFiles": [
     {
-      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/backend-python/rwkv_pip/.rwkv_vocab_v20230424.txt",
-      "path": "backend-python/rwkv_pip/rwkv_vocab_v20230424.txt"
-    },
-    {
-      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/backend-python/rwkv_pip/.20B_tokenizer.json",
-      "path": "backend-python/rwkv_pip/20B_tokenizer.json"
-    },
-    {
-      "url": "https://cdn.jsdelivr.net/gh/pypa/get-pip/public/get-pip.py",
-      "path": "backend-python/get-pip.py"
+      "url": "",
+      "path": ""
     }
   ],
   "models": [
