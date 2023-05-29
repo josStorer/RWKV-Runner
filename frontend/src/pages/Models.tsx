@@ -34,6 +34,7 @@ export type ModelSourceItem = {
   downloadUrl?: string;
   isLocal?: boolean;
   lastUpdatedMs?: number;
+  hide?: boolean;
 };
 
 const columns: TableColumnDefinition<ModelSourceItem>[] = [
@@ -203,6 +204,7 @@ export const Models: FC = observer(() => {
             <div className="overflow-y-auto overflow-x-hidden">
               <DataGridBody<ModelSourceItem>>
                 {({ item, rowId }) => (
+                  (!item.hide || item.isLocal) &&
                   <DataGridRow<ModelSourceItem> key={rowId}>
                     {({ renderCell }) => (
                       <DataGridCell>{renderCell(item)}</DataGridCell>
