@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Page } from '../components/Page';
-import { Dropdown, Input, Option, Switch } from '@fluentui/react-components';
+import { Dropdown, Option, Switch } from '@fluentui/react-components';
 import { Labeled } from '../components/Labeled';
 import commonStore from '../stores/commonStore';
 import { observer } from 'mobx-react-lite';
@@ -88,11 +88,11 @@ export const Settings: FC = observer(() => {
               }} />
           } />
         }
-        <Labeled label={t('API Host')} flex spaceBetween content={
-          <Input value={commonStore.settings.host}
+        <Labeled label={t('Allow external access to the API (service must be restarted)')} flex spaceBetween content={
+          <Switch checked={commonStore.settings.host !== '127.0.0.1'}
             onChange={(e, data) => {
               commonStore.setSettings({
-                host: data.value
+                host: data.checked ? '0.0.0.0' : '127.0.0.1'
               });
             }} />
         } />
