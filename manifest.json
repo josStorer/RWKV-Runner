@@ -11,79 +11,11 @@
   "localModelDir": "models",
   "programFiles": [
     {
-      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/backend-python/requirements.txt",
-      "path": "backend-python/requirements.txt"
-    },
-    {
-      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/backend-python/requirements_versions.txt",
-      "path": "backend-python/requirements_versions.txt"
-    },
-    {
-      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/backend-python/main.py",
-      "path": "backend-python/main.py"
-    },
-    {
-      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/backend-python/global_var.py",
-      "path": "backend-python/global_var.py"
-    },
-    {
-      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/backend-python/convert_model.py",
-      "path": "backend-python/convert_model.py"
-    },
-    {
-      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/backend-python/dep_check.py",
-      "path": "backend-python/dep_check.py"
-    },
-    {
-      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/backend-python/routes/completion.py",
-      "path": "backend-python/routes/completion.py"
-    },
-    {
-      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/backend-python/routes/config.py",
-      "path": "backend-python/routes/config.py"
-    },
-    {
-      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/backend-python/routes/state_cache.py",
-      "path": "backend-python/routes/state_cache.py"
-    },
-    {
-      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/backend-python/utils/ngrok.py",
-      "path": "backend-python/utils/ngrok.py"
-    },
-    {
-      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/backend-python/utils/rwkv.py",
-      "path": "backend-python/utils/rwkv.py"
-    },
-    {
-      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/backend-python/utils/torch.py",
-      "path": "backend-python/utils/torch.py"
-    },
-    {
-      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/backend-python/rwkv_pip/rwkv_tokenizer.py",
-      "path": "backend-python/rwkv_pip/rwkv_tokenizer.py"
-    },
-    {
-      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/backend-python/rwkv_pip/utils.py",
-      "path": "backend-python/rwkv_pip/utils.py"
-    },
-    {
-      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/backend-python/wkv_cuda_utils/wkv_cuda10_30.pyd",
-      "path": "backend-python/wkv_cuda_utils/wkv_cuda10_30.pyd"
-    },
-    {
-      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/backend-python/wkv_cuda_utils/wkv_cuda40.pyd",
-      "path": "backend-python/wkv_cuda_utils/wkv_cuda40.pyd"
-    },
-    {
-      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/backend-python/wkv_cuda_utils/wkv_cuda_model.py",
-      "path": "backend-python/wkv_cuda_utils/wkv_cuda_model.py"
-    },
-    {
-      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/backend-python/rwkv_pip/rwkv_vocab_v20230424.txt",
+      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/backend-python/rwkv_pip/.rwkv_vocab_v20230424.txt",
       "path": "backend-python/rwkv_pip/rwkv_vocab_v20230424.txt"
     },
     {
-      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/backend-python/rwkv_pip/20B_tokenizer.json",
+      "url": "https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/backend-python/rwkv_pip/.20B_tokenizer.json",
       "path": "backend-python/rwkv_pip/20B_tokenizer.json"
     },
     {

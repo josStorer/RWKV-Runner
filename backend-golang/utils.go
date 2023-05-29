@@ -3,8 +3,10 @@ package backend_golang
 import (
 	"archive/zip"
 	"bufio"
+	"embed"
 	"errors"
 	"io"
+	"io/fs"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -39,6 +41,34 @@ func Cmd(args ...string) (string, error) {
 		cmd.Wait()
 		return "", nil
 	}
+}
+
+func CopyEmbed(efs embed.FS) error {
+	err := fs.WalkDir(efs, ".", func(path string, d fs.DirEntry, err error) error {
+		if d.IsDir() {
+			return nil
+		}
+		if err != nil {
+			return err
+		}
+		content, err := efs.ReadFile(path)
+		if err != nil {
+			return err
+		}
+
+		err = os.MkdirAll(path[:strings.LastIndex(path, "/")], 0755)
+		if err != nil {
+			return err
+		}
+
+		err = os.WriteFile(path, content, 0644)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
+	return err
 }
 
 func GetPython() (string, error) {

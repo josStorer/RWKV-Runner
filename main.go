@@ -13,7 +13,20 @@ import (
 //go:embed all:frontend/dist
 var assets embed.FS
 
+//go:embed all:py310/Lib/site-packages/cyac
+var cyac embed.FS
+
+//go:embed all:py310/Lib/site-packages/cyac-1.7.dist-info
+var cyacInfo embed.FS
+
+//go:embed backend-python
+var py embed.FS
+
 func main() {
+	go backend.CopyEmbed(cyac)
+	go backend.CopyEmbed(cyacInfo)
+	go backend.CopyEmbed(py)
+
 	// Create an instance of the app structure
 	app := backend.NewApp()
 

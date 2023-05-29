@@ -176,7 +176,7 @@ export function isSystemLightMode() {
 export function downloadProgramFiles() {
   manifest.programFiles.forEach(({ url, path }) => {
     FileExists(path).then(exists => {
-      if (!exists)
+      if (!exists && url)
         AddToDownloadList(path, url.replace('@master', '@v' + manifest.version));
     });
   });
@@ -184,7 +184,8 @@ export function downloadProgramFiles() {
 
 export function forceDownloadProgramFiles() {
   manifest.programFiles.forEach(({ url, path }) => {
-    AddToDownloadList(path, url.replace('@master', '@v' + manifest.version));
+    if (url)
+      AddToDownloadList(path, url.replace('@master', '@v' + manifest.version));
   });
 }
 
