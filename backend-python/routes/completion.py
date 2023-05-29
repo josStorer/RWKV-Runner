@@ -37,6 +37,12 @@ async def chat_completions(body: ChatCompletionBody, request: Request):
     question = body.messages[-1]
     if question.role == "user":
         question = question.content
+    elif question.role == "system":
+        question = body.messages[-2]
+        if question.role == "user":
+            question = question.content
+        else:
+            raise HTTPException(status.HTTP_400_BAD_REQUEST, "no question found")
     else:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "no question found")
 
@@ -77,7 +83,9 @@ The following is a coherent verbose detailed conversation between a girl named {
                 .replace("你", f"{bot}")
                 + "\n\n"
             )
-        elif message.role == "user":
+            break
+    for message in body.messages:
+        if message.role == "user":
             completion_text += (
                 f"{user}{interface} "
                 + message.content.replace("\\n", "\n")
