@@ -25,6 +25,8 @@ export type Status = {
   device_name: string;
 }
 
+export type Platform = 'windows' | 'darwin' | 'linux';
+
 class CommonStore {
   // global
   status: Status = {
@@ -33,7 +35,7 @@ class CommonStore {
     device_name: 'CPU'
   };
   depComplete: boolean = false;
-  platform: string = 'windows';
+  platform: Platform = 'windows';
   // home
   introduction: IntroductionContent = manifest.introduction;
   // chat
@@ -170,7 +172,7 @@ class CommonStore {
     this.completionGenerating = value;
   }
 
-  setPlatform(value: string) {
+  setPlatform(value: Platform) {
     this.platform = value;
   }
 }
