@@ -39,6 +39,7 @@ English | [简体中文](README_ZH.md)
 - Fully compatible with the OpenAI API, making every ChatGPT client an RWKV client. After starting the model,
   open http://127.0.0.1:8000/docs to view more details.
 - Automatic dependency installation, requiring only a lightweight executable program
+- Configs with 2G to 32G VRAM are included, works well on almost all computers
 - User-friendly chat and completion interaction interface included
 - Easy-to-understand and operate parameter configuration
 - Built-in model conversion tool
