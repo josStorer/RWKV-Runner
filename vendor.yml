@@ -1,0 +1,6 @@
+- ^backend-python/rwkv_pip/
+- ^backend-python/wkv_cuda_utils/
+- ^backend-python/get-pip\.py
+- ^backend-python/convert_model\.py
+- ^build/
+- ^frontend/wailsjs/
