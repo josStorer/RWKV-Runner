@@ -2,6 +2,8 @@ package main
 
 import (
 	"embed"
+	"runtime/debug"
+	"strings"
 
 	backend "rwkv-runner/backend-golang"
 
@@ -23,9 +25,11 @@ var cyacInfo embed.FS
 var py embed.FS
 
 func main() {
-	backend.CopyEmbed(cyac)
-	backend.CopyEmbed(cyacInfo)
-	backend.CopyEmbed(py)
+	if buildInfo, ok := debug.ReadBuildInfo(); !ok || strings.Contains(buildInfo.String(), "-ldflags") {
+		backend.CopyEmbed(cyac)
+		backend.CopyEmbed(cyacInfo)
+		backend.CopyEmbed(py)
+	}
 
 	// Create an instance of the app structure
 	app := backend.NewApp()
