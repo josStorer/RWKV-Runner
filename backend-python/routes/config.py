@@ -1,6 +1,6 @@
 import pathlib
 
-from fastapi import APIRouter, HTTPException, Response, status
+from fastapi import APIRouter, HTTPException, Response, status as Status
 from pydantic import BaseModel
 from langchain.llms import RWKV
 from utils.rwkv import *
@@ -33,7 +33,7 @@ class SwitchModelBody(BaseModel):
 @router.post("/switch-model")
 def switch_model(body: SwitchModelBody, response: Response):
     if global_var.get(global_var.Model_Status) is global_var.ModelStatus.Loading:
-        response.status_code = status.HTTP_304_NOT_MODIFIED
+        response.status_code = Status.HTTP_304_NOT_MODIFIED
         return
 
     global_var.set(global_var.Model_Status, global_var.ModelStatus.Offline)
@@ -55,7 +55,7 @@ def switch_model(body: SwitchModelBody, response: Response):
     except Exception as e:
         print(e)
         global_var.set(global_var.Model_Status, global_var.ModelStatus.Offline)
-        raise HTTPException(status.HTTP_500_INTERNAL_SERVER_ERROR, "failed to load")
+        raise HTTPException(Status.HTTP_500_INTERNAL_SERVER_ERROR, "failed to load")
 
     if global_var.get(global_var.Model_Config) is None:
         global_var.set(
