@@ -125,5 +125,9 @@
   "Writer, Translator, Role-playing": "写作，翻译，角色扮演",
   "Chinese Kongfu": "情境冒险",
   "Allow external access to the API (service must be restarted)": "允许外部访问API (必须重启服务)",
-  "Custom": "自定义"
+  "Custom": "自定义",
+  "Reset All Configs": "重置所有配置",
+  "Cancel": "取消",
+  "Confirm": "确认",
+  "Are you sure you want to reset all configs? This will obtain the latest preset configs, but will override your custom configs and cannot be undone.": "你确定要重置所有配置吗？这会获取最新的预设配置，但会覆盖你的自定义配置，并且无法撤销"
 }

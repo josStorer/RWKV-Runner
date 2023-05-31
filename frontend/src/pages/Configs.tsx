@@ -1,5 +1,26 @@
-import { Dropdown, Input, Label, Option, Select, Switch } from '@fluentui/react-components';
-import { AddCircle20Regular, DataUsageSettings20Regular, Delete20Regular, Save20Regular } from '@fluentui/react-icons';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogBody,
+  DialogContent,
+  DialogSurface,
+  DialogTitle,
+  DialogTrigger,
+  Dropdown,
+  Input,
+  Label,
+  Option,
+  Select,
+  Switch
+} from '@fluentui/react-components';
+import {
+  AddCircle20Regular,
+  ArrowReset20Regular,
+  DataUsageSettings20Regular,
+  Delete20Regular,
+  Save20Regular
+} from '@fluentui/react-icons';
 import React, { FC } from 'react';
 import { Section } from '../components/Section';
 import { Labeled } from '../components/Labeled';
@@ -680,6 +701,31 @@ export const Configs: FC = observer(() => {
             commonStore.deleteModelConfig(selectedIndex);
             updateSelectedIndex(Math.min(selectedIndex, commonStore.modelConfigs.length - 1));
           }} />
+          <Dialog>
+            <DialogTrigger disableButtonEnhancement>
+              <ToolTipButton desc={t('Reset All Configs')} icon={<ArrowReset20Regular />} />
+            </DialogTrigger>
+            <DialogSurface>
+              <DialogBody>
+                <DialogTitle>{t('Reset All Configs')}</DialogTitle>
+                <DialogContent>
+                  {t('Are you sure you want to reset all configs? This will obtain the latest preset configs, but will override your custom configs and cannot be undone.')}
+                </DialogContent>
+                <DialogActions>
+                  <DialogTrigger disableButtonEnhancement>
+                    <Button appearance="secondary">{t('Cancel')}</Button>
+                  </DialogTrigger>
+                  <DialogTrigger disableButtonEnhancement>
+                    <Button appearance="primary" onClick={() => {
+                      commonStore.setModelConfigs(defaultModelConfigs, false); // updateSelectedIndex() will save configs
+                      updateSelectedIndex(0);
+                    }}>{t('Confirm')}
+                    </Button>
+                  </DialogTrigger>
+                </DialogActions>
+              </DialogBody>
+            </DialogSurface>
+          </Dialog>
           <ToolTipButton desc={t('Save Config')} icon={<Save20Regular />} onClick={onClickSave} />
         </div>
         <div className="flex items-center gap-4">

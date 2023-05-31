@@ -89,14 +89,16 @@ class CommonStore {
   };
 
   setModelConfigs = (configs: ModelConfig[], saveConfig: boolean = true) => {
-    this.modelConfigs = configs;
+    this.modelConfigs = JSON.parse(JSON.stringify(configs)); // deep copy
     if (saveConfig)
       saveConfigs();
   };
 
   createModelConfig = (config: ModelConfig = defaultModelConfigs[0], saveConfig: boolean = true) => {
-    if (config.name === defaultModelConfigs[0].name)
+    if (config.name === defaultModelConfigs[0].name) {
+      config = JSON.parse(JSON.stringify(config)); // deep copy
       config.name = new Date().toLocaleString();
+    }
     this.modelConfigs.push(config);
     if (saveConfig)
       saveConfigs();
