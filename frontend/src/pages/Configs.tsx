@@ -162,7 +162,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 0.4
     },
     modelParameters: {
-      modelName: 'RWKV-4-Raven-7B-v11-Eng49%-Chn49%-Jpn1%-Other1%-20230430-ctx8192.pth',
+      modelName: 'RWKV-4-Raven-7B-v12-Eng49%-Chn49%-Jpn1%-Other1%-20230530-ctx8192.pth',
       device: 'CUDA',
       precision: 'int8',
       storedLayers: 8,
@@ -262,7 +262,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 0.4
     },
     modelParameters: {
-      modelName: 'RWKV-4-Raven-7B-v11-Eng49%-Chn49%-Jpn1%-Other1%-20230430-ctx8192.pth',
+      modelName: 'RWKV-4-Raven-7B-v12-Eng49%-Chn49%-Jpn1%-Other1%-20230530-ctx8192.pth',
       device: 'CUDA',
       precision: 'int8',
       storedLayers: 18,
@@ -342,7 +342,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 0.4
     },
     modelParameters: {
-      modelName: 'RWKV-4-Raven-7B-v11-Eng49%-Chn49%-Jpn1%-Other1%-20230430-ctx8192.pth',
+      modelName: 'RWKV-4-Raven-7B-v12-Eng49%-Chn49%-Jpn1%-Other1%-20230530-ctx8192.pth',
       device: 'CUDA',
       precision: 'int8',
       storedLayers: 27,
@@ -382,7 +382,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 0.4
     },
     modelParameters: {
-      modelName: 'RWKV-4-Raven-7B-v11-Eng49%-Chn49%-Jpn1%-Other1%-20230430-ctx8192.pth',
+      modelName: 'RWKV-4-Raven-7B-v12-Eng49%-Chn49%-Jpn1%-Other1%-20230530-ctx8192.pth',
       device: 'CUDA',
       precision: 'int8',
       storedLayers: 41,
@@ -442,7 +442,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 0.4
     },
     modelParameters: {
-      modelName: 'RWKV-4-Raven-7B-v11-Eng49%-Chn49%-Jpn1%-Other1%-20230430-ctx8192.pth',
+      modelName: 'RWKV-4-Raven-7B-v12-Eng49%-Chn49%-Jpn1%-Other1%-20230530-ctx8192.pth',
       device: 'CUDA',
       precision: 'fp16',
       storedLayers: 41,
@@ -598,7 +598,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 0.4
     },
     modelParameters: {
-      modelName: 'RWKV-4-Raven-7B-v11-Eng49%-Chn49%-Jpn1%-Other1%-20230430-ctx8192.pth',
+      modelName: 'RWKV-4-Raven-7B-v12-Eng49%-Chn49%-Jpn1%-Other1%-20230530-ctx8192.pth',
       device: 'CPU',
       precision: 'fp32',
       storedLayers: 41,
