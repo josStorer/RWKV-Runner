@@ -15,6 +15,11 @@ import (
 )
 
 func Cmd(args ...string) (string, error) {
+	path, err := filepath.Abs(args[0])
+	if err != nil {
+		return "", err
+	}
+	args[0] = path
 	if runtime.GOOS == "windows" {
 		_, err := os.Stat("cmd-helper.bat")
 		if err != nil {

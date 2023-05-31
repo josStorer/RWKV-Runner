@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"time"
 )
 
@@ -99,6 +100,11 @@ func (a *App) CopyFile(src string, dst string) error {
 		return err
 	}
 	defer sourceFile.Close()
+
+	err = os.MkdirAll(dst[:strings.LastIndex(dst, "/")], 0755)
+	if err != nil {
+		return err
+	}
 
 	destFile, err := os.Create(dst)
 	if err != nil {
