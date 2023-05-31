@@ -65,7 +65,7 @@ The following is a coherent verbose detailed conversation between a girl named {
             if self.user == "Bob"
             else f"{user}{interface} hi\n\n{bot}{interface} Hi. I am your assistant and I will provide expert full response in full details. Please feel free to ask any question and I will always answer it.\n\n"
         )
-        logits = self.run_rnn(self.pipeline.encode(preset_system))
+        logits = self.run_rnn(self.fix_tokens(self.pipeline.encode(preset_system)))
         try:
             state_cache.add_state(
                 state_cache.AddStateBody(
@@ -79,7 +79,7 @@ The following is a coherent verbose detailed conversation between a girl named {
             pass
 
     # Model only saw '\n\n' as [187, 187] before, but the tokenizer outputs [535] for it at the end
-    def fix_tokens(tokens):
+    def fix_tokens(self, tokens):
         if len(tokens) > 0 and tokens[-1] == END_OF_LINE_DOUBLE:
             tokens = tokens[:-1] + [END_OF_LINE, END_OF_LINE]
         return tokens
