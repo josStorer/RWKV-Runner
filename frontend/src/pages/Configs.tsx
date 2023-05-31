@@ -793,7 +793,7 @@ export const Configs: FC = observer(() => {
                   const modelPath = `${manifest.localModelDir}/${selectedConfig.modelParameters.modelName}`;
                   if (await FileExists(modelPath)) {
                     const strategy = getStrategy(selectedConfig);
-                    const newModelPath = modelPath + '-' + strategy.replace(/[> *+]/g, '-');
+                    const newModelPath = modelPath + '-' + strategy.replace(/[:> *+]/g, '-');
                     toast(t('Start Converting'), { autoClose: 1000, type: 'info' });
                     ConvertModel(modelPath, strategy, newModelPath).then(() => {
                       toast(`${t('Convert Success')} - ${newModelPath}`, { type: 'success' });
