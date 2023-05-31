@@ -59,28 +59,28 @@ The following is a coherent verbose detailed conversation between a girl named {
 {bot} usually gives {user} kind, helpful and informative advices.\n
 """
         if user == "Bob"
-        else ""
+        else f"{user}{interface} hi\n\n{bot}{interface} Hi. I am your assistant and I will provide expert full response in full details. Please feel free to ask any question and I will always answer it.\n\n"
     )
     for message in body.messages:
         if message.role == "system":
             completion_text = (
                 f"The following is a coherent verbose detailed conversation between a girl named {bot} and her friend {user}. "
                 if user == "Bob"
-                else ""
+                else f"{user}{interface} hi\n\n{bot}{interface} Hi. "
                 + message.content.replace("\\n", "\n")
                 .replace("\r\n", "\n")
                 .replace("\n\n", "\n")
                 .replace("\n", " ")
                 .strip()
-                .replace("You are", f"{bot} is")
-                .replace("you are", f"{bot} is")
-                .replace("You're", f"{bot} is")
-                .replace("you're", f"{bot} is")
-                .replace("You", f"{bot}")
-                .replace("you", f"{bot}")
-                .replace("Your", f"{bot}'s")
-                .replace("your", f"{bot}'s")
-                .replace("你", f"{bot}")
+                .replace("You are", f"{bot} is" if user == "Bob" else "I am")
+                .replace("you are", f"{bot} is" if user == "Bob" else "I am")
+                .replace("You're", f"{bot} is" if user == "Bob" else "I'm")
+                .replace("you're", f"{bot} is" if user == "Bob" else "I'm")
+                .replace("You", f"{bot}" if user == "Bob" else "I")
+                .replace("you", f"{bot}" if user == "Bob" else "I")
+                .replace("Your", f"{bot}'s" if user == "Bob" else "My")
+                .replace("your", f"{bot}'s" if user == "Bob" else "my")
+                .replace("你", f"{bot}" if user == "Bob" else "我")
                 + "\n\n"
             )
             break
