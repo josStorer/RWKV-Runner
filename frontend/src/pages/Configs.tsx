@@ -28,7 +28,7 @@ export type ApiParameters = {
   frequencyPenalty: number;
 }
 
-export type Device = 'CPU' | 'CUDA';
+export type Device = 'CPU' | 'CUDA' | 'Custom';
 export type Precision = 'fp16' | 'int8' | 'fp32';
 
 export type ModelParameters = {
@@ -40,6 +40,7 @@ export type ModelParameters = {
   maxStoredLayers: number;
   enableHighPrecisionForLastLayer: boolean;
   useCustomCuda?: boolean;
+  customStrategy?: string;
 }
 
 export type ModelConfig = {
@@ -806,69 +807,94 @@ export const Configs: FC = observer(() => {
                   }
                 }} />
                 <Labeled label={t('Device')} content={
-                  <Dropdown style={{ minWidth: 0 }} className="grow" value={selectedConfig.modelParameters.device}
+                  <Dropdown style={{ minWidth: 0 }} className="grow" value={t(selectedConfig.modelParameters.device)!}
                     selectedOptions={[selectedConfig.modelParameters.device]}
                     onOptionSelect={(_, data) => {
-                      if (data.optionText) {
+                      if (data.optionValue) {
                         setSelectedConfigModelParams({
-                          device: data.optionText as Device
+                          device: data.optionValue as Device
                         });
                       }
                     }}>
-                    <Option>CPU</Option>
-                    <Option>CUDA</Option>
+                    <Option value="CPU">CPU</Option>
+                    <Option value="CUDA">CUDA</Option>
+                    <Option value="Custom">{t('Custom')!}</Option>
                   </Dropdown>
                 } />
-                <Labeled label={t('Precision')}
-                  desc={t('int8 uses less VRAM, but has slightly lower quality. fp16 has higher quality, and fp32 has the best quality.')}
-                  content={
-                    <Dropdown style={{ minWidth: 0 }} className="grow"
-                      value={selectedConfig.modelParameters.precision}
-                      selectedOptions={[selectedConfig.modelParameters.precision]}
-                      onOptionSelect={(_, data) => {
-                        if (data.optionText) {
+                {
+                  selectedConfig.modelParameters.device != 'Custom' && <Labeled label={t('Precision')}
+                    desc={t('int8 uses less VRAM, but has slightly lower quality. fp16 has higher quality, and fp32 has the best quality.')}
+                    content={
+                      <Dropdown style={{ minWidth: 0 }} className="grow"
+                        value={selectedConfig.modelParameters.precision}
+                        selectedOptions={[selectedConfig.modelParameters.precision]}
+                        onOptionSelect={(_, data) => {
+                          if (data.optionText) {
+                            setSelectedConfigModelParams({
+                              precision: data.optionText as Precision
+                            });
+                          }
+                        }}>
+                        <Option>fp16</Option>
+                        <Option>int8</Option>
+                        <Option>fp32</Option>
+                      </Dropdown>
+                    } />
+                }
+                {selectedConfig.modelParameters.device == 'CUDA' && <div />}
+                {
+                  selectedConfig.modelParameters.device == 'CUDA' && <Labeled label={t('Stored Layers')}
+                    desc={t('Number of the neural network layers loaded into VRAM, the more you load, the faster the speed, but it consumes more VRAM.')}
+                    content={
+                      <ValuedSlider value={selectedConfig.modelParameters.storedLayers} min={0}
+                        max={selectedConfig.modelParameters.maxStoredLayers} step={1} input
+                        onChange={(e, data) => {
                           setSelectedConfigModelParams({
-                            precision: data.optionText as Precision
+                            storedLayers: data.value
                           });
-                        }
-                      }}>
-                      <Option>fp16</Option>
-                      <Option>int8</Option>
-                      <Option>fp32</Option>
-                    </Dropdown>
-                  } />
-                <div />
-                <Labeled label={t('Stored Layers')}
-                  desc={t('Number of the neural network layers loaded into VRAM, the more you load, the faster the speed, but it consumes more VRAM.')}
-                  content={
-                    <ValuedSlider value={selectedConfig.modelParameters.storedLayers} min={0}
-                      max={selectedConfig.modelParameters.maxStoredLayers} step={1} input
-                      onChange={(e, data) => {
-                        setSelectedConfigModelParams({
-                          storedLayers: data.value
-                        });
-                      }} />
-                  } />
-                <Labeled label={t('Enable High Precision For Last Layer')}
-                  desc={t('Whether to use CPU to calculate the last output layer of the neural network with FP32 precision to obtain better quality.')}
-                  content={
-                    <Switch checked={selectedConfig.modelParameters.enableHighPrecisionForLastLayer}
-                      onChange={(e, data) => {
-                        setSelectedConfigModelParams({
-                          enableHighPrecisionForLastLayer: data.checked
-                        });
-                      }} />
-                  } />
-                <Labeled label={t('Use Custom CUDA kernel to Accelerate')}
-                  desc={t('Enabling this option can greatly improve inference speed, but there may be compatibility issues. If it fails to start, please turn off this option.')}
-                  content={
-                    <Switch checked={selectedConfig.modelParameters.useCustomCuda}
-                      onChange={(e, data) => {
-                        setSelectedConfigModelParams({
-                          useCustomCuda: data.checked
-                        });
-                      }} />
-                  } />
+                        }} />
+                    } />
+                }
+                {
+                  selectedConfig.modelParameters.device == 'CUDA' &&
+                  <Labeled label={t('Enable High Precision For Last Layer')}
+                    desc={t('Whether to use CPU to calculate the last output layer of the neural network with FP32 precision to obtain better quality.')}
+                    content={
+                      <Switch checked={selectedConfig.modelParameters.enableHighPrecisionForLastLayer}
+                        onChange={(e, data) => {
+                          setSelectedConfigModelParams({
+                            enableHighPrecisionForLastLayer: data.checked
+                          });
+                        }} />
+                    } />
+                }
+                {
+                  selectedConfig.modelParameters.device == 'Custom' &&
+                  <Labeled label="Strategy" desc="https://github.com/BlinkDL/ChatRWKV/blob/main/ChatRWKV-strategy.png"
+                    content={
+                      <Input className="grow" placeholder="cuda:0 fp16 *20 -> cuda:1 fp16"
+                        value={selectedConfig.modelParameters.customStrategy}
+                        onChange={(e, data) => {
+                          setSelectedConfigModelParams({
+                            customStrategy: data.value
+                          });
+                        }} />
+                    } />
+                }
+                {selectedConfig.modelParameters.device == 'Custom' && <div />}
+                {
+                  selectedConfig.modelParameters.device != 'CPU' &&
+                  <Labeled label={t('Use Custom CUDA kernel to Accelerate')}
+                    desc={t('Enabling this option can greatly improve inference speed, but there may be compatibility issues. If it fails to start, please turn off this option.')}
+                    content={
+                      <Switch checked={selectedConfig.modelParameters.useCustomCuda}
+                        onChange={(e, data) => {
+                          setSelectedConfigModelParams({
+                            useCustomCuda: data.checked
+                          });
+                        }} />
+                    } />
+                }
               </div>
             }
           />

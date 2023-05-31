@@ -136,7 +136,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
             });
 
             let customCudaFile = '';
-            if (modelConfig.modelParameters.useCustomCuda) {
+            if (modelConfig.modelParameters.device != 'CPU' && modelConfig.modelParameters.useCustomCuda) {
               customCudaFile = getSupportedCustomCudaFile();
               if (customCudaFile) {
                 FileExists('./py310/Lib/site-packages/rwkv/model.py').then((exist) => {

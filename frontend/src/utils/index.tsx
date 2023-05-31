@@ -127,12 +127,23 @@ export const getStrategy = (modelConfig: ModelConfig | undefined = undefined) =>
   if (modelConfig) params = modelConfig.modelParameters;
   else params = commonStore.getCurrentModelConfig().modelParameters;
   let strategy = '';
-  strategy += (params.device === 'CPU' ? 'cpu' : 'cuda') + ' ';
-  strategy += params.device === 'CPU' ? 'fp32' : (params.precision === 'fp16' ? 'fp16' : params.precision === 'int8' ? 'fp16i8' : 'fp32');
-  if (params.storedLayers < params.maxStoredLayers)
-    strategy += ` *${params.storedLayers}+`;
-  if (params.enableHighPrecisionForLastLayer)
-    strategy += ' -> cpu fp32 *1';
+  switch (params.device) {
+    case 'CPU':
+      strategy += 'cpu ';
+      strategy += params.precision === 'int8' ? 'fp32i8' : 'fp32';
+      break;
+    case 'CUDA':
+      strategy += 'cuda ';
+      strategy += params.precision === 'fp16' ? 'fp16' : params.precision === 'int8' ? 'fp16i8' : 'fp32';
+      if (params.storedLayers < params.maxStoredLayers)
+        strategy += ` *${params.storedLayers}+`;
+      if (params.enableHighPrecisionForLastLayer)
+        strategy += ' -> cpu fp32 *1';
+      break;
+    case 'Custom':
+      strategy = params.customStrategy || '';
+      break;
+  }
   return strategy;
 };
 
