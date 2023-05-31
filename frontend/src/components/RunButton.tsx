@@ -12,7 +12,6 @@ import { Button } from '@fluentui/react-components';
 import { observer } from 'mobx-react-lite';
 import { exit, getStatus, readRoot, switchModel, updateConfig } from '../apis';
 import { toast } from 'react-toastify';
-import manifest from '../../../manifest.json';
 import { getStrategy, getSupportedCustomCudaFile, saveCache, toastWithButton } from '../utils';
 import { useTranslation } from 'react-i18next';
 import { ToolTipButton } from './ToolTipButton';
@@ -51,7 +50,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
       let modelPath = '';
       if (modelConfig && modelConfig.modelParameters) {
         modelName = modelConfig.modelParameters.modelName;
-        modelPath = `./${manifest.localModelDir}/${modelName}`;
+        modelPath = `${commonStore.settings.customModelsPath}/${modelName}`;
       } else {
         toast(t('Model Config Exception'), { type: 'error' });
         commonStore.setStatus({ status: ModelStatus.Offline });
@@ -156,7 +155,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
             }
 
             switchModel({
-              model: `${manifest.localModelDir}/${modelConfig.modelParameters.modelName}`,
+              model: modelPath,
               strategy: getStrategy(modelConfig),
               customCuda: customCudaFile !== ''
             }).then((r) => {

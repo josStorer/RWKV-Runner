@@ -129,5 +129,8 @@
   "Reset All Configs": "重置所有配置",
   "Cancel": "取消",
   "Confirm": "确认",
-  "Are you sure you want to reset all configs? This will obtain the latest preset configs, but will override your custom configs and cannot be undone.": "你确定要重置所有配置吗？这会获取最新的预设配置，但会覆盖你的自定义配置，并且无法撤销"
+  "Are you sure you want to reset all configs? This will obtain the latest preset configs, but will override your custom configs and cannot be undone.": "你确定要重置所有配置吗？这会获取最新的预设配置，但会覆盖你的自定义配置，并且无法撤销",
+  "Advanced": "高级",
+  "Custom Python Path": "自定义Python路径",
+  "Custom Models Path": "自定义模型路径"
 }

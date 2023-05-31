@@ -13,10 +13,10 @@ export async function startup() {
       commonStore.setDownloadList(data);
   });
 
-  initCache().then(initRemoteText);
-
   await GetPlatform().then(p => commonStore.setPlatform(p as Platform));
   await initConfig();
+
+  initCache().then(initRemoteText); // depends on config customModelsPath
 
   if (commonStore.settings.autoUpdatesCheck) // depends on config settings
     checkUpdate();

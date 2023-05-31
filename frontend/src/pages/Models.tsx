@@ -18,7 +18,6 @@ import { observer } from 'mobx-react-lite';
 import commonStore from '../stores/commonStore';
 import { BrowserOpenURL } from '../../wailsjs/runtime';
 import { AddToDownloadList, OpenFileFolder } from '../../wailsjs/go/backend_golang/App';
-import manifest from '../../../manifest.json';
 import { Page } from '../components/Page';
 import { bytesToGb, refreshModels, saveConfigs, toastWithButton } from '../utils';
 import { useTranslation } from 'react-i18next';
@@ -143,7 +142,7 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
             {
               item.isLocal &&
               <ToolTipButton desc={t('Open Folder')} icon={<Folder20Regular />} onClick={() => {
-                OpenFileFolder(`./${manifest.localModelDir}/${item.name}`);
+                OpenFileFolder(`${commonStore.settings.customModelsPath}/${item.name}`);
               }} />
             }
             {item.downloadUrl && !item.isLocal &&
@@ -152,7 +151,7 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
                     navigate({ pathname: '/downloads' });
                   },
                   { autoClose: 3000 });
-                AddToDownloadList(`./${manifest.localModelDir}/${item.name}`, item.downloadUrl!);
+                AddToDownloadList(`${commonStore.settings.customModelsPath}/${item.name}`, item.downloadUrl!);
               }} />}
             {item.url && <ToolTipButton desc={t('Open Url')} icon={<Open20Regular />} onClick={() => {
               BrowserOpenURL(item.url!);

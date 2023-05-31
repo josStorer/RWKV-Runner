@@ -59,7 +59,9 @@ class CommonStore {
     autoUpdatesCheck: true,
     giteeUpdatesSource: getUserLanguage() === 'zh',
     cnMirror: getUserLanguage() === 'zh',
-    host: '127.0.0.1'
+    host: '127.0.0.1',
+    customModelsPath: './models',
+    customPythonPath: ''
   };
   // about
   about: AboutContent = manifest.about;

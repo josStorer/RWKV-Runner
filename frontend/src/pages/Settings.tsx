@@ -1,6 +1,15 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import { Page } from '../components/Page';
-import { Dropdown, Option, Switch } from '@fluentui/react-components';
+import {
+  Accordion,
+  AccordionHeader,
+  AccordionItem,
+  AccordionPanel,
+  Dropdown,
+  Input,
+  Option,
+  Switch
+} from '@fluentui/react-components';
 import { Labeled } from '../components/Labeled';
 import commonStore from '../stores/commonStore';
 import { observer } from 'mobx-react-lite';
@@ -15,16 +24,24 @@ export const Languages = {
 export type Language = keyof typeof Languages;
 
 export type SettingsType = {
-  language: Language,
+  language: Language
   darkMode: boolean
   autoUpdatesCheck: boolean
   giteeUpdatesSource: boolean
   cnMirror: boolean
   host: string
+  customModelsPath: string
+  customPythonPath: string
 }
 
 export const Settings: FC = observer(() => {
   const { t, i18n } = useTranslation();
+  const advancedHeaderRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (advancedHeaderRef.current)
+      (advancedHeaderRef.current.firstElementChild as HTMLElement).style.padding = '0';
+  }, []);
 
   return (
     <Page title={t('Settings')} content={
@@ -96,6 +113,33 @@ export const Settings: FC = observer(() => {
               });
             }} />
         } />
+        <Accordion collapsible>
+          <AccordionItem value="1">
+            <AccordionHeader ref={advancedHeaderRef} size="large">{t('Advanced')}</AccordionHeader>
+            <AccordionPanel>
+              <div className="flex flex-col gap-2 overflow-hidden">
+                <Labeled label={t('Custom Models Path')}
+                  content={
+                    <Input className="grow" placeholder="./models" value={commonStore.settings.customModelsPath}
+                      onChange={(e, data) => {
+                        commonStore.setSettings({
+                          customModelsPath: data.value
+                        });
+                      }} />
+                  } />
+                <Labeled label={t('Custom Python Path')}
+                  content={
+                    <Input className="grow" placeholder="./py310/python" value={commonStore.settings.customPythonPath}
+                      onChange={(e, data) => {
+                        commonStore.setSettings({
+                          customPythonPath: data.value
+                        });
+                      }} />
+                  } />
+              </div>
+            </AccordionPanel>
+          </AccordionItem>
+        </Accordion>
       </div>
     } />
   );

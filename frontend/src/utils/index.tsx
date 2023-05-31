@@ -51,7 +51,7 @@ export async function refreshLocalModels(cache: { models: ModelSourceItem[] }, f
   if (filter)
     cache.models = cache.models.filter(m => !m.isLocal); //TODO BUG cause local but in manifest files to be removed, so currently cache is disabled
 
-  await ListDirFiles(manifest.localModelDir).then((data) => {
+  await ListDirFiles(commonStore.settings.customModelsPath).then((data) => {
     cache.models.push(...data.flatMap(d => {
       if (!d.isDir && d.name.endsWith('.pth'))
         return [{

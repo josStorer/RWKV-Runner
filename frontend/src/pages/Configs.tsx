@@ -35,7 +35,6 @@ import { useNavigate } from 'react-router';
 import { RunButton } from '../components/RunButton';
 import { updateConfig } from '../apis';
 import { ConvertModel, FileExists } from '../../wailsjs/go/backend_golang/App';
-import manifest from '../../../manifest.json';
 import { getStrategy, refreshLocalModels } from '../utils';
 import { useTranslation } from 'react-i18next';
 import { WindowShow } from '../../wailsjs/runtime/runtime';
@@ -836,7 +835,7 @@ export const Configs: FC = observer(() => {
                   </div>
                 } />
                 <ToolTipButton text={t('Convert')} desc={t('Convert model with these configs')} onClick={async () => {
-                  const modelPath = `${manifest.localModelDir}/${selectedConfig.modelParameters.modelName}`;
+                  const modelPath = `${commonStore.settings.customModelsPath}/${selectedConfig.modelParameters.modelName}`;
                   if (await FileExists(modelPath)) {
                     const strategy = getStrategy(selectedConfig);
                     const newModelPath = modelPath + '-' + strategy.replace(/[:> *+]/g, '-');
