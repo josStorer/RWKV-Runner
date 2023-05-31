@@ -10,8 +10,8 @@ export function ContinueDownload(arg1) {
   return window['go']['backend_golang']['App']['ContinueDownload'](arg1);
 }
 
-export function ConvertModel(arg1, arg2, arg3) {
-  return window['go']['backend_golang']['App']['ConvertModel'](arg1, arg2, arg3);
+export function ConvertModel(arg1, arg2, arg3, arg4) {
+  return window['go']['backend_golang']['App']['ConvertModel'](arg1, arg2, arg3, arg4);
 }
 
 export function CopyFile(arg1, arg2) {
@@ -22,8 +22,8 @@ export function DeleteFile(arg1) {
   return window['go']['backend_golang']['App']['DeleteFile'](arg1);
 }
 
-export function DepCheck() {
-  return window['go']['backend_golang']['App']['DepCheck']();
+export function DepCheck(arg1) {
+  return window['go']['backend_golang']['App']['DepCheck'](arg1);
 }
 
 export function DownloadFile(arg1, arg2) {
@@ -38,8 +38,8 @@ export function GetPlatform() {
   return window['go']['backend_golang']['App']['GetPlatform']();
 }
 
-export function InstallPyDep(arg1) {
-  return window['go']['backend_golang']['App']['InstallPyDep'](arg1);
+export function InstallPyDep(arg1, arg2) {
+  return window['go']['backend_golang']['App']['InstallPyDep'](arg1, arg2);
 }
 
 export function ListDirFiles(arg1) {
@@ -66,8 +66,8 @@ export function SaveJson(arg1, arg2) {
   return window['go']['backend_golang']['App']['SaveJson'](arg1, arg2);
 }
 
-export function StartServer(arg1, arg2) {
-  return window['go']['backend_golang']['App']['StartServer'](arg1, arg2);
+export function StartServer(arg1, arg2, arg3) {
+  return window['go']['backend_golang']['App']['StartServer'](arg1, arg2, arg3);
 }
 
 export function UpdateApp(arg1) {

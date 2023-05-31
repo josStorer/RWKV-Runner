@@ -840,7 +840,7 @@ export const Configs: FC = observer(() => {
                     const strategy = getStrategy(selectedConfig);
                     const newModelPath = modelPath + '-' + strategy.replace(/[:> *+]/g, '-');
                     toast(t('Start Converting'), { autoClose: 1000, type: 'info' });
-                    ConvertModel(modelPath, strategy, newModelPath).then(() => {
+                    ConvertModel(commonStore.settings.customPythonPath, modelPath, strategy, newModelPath).then(() => {
                       toast(`${t('Convert Success')} - ${newModelPath}`, { type: 'success' });
                       refreshLocalModels({ models: commonStore.modelSourceList }, false);
                     }).catch(e => {

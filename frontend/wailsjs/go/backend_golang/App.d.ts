@@ -6,13 +6,13 @@ export function AddToDownloadList(arg1:string,arg2:string):Promise<void>;
 
 export function ContinueDownload(arg1:string):Promise<void>;
 
-export function ConvertModel(arg1:string,arg2:string,arg3:string):Promise<string>;
+export function ConvertModel(arg1:string,arg2:string,arg3:string,arg4:string):Promise<string>;
 
 export function CopyFile(arg1:string,arg2:string):Promise<void>;
 
 export function DeleteFile(arg1:string):Promise<void>;
 
-export function DepCheck():Promise<void>;
+export function DepCheck(arg1:string):Promise<void>;
 
 export function DownloadFile(arg1:string,arg2:string):Promise<void>;
 
@@ -20,7 +20,7 @@ export function FileExists(arg1:string):Promise<boolean>;
 
 export function GetPlatform():Promise<string>;
 
-export function InstallPyDep(arg1:boolean):Promise<string>;
+export function InstallPyDep(arg1:string,arg2:boolean):Promise<string>;
 
 export function ListDirFiles(arg1:string):Promise<Array<backend_golang.FileInfo>>;
 
@@ -34,6 +34,6 @@ export function ReadJson(arg1:string):Promise<any>;
 
 export function SaveJson(arg1:string,arg2:any):Promise<void>;
 
-export function StartServer(arg1:number,arg2:string):Promise<string>;
+export function StartServer(arg1:string,arg2:number,arg3:string):Promise<string>;
 
 export function UpdateApp(arg1:string):Promise<boolean>;

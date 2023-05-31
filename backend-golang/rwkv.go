@@ -7,24 +7,33 @@ import (
 	"strconv"
 )
 
-func (a *App) StartServer(port int, host string) (string, error) {
-	python, err := GetPython()
+func (a *App) StartServer(python string, port int, host string) (string, error) {
+	var err error
+	if python == "" {
+		python, err = GetPython()
+	}
 	if err != nil {
 		return "", err
 	}
 	return Cmd(python, "./backend-python/main.py", strconv.Itoa(port), host)
 }
 
-func (a *App) ConvertModel(modelPath string, strategy string, outPath string) (string, error) {
-	python, err := GetPython()
+func (a *App) ConvertModel(python string, modelPath string, strategy string, outPath string) (string, error) {
+	var err error
+	if python == "" {
+		python, err = GetPython()
+	}
 	if err != nil {
 		return "", err
 	}
 	return Cmd(python, "./backend-python/convert_model.py", "--in", modelPath, "--out", outPath, "--strategy", strategy)
 }
 
-func (a *App) DepCheck() error {
-	python, err := GetPython()
+func (a *App) DepCheck(python string) error {
+	var err error
+	if python == "" {
+		python, err = GetPython()
+	}
 	if err != nil {
 		return err
 	}
@@ -35,8 +44,11 @@ func (a *App) DepCheck() error {
 	return nil
 }
 
-func (a *App) InstallPyDep(cnMirror bool) (string, error) {
-	python, err := GetPython()
+func (a *App) InstallPyDep(python string, cnMirror bool) (string, error) {
+	var err error
+	if python == "" {
+		python, err = GetPython()
+	}
 	if err != nil {
 		return "", err
 	}

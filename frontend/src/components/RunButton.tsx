@@ -59,7 +59,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
 
       if (!commonStore.depComplete) {
         let depErrorMsg = '';
-        await DepCheck().catch((e) => {
+        await DepCheck(commonStore.settings.customPythonPath).catch((e) => {
           depErrorMsg = e.message || e;
           WindowShow();
           if (depErrorMsg === 'python zip not found') {
@@ -71,7 +71,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
             });
           } else if (depErrorMsg.includes('DepCheck Error')) {
             toastWithButton(t('Python dependencies are incomplete, would you like to install them?'), t('Install'), () => {
-              InstallPyDep(commonStore.settings.cnMirror);
+              InstallPyDep(commonStore.settings.customPythonPath, commonStore.settings.cnMirror);
               setTimeout(WindowShow, 1000);
             });
           } else {
@@ -83,7 +83,8 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
           return;
         }
         commonStore.setDepComplete(true);
-        CopyFile('./backend-python/wkv_cuda_utils/wkv_cuda_model.py', './py310/Lib/site-packages/rwkv/model.py');
+        if (commonStore.platform === 'windows')
+          CopyFile('./backend-python/wkv_cuda_utils/wkv_cuda_model.py', './py310/Lib/site-packages/rwkv/model.py');
         saveCache();
       }
 
@@ -109,7 +110,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
 
       await exit(1000).catch(() => {
       });
-      StartServer(port, commonStore.settings.host !== '127.0.0.1' ? '0.0.0.0' : '127.0.0.1');
+      StartServer(commonStore.settings.customPythonPath, port, commonStore.settings.host !== '127.0.0.1' ? '0.0.0.0' : '127.0.0.1');
       setTimeout(WindowShow, 1000);
 
       let timeoutCount = 6;
@@ -137,7 +138,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
             let customCudaFile = '';
             if (modelConfig.modelParameters.device != 'CPU' && modelConfig.modelParameters.useCustomCuda) {
               customCudaFile = getSupportedCustomCudaFile();
-              if (customCudaFile) {
+              if (customCudaFile && commonStore.platform === 'windows') {
                 FileExists('./py310/Lib/site-packages/rwkv/model.py').then((exist) => {
                   // defensive measure. As Python has already been launched, will only take effect the next time it runs.
                   if (!exist) CopyFile('./backend-python/wkv_cuda_utils/wkv_cuda_model.py', './py310/Lib/site-packages/rwkv/model.py');
