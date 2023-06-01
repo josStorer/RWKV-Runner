@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"runtime"
 
 	"github.com/minio/selfupdate"
@@ -13,7 +14,9 @@ import (
 
 // App struct
 type App struct {
-	ctx context.Context
+	ctx       context.Context
+	exDir     string
+	cmdPrefix string
 }
 
 // NewApp creates a new App application struct
@@ -25,6 +28,14 @@ func NewApp() *App {
 // so we can call the runtime methods
 func (a *App) OnStartup(ctx context.Context) {
 	a.ctx = ctx
+	ex, _ := os.Executable()
+	a.exDir = filepath.Dir(ex)
+	a.cmdPrefix = ""
+
+	if runtime.GOOS == "darwin" {
+		a.exDir += "/../../../"
+		a.cmdPrefix = "cd " + a.exDir + " && "
+	}
 
 	a.downloadLoop()
 }

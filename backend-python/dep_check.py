@@ -1,4 +1,3 @@
-import cyac
 import GPUtil
 import torch
 import rwkv

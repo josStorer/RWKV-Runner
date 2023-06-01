@@ -835,6 +835,11 @@ export const Configs: FC = observer(() => {
                   </div>
                 } />
                 <ToolTipButton text={t('Convert')} desc={t('Convert model with these configs')} onClick={async () => {
+                  if(commonStore.platform=="darwin"){
+                    toast(t("MacOS is not supported yet, please convert manually."), { type: 'info' })
+                    return
+                  }
+
                   const modelPath = `${commonStore.settings.customModelsPath}/${selectedConfig.modelParameters.modelName}`;
                   if (await FileExists(modelPath)) {
                     const strategy = getStrategy(selectedConfig);

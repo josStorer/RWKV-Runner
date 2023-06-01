@@ -10,6 +10,7 @@ build-windows:
 
 build-macos:
 	@echo ---- build for macos
+	wails build -ldflags "-s -w"
 
 dev:
 	wails dev

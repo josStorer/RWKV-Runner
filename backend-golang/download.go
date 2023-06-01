@@ -9,7 +9,7 @@ import (
 )
 
 func (a *App) DownloadFile(path string, url string) error {
-	_, err := grab.Get(path, url)
+	_, err := grab.Get(a.exDir+path, url)
 	if err != nil {
 		return err
 	}
@@ -81,7 +81,7 @@ func (a *App) AddToDownloadList(path string, url string) {
 		downloadList = append(downloadList, DownloadStatus{
 			resp:        nil,
 			Name:        filepath.Base(path),
-			Path:        path,
+			Path:        a.exDir + path,
 			Url:         url,
 			Downloading: true,
 		})

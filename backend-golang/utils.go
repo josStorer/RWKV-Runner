@@ -15,12 +15,8 @@ import (
 )
 
 func Cmd(args ...string) (string, error) {
-	path, err := filepath.Abs(args[0])
-	if err != nil {
-		return "", err
-	}
-	args[0] = path
-	if runtime.GOOS == "windows" {
+	switch platform := runtime.GOOS; platform {
+	case "windows":
 		_, err := os.Stat("cmd-helper.bat")
 		if err != nil {
 			if err := os.WriteFile("./cmd-helper.bat", []byte("start %*"), 0644); err != nil {
@@ -31,13 +27,33 @@ func Cmd(args ...string) (string, error) {
 		if err != nil {
 			return "", err
 		}
+
+		path, err := filepath.Abs(args[0])
+		if err != nil {
+			return "", err
+		}
+		args[0] = path
+
 		cmd := exec.Command(cmdHelper, args...)
 		out, err := cmd.CombinedOutput()
 		if err != nil {
 			return "", err
 		}
 		return string(out), nil
-	} else {
+	case "darwin":
+		ex, err := os.Executable()
+		if err != nil {
+			return "", err
+		}
+		exDir := filepath.Dir(ex) + "/../../../"
+		cmd := exec.Command("osascript", "-e", `tell application "Terminal" to do script "`+"cd "+exDir+" && "+strings.Join(args, " ")+`"`)
+		err = cmd.Start()
+		if err != nil {
+			return "", err
+		}
+		cmd.Wait()
+		return "", nil
+	case "linux":
 		cmd := exec.Command(args[0], args[1:]...)
 		err := cmd.Start()
 		if err != nil {
@@ -46,9 +62,19 @@ func Cmd(args ...string) (string, error) {
 		cmd.Wait()
 		return "", nil
 	}
+	return "", errors.New("unsupported OS")
 }
 
 func CopyEmbed(efs embed.FS) error {
+	prefix := ""
+	if runtime.GOOS == "darwin" {
+		ex, err := os.Executable()
+		if err != nil {
+			return err
+		}
+		prefix = filepath.Dir(ex) + "/../../../"
+	}
+
 	err := fs.WalkDir(efs, ".", func(path string, d fs.DirEntry, err error) error {
 		if d.IsDir() {
 			return nil
@@ -61,6 +87,7 @@ func CopyEmbed(efs embed.FS) error {
 			return err
 		}
 
+		path = prefix + path
 		err = os.MkdirAll(path[:strings.LastIndex(path, "/")], 0755)
 		if err != nil {
 			return err

@@ -26,7 +26,7 @@ func (a *App) ConvertModel(python string, modelPath string, strategy string, out
 	if err != nil {
 		return "", err
 	}
-	return Cmd(python, "./backend-python/convert_model.py", "--in", modelPath, "--out", outPath, "--strategy", strategy)
+	return Cmd(python, "./backend-python/convert_model.py", "--in", modelPath, "--out", outPath, "--strategy", `"`+strategy+`"`)
 }
 
 func (a *App) DepCheck(python string) error {
@@ -37,7 +37,7 @@ func (a *App) DepCheck(python string) error {
 	if err != nil {
 		return err
 	}
-	out, err := exec.Command(python, "./backend-python/dep_check.py").CombinedOutput()
+	out, err := exec.Command(python, a.exDir+"./backend-python/dep_check.py").CombinedOutput()
 	if err != nil {
 		return errors.New("DepCheck Error: " + string(out))
 	}
@@ -63,7 +63,11 @@ func (a *App) InstallPyDep(python string, cnMirror bool) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	_, err = Cmd(python, "-m", "pip", "install", "torch==1.13.1", "torchvision==0.14.1", "torchaudio==0.13.1", "--index-url", "https://download.pytorch.org/whl/cu117")
+	if runtime.GOOS == "windows" {
+		_, err = Cmd(python, "-m", "pip", "install", "torch==1.13.1", "torchvision==0.14.1", "torchaudio==0.13.1", "--index-url", "https://download.pytorch.org/whl/cu117")
+	} else {
+		_, err = Cmd(python, "-m", "pip", "install", "torch", "torchvision", "torchaudio")
+	}
 	if err != nil {
 		return "", err
 	}

@@ -16,3 +16,4 @@ __pycache__
 /backend-python/wkv_cuda
 *.exe
 *.old
+.DS_Store

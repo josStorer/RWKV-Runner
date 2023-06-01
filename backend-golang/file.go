@@ -2,7 +2,7 @@ package backend_golang
 
 import (
 	"encoding/json"
-	"fmt"
+	"errors"
 	"io"
 	"os"
 	"os/exec"
@@ -18,14 +18,14 @@ func (a *App) SaveJson(fileName string, jsonData any) error {
 		return err
 	}
 
-	if err := os.WriteFile(fileName, text, 0644); err != nil {
+	if err := os.WriteFile(a.exDir+fileName, text, 0644); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (a *App) ReadJson(fileName string) (any, error) {
-	file, err := os.ReadFile(fileName)
+	file, err := os.ReadFile(a.exDir + fileName)
 	if err != nil {
 		return nil, err
 	}
@@ -40,7 +40,7 @@ func (a *App) ReadJson(fileName string) (any, error) {
 }
 
 func (a *App) FileExists(fileName string) bool {
-	_, err := os.Stat(fileName)
+	_, err := os.Stat(a.exDir + fileName)
 	return err == nil
 }
 
@@ -52,7 +52,7 @@ type FileInfo struct {
 }
 
 func (a *App) ReadFileInfo(fileName string) (FileInfo, error) {
-	info, err := os.Stat(fileName)
+	info, err := os.Stat(a.exDir + fileName)
 	if err != nil {
 		return FileInfo{}, err
 	}
@@ -65,7 +65,7 @@ func (a *App) ReadFileInfo(fileName string) (FileInfo, error) {
 }
 
 func (a *App) ListDirFiles(dirPath string) ([]FileInfo, error) {
-	files, err := os.ReadDir(dirPath)
+	files, err := os.ReadDir(a.exDir + dirPath)
 	if err != nil {
 		return nil, err
 	}
@@ -87,7 +87,7 @@ func (a *App) ListDirFiles(dirPath string) ([]FileInfo, error) {
 }
 
 func (a *App) DeleteFile(path string) error {
-	err := os.Remove(path)
+	err := os.Remove(a.exDir + path)
 	if err != nil {
 		return err
 	}
@@ -95,18 +95,18 @@ func (a *App) DeleteFile(path string) error {
 }
 
 func (a *App) CopyFile(src string, dst string) error {
-	sourceFile, err := os.Open(src)
+	sourceFile, err := os.Open(a.exDir + src)
 	if err != nil {
 		return err
 	}
 	defer sourceFile.Close()
 
-	err = os.MkdirAll(dst[:strings.LastIndex(dst, "/")], 0755)
+	err = os.MkdirAll(a.exDir+dst[:strings.LastIndex(dst, "/")], 0755)
 	if err != nil {
 		return err
 	}
 
-	destFile, err := os.Create(dst)
+	destFile, err := os.Create(a.exDir + dst)
 	if err != nil {
 		return err
 	}
@@ -120,7 +120,7 @@ func (a *App) CopyFile(src string, dst string) error {
 }
 
 func (a *App) OpenFileFolder(path string) error {
-	absPath, err := filepath.Abs(path)
+	absPath, err := filepath.Abs(a.exDir + path)
 	if err != nil {
 		return err
 	}
@@ -131,10 +131,16 @@ func (a *App) OpenFileFolder(path string) error {
 		if err != nil {
 			return err
 		}
+		return nil
 	case "darwin":
-		fmt.Println("Running on macOS")
+		cmd := exec.Command("open", "-R", absPath)
+		err := cmd.Run()
+		if err != nil {
+			return err
+		}
+		return nil
 	case "linux":
-		fmt.Println("Running on Linux")
+		println("unsupported OS")
 	}
-	return nil
+	return errors.New("unsupported OS")
 }

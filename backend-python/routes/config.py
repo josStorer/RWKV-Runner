@@ -2,7 +2,6 @@ import pathlib
 
 from fastapi import APIRouter, HTTPException, Response, status as Status
 from pydantic import BaseModel
-from langchain.llms import RWKV
 from utils.rwkv import *
 from utils.torch import *
 import global_var
