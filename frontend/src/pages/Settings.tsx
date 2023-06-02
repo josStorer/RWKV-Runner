@@ -118,15 +118,17 @@ export const Settings: FC = observer(() => {
             <AccordionHeader ref={advancedHeaderRef} size="large">{t('Advanced')}</AccordionHeader>
             <AccordionPanel>
               <div className="flex flex-col gap-2 overflow-hidden">
-                <Labeled label={t('Custom Models Path')}
-                  content={
-                    <Input className="grow" placeholder="./models" value={commonStore.settings.customModelsPath}
-                      onChange={(e, data) => {
-                        commonStore.setSettings({
-                          customModelsPath: data.value
-                        });
-                      }} />
-                  } />
+                {commonStore.platform !== 'darwin' &&
+                  <Labeled label={t('Custom Models Path')}
+                    content={
+                      <Input className="grow" placeholder="./models" value={commonStore.settings.customModelsPath}
+                        onChange={(e, data) => {
+                          commonStore.setSettings({
+                            customModelsPath: data.value
+                          });
+                        }} />
+                    } />
+                }
                 <Labeled label={t('Custom Python Path')}
                   content={
                     <Input className="grow" placeholder="./py310/python" value={commonStore.settings.customPythonPath}

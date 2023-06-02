@@ -28,12 +28,12 @@ func NewApp() *App {
 // so we can call the runtime methods
 func (a *App) OnStartup(ctx context.Context) {
 	a.ctx = ctx
-	ex, _ := os.Executable()
-	a.exDir = filepath.Dir(ex)
+	a.exDir = ""
 	a.cmdPrefix = ""
 
 	if runtime.GOOS == "darwin" {
-		a.exDir += "/../../../"
+		ex, _ := os.Executable()
+		a.exDir = filepath.Dir(ex) + "/../../../"
 		a.cmdPrefix = "cd " + a.exDir + " && "
 	}
 

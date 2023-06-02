@@ -26,7 +26,7 @@ func (a *App) ConvertModel(python string, modelPath string, strategy string, out
 	if err != nil {
 		return "", err
 	}
-	return Cmd(python, "./backend-python/convert_model.py", "--in", modelPath, "--out", outPath, "--strategy", `"`+strategy+`"`)
+	return Cmd(python, "./backend-python/convert_model.py", "--in", modelPath, "--out", outPath, "--strategy", strategy)
 }
 
 func (a *App) DepCheck(python string) error {
