@@ -102,6 +102,19 @@ export const defaultPresets: CompletionPreset[] = [{
     injectEnd: '\\n\\nBob: '
   }
 }, {
+  name: 'Instruction',
+  prompt: 'Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n# Instruction:\nExplain the following metaphor: Life is like cats.\n\n# Response:\n',
+  params: {
+    maxResponseToken: 500,
+    temperature: 1.2,
+    topP: 0.5,
+    presencePenalty: 0.4,
+    frequencyPenalty: 0.4,
+    stop: '',
+    injectStart: '',
+    injectEnd: ''
+  }
+}, {
   name: 'Blank',
   prompt: '',
   params: {
