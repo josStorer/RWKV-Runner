@@ -135,5 +135,6 @@
   "Custom Models Path": "自定义模型路径",
   "MacOS is not supported yet, please convert manually.": "暂不支持MacOS, 请手动转换",
   "Microsoft Visual C++ Redistributable is not installed, would you like to download it?": "微软VC++组件未安装, 是否下载?",
-  "Path Cannot Contain Space": "路径不能包含空格"
+  "Path Cannot Contain Space": "路径不能包含空格",
+  "Failed to switch model, please try starting the program with administrator privileges.": "切换模型失败, 请尝试以管理员权限启动程序"
 }
