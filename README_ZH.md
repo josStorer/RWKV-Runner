@@ -73,6 +73,7 @@ body.json:
 - [x] CUDA算子int8提速
 - [ ] macOS支持
 - [ ] linux支持
+- [ ] 本地状态缓存数据库
 
 ## 相关仓库:
 

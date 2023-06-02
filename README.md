@@ -73,6 +73,7 @@ body.json:
 - [x] CUDA operator int8 acceleration
 - [ ] macOS support
 - [ ] Linux support
+- [ ] Local State Cache DB
 
 ## Related Repositories:
 
