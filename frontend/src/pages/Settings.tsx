@@ -129,7 +129,7 @@ export const Settings: FC = observer(() => {
                         }} />
                     } />
                 }
-                <Labeled label={t('Custom Python Path')}
+                <Labeled label={t('Custom Python Path')} // if set, will not use precompiled cuda kernel
                   content={
                     <Input className="grow" placeholder="./py310/python" value={commonStore.settings.customPythonPath}
                       onChange={(e, data) => {

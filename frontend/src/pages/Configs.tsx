@@ -835,9 +835,9 @@ export const Configs: FC = observer(() => {
                   </div>
                 } />
                 <ToolTipButton text={t('Convert')} desc={t('Convert model with these configs')} onClick={async () => {
-                  if(commonStore.platform=="darwin"){
-                    toast(t("MacOS is not supported yet, please convert manually."), { type: 'info' })
-                    return
+                  if (commonStore.platform == 'darwin') {
+                    toast(t('MacOS is not supported yet, please convert manually.'), { type: 'info' });
+                    return;
                   }
 
                   const modelPath = `${commonStore.settings.customModelsPath}/${selectedConfig.modelParameters.modelName}`;
@@ -849,7 +849,11 @@ export const Configs: FC = observer(() => {
                       toast(`${t('Convert Success')} - ${newModelPath}`, { type: 'success' });
                       refreshLocalModels({ models: commonStore.modelSourceList }, false);
                     }).catch(e => {
-                      toast(`${t('Convert Failed')} - ${e.message || e}`, { type: 'error' });
+                      const errMsg = e.message || e;
+                      if (errMsg.includes('path contains space'))
+                        toast(`${t('Convert Failed')} - ${t('Path Cannot Contain Space')}`, { type: 'error' });
+                      else
+                        toast(`${t('Convert Failed')} - ${e.message || e}`, { type: 'error' });
                     });
                     setTimeout(WindowShow, 1000);
                   } else {

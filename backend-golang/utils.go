@@ -28,11 +28,11 @@ func Cmd(args ...string) (string, error) {
 			return "", err
 		}
 
-		path, err := filepath.Abs(args[0])
-		if err != nil {
-			return "", err
+		for _, arg := range args {
+			if strings.Contains(arg, " ") && strings.Contains(cmdHelper, " ") {
+				return "", errors.New("path contains space") // golang bug https://github.com/golang/go/issues/17149#issuecomment-473976818
+			}
 		}
-		args[0] = path
 
 		cmd := exec.Command(cmdHelper, args...)
 		out, err := cmd.CombinedOutput()
