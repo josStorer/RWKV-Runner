@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { ToolTipButton } from './ToolTipButton';
 import { Play16Regular, Stop16Regular } from '@fluentui/react-icons';
 import { useNavigate } from 'react-router';
-import { WindowShow } from '../../wailsjs/runtime/runtime';
+import { BrowserOpenURL, WindowShow } from '../../wailsjs/runtime/runtime';
 
 const mainButtonText = {
   [ModelStatus.Offline]: 'Run',
@@ -70,10 +70,16 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
               AddToDownloadList('python-3.10.11-embed-amd64.zip', 'https://www.python.org/ftp/python/3.10.11/python-3.10.11-embed-amd64.zip');
             });
           } else if (depErrorMsg.includes('DepCheck Error')) {
-            toastWithButton(t('Python dependencies are incomplete, would you like to install them?'), t('Install'), () => {
-              InstallPyDep(commonStore.settings.customPythonPath, commonStore.settings.cnMirror);
-              setTimeout(WindowShow, 1000);
-            });
+            if (depErrorMsg.includes('vc_redist')) {
+              toastWithButton(t('Microsoft Visual C++ Redistributable is not installed, would you like to download it?'), t('Download'), () => {
+                BrowserOpenURL('https://aka.ms/vs/16/release/vc_redist.x64.exe');
+              });
+            } else {
+              toastWithButton(t('Python dependencies are incomplete, would you like to install them?'), t('Install'), () => {
+                InstallPyDep(commonStore.settings.customPythonPath, commonStore.settings.cnMirror);
+                setTimeout(WindowShow, 1000);
+              });
+            }
           } else {
             toast(depErrorMsg, { type: 'error' });
           }
