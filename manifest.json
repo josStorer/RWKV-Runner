@@ -239,6 +239,18 @@
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-novel/resolve/main/RWKV-4-Novel-7B-v1-ChnEng-20230426-ctx8192.pth"
     },
     {
+      "name": "RWKV-4-World-7B-v1-OnlyForTest_40%_trained-20230601-ctx4096.pth",
+      "desc": {
+        "en": "100+ Languages 7B v1 Test",
+        "zh": "100+ 语言 7B v1 测试"
+      },
+      "size": 15035393581,
+      "SHA256": "63c060c472e45b6c3af2baaaee448ffd95f9b46e3cc6e1ef70ce7ecb1d01bcfa",
+      "lastUpdated": "2023-06-02T00:09:39",
+      "url": "https://huggingface.co/BlinkDL/rwkv-4-world/blob/main/RWKV-4-World-7B-v1-OnlyForTest_40%25_trained-20230601-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-7B-v1-OnlyForTest_40%25_trained-20230601-ctx4096.pth"
+    },
+    {
       "name": "RWKV-4-World-7B-v1-OnlyForTest_30%_trained-20230529-ctx4096.pth",
       "desc": {
         "en": "100+ Languages 7B v1 Test",
@@ -248,7 +260,8 @@
       "SHA256": "05f91562b2ae8b025226e40b3fb536d6f8eb3c142ac899c0808ee1c9dc189ec4",
       "lastUpdated": "2023-05-29T13:25:53",
       "url": "https://huggingface.co/BlinkDL/rwkv-4-world/blob/main/RWKV-4-World-7B-v1-OnlyForTest_30%25_trained-20230529-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-7B-v1-OnlyForTest_30%25_trained-20230529-ctx4096.pth"
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-7B-v1-OnlyForTest_30%25_trained-20230529-ctx4096.pth",
+      "hide": true
     },
     {
       "name": "RWKV-4-World-0.1B-v1-20230520-ctx4096.pth",
