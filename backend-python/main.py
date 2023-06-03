@@ -4,17 +4,18 @@ import sys
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
 import psutil
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
 from utils.rwkv import *
 from utils.torch import *
 from utils.ngrok import *
+from utils.log import log_middleware
 from routes import completion, config, state_cache
 import global_var
 
-app = FastAPI()
+app = FastAPI(dependencies=[Depends(log_middleware)])
 
 app.add_middleware(
     CORSMiddleware,
@@ -42,7 +43,7 @@ def init():
 
 @app.get("/")
 def read_root():
-    return {"Hello": "World!", "pid": os.getpid()}
+    return {"Hello": "World!"}
 
 
 @app.post("/exit")
@@ -60,7 +61,7 @@ def debug():
         strategy="cuda fp16",
         tokens_path="20B_tokenizer.json",
     )
-    d = model.tokenizer.decode([])
+    d = model.pipeline.decode([])
     print(d)
 
 

@@ -17,3 +17,5 @@ __pycache__
 *.exe
 *.old
 .DS_Store
+*.log.*
+*.log
