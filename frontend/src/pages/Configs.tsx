@@ -12,7 +12,8 @@ import {
   Label,
   Option,
   Select,
-  Switch
+  Switch,
+  Text
 } from '@fluentui/react-components';
 import {
   AddCircle20Regular,
@@ -895,9 +896,14 @@ export const Configs: FC = observer(() => {
                       </Dropdown>
                     } />
                 }
-                {selectedConfig.modelParameters.device == 'CUDA' && <div />}
                 {
-                  selectedConfig.modelParameters.device == 'CUDA' && <Labeled label={t('Stored Layers')}
+                  selectedConfig.modelParameters.device == 'CUDA' &&
+                  <Labeled label={t('Current Strategy')}
+                    content={<Text> {getStrategy(selectedConfig)} </Text>} />
+                }
+                {
+                  selectedConfig.modelParameters.device == 'CUDA' &&
+                  <Labeled label={t('Stored Layers')}
                     desc={t('Number of the neural network layers loaded into VRAM, the more you load, the faster the speed, but it consumes more VRAM.')}
                     content={
                       <ValuedSlider value={selectedConfig.modelParameters.storedLayers} min={0}
