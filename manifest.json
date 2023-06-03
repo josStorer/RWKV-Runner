@@ -285,7 +285,8 @@
       "SHA256": "ac36770931776c5aa179690918c9a3b0b5f4ebe3301ea3574a7e182209778788",
       "lastUpdated": "2023-05-29T13:25:53",
       "url": "https://huggingface.co/BlinkDL/rwkv-4-world/blob/main/RWKV-4-World-1.5B-v1-OnlyForTest_57%25_trained-20230529-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-1.5B-v1-OnlyForTest_57%25_trained-20230529-ctx4096.pth"
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-1.5B-v1-OnlyForTest_57%25_trained-20230529-ctx4096.pth",
+      "hide": true
     },
     {
       "name": "RWKV-4-World-3B-v1-OnlyForTest_35%_trained-20230529-ctx4096.pth",
@@ -297,7 +298,32 @@
       "SHA256": "e4ee6e91a80d56de43bc79841f3a8be3b7b215d7d9788f79c467b9b1f7f03cb8",
       "lastUpdated": "2023-05-29T13:25:53",
       "url": "https://huggingface.co/BlinkDL/rwkv-4-world/blob/main/RWKV-4-World-3B-v1-OnlyForTest_35%25_trained-20230529-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-3B-v1-OnlyForTest_35%25_trained-20230529-ctx4096.pth"
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-3B-v1-OnlyForTest_35%25_trained-20230529-ctx4096.pth",
+      "hide": true
+    },
+    {
+      "name": "RWKV-4-World-1.5B-v1-OnlyForTest_81%_trained-20230603-ctx4096.pth",
+      "desc": {
+        "en": "100+ Languages 1.5B v1 Test",
+        "zh": "100+ 语言 1.5B v1 测试"
+      },
+      "size": 3155281581,
+      "SHA256": "044fb10daa71f4c012493ac8ef455c8c3301095b5f009dae58f0f6382a53e23c",
+      "lastUpdated": "2023-06-03T13:57:20",
+      "url": "https://huggingface.co/BlinkDL/rwkv-4-world/blob/main/RWKV-4-World-1.5B-v1-OnlyForTest_81%25_trained-20230603-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-1.5B-v1-OnlyForTest_81%25_trained-20230603-ctx4096.pth"
+    },
+    {
+      "name": "RWKV-4-World-3B-v1-OnlyForTest_52%_trained-20230603-ctx4096.pth",
+      "desc": {
+        "en": "100+ Languages 3B v1 Test",
+        "zh": "100+ 语言 3B v1 测试"
+      },
+      "size": 6125597613,
+      "SHA256": "aad3671078a0c686368add4f4b695a76c2ba1ddd505a64c0949bb003beeee9a3",
+      "lastUpdated": "2023-06-03T13:57:20",
+      "url": "https://huggingface.co/BlinkDL/rwkv-4-world/blob/main/RWKV-4-World-3B-v1-OnlyForTest_52%25_trained-20230603-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-3B-v1-OnlyForTest_52%25_trained-20230603-ctx4096.pth"
     },
     {
       "name": "RWKV-4-World-0.4B-v1-20230529-ctx4096.pth",
