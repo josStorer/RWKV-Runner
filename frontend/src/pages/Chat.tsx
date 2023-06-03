@@ -7,7 +7,7 @@ import { v4 as uuid } from 'uuid';
 import classnames from 'classnames';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { ConversationPair, getConversationPairs, Record } from '../utils/get-conversation-pairs';
-import logo from '../../../build/appicon.jpg';
+import logo from '../assets/images/logo.jpg';
 import MarkdownRender from '../components/MarkdownRender';
 import { ToolTipButton } from '../components/ToolTipButton';
 import { ArrowCircleUp28Regular, Delete28Regular, RecordStop28Regular } from '@fluentui/react-icons';

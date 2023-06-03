@@ -5,17 +5,23 @@ import classnames from 'classnames';
 export const Labeled: FC<{
   label: string;
   desc?: string | null,
+  descComponent?: ReactElement,
   content: ReactElement,
   flex?: boolean,
   spaceBetween?: boolean,
-  breakline?: boolean
+  breakline?: boolean,
+  onMouseEnter?: () => void
+  onMouseLeave?: () => void
 }> = ({
   label,
   desc,
+  descComponent,
   content,
   flex,
   spaceBetween,
-  breakline
+  breakline,
+  onMouseEnter,
+  onMouseLeave
 }) => {
   return (
     <div className={classnames(
@@ -24,11 +30,11 @@ export const Labeled: FC<{
       breakline ? 'flex-col' : '',
       spaceBetween && 'justify-between')
     }>
-      {desc ?
-        <Tooltip content={desc} showDelay={0} hideDelay={0} relationship="description">
-          <Label>{label}</Label>
+      {(desc || descComponent) ?
+        <Tooltip content={descComponent ? descComponent : desc!} showDelay={0} hideDelay={0} relationship="description">
+          <Label onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>{label}</Label>
         </Tooltip> :
-        <Label>{label}</Label>
+        <Label onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>{label}</Label>
       }
       {content}
     </div>

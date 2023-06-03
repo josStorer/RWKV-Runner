@@ -39,6 +39,8 @@ import { ConvertModel, FileExists } from '../../wailsjs/go/backend_golang/App';
 import { getStrategy, refreshLocalModels } from '../utils';
 import { useTranslation } from 'react-i18next';
 import { WindowShow } from '../../wailsjs/runtime/runtime';
+import strategyImg from '../assets/images/strategy.jpg';
+import strategyZhImg from '../assets/images/strategy_zh.jpg';
 
 export type ApiParameters = {
   apiPort: number
@@ -633,6 +635,7 @@ export const Configs: FC = observer(() => {
   const { t } = useTranslation();
   const [selectedIndex, setSelectedIndex] = React.useState(commonStore.currentModelConfigIndex);
   const [selectedConfig, setSelectedConfig] = React.useState(commonStore.modelConfigs[selectedIndex]);
+  const [displayStrategyImg, setDisplayStrategyImg] = React.useState(false);
   const navigate = useNavigate();
   const port = selectedConfig.apiParameters.apiPort;
 
@@ -929,8 +932,15 @@ export const Configs: FC = observer(() => {
                     } />
                 }
                 {
+                  displayStrategyImg &&
+                  <img style={{ width: '80vh', height: 'auto', zIndex: 100 }} className="fixed left-0 top-0"
+                    src={commonStore.settings.language === 'zh' ? strategyZhImg : strategyImg} />
+                }
+                {
                   selectedConfig.modelParameters.device == 'Custom' &&
-                  <Labeled label="Strategy" desc="https://github.com/BlinkDL/ChatRWKV/blob/main/ChatRWKV-strategy.png"
+                  <Labeled label="Strategy"
+                    onMouseEnter={() => setDisplayStrategyImg(true)}
+                    onMouseLeave={() => setDisplayStrategyImg(false)}
                     content={
                       <Input className="grow" placeholder="cuda:0 fp16 *20 -> cuda:1 fp16"
                         value={selectedConfig.modelParameters.customStrategy}
