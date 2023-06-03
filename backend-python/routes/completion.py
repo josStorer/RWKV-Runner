@@ -115,8 +115,11 @@ The following is a coherent verbose detailed conversation between a girl named {
         while completion_lock.locked():
             if await request.is_disconnected():
                 requests_num = requests_num - 1
+                print(f"{request.client} Stop Waiting (Lock)")
                 quick_log(
-                    request, None, "Stop Waiting. RequestsNum: " + str(requests_num)
+                    request,
+                    None,
+                    "Stop Waiting (Lock). RequestsNum: " + str(requests_num),
                 )
                 return
             await asyncio.sleep(0.1)
@@ -184,14 +187,20 @@ The following is a coherent verbose detailed conversation between a girl named {
                         break
                 # torch_gc()
                 requests_num = requests_num - 1
+                completion_lock.release()
+                if await request.is_disconnected():
+                    print(f"{request.client} Stop Waiting")
+                    quick_log(
+                        request,
+                        body,
+                        response + "\nStop Waiting. RequestsNum: " + str(requests_num),
+                    )
+                    return
                 quick_log(
                     request,
                     body,
                     response + "\nFinished. RequestsNum: " + str(requests_num),
                 )
-                completion_lock.release()
-                if await request.is_disconnected():
-                    return
                 yield {
                     "response": response,
                     "model": "rwkv",
@@ -213,7 +222,6 @@ The following is a coherent verbose detailed conversation between a girl named {
         try:
             return await eval_rwkv().__anext__()
         except StopAsyncIteration:
-            print(f"{request.client} Stop Waiting")
             return None
 
 
@@ -241,8 +249,11 @@ async def completions(body: CompletionBody, request: Request):
         while completion_lock.locked():
             if await request.is_disconnected():
                 requests_num = requests_num - 1
+                print(f"{request.client} Stop Waiting (Lock)")
                 quick_log(
-                    request, None, "Stop Waiting. RequestsNum: " + str(requests_num)
+                    request,
+                    None,
+                    "Stop Waiting (Lock). RequestsNum: " + str(requests_num),
                 )
                 return
             await asyncio.sleep(0.1)
@@ -304,14 +315,20 @@ async def completions(body: CompletionBody, request: Request):
                         break
                 # torch_gc()
                 requests_num = requests_num - 1
+                completion_lock.release()
+                if await request.is_disconnected():
+                    print(f"{request.client} Stop Waiting")
+                    quick_log(
+                        request,
+                        body,
+                        response + "\nStop Waiting. RequestsNum: " + str(requests_num),
+                    )
+                    return
                 quick_log(
                     request,
                     body,
                     response + "\nFinished. RequestsNum: " + str(requests_num),
                 )
-                completion_lock.release()
-                if await request.is_disconnected():
-                    return
                 yield {
                     "response": response,
                     "model": "rwkv",
@@ -330,5 +347,4 @@ async def completions(body: CompletionBody, request: Request):
         try:
             return await eval_rwkv().__anext__()
         except StopAsyncIteration:
-            print(f"{request.client} Stop Waiting")
             return None
