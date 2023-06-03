@@ -309,9 +309,9 @@ export function toastWithButton(text: string, buttonText: string, onClickButton:
 }
 
 export function getSupportedCustomCudaFile() {
-  if ([' 10', ' 16', ' 20', ' 30', 'P40', 'P104', 'P106'].some(v => commonStore.status.device_name.includes(v)))
+  if ([' 10', ' 16', ' 20', ' 30', 'MX', 'Tesla P', 'Quadro P', 'NVIDIA P', 'TITAN X', 'TITAN RTX', 'RTX A'].some(v => commonStore.status.device_name.includes(v)))
     return './backend-python/wkv_cuda_utils/wkv_cuda10_30.pyd';
-  else if ([' 40'].some(v => commonStore.status.device_name.includes(v)))
+  else if ([' 40', 'RTX TITAN Ada'].some(v => commonStore.status.device_name.includes(v)))
     return './backend-python/wkv_cuda_utils/wkv_cuda40.pyd';
   else
     return '';
