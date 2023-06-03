@@ -125,6 +125,16 @@ The following is a coherent verbose detailed conversation between a girl named {
             await asyncio.sleep(0.1)
         else:
             completion_lock.acquire()
+            if await request.is_disconnected():
+                completion_lock.release()
+                requests_num = requests_num - 1
+                print(f"{request.client} Stop Waiting (Lock)")
+                quick_log(
+                    request,
+                    None,
+                    "Stop Waiting (Lock). RequestsNum: " + str(requests_num),
+                )
+                return
             set_rwkv_config(model, global_var.get(global_var.Model_Config))
             set_rwkv_config(model, body)
             if body.stream:
@@ -259,6 +269,16 @@ async def completions(body: CompletionBody, request: Request):
             await asyncio.sleep(0.1)
         else:
             completion_lock.acquire()
+            if await request.is_disconnected():
+                completion_lock.release()
+                requests_num = requests_num - 1
+                print(f"{request.client} Stop Waiting (Lock)")
+                quick_log(
+                    request,
+                    None,
+                    "Stop Waiting (Lock). RequestsNum: " + str(requests_num),
+                )
+                return
             set_rwkv_config(model, global_var.get(global_var.Model_Config))
             set_rwkv_config(model, body)
             if body.stream:
