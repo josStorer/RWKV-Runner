@@ -204,7 +204,10 @@ def set_rwkv_config(model: RWKV, body: ModelConfigBody):
     if body.max_tokens is not None:
         model.max_tokens_per_generation = body.max_tokens
     if body.temperature is not None:
-        model.temperature = body.temperature
+        if body.temperature < 0.1:
+            model.temperature = 0.1
+        else:
+            model.temperature = body.temperature
     if body.top_p is not None:
         model.top_p = body.top_p
     if body.presence_penalty is not None:
