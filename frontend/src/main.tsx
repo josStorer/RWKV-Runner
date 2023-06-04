@@ -6,7 +6,7 @@ import App from './App';
 import { HashRouter } from 'react-router-dom';
 import { startup } from './startup';
 import './_locales/i18n-react';
-import { WindowSetAlwaysOnTop } from '../wailsjs/runtime';
+import { WindowShow } from '../wailsjs/runtime';
 
 startup().then(() => {
   const container = document.getElementById('root');
@@ -20,6 +20,5 @@ startup().then(() => {
   );
 
   // force display the window
-  WindowSetAlwaysOnTop(true);
-  WindowSetAlwaysOnTop(false);
+  WindowShow();
 });
