@@ -17,6 +17,7 @@ import { ConfigSelector } from '../components/ConfigSelector';
 import MarkdownRender from '../components/MarkdownRender';
 import commonStore from '../stores/commonStore';
 import { Completion } from './Completion';
+import { ResetConfigsButton } from '../components/ResetConfigsButton';
 
 export type IntroductionContent = { [lang: string]: string }
 
@@ -65,7 +66,8 @@ export const Home: FC = observer(() => {
 
   return (
     <div className="flex flex-col justify-between h-full">
-      <img className="rounded-xl select-none hidden sm:block" src={banner} />
+      <img className="rounded-xl select-none hidden sm:block"
+        style={{ maxHeight: '40%', margin: '0 auto' }} src={banner} />
       <div className="flex flex-col gap-2">
         <Text size={600} weight="medium">{t('Introduction')}</Text>
         <div className="h-40 overflow-y-auto overflow-x-hidden p-1">
@@ -85,6 +87,7 @@ export const Home: FC = observer(() => {
       <div className="flex flex-col gap-2">
         <div className="flex flex-row-reverse sm:fixed bottom-2 right-2">
           <div className="flex gap-3">
+            <ResetConfigsButton />
             <ConfigSelector />
             <RunButton />
           </div>
