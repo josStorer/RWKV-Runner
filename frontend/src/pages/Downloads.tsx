@@ -53,7 +53,7 @@ export const Downloads: FC = observer(() => {
               <div className="flex items-center gap-2">
                 <ProgressBar className="grow" value={status.progress} max={100} />
                 {!status.done &&
-                  <ToolTipButton desc={status.downloading ? t('Pause') : t('Continue')}
+                  <ToolTipButton desc={status.downloading ? t('Pause') : t('Resume')}
                     icon={status.downloading ? <Pause20Regular /> : <Play20Regular />}
                     onClick={() => {
                       if (status.downloading)

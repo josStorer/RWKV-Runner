@@ -88,6 +88,7 @@
   "Downloads": "下载",
   "Pause": "暂停",
   "Continue": "继续",
+  "Resume": "继续",
   "Check": "查看",
   "Model file not found": "模型文件不存在",
   "Can not find download url": "找不到下载地址",
@@ -134,9 +135,10 @@
   "Advanced": "高级",
   "Custom Python Path": "自定义Python路径",
   "Custom Models Path": "自定义模型路径",
-  "MacOS is not supported yet, please convert manually.": "暂不支持MacOS, 请手动转换",
   "Microsoft Visual C++ Redistributable is not installed, would you like to download it?": "微软VC++组件未安装, 是否下载?",
   "Path Cannot Contain Space": "路径不能包含空格",
   "Failed to switch model, please try starting the program with administrator privileges.": "切换模型失败, 请尝试以管理员权限启动程序",
-  "Current Strategy": "当前Strategy"
+  "Current Strategy": "当前Strategy",
+  "MacOS is not yet supported for performing this operation, please do it manually.": "MacOS尚未支持此操作, 请手动执行",
+  "Linux is not yet supported for performing this operation, please do it manually.": "Linux尚未支持此操作, 请手动执行"
 }

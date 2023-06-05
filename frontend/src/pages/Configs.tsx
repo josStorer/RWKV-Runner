@@ -840,7 +840,10 @@ export const Configs: FC = observer(() => {
                 } />
                 <ToolTipButton text={t('Convert')} desc={t('Convert model with these configs')} onClick={async () => {
                   if (commonStore.platform == 'darwin') {
-                    toast(t('MacOS is not supported yet, please convert manually.'), { type: 'info' });
+                    toast(t('MacOS is not yet supported for performing this operation, please do it manually.'), { type: 'info' });
+                    return;
+                  } else if (commonStore.platform == 'linux') {
+                    toast(t('Linux is not yet supported for performing this operation, please do it manually.'), { type: 'info' });
                     return;
                   }
 

@@ -142,23 +142,28 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
             });
 
             let customCudaFile = '';
-            if (modelConfig.modelParameters.device != 'CPU' && modelConfig.modelParameters.useCustomCuda) {
-              customCudaFile = getSupportedCustomCudaFile();
-              if (customCudaFile && commonStore.platform === 'windows') {
-                FileExists('./py310/Lib/site-packages/rwkv/model.py').then((exist) => {
-                  // defensive measure. As Python has already been launched, will only take effect the next time it runs.
-                  if (!exist) CopyFile('./backend-python/wkv_cuda_utils/wkv_cuda_model.py', './py310/Lib/site-packages/rwkv/model.py');
-                });
-                await CopyFile(customCudaFile, './py310/Lib/site-packages/rwkv/wkv_cuda.pyd').catch(() => {
-                  FileExists('./py310/Lib/site-packages/rwkv/wkv_cuda.pyd').then((exist) => {
-                    if (!exist) {
-                      customCudaFile = '';
-                      toast(t('Failed to copy custom cuda file'), { type: 'error' });
-                    }
+            if ((modelConfig.modelParameters.device === 'CUDA' || modelConfig.modelParameters.device === 'Custom')
+              && modelConfig.modelParameters.useCustomCuda) {
+              if (commonStore.platform === 'windows') {
+                customCudaFile = getSupportedCustomCudaFile();
+                if (customCudaFile) {
+                  FileExists('./py310/Lib/site-packages/rwkv/model.py').then((exist) => {
+                    // defensive measure. As Python has already been launched, will only take effect the next time it runs.
+                    if (!exist) CopyFile('./backend-python/wkv_cuda_utils/wkv_cuda_model.py', './py310/Lib/site-packages/rwkv/model.py');
                   });
-                });
-              } else
-                toast(t('Supported custom cuda file not found'), { type: 'warning' });
+                  await CopyFile(customCudaFile, './py310/Lib/site-packages/rwkv/wkv_cuda.pyd').catch(() => {
+                    FileExists('./py310/Lib/site-packages/rwkv/wkv_cuda.pyd').then((exist) => {
+                      if (!exist) {
+                        customCudaFile = '';
+                        toast(t('Failed to copy custom cuda file'), { type: 'error' });
+                      }
+                    });
+                  });
+                } else
+                  toast(t('Supported custom cuda file not found'), { type: 'warning' });
+              } else {
+                customCudaFile = 'any';
+              }
             }
 
             switchModel({
