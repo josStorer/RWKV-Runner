@@ -140,7 +140,12 @@ func (a *App) OpenFileFolder(path string) error {
 		}
 		return nil
 	case "linux":
-		println("unsupported OS")
+		cmd := exec.Command("xdg-open", absPath)
+		err := cmd.Run()
+		if err != nil {
+			return err
+		}
+		return nil
 	}
 	return errors.New("unsupported OS")
 }
