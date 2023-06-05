@@ -10,9 +10,24 @@
             "name": "Python",
             "type": "python",
             "request": "launch",
-            "program": "./backend-python/main.py",
+            "program": "${workspaceFolder}/backend-python/main.py",
             "console": "integratedTerminal",
-            "justMyCode": false,
+            "justMyCode": false
+        },
+        {
+            "name": "Golang",
+            "type": "go",
+            "request": "launch",
+            "mode": "exec",
+            "program": "${workspaceFolder}/build/bin/testwails.exe",
+            "console": "integratedTerminal",
+            "preLaunchTask": "build dev"
+        },
+        {
+            "name": "Frontend",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "wails dev -browser"
         }
     ]
 }
