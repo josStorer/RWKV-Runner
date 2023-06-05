@@ -1,6 +1,7 @@
 package backend_golang
 
 import (
+	"context"
 	"path/filepath"
 	"time"
 
@@ -18,6 +19,7 @@ func (a *App) DownloadFile(path string, url string) error {
 
 type DownloadStatus struct {
 	resp        *grab.Response
+	cancel      context.CancelFunc
 	Name        string  `json:"name"`
 	Path        string  `json:"path"`
 	Url         string  `json:"url"`
@@ -29,7 +31,7 @@ type DownloadStatus struct {
 	Done        bool    `json:"done"`
 }
 
-var downloadList []DownloadStatus
+var downloadList []*DownloadStatus
 
 func existsInDownloadList(url string) bool {
 	for _, ds := range downloadList {
@@ -41,49 +43,58 @@ func existsInDownloadList(url string) bool {
 }
 
 func (a *App) PauseDownload(url string) {
-	for i, ds := range downloadList {
+	for _, ds := range downloadList {
 		if ds.Url == url {
-			if ds.resp != nil {
-				ds.resp.Cancel()
+			if ds.cancel != nil {
+				ds.cancel()
 			}
-
-			downloadList[i] = DownloadStatus{
-				resp:        ds.resp,
-				Name:        ds.Name,
-				Path:        ds.Path,
-				Url:         ds.Url,
-				Downloading: false,
-			}
+			ds.resp = nil
+			ds.Downloading = false
+			ds.Speed = 0
+			break
 		}
 	}
 }
 
 func (a *App) ContinueDownload(url string) {
-	for i, ds := range downloadList {
+	for _, ds := range downloadList {
 		if ds.Url == url {
-			client := grab.NewClient()
-			req, _ := grab.NewRequest(ds.Path, ds.Url)
-			resp := client.Do(req)
+			if !ds.Downloading && ds.resp == nil && !ds.Done {
+				ds.Downloading = true
 
-			downloadList[i] = DownloadStatus{
-				resp:        resp,
-				Name:        ds.Name,
-				Path:        ds.Path,
-				Url:         ds.Url,
-				Downloading: true,
+				req, err := grab.NewRequest(ds.Path, ds.Url)
+				if err != nil {
+					ds.Downloading = false
+					break
+				}
+				// if PauseDownload() is called before the request finished, ds.Downloading will be false
+				// if the user keeps clicking pause and resume, it may result in multiple requests being successfully downloaded at the same time
+				// so we have to create a context and cancel it when PauseDownload() is called
+				ctx, cancel := context.WithCancel(context.Background())
+				ds.cancel = cancel
+				req = req.WithContext(ctx)
+				resp := grab.DefaultClient.Do(req)
+
+				if resp != nil && resp.HTTPResponse != nil &&
+					resp.HTTPResponse.StatusCode >= 200 && resp.HTTPResponse.StatusCode < 300 {
+					ds.resp = resp
+				} else {
+					ds.Downloading = false
+				}
 			}
+			break
 		}
 	}
 }
 
 func (a *App) AddToDownloadList(path string, url string) {
 	if !existsInDownloadList(url) {
-		downloadList = append(downloadList, DownloadStatus{
+		downloadList = append(downloadList, &DownloadStatus{
 			resp:        nil,
 			Name:        filepath.Base(path),
 			Path:        a.exDir + path,
 			Url:         url,
-			Downloading: true,
+			Downloading: false,
 		})
 		a.ContinueDownload(url)
 	} else {
@@ -96,32 +107,17 @@ func (a *App) downloadLoop() {
 	go func() {
 		for {
 			<-ticker.C
-			for i, ds := range downloadList {
-				transferred := int64(0)
-				size := int64(0)
-				speed := float64(0)
-				progress := float64(0)
-				downloading := ds.Downloading
-				done := false
+			for _, ds := range downloadList {
 				if ds.resp != nil {
-					transferred = ds.resp.BytesComplete()
-					size = ds.resp.Size()
-					speed = ds.resp.BytesPerSecond()
-					progress = 100 * ds.resp.Progress()
-					downloading = !ds.resp.IsComplete()
-					done = ds.resp.Progress() == 1
-				}
-				downloadList[i] = DownloadStatus{
-					resp:        ds.resp,
-					Name:        ds.Name,
-					Path:        ds.Path,
-					Url:         ds.Url,
-					Transferred: transferred,
-					Size:        size,
-					Speed:       speed,
-					Progress:    progress,
-					Downloading: downloading,
-					Done:        done,
+					ds.Transferred = ds.resp.BytesComplete()
+					ds.Size = ds.resp.Size()
+					ds.Speed = ds.resp.BytesPerSecond()
+					ds.Progress = 100 * ds.resp.Progress()
+					ds.Downloading = !ds.resp.IsComplete()
+					ds.Done = ds.resp.Progress() == 1
+					if !ds.Downloading {
+						ds.resp = nil
+					}
 				}
 			}
 			runtime.EventsEmit(a.ctx, "downloadList", downloadList)
