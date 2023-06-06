@@ -15,6 +15,12 @@ compatible with the OpenAI API, which means that every ChatGPT client is an RWKV
 
 English | [简体中文](README_ZH.md)
 
+### Install
+
+[![Windows][Windows-image]][Windows-url]
+[![MacOS][MacOS-image]][MacOS-url]
+[![Linux][Linux-image]][Linux-url]
+
 [FAQs](https://github.com/josStorer/RWKV-Runner/wiki/FAQs) | [Preview](#Preview) | [Download][download-url]
 
 [license-image]: http://img.shields.io/badge/license-MIT-blue.svg
@@ -26,6 +32,18 @@ English | [简体中文](README_ZH.md)
 [release-url]: https://github.com/josStorer/RWKV-Runner/releases/latest
 
 [download-url]: https://github.com/josStorer/RWKV-Runner/releases
+
+[Windows-image]: https://img.shields.io/badge/-Windows-blue?logo=windows
+
+[Windows-url]: https://github.com/josStorer/RWKV-Runner/blob/master/build/windows/Readme_Install.txt
+
+[MacOS-image]: https://img.shields.io/badge/-MacOS-black?logo=apple
+
+[MacOS-url]: https://github.com/josStorer/RWKV-Runner/blob/master/build/darwin/Readme_Install.txt
+
+[Linux-image]: https://img.shields.io/badge/-Linux-black?logo=linux
+
+[Linux-url]: https://github.com/josStorer/RWKV-Runner/blob/master/build/linux/Readme_Install.txt
 
 </div>
 
@@ -71,8 +89,8 @@ body.json:
 
 - [ ] Model training functionality
 - [x] CUDA operator int8 acceleration
-- [ ] macOS support
-- [ ] Linux support
+- [x] macOS support
+- [x] Linux support
 - [ ] Local State Cache DB
 
 ## Related Repositories:

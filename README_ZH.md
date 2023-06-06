@@ -14,6 +14,12 @@ API兼容的接口，这意味着一切ChatGPT客户端都是RWKV客户端。
 
 [English](README.md) | 简体中文
 
+### 安装
+
+[![Windows][Windows-image]][Windows-url]
+[![MacOS][MacOS-image]][MacOS-url]
+[![Linux][Linux-image]][Linux-url]
+
 [视频演示](https://www.bilibili.com/video/BV1hM4y1v76R) | [疑难解答](https://www.bilibili.com/read/cv23921171) | [预览](#Preview) | [下载][download-url] | [懒人包](https://pan.baidu.com/s/1wchIUHgne3gncIiLIeKBEQ?pwd=1111)
 
 [license-image]: http://img.shields.io/badge/license-MIT-blue.svg
@@ -25,6 +31,18 @@ API兼容的接口，这意味着一切ChatGPT客户端都是RWKV客户端。
 [release-url]: https://github.com/josStorer/RWKV-Runner/releases/latest
 
 [download-url]: https://github.com/josStorer/RWKV-Runner/releases
+
+[Windows-image]: https://img.shields.io/badge/-Windows-blue?logo=windows
+
+[Windows-url]: https://github.com/josStorer/RWKV-Runner/blob/master/build/windows/Readme_Install.txt
+
+[MacOS-image]: https://img.shields.io/badge/-MacOS-black?logo=apple
+
+[MacOS-url]: https://github.com/josStorer/RWKV-Runner/blob/master/build/darwin/Readme_Install.txt
+
+[Linux-image]: https://img.shields.io/badge/-Linux-black?logo=linux
+
+[Linux-url]: https://github.com/josStorer/RWKV-Runner/blob/master/build/linux/Readme_Install.txt
 
 </div>
 
@@ -71,8 +89,8 @@ body.json:
 
 - [ ] 模型训练功能
 - [x] CUDA算子int8提速
-- [ ] macOS支持
-- [ ] linux支持
+- [x] macOS支持
+- [x] linux支持
 - [ ] 本地状态缓存数据库
 
 ## 相关仓库:
