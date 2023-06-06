@@ -46,7 +46,7 @@ func Cmd(args ...string) (string, error) {
 			return "", err
 		}
 		exDir := filepath.Dir(ex) + "/../../../"
-		cmd := exec.Command("osascript", "-e", `tell application 'Terminal' to do script '`+"cd "+exDir+" && "+strings.Join(args, " ")+`'`)
+		cmd := exec.Command("osascript", "-e", `tell application "Terminal" to do script "`+"cd "+exDir+" && "+strings.Join(args, " ")+`"`)
 		err = cmd.Start()
 		if err != nil {
 			return "", err

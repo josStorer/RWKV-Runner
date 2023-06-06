@@ -1,0 +1,17 @@
+{
+    "source": [
+        "./build/bin/RWKV-Runner_darwin.app"
+    ],
+    "bundle_id": "dev.josStorer.RWKV-Runner",
+    "apple_id": {
+        "username": "joshua1466587594@outlook.com",
+        "password": ""
+    },
+    "sign": {
+        "application_identity": "D00A983569B4EAA2A008B963254F385F42A493FD",
+        "entitlements_file": "./build/darwin/entitlements.plist"
+    },
+    "zip": {
+        "output_path": "./build/bin/RWKV-Runner_darwin.archive.zip"
+    }
+}
