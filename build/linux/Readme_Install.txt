@@ -6,6 +6,8 @@ On Linux system, this program cannot invoke the terminal for automatic dependenc
 在Linux系统下, 本程序无法调用终端自动安装依赖, 你必须手动执行以下命令进行安装, 之后方可正常使用:
 Linuxシステムでは、このプログラムはターミナルを自動的に呼び出して依存関係をインストールすることができません。以下のコマンドを手動で実行する必要があります。それが完了した後に、正常に使用することができます:
 
+chmod +x ./RWKV-Runner
+./RWKV-Runner
 git clone https://github.com/josStorer/RWKV-Runner --depth=1
 cd RWKV-Runner/backend-python
 pip3 install -r requirements.txt # or pip3 install -r requirements_without_cyac.txt
