@@ -248,7 +248,7 @@ export async function checkUpdate(notifyEvenLatest: boolean = false) {
                           toast(t('Downloading update, please wait. If it is not completed, please manually download the program from GitHub and replace the original program.'), {
                             type: 'info',
                             position: 'bottom-left',
-                            autoClose: 10000
+                            autoClose: 20000
                           });
                           setTimeout(() => {
                             UpdateApp(updateUrl).catch((e) => {
