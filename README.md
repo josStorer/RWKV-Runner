@@ -47,6 +47,8 @@ English | [简体中文](README_ZH.md)
 
 </div>
 
+#### For Mac and Linux users, please manually install Python 3.10 (usually the latest systems come with it built-in).
+
 #### Default configs has enabled custom CUDA kernel acceleration, which is much faster and consumes much less VRAM. If you encounter possible compatibility issues, go to the Configs page and turn off `Use Custom CUDA kernel to Accelerate`.
 
 #### For different tasks, adjusting API parameters can achieve better results. For example, for translation tasks, you can try setting Temperature to 1 and Top_P to 0.3.
