@@ -75,10 +75,16 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
                 BrowserOpenURL('https://aka.ms/vs/16/release/vc_redist.x64.exe');
               });
             } else {
-              toastWithButton(t('Python dependencies are incomplete, would you like to install them?'), t('Install'), () => {
-                InstallPyDep(commonStore.settings.customPythonPath, commonStore.settings.cnMirror);
-                setTimeout(WindowShow, 1000);
-              });
+              toast(depErrorMsg, { type: 'info', position: 'bottom-left' });
+              if (commonStore.platform != 'linux')
+                toastWithButton(t('Python dependencies are incomplete, would you like to install them?'), t('Install'), () => {
+                  InstallPyDep(commonStore.settings.customPythonPath, commonStore.settings.cnMirror);
+                  setTimeout(WindowShow, 1000);
+                });
+              else
+                toastWithButton(t('On Linux system, you must manually install python dependencies.'), t('Check'), () => {
+                  BrowserOpenURL('https://github.com/josStorer/RWKV-Runner/blob/master/build/linux/Readme_Install.txt');
+                });
             }
           } else {
             toast(depErrorMsg, { type: 'error' });
