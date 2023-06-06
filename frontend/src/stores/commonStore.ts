@@ -2,7 +2,7 @@ import { makeAutoObservable } from 'mobx';
 import { getUserLanguage, isSystemLightMode, saveConfigs } from '../utils';
 import { WindowSetDarkTheme, WindowSetLightTheme } from '../../wailsjs/runtime';
 import manifest from '../../../manifest.json';
-import { defaultModelConfigs, ModelConfig } from '../pages/Configs';
+import { ModelConfig } from '../pages/Configs';
 import { Conversations } from '../pages/Chat';
 import { ModelSourceItem } from '../pages/Models';
 import { DownloadStatus } from '../pages/Downloads';
@@ -11,6 +11,8 @@ import { IntroductionContent } from '../pages/Home';
 import { AboutContent } from '../pages/About';
 import i18n from 'i18next';
 import { CompletionPreset } from '../pages/Completion';
+import { defaultModelConfigs, defaultModelConfigsMac } from '../pages/defaultModelConfigs';
+import commonStore from './commonStore';
 
 export enum ModelStatus {
   Offline,
@@ -98,7 +100,8 @@ class CommonStore {
 
   createModelConfig = (config: ModelConfig = defaultModelConfigs[0], saveConfig: boolean = true) => {
     if (config.name === defaultModelConfigs[0].name) {
-      config = JSON.parse(JSON.stringify(config)); // deep copy
+      // deep copy
+      config = JSON.parse(JSON.stringify(commonStore.platform != 'darwin' ? defaultModelConfigs[0] : defaultModelConfigsMac[0]));
       config.name = new Date().toLocaleString();
     }
     this.modelConfigs.push(config);

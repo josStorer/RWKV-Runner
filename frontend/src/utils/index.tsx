@@ -141,6 +141,10 @@ export const getStrategy = (modelConfig: ModelConfig | undefined = undefined) =>
       if (params.enableHighPrecisionForLastLayer)
         strategy += ' -> cpu fp32 *1';
       break;
+    case 'MPS':
+      strategy += 'mps ';
+      strategy += params.precision === 'fp16' ? 'fp16' : params.precision === 'int8' ? 'fp16i8' : 'fp32';
+      break;
     case 'Custom':
       strategy = params.customStrategy || '';
       break;

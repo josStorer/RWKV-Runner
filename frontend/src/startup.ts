@@ -3,8 +3,8 @@ import { GetPlatform, ReadJson } from '../wailsjs/go/backend_golang/App';
 import { Cache, checkUpdate, downloadProgramFiles, LocalConfig, refreshModels } from './utils';
 import { getStatus } from './apis';
 import { EventsOn } from '../wailsjs/runtime';
-import { defaultModelConfigs } from './pages/Configs';
 import manifest from '../../manifest.json';
+import { defaultModelConfigs, defaultModelConfigsMac } from './pages/defaultModelConfigs';
 
 export async function startup() {
   downloadProgramFiles();
@@ -54,7 +54,7 @@ async function initConfig() {
       configData.currentModelConfigIndex >= 0 && configData.currentModelConfigIndex < configData.modelConfigs.length)
       commonStore.setCurrentConfigIndex(configData.currentModelConfigIndex, false);
   }).catch(() => {
-    commonStore.setModelConfigs(defaultModelConfigs, true);
+    commonStore.setModelConfigs(commonStore.platform != 'darwin' ? defaultModelConfigs : defaultModelConfigsMac, true);
   });
 }
 
