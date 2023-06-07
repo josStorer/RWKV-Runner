@@ -20,7 +20,7 @@ API兼容的接口，这意味着一切ChatGPT客户端都是RWKV客户端。
 [![MacOS][MacOS-image]][MacOS-url]
 [![Linux][Linux-image]][Linux-url]
 
-[视频演示](https://www.bilibili.com/video/BV1hM4y1v76R) | [疑难解答](https://www.bilibili.com/read/cv23921171) | [预览](#Preview) | [下载][download-url] | [懒人包](https://pan.baidu.com/s/1wchIUHgne3gncIiLIeKBEQ?pwd=1111)
+[视频演示](https://www.bilibili.com/video/BV1hM4y1v76R) | [疑难解答](https://www.bilibili.com/read/cv23921171) | [预览](#Preview) | [下载][download-url] | [懒人包](https://pan.baidu.com/s/1wchIUHgne3gncIiLIeKBEQ?pwd=1111) | [服务器部署示例](https://github.com/josStorer/RWKV-Runner/tree/master/deploy-examples)
 
 [license-image]: http://img.shields.io/badge/license-MIT-blue.svg
 
