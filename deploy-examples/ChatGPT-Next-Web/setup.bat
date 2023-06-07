@@ -1,0 +1,21 @@
+mkdir RWKV-Next-Web
+cd RWKV-Next-Web
+
+git clone https://github.com/josStorer/RWKV-Runner --depth=1
+python -m pip install torch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 --index-url https://download.pytorch.org/whl/cu117
+python -m pip install -r RWKV-Runner/backend-python/requirements.txt
+start python ./RWKV-Runner/backend-python/main.py
+
+powershell -Command "(Test-Path ./RWKV-Runner/models) -or (mkdir RWKV-Runner/models)"
+powershell -Command "Import-Module BitsTransfer"
+powershell -Command "(Test-Path ./RWKV-Runner/models/RWKV-4-World-1.5B-v1-20230607-ctx4096.pth) -or (Start-BitsTransfer https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-1.5B-v1-20230607-ctx4096.pth ./RWKV-Runner/models/RWKV-4-World-1.5B-v1-20230607-ctx4096.pth)"
+powershell -Command "Invoke-WebRequest http://127.0.0.1:8000/switch-model -Method POST -ContentType 'application/json' -Body '{\"model\":\"./RWKV-Runner/models/RWKV-4-World-1.5B-v1-20230607-ctx4096.pth\",\"strategy\":\"cuda fp32 *20+\"}'"
+
+git clone https://github.com/Yidadaa/ChatGPT-Next-Web --depth=1
+cd ChatGPT-Next-Web
+call yarn install
+call yarn build
+set PROXY_URL=""
+set BASE_URL=http://127.0.0.1:8000
+start "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" "http://127.0.0.1:3000"
+yarn start
