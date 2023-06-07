@@ -25,9 +25,11 @@ func Cmd(args ...string) (string, error) {
 			return "", err
 		}
 
-		for _, arg := range args {
-			if strings.Contains(arg, " ") && strings.Contains(cmdHelper, " ") {
-				return "", errors.New("path contains space") // golang bug https://github.com/golang/go/issues/17149#issuecomment-473976818
+		if strings.Contains(cmdHelper, " ") {
+			for _, arg := range args {
+				if strings.Contains(arg, " ") {
+					return "", errors.New("path contains space") // golang bug https://github.com/golang/go/issues/17149#issuecomment-473976818
+				}
 			}
 		}
 
