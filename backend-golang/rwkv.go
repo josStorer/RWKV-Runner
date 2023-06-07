@@ -52,17 +52,22 @@ func (a *App) InstallPyDep(python string, cnMirror bool) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
 	if runtime.GOOS == "windows" {
 		ChangeFileLine("./py310/python310._pth", 3, "Lib\\site-packages")
 	}
-	if cnMirror {
-		_, err = Cmd(python, "./backend-python/get-pip.py", "-i", "https://pypi.tuna.tsinghua.edu.cn/simple")
-	} else {
-		_, err = Cmd(python, "./backend-python/get-pip.py")
+
+	if runtime.GOOS == "windows" {
+		if cnMirror {
+			_, err = Cmd(python, "./backend-python/get-pip.py", "-i", "https://pypi.tuna.tsinghua.edu.cn/simple")
+		} else {
+			_, err = Cmd(python, "./backend-python/get-pip.py")
+		}
+		if err != nil {
+			return "", err
+		}
 	}
-	if err != nil {
-		return "", err
-	}
+
 	if runtime.GOOS == "windows" {
 		_, err = Cmd(python, "-m", "pip", "install", "torch==1.13.1", "torchvision==0.14.1", "torchaudio==0.13.1", "--index-url", "https://download.pytorch.org/whl/cu117")
 	} else {
@@ -71,9 +76,18 @@ func (a *App) InstallPyDep(python string, cnMirror bool) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	if cnMirror {
-		return Cmd(python, "-m", "pip", "install", "-r", "./backend-python/requirements.txt", "-i", "https://pypi.tuna.tsinghua.edu.cn/simple")
+
+	if runtime.GOOS == "windows" {
+		if cnMirror {
+			return Cmd(python, "-m", "pip", "install", "-r", "./backend-python/requirements.txt", "-i", "https://pypi.tuna.tsinghua.edu.cn/simple")
+		} else {
+			return Cmd(python, "-m", "pip", "install", "-r", "./backend-python/requirements_versions.txt")
+		}
 	} else {
-		return Cmd(python, "-m", "pip", "install", "-r", "./backend-python/requirements_versions.txt")
+		if cnMirror {
+			return Cmd(python, "-m", "pip", "install", "-r", "./backend-python/requirements_without_cyac.txt", "-i", "https://pypi.tuna.tsinghua.edu.cn/simple")
+		} else {
+			return Cmd(python, "-m", "pip", "install", "-r", "./backend-python/requirements_without_cyac.txt")
+		}
 	}
 }
