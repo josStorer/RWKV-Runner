@@ -8,6 +8,5 @@ Linuxシステムでは、このプログラムはターミナルを自動的に
 
 chmod +x ./RWKV-Runner
 ./RWKV-Runner
-git clone https://github.com/josStorer/RWKV-Runner --depth=1
-cd RWKV-Runner/backend-python
+cd backend-python
 pip3 install -r requirements.txt # or pip3 install -r requirements_without_cyac.txt
