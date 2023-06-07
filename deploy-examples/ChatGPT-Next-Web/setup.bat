@@ -1,3 +1,6 @@
+: install git python3.10 yarn by yourself
+: change model and strategy according to your hardware
+
 mkdir RWKV-Next-Web
 cd RWKV-Next-Web
 
