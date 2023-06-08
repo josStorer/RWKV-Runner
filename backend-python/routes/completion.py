@@ -138,6 +138,7 @@ The following is a coherent verbose detailed conversation between a girl named {
             set_rwkv_config(model, global_var.get(global_var.Model_Config))
             set_rwkv_config(model, body)
             if body.stream:
+                response = ""
                 for response, delta in model.generate(
                     completion_text,
                     stop=f"\n\n{user}" if body.stop is None else body.stop,
@@ -188,7 +189,7 @@ The following is a coherent verbose detailed conversation between a girl named {
                 )
                 yield "[DONE]"
             else:
-                response = None
+                response = ""
                 for response, delta in model.generate(
                     completion_text,
                     stop=f"\n\n{user}" if body.stop is None else body.stop,
@@ -282,6 +283,7 @@ async def completions(body: CompletionBody, request: Request):
             set_rwkv_config(model, global_var.get(global_var.Model_Config))
             set_rwkv_config(model, body)
             if body.stream:
+                response = ""
                 for response, delta in model.generate(body.prompt, stop=body.stop):
                     if await request.is_disconnected():
                         break
@@ -329,7 +331,7 @@ async def completions(body: CompletionBody, request: Request):
                 )
                 yield "[DONE]"
             else:
-                response = None
+                response = ""
                 for response, delta in model.generate(body.prompt, stop=body.stop):
                     if await request.is_disconnected():
                         break
