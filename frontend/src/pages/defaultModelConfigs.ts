@@ -17,7 +17,6 @@ export const defaultModelConfigsMac: ModelConfig[] = [
       precision: 'fp32',
       storedLayers: 41,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false,
       useCustomCuda: false,
       customStrategy: 'mps fp32'
     }
@@ -38,7 +37,6 @@ export const defaultModelConfigsMac: ModelConfig[] = [
       precision: 'fp32',
       storedLayers: 41,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false,
       useCustomCuda: false,
       customStrategy: 'mps fp32'
     }
@@ -59,7 +57,6 @@ export const defaultModelConfigsMac: ModelConfig[] = [
       precision: 'fp32',
       storedLayers: 41,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false,
       useCustomCuda: false,
       customStrategy: 'mps fp32'
     }
@@ -79,8 +76,7 @@ export const defaultModelConfigsMac: ModelConfig[] = [
       device: 'CPU',
       precision: 'fp32',
       storedLayers: 41,
-      maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false
+      maxStoredLayers: 41
     }
   },
   {
@@ -98,8 +94,7 @@ export const defaultModelConfigsMac: ModelConfig[] = [
       device: 'CPU',
       precision: 'fp32',
       storedLayers: 41,
-      maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false
+      maxStoredLayers: 41
     }
   },
   {
@@ -117,8 +112,7 @@ export const defaultModelConfigsMac: ModelConfig[] = [
       device: 'CPU',
       precision: 'fp32',
       storedLayers: 41,
-      maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false
+      maxStoredLayers: 41
     }
   },
   {
@@ -136,8 +130,7 @@ export const defaultModelConfigsMac: ModelConfig[] = [
       device: 'CPU',
       precision: 'fp32',
       storedLayers: 41,
-      maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false
+      maxStoredLayers: 41
     }
   },
   {
@@ -155,8 +148,7 @@ export const defaultModelConfigsMac: ModelConfig[] = [
       device: 'CPU',
       precision: 'fp32',
       storedLayers: 41,
-      maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false
+      maxStoredLayers: 41
     }
   }
 ];
@@ -178,7 +170,6 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 4,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: true,
       useCustomCuda: true
     }
   },
@@ -198,7 +189,6 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 41,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false,
       useCustomCuda: true
     }
   },
@@ -218,7 +208,6 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 24,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: true,
       useCustomCuda: true
     }
   },
@@ -238,7 +227,6 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 24,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: true,
       useCustomCuda: true
     }
   },
@@ -258,7 +246,6 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 8,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: true,
       useCustomCuda: true
     }
   },
@@ -278,7 +265,6 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 8,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: true,
       useCustomCuda: true
     }
   },
@@ -298,7 +284,6 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'fp16',
       storedLayers: 41,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false,
       useCustomCuda: true
     }
   },
@@ -318,7 +303,6 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 41,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false,
       useCustomCuda: true
     }
   },
@@ -338,7 +322,6 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 41,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false,
       useCustomCuda: true
     }
   },
@@ -358,7 +341,6 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 18,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: true,
       useCustomCuda: true
     }
   },
@@ -378,7 +360,6 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 18,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: true,
       useCustomCuda: true
     }
   },
@@ -398,7 +379,6 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'fp16',
       storedLayers: 41,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false,
       useCustomCuda: true
     }
   },
@@ -418,7 +398,6 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'fp16',
       storedLayers: 41,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false,
       useCustomCuda: true
     }
   },
@@ -438,7 +417,6 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 27,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false,
       useCustomCuda: true
     }
   },
@@ -458,7 +436,6 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 27,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false,
       useCustomCuda: true
     }
   },
@@ -478,7 +455,6 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 41,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false,
       useCustomCuda: true
     }
   },
@@ -498,7 +474,6 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 41,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false,
       useCustomCuda: true
     }
   },
@@ -518,7 +493,6 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 24,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false,
       useCustomCuda: true
     }
   },
@@ -538,7 +512,6 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'fp16',
       storedLayers: 41,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false,
       useCustomCuda: true
     }
   },
@@ -558,7 +531,6 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'fp16',
       storedLayers: 41,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false,
       useCustomCuda: true
     }
   },
@@ -578,7 +550,6 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 37,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false,
       useCustomCuda: true
     }
   },
@@ -598,7 +569,6 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'int8',
       storedLayers: 41,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false,
       useCustomCuda: true
     }
   },
@@ -618,7 +588,6 @@ export const defaultModelConfigs: ModelConfig[] = [
       precision: 'fp16',
       storedLayers: 41,
       maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false,
       useCustomCuda: true
     }
   },
@@ -637,8 +606,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       device: 'CPU',
       precision: 'fp32',
       storedLayers: 41,
-      maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false
+      maxStoredLayers: 41
     }
   },
   {
@@ -656,8 +624,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       device: 'CPU',
       precision: 'fp32',
       storedLayers: 41,
-      maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false
+      maxStoredLayers: 41
     }
   },
   {
@@ -675,8 +642,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       device: 'CPU',
       precision: 'fp32',
       storedLayers: 41,
-      maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false
+      maxStoredLayers: 41
     }
   },
   {
@@ -694,8 +660,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       device: 'CPU',
       precision: 'fp32',
       storedLayers: 41,
-      maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false
+      maxStoredLayers: 41
     }
   },
   {
@@ -713,8 +678,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       device: 'CPU',
       precision: 'fp32',
       storedLayers: 41,
-      maxStoredLayers: 41,
-      enableHighPrecisionForLastLayer: false
+      maxStoredLayers: 41
     }
   }
 ];

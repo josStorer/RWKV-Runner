@@ -40,7 +40,6 @@ export type ModelParameters = {
   precision: Precision;
   storedLayers: number;
   maxStoredLayers: number;
-  enableHighPrecisionForLastLayer: boolean;
   useCustomCuda?: boolean;
   customStrategy?: string;
 }
@@ -323,17 +322,7 @@ export const Configs: FC = observer(() => {
                     } />
                 }
                 {
-                  selectedConfig.modelParameters.device == 'CUDA' &&
-                  <Labeled label={t('Enable High Precision For Last Layer')}
-                    desc={t('Whether to use CPU to calculate the last output layer of the neural network with FP32 precision to obtain better quality.')}
-                    content={
-                      <Switch checked={selectedConfig.modelParameters.enableHighPrecisionForLastLayer}
-                        onChange={(e, data) => {
-                          setSelectedConfigModelParams({
-                            enableHighPrecisionForLastLayer: data.checked
-                          });
-                        }} />
-                    } />
+                  selectedConfig.modelParameters.device == 'CUDA' && <div />
                 }
                 {
                   displayStrategyImg &&
