@@ -1,5 +1,6 @@
 from typing import Any, Dict
-from fastapi import APIRouter, HTTPException, Response, status
+from utils.log import quick_log
+from fastapi import APIRouter, HTTPException, Request, Response, status
 from pydantic import BaseModel
 import gc
 import copy
@@ -72,7 +73,7 @@ class LongestPrefixStateBody(BaseModel):
 
 
 @router.post("/longest-prefix-state")
-def longest_prefix_state(body: LongestPrefixStateBody):
+def longest_prefix_state(body: LongestPrefixStateBody, request: Request):
     global trie
     if trie is None:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "trie not loaded")
@@ -83,8 +84,10 @@ def longest_prefix_state(body: LongestPrefixStateBody):
     if id != -1:
         v = dtrie[id]
         device = v["device"]
+        prompt = trie[id]
+        quick_log(request, body, "Hit: " + prompt)
         return {
-            "prompt": trie[id],
+            "prompt": prompt,
             "tokens": v["tokens"],
             "state": [tensor.to(device) for tensor in v["state"]]
             if device != torch.device("cpu")

@@ -16,7 +16,7 @@ logger.addHandler(fh)
 
 def quick_log(request: Request, body: Any, response: str):
     logger.info(
-        f"Client: {request.client}\nUrl: {request.url}\n"
+        f"Client: {request.client if request else ''}\nUrl: {request.url if request else ''}\n"
         + (
             f"Body: {json.dumps(body.__dict__, default=vars, ensure_ascii=False)}\n"
             if body

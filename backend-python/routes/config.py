@@ -1,6 +1,7 @@
 import pathlib
+from utils.log import quick_log
 
-from fastapi import APIRouter, HTTPException, Response, status as Status
+from fastapi import APIRouter, HTTPException, Request, Response, status as Status
 from pydantic import BaseModel
 from utils.rwkv import *
 from utils.torch import *
@@ -30,7 +31,7 @@ class SwitchModelBody(BaseModel):
 
 
 @router.post("/switch-model")
-def switch_model(body: SwitchModelBody, response: Response):
+def switch_model(body: SwitchModelBody, response: Response, request: Request):
     if global_var.get(global_var.Model_Status) is global_var.ModelStatus.Loading:
         response.status_code = Status.HTTP_304_NOT_MODIFIED
         return
@@ -53,6 +54,7 @@ def switch_model(body: SwitchModelBody, response: Response):
         )
     except Exception as e:
         print(e)
+        quick_log(request, body, f"Exception: {e}")
         global_var.set(global_var.Model_Status, global_var.ModelStatus.Offline)
         raise HTTPException(Status.HTTP_500_INTERNAL_SERVER_ERROR, "failed to load")
 

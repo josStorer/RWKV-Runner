@@ -105,7 +105,7 @@ The following is a coherent verbose detailed conversation between a girl named {
         delta_prompt = prompt
         try:
             cache = state_cache.longest_prefix_state(
-                state_cache.LongestPrefixStateBody(prompt=prompt)
+                state_cache.LongestPrefixStateBody(prompt=prompt), None
             )
         except HTTPException:
             pass
