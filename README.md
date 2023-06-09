@@ -47,9 +47,9 @@ English | [简体中文](README_ZH.md)
 
 </div>
 
-#### For Mac and Linux users, please manually install Python 3.10 (usually the latest systems come with it built-in).
-
 #### Default configs has enabled custom CUDA kernel acceleration, which is much faster and consumes much less VRAM. If you encounter possible compatibility issues, go to the Configs page and turn off `Use Custom CUDA kernel to Accelerate`.
+
+#### If Windows Defender claims this is a virus, you can try downloading [v1.0.8](https://github.com/josStorer/RWKV-Runner/releases/tag/v1.0.8)/[v1.0.9](https://github.com/josStorer/RWKV-Runner/releases/tag/v1.0.9) and letting it update automatically to the latest version, or add it to the trusted list.
 
 #### For different tasks, adjusting API parameters can achieve better results. For example, for translation tasks, you can try setting Temperature to 1 and Top_P to 0.3.
 
