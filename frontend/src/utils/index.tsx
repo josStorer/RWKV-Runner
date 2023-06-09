@@ -16,7 +16,6 @@ import { Button } from '@fluentui/react-components';
 import { Language, Languages, SettingsType } from '../pages/Settings';
 import { ModelSourceItem } from '../pages/Models';
 import { ModelConfig, ModelParameters } from '../pages/Configs';
-import { BrowserOpenURL } from '../../wailsjs/runtime';
 
 export type Cache = {
   models: ModelSourceItem[]
@@ -250,24 +249,27 @@ export async function checkUpdate(notifyEvenLatest: boolean = false) {
                           `https://gitee.com/josc146/RWKV-Runner/releases/download/${versionTag}/${asset.name}`;
                         toastWithButton(t('New Version Available') + ': ' + versionTag, t('Update'), () => {
                           DeleteFile('cache.json');
-                          if (commonStore.platform != 'darwin') {
-                            toast(t('Downloading update, please wait. If it is not completed, please manually download the program from GitHub and replace the original program.'), {
-                              type: 'info',
-                              position: 'bottom-left',
-                              autoClose: 20000
-                            });
-                            setTimeout(() => {
-                              UpdateApp(updateUrl).catch((e) => {
-                                toast(t('Update Error') + ' - ' + e.message || e, {
-                                  type: 'error',
+                          toast(t('Downloading update, please wait. If it is not completed, please manually download the program from GitHub and replace the original program.'), {
+                            type: 'info',
+                            position: 'bottom-left',
+                            autoClose: 30000
+                          });
+                          setTimeout(() => {
+                            UpdateApp(updateUrl).then(() => {
+                              toast(t('Update completed, please restart the program.'), {
+                                  type: 'success',
                                   position: 'bottom-left',
                                   autoClose: false
-                                });
+                                }
+                              );
+                            }).catch((e) => {
+                              toast(t('Update Error') + ' - ' + e.message || e, {
+                                type: 'error',
+                                position: 'bottom-left',
+                                autoClose: false
                               });
-                            }, 500);
-                          } else {
-                            BrowserOpenURL(updateUrl);
-                          }
+                            });
+                          }, 500);
                         }, {
                           autoClose: false,
                           position: 'bottom-left'

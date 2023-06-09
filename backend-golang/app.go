@@ -53,12 +53,14 @@ func (a *App) UpdateApp(url string) (broken bool, err error) {
 		}
 		return false, err
 	}
-	name, err := os.Executable()
-	if err != nil {
-		return false, err
+	if runtime.GOOS == "windows" {
+		name, err := os.Executable()
+		if err != nil {
+			return false, err
+		}
+		exec.Command(name, os.Args[1:]...).Start()
+		wruntime.Quit(a.ctx)
 	}
-	exec.Command(name, os.Args[1:]...).Start()
-	wruntime.Quit(a.ctx)
 	return false, nil
 }
 
