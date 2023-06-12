@@ -22,7 +22,7 @@ def quick_log(request: Request, body: Any, response: str):
             if body
             else ""
         )
-        + (f"Response:\n{response}\n" if response else "")
+        + (f"Data:\n{response}\n" if response else "")
     )
 
 

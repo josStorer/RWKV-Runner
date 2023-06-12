@@ -2,6 +2,7 @@ import os
 import pathlib
 import copy
 from typing import Dict, List
+from utils.log import quick_log
 from fastapi import HTTPException
 from pydantic import BaseModel, Field
 from rwkv_pip.utils import PIPELINE
@@ -101,6 +102,7 @@ The following is a coherent verbose detailed conversation between a girl named {
         return out
 
     def generate(self, prompt: str, stop: str = None):
+        quick_log(None, None, "Generation Prompt:\n" + prompt)
         cache = None
         delta_prompt = prompt
         try:

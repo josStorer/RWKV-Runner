@@ -87,7 +87,7 @@ def longest_prefix_state(body: LongestPrefixStateBody, request: Request):
         v = dtrie[id]
         device = v["device"]
         prompt = trie[id]
-        quick_log(request, body, "Hit: " + prompt)
+        quick_log(request, body, "Hit:\n" + prompt)
         return {
             "prompt": prompt,
             "tokens": v["tokens"],
