@@ -40,6 +40,9 @@ def switch_model(body: SwitchModelBody, response: Response, request: Request):
     global_var.set(global_var.Model, None)
     torch_gc()
 
+    if body.model == "":
+        return "success"
+
     os.environ["RWKV_CUDA_ON"] = "1" if body.customCuda else "0"
 
     global_var.set(global_var.Model_Status, global_var.ModelStatus.Loading)
