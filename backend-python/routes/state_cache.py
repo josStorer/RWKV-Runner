@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any, Dict, List
 from utils.log import quick_log
 from fastapi import APIRouter, HTTPException, Request, Response, status
 from pydantic import BaseModel
@@ -31,7 +31,7 @@ def init():
 
 class AddStateBody(BaseModel):
     prompt: str
-    tokens: list[str]
+    tokens: List[str]
     state: Any
     logits: Any
 
