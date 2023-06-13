@@ -1,13 +1,13 @@
 ## Changes
 
-- CI/CD pipeline
-- update InstallPyDep for better macOS support
-- improve update process for macOS and Linux
-- add server deploy examples for windows and linux
-- organize the structure of manifest.json
-- add logs for state cache and switch-model
-- fix UnboundLocalError: local variable 'response' referenced before assignment
-- remove `enableHighPrecisionForLastLayer`
+- add support for python3.8 3.9
+- avoid misoperations of state_cache API
+- allow unloading model with switch-model API
+- add logs for Generation Prompt
+- add max state cache length
+- update models manifest and default configs
+- update Instruction template
+- improve built-in user guides
 
 ## Install
 
