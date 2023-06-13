@@ -191,7 +191,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
             }).catch(() => {
               commonStore.setStatus({ status: ModelStatus.Offline });
               if (commonStore.platform === 'windows')
-                toast(t('Failed to switch model, please try starting the program with administrator privileges.'), { type: 'error' });
+                toast(t('Failed to switch model, please try starting the program with administrator privileges or increasing your virtual memory.'), { type: 'error' });
               else
                 toast(t('Failed to switch model'), { type: 'error' });
             });

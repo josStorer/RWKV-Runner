@@ -272,7 +272,7 @@ const CompletionPanel: FC = observer(() => {
                 }} />
             } />
           <Labeled flex breakline label={t('Temperature')}
-            desc={t('Sampling temperature, the higher the stronger the randomness and creativity, while the lower, the more focused and deterministic it will be.')}
+            desc={t('Sampling temperature, it\'s like giving alcohol to a model, the higher the stronger the randomness and creativity, while the lower, the more focused and deterministic it will be.')}
             content={
               <ValuedSlider value={params.temperature} min={0} max={2} step={0.1}
                 input
@@ -283,7 +283,7 @@ const CompletionPanel: FC = observer(() => {
                 }} />
             } />
           <Labeled flex breakline label={t('Top_P')}
-            desc={t('Consider the results of the top n% probability mass, 0.1 considers the top 10%, with higher quality but more conservative, 1 considers all results, with lower quality but more diverse.')}
+            desc={t('Just like feeding sedatives to the model. Consider the results of the top n% probability mass, 0.1 considers the top 10%, with higher quality but more conservative, 1 considers all results, with lower quality but more diverse.')}
             content={
               <ValuedSlider value={params.topP} min={0} max={1} step={0.1} input
                 onChange={(e, data) => {

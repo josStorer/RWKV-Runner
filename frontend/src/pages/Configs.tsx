@@ -166,7 +166,7 @@ export const Configs: FC = observer(() => {
                       }} />
                   } />
                 <Labeled label={t('Temperature') + ' *'}
-                  desc={t('Sampling temperature, the higher the stronger the randomness and creativity, while the lower, the more focused and deterministic it will be.')}
+                  desc={t('Sampling temperature, it\'s like giving alcohol to a model, the higher the stronger the randomness and creativity, while the lower, the more focused and deterministic it will be.')}
                   content={
                     <ValuedSlider value={selectedConfig.apiParameters.temperature} min={0} max={2} step={0.1}
                       input
@@ -177,7 +177,7 @@ export const Configs: FC = observer(() => {
                       }} />
                   } />
                 <Labeled label={t('Top_P') + ' *'}
-                  desc={t('Consider the results of the top n% probability mass, 0.1 considers the top 10%, with higher quality but more conservative, 1 considers all results, with lower quality but more diverse.')}
+                  desc={t('Just like feeding sedatives to the model. Consider the results of the top n% probability mass, 0.1 considers the top 10%, with higher quality but more conservative, 1 considers all results, with lower quality but more diverse.')}
                   content={
                     <ValuedSlider value={selectedConfig.apiParameters.topP} min={0} max={1} step={0.1} input
                       onChange={(e, data) => {
@@ -237,36 +237,38 @@ export const Configs: FC = observer(() => {
                     }} />
                   </div>
                 } />
-                <ToolTipButton text={t('Convert')} desc={t('Convert model with these configs')} onClick={async () => {
-                  if (commonStore.platform == 'darwin') {
-                    toast(t('MacOS is not yet supported for performing this operation, please do it manually.'), { type: 'info' });
-                    return;
-                  } else if (commonStore.platform == 'linux') {
-                    toast(t('Linux is not yet supported for performing this operation, please do it manually.'), { type: 'info' });
-                    return;
-                  }
+                <ToolTipButton text={t('Convert')}
+                  desc={t('Convert model with these configs. Using a converted model will greatly improve the loading speed, but model parameters of the converted model cannot be modified.')}
+                  onClick={async () => {
+                    if (commonStore.platform == 'darwin') {
+                      toast(t('MacOS is not yet supported for performing this operation, please do it manually.'), { type: 'info' });
+                      return;
+                    } else if (commonStore.platform == 'linux') {
+                      toast(t('Linux is not yet supported for performing this operation, please do it manually.'), { type: 'info' });
+                      return;
+                    }
 
-                  const modelPath = `${commonStore.settings.customModelsPath}/${selectedConfig.modelParameters.modelName}`;
-                  if (await FileExists(modelPath)) {
-                    const strategy = getStrategy(selectedConfig);
-                    const newModelPath = modelPath + '-' + strategy.replace(/[:> *+]/g, '-');
-                    toast(t('Start Converting'), { autoClose: 1000, type: 'info' });
-                    ConvertModel(commonStore.settings.customPythonPath, modelPath, strategy, newModelPath).then(() => {
-                      toast(`${t('Convert Success')} - ${newModelPath}`, { type: 'success' });
-                      refreshLocalModels({ models: commonStore.modelSourceList }, false);
-                    }).catch(e => {
-                      const errMsg = e.message || e;
-                      if (errMsg.includes('path contains space'))
-                        toast(`${t('Convert Failed')} - ${t('Path Cannot Contain Space')}`, { type: 'error' });
-                      else
-                        toast(`${t('Convert Failed')} - ${e.message || e}`, { type: 'error' });
-                    });
-                    setTimeout(WindowShow, 1000);
-                  } else {
-                    toast(`${t('Model Not Found')} - ${modelPath}`, { type: 'error' });
-                  }
-                }} />
-                <Labeled label={t('Device')} content={
+                    const modelPath = `${commonStore.settings.customModelsPath}/${selectedConfig.modelParameters.modelName}`;
+                    if (await FileExists(modelPath)) {
+                      const strategy = getStrategy(selectedConfig);
+                      const newModelPath = modelPath + '-' + strategy.replace(/[:> *+]/g, '-');
+                      toast(t('Start Converting'), { autoClose: 1000, type: 'info' });
+                      ConvertModel(commonStore.settings.customPythonPath, modelPath, strategy, newModelPath).then(() => {
+                        toast(`${t('Convert Success')} - ${newModelPath}`, { type: 'success' });
+                        refreshLocalModels({ models: commonStore.modelSourceList }, false);
+                      }).catch(e => {
+                        const errMsg = e.message || e;
+                        if (errMsg.includes('path contains space'))
+                          toast(`${t('Convert Failed')} - ${t('Path Cannot Contain Space')}`, { type: 'error' });
+                        else
+                          toast(`${t('Convert Failed')} - ${e.message || e}`, { type: 'error' });
+                      });
+                      setTimeout(WindowShow, 1000);
+                    } else {
+                      toast(`${t('Model Not Found')} - ${modelPath}`, { type: 'error' });
+                    }
+                  }} />
+                <Labeled label={t('Strategy')} content={
                   <Dropdown style={{ minWidth: 0 }} className="grow" value={t(selectedConfig.modelParameters.device)!}
                     selectedOptions={[selectedConfig.modelParameters.device]}
                     onOptionSelect={(_, data) => {
@@ -310,7 +312,7 @@ export const Configs: FC = observer(() => {
                 {
                   selectedConfig.modelParameters.device == 'CUDA' &&
                   <Labeled label={t('Stored Layers')}
-                    desc={t('Number of the neural network layers loaded into VRAM, the more you load, the faster the speed, but it consumes more VRAM.')}
+                    desc={t('Number of the neural network layers loaded into VRAM, the more you load, the faster the speed, but it consumes more VRAM. (If your VRAM is not enough, it will fail to load)')}
                     content={
                       <ValuedSlider value={selectedConfig.modelParameters.storedLayers} min={0}
                         max={selectedConfig.modelParameters.maxStoredLayers} step={1} input
@@ -349,7 +351,7 @@ export const Configs: FC = observer(() => {
                 {
                   selectedConfig.modelParameters.device != 'CPU' && selectedConfig.modelParameters.device != 'MPS' &&
                   <Labeled label={t('Use Custom CUDA kernel to Accelerate')}
-                    desc={t('Enabling this option can greatly improve inference speed, but there may be compatibility issues. If it fails to start, please turn off this option.')}
+                    desc={t('Enabling this option can greatly improve inference speed and save some VRAM, but there may be compatibility issues. If it fails to start, please turn off this option.')}
                     content={
                       <Switch checked={selectedConfig.modelParameters.useCustomCuda}
                         onChange={(e, data) => {
