@@ -15,18 +15,24 @@ logger.addHandler(fh)
 
 
 def quick_log(request: Request, body: Any, response: str):
-    logger.info(
-        f"Client: {request.client if request else ''}\nUrl: {request.url if request else ''}\n"
-        + (
-            f"Body: {json.dumps(body.__dict__, default=vars, ensure_ascii=False)}\n"
-            if body
-            else ""
+    try:
+        logger.info(
+            f"Client: {request.client if request else ''}\nUrl: {request.url if request else ''}\n"
+            + (
+                f"Body: {json.dumps(body.__dict__, default=vars, ensure_ascii=False)}\n"
+                if body
+                else ""
+            )
+            + (f"Data:\n{response}\n" if response else "")
         )
-        + (f"Data:\n{response}\n" if response else "")
-    )
+    except Exception as e:
+        logger.info(f"Error quick_log request:\n{e}")
 
 
 async def log_middleware(request: Request):
-    logger.info(
-        f"Client: {request.client}\nUrl: {request.url}\nBody: {await request.body()}\n"
-    )
+    try:
+        logger.info(
+            f"Client: {request.client}\nUrl: {request.url}\nBody: {await request.body()}\n"
+        )
+    except Exception as e:
+        logger.info(f"Error log_middleware request:\n{e}")
