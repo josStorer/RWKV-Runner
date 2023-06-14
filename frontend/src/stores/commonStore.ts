@@ -41,6 +41,7 @@ class CommonStore {
   // home
   introduction: IntroductionContent = manifest.introduction;
   // chat
+  currentInput: string = '';
   conversations: Conversations = {};
   conversationsOrder: string[] = [];
   // completion
@@ -181,6 +182,10 @@ class CommonStore {
 
   setPlatform(value: Platform) {
     this.platform = value;
+  }
+
+  setCurrentInput(value: string) {
+    this.currentInput = value;
   }
 }
 

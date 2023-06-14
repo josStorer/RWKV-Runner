@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Avatar, PresenceBadge, Textarea } from '@fluentui/react-components';
 import commonStore, { ModelStatus } from '../stores/commonStore';
@@ -47,7 +47,6 @@ let chatSseController: AbortController | null = null;
 
 const ChatPanel: FC = observer(() => {
   const { t } = useTranslation();
-  const [message, setMessage] = useState('');
   const bodyRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const port = commonStore.getCurrentModelConfig().apiParameters.apiPort;
@@ -98,9 +97,9 @@ const ChatPanel: FC = observer(() => {
         toast(t('Please click the button in the top right corner to start the model'), { type: 'warning' });
         return;
       }
-      if (!message) return;
-      onSubmit(message);
-      setMessage('');
+      if (!commonStore.currentInput) return;
+      onSubmit(commonStore.currentInput);
+      commonStore.setCurrentInput('');
     }
   };
 
@@ -267,8 +266,8 @@ const ChatPanel: FC = observer(() => {
           className="grow"
           resize="vertical"
           placeholder={t('Type your message here')!}
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          value={commonStore.currentInput}
+          onChange={(e) => commonStore.setCurrentInput(e.target.value)}
           onKeyDown={handleKeyDownOrClick}
         />
         <ToolTipButton desc={generating ? t('Stop') : t('Send')}
