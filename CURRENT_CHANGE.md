@@ -1,13 +1,11 @@
 ## Changes
 
-- add support for python3.8 3.9
-- avoid misoperations of state_cache API
-- allow unloading model with switch-model API
-- add logs for Generation Prompt
-- add max state cache length
-- update models manifest and default configs
-- update Instruction template
-- improve built-in user guides
+- global sse AbortController even if switching pages
+- remember current chat input even if switching pages
+- reset confirm for completion page
+- improve OpenFileFolder
+- improve python dependencies installation
+- add additional startup condition
 
 ## Install
 
