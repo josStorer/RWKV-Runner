@@ -129,11 +129,12 @@ export const defaultPresets: CompletionPreset[] = [{
   }
 }];
 
+let completionSseController: AbortController | null = null;
+
 const CompletionPanel: FC = observer(() => {
   const { t } = useTranslation();
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const port = commonStore.getCurrentModelConfig().apiParameters.apiPort;
-  const sseControllerRef = useRef<AbortController | null>(null);
 
   const scrollToBottom = () => {
     if (inputRef.current)
@@ -187,7 +188,7 @@ const CompletionPanel: FC = observer(() => {
     prompt += params.injectStart.replaceAll('\\n', '\n');
 
     let answer = '';
-    sseControllerRef.current = new AbortController();
+    completionSseController = new AbortController();
     fetchEventSource(`http://127.0.0.1:${port}/completions`, // https://api.openai.com/v1/completions || http://127.0.0.1:${port}/completions
       {
         method: 'POST',
@@ -206,7 +207,7 @@ const CompletionPanel: FC = observer(() => {
           frequency_penalty: params.frequencyPenalty,
           stop: params.stop.replaceAll('\\n', '\n') || undefined
         }),
-        signal: sseControllerRef.current?.signal,
+        signal: completionSseController?.signal,
         onmessage(e) {
           console.log('sse message', e);
           scrollToBottom();
@@ -352,7 +353,7 @@ const CompletionPanel: FC = observer(() => {
           }}>{t('Reset')}</Button>
           <Button className="grow" appearance="primary" onClick={() => {
             if (commonStore.completionGenerating) {
-              sseControllerRef.current?.abort();
+              completionSseController?.abort();
               commonStore.setCompletionGenerating(false);
             } else {
               commonStore.setCompletionGenerating(true);

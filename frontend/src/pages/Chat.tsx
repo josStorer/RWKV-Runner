@@ -43,13 +43,14 @@ export type Conversations = {
   [uuid: string]: MessageItem
 }
 
+let chatSseController: AbortController | null = null;
+
 const ChatPanel: FC = observer(() => {
   const { t } = useTranslation();
   const [message, setMessage] = useState('');
   const bodyRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const port = commonStore.getCurrentModelConfig().apiParameters.apiPort;
-  const sseControllerRef = useRef<AbortController | null>(null);
 
   let lastMessageId: string;
   let generating: boolean = false;
@@ -150,7 +151,7 @@ const ChatPanel: FC = observer(() => {
     commonStore.setConversationsOrder(commonStore.conversationsOrder);
     setTimeout(scrollToBottom);
     let answer = '';
-    sseControllerRef.current = new AbortController();
+    chatSseController = new AbortController();
     fetchEventSource(`http://127.0.0.1:${port}/chat/completions`, // https://api.openai.com/v1/chat/completions || http://127.0.0.1:${port}/chat/completions
       {
         method: 'POST',
@@ -163,7 +164,7 @@ const ChatPanel: FC = observer(() => {
           stream: true,
           model: 'gpt-3.5-turbo'
         }),
-        signal: sseControllerRef.current?.signal,
+        signal: chatSseController?.signal,
         onmessage(e) {
           console.log('sse message', e);
           scrollToBottom();
@@ -256,7 +257,7 @@ const ChatPanel: FC = observer(() => {
           size="large" shape="circular" appearance="subtle"
           onClick={(e) => {
             if (generating)
-              sseControllerRef.current?.abort();
+              chatSseController?.abort();
             commonStore.setConversations({});
             commonStore.setConversationsOrder([]);
           }}
@@ -275,7 +276,7 @@ const ChatPanel: FC = observer(() => {
           size="large" shape="circular" appearance="subtle"
           onClick={(e) => {
             if (generating) {
-              sseControllerRef.current?.abort();
+              chatSseController?.abort();
               if (lastMessageId) {
                 commonStore.conversations[lastMessageId].type = MessageType.Error;
                 commonStore.conversations[lastMessageId].done = true;
