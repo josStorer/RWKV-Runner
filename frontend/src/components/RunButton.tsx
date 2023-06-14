@@ -100,11 +100,13 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
         saveCache();
       }
 
-      if (!await FileExists(modelPath)) {
-        toastWithButton(t('Model file not found'), t('Download'), () => {
-          const downloadUrl = commonStore.modelSourceList.find(item => item.name === modelName)?.downloadUrl;
+      const currentModelSource = commonStore.modelSourceList.find(item => item.name === modelName);
+
+      const showDownloadPrompt = (promptInfo: string, downloadName: string) => {
+        toastWithButton(promptInfo, t('Download'), () => {
+          const downloadUrl = currentModelSource?.downloadUrl;
           if (downloadUrl) {
-            toastWithButton(`${t('Downloading')} ${modelName}`, t('Check'), () => {
+            toastWithButton(`${t('Downloading')} ${downloadName}`, t('Check'), () => {
                 navigate({ pathname: '/downloads' });
               },
               { autoClose: 3000 });
@@ -113,7 +115,14 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
             toast(t('Can not find download url'), { type: 'error' });
           }
         });
+      };
 
+      if (!await FileExists(modelPath)) {
+        showDownloadPrompt(t('Model file not found'), modelName);
+        commonStore.setStatus({ status: ModelStatus.Offline });
+        return;
+      } else if (!currentModelSource?.isLocal) {
+        showDownloadPrompt(t('Model file download is not complete'), modelName);
         commonStore.setStatus({ status: ModelStatus.Offline });
         return;
       }
