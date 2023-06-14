@@ -62,7 +62,7 @@ export const Downloads: FC = observer(() => {
                         ContinueDownload(status.url);
                     }} />}
                 <ToolTipButton desc={t('Open Folder')} icon={<Folder20Regular />} onClick={() => {
-                  OpenFileFolder(`${commonStore.settings.customModelsPath}/${status.name}`);
+                  OpenFileFolder(status.path, false);
                 }} />
               </div>
             </Field>

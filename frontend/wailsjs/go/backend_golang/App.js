@@ -46,8 +46,8 @@ export function ListDirFiles(arg1) {
   return window['go']['backend_golang']['App']['ListDirFiles'](arg1);
 }
 
-export function OpenFileFolder(arg1) {
-  return window['go']['backend_golang']['App']['OpenFileFolder'](arg1);
+export function OpenFileFolder(arg1, arg2) {
+  return window['go']['backend_golang']['App']['OpenFileFolder'](arg1, arg2);
 }
 
 export function PauseDownload(arg1) {

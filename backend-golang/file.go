@@ -119,8 +119,14 @@ func (a *App) CopyFile(src string, dst string) error {
 	return nil
 }
 
-func (a *App) OpenFileFolder(path string) error {
-	absPath, err := filepath.Abs(a.exDir + path)
+func (a *App) OpenFileFolder(path string, relative bool) error {
+	var absPath string
+	var err error
+	if relative {
+		absPath, err = filepath.Abs(a.exDir + path)
+	} else {
+		absPath, err = filepath.Abs(path)
+	}
 	if err != nil {
 		return err
 	}
