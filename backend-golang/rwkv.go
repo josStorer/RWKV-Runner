@@ -2,9 +2,11 @@ package backend_golang
 
 import (
 	"errors"
+	"os"
 	"os/exec"
 	"runtime"
 	"strconv"
+	"strings"
 )
 
 func (a *App) StartServer(python string, port int, host string) (string, error) {
@@ -48,6 +50,9 @@ func (a *App) InstallPyDep(python string, cnMirror bool) (string, error) {
 	var err error
 	if python == "" {
 		python, err = GetPython()
+		if runtime.GOOS == "windows" {
+			python = `"` + python + `"`
+		}
 	}
 	if err != nil {
 		return "", err
@@ -55,39 +60,24 @@ func (a *App) InstallPyDep(python string, cnMirror bool) (string, error) {
 
 	if runtime.GOOS == "windows" {
 		ChangeFileLine("./py310/python310._pth", 3, "Lib\\site-packages")
-	}
-
-	if runtime.GOOS == "windows" {
-		if cnMirror {
-			_, err = Cmd(python, "./backend-python/get-pip.py", "-i", "https://pypi.tuna.tsinghua.edu.cn/simple")
-		} else {
-			_, err = Cmd(python, "./backend-python/get-pip.py")
+		installScript := python + " ./backend-python/get-pip.py -i https://pypi.tuna.tsinghua.edu.cn/simple\n" +
+			python + " -m pip install torch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 --index-url https://download.pytorch.org/whl/cu117\n" +
+			python + " -m pip install -r ./backend-python/requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple\n" +
+			"exit"
+		if !cnMirror {
+			installScript = strings.Replace(installScript, " -i https://pypi.tuna.tsinghua.edu.cn/simple", "", -1)
+			installScript = strings.Replace(installScript, "requirements.txt", "requirements_versions.txt", -1)
 		}
+		err = os.WriteFile("./install-py-dep.bat", []byte(installScript), 0644)
 		if err != nil {
 			return "", err
 		}
+		return Cmd("install-py-dep.bat")
 	}
 
-	if runtime.GOOS == "windows" {
-		_, err = Cmd(python, "-m", "pip", "install", "torch==1.13.1", "torchvision==0.14.1", "torchaudio==0.13.1", "--index-url", "https://download.pytorch.org/whl/cu117")
+	if cnMirror {
+		return Cmd(python, "-m", "pip", "install", "-r", "./backend-python/requirements_without_cyac.txt", "-i", "https://pypi.tuna.tsinghua.edu.cn/simple")
 	} else {
-		_, err = Cmd(python, "-m", "pip", "install", "torch", "torchvision", "torchaudio")
-	}
-	if err != nil {
-		return "", err
-	}
-
-	if runtime.GOOS == "windows" {
-		if cnMirror {
-			return Cmd(python, "-m", "pip", "install", "-r", "./backend-python/requirements.txt", "-i", "https://pypi.tuna.tsinghua.edu.cn/simple")
-		} else {
-			return Cmd(python, "-m", "pip", "install", "-r", "./backend-python/requirements_versions.txt")
-		}
-	} else {
-		if cnMirror {
-			return Cmd(python, "-m", "pip", "install", "-r", "./backend-python/requirements_without_cyac.txt", "-i", "https://pypi.tuna.tsinghua.edu.cn/simple")
-		} else {
-			return Cmd(python, "-m", "pip", "install", "-r", "./backend-python/requirements_without_cyac.txt")
-		}
+		return Cmd(python, "-m", "pip", "install", "-r", "./backend-python/requirements_without_cyac.txt")
 	}
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"embed"
+	"os"
 	"runtime/debug"
 	"strings"
 
@@ -29,6 +30,7 @@ func main() {
 		backend.CopyEmbed(cyac)
 		backend.CopyEmbed(cyacInfo)
 		backend.CopyEmbed(py)
+		os.Mkdir("models", os.ModePerm)
 	}
 
 	// Create an instance of the app structure

@@ -17,7 +17,7 @@ import (
 func Cmd(args ...string) (string, error) {
 	switch platform := runtime.GOOS; platform {
 	case "windows":
-		if err := os.WriteFile("./cmd-helper.bat", []byte("start /wait %*"), 0644); err != nil {
+		if err := os.WriteFile("./cmd-helper.bat", []byte("start %*"), 0644); err != nil {
 			return "", err
 		}
 		cmdHelper, err := filepath.Abs("./cmd-helper")
@@ -115,11 +115,19 @@ func GetPython() (string, error) {
 				if err != nil {
 					return "", errors.New("failed to unzip python")
 				} else {
-					return "py310/python.exe", nil
+					python, err := filepath.Abs("py310/python.exe")
+					if err != nil {
+						return "", err
+					}
+					return python, nil
 				}
 			}
 		} else {
-			return "py310/python.exe", nil
+			python, err := filepath.Abs("py310/python.exe")
+			if err != nil {
+				return "", err
+			}
+			return python, nil
 		}
 	case "darwin":
 		return "python3", nil
