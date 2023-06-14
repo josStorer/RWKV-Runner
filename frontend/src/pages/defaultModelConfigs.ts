@@ -301,6 +301,25 @@ export const defaultModelConfigsMac: ModelConfig[] = [
 
 export const defaultModelConfigs: ModelConfig[] = [
   {
+    name: 'GPU-2G-3B-World',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1.2,
+      topP: 0.5,
+      presencePenalty: 0.4,
+      frequencyPenalty: 0.4
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-World-3B-v1-OnlyForTest_80%_trained-20230612-ctx4096.pth',
+      device: 'CUDA',
+      precision: 'int8',
+      storedLayers: 6,
+      maxStoredLayers: 41,
+      useCustomCuda: true
+    }
+  },
+  {
     name: 'GPU-2G-0.1B-World',
     apiParameters: {
       apiPort: 8000,
