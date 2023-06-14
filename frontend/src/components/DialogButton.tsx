@@ -13,17 +13,22 @@ import { ToolTipButton } from './ToolTipButton';
 import { useTranslation } from 'react-i18next';
 
 export const DialogButton: FC<{
-  icon: ReactElement,
-  tooltip: string,
+  text?: string | null
+  icon?: ReactElement,
+  tooltip?: string | null,
+  className?: string,
   title: string,
   contentText: string,
   onConfirm: () => void
-}> = ({ tooltip, icon, title, contentText, onConfirm }) => {
+}> = ({ text, icon, tooltip, className, title, contentText, onConfirm }) => {
   const { t } = useTranslation();
 
   return <Dialog>
     <DialogTrigger disableButtonEnhancement>
-      <ToolTipButton desc={tooltip} icon={icon} />
+      {tooltip ?
+        <ToolTipButton className={className} desc={tooltip} text={text} icon={icon} /> :
+        <Button className={className} icon={icon}>{text}</Button>
+      }
     </DialogTrigger>
     <DialogSurface>
       <DialogBody>

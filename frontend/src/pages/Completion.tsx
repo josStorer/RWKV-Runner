@@ -9,6 +9,7 @@ import { ApiParameters } from './Configs';
 import commonStore, { ModelStatus } from '../stores/commonStore';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { toast } from 'react-toastify';
+import { DialogButton } from '../components/DialogButton';
 
 export type CompletionParams = Omit<ApiParameters, 'apiPort'> & {
   stop: string,
@@ -348,9 +349,11 @@ const CompletionPanel: FC = observer(() => {
         </div>
         <div className="grow" />
         <div className="flex justify-between gap-2">
-          <Button className="grow" onClick={() => {
-            setPreset(defaultPresets.find((preset) => preset.name === name)!);
-          }}>{t('Reset')}</Button>
+          <DialogButton className="grow" text={t('Reset')} title={t('Reset')}
+            contentText={t('Are you sure you want to reset this page? It cannot be undone.')}
+            onConfirm={() => {
+              setPreset(defaultPresets.find((preset) => preset.name === name)!);
+            }} />
           <Button className="grow" appearance="primary" onClick={() => {
             if (commonStore.completionGenerating) {
               completionSseController?.abort();

@@ -142,5 +142,6 @@
   "MacOS is not yet supported for performing this operation, please do it manually.": "MacOS尚未支持此操作, 请手动执行",
   "Linux is not yet supported for performing this operation, please do it manually.": "Linux尚未支持此操作, 请手动执行",
   "On Linux system, you must manually install python dependencies.": "在Linux系统下, 你必须手动安装python依赖",
-  "Update completed, please restart the program.": "更新完成, 请重启程序"
+  "Update completed, please restart the program.": "更新完成, 请重启程序",
+  "Are you sure you want to reset this page? It cannot be undone.": "你确定要重置本页吗？这无法撤销"
 }
