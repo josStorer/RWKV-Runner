@@ -19,15 +19,22 @@ export const DialogButton: FC<{
   className?: string,
   title: string,
   contentText: string,
-  onConfirm: () => void
-}> = ({ text, icon, tooltip, className, title, contentText, onConfirm }) => {
+  onConfirm: () => void,
+  size?: 'small' | 'medium' | 'large',
+  shape?: 'rounded' | 'circular' | 'square',
+  appearance?: 'secondary' | 'primary' | 'outline' | 'subtle' | 'transparent',
+}> = ({
+  text, icon, tooltip, className, title, contentText,
+  onConfirm, size, shape, appearance
+}) => {
   const { t } = useTranslation();
 
   return <Dialog>
     <DialogTrigger disableButtonEnhancement>
       {tooltip ?
-        <ToolTipButton className={className} desc={tooltip} text={text} icon={icon} /> :
-        <Button className={className} icon={icon}>{text}</Button>
+        <ToolTipButton className={className} desc={tooltip} text={text} icon={icon} size={size} shape={shape}
+          appearance={appearance} /> :
+        <Button className={className} icon={icon} size={size} shape={shape} appearance={appearance}>{text}</Button>
       }
     </DialogTrigger>
     <DialogSurface>

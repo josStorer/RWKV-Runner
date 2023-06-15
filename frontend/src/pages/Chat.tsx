@@ -15,6 +15,7 @@ import { CopyButton } from '../components/CopyButton';
 import { ReadButton } from '../components/ReadButton';
 import { toast } from 'react-toastify';
 import { WorkHeader } from '../components/WorkHeader';
+import { DialogButton } from '../components/DialogButton';
 
 export const userName = 'M E';
 export const botName = 'A I';
@@ -251,16 +252,16 @@ const ChatPanel: FC = observer(() => {
         })}
       </div>
       <div className="flex items-end gap-2">
-        <ToolTipButton desc={t('Clear')}
+        <DialogButton tooltip={t('Clear')}
           icon={<Delete28Regular />}
-          size="large" shape="circular" appearance="subtle"
-          onClick={(e) => {
+          size="large" shape="circular" appearance="subtle" title={t('Clear')}
+          contentText={t('Are you sure you want to clear the conversation? It cannot be undone.')}
+          onConfirm={() => {
             if (generating)
               chatSseController?.abort();
             commonStore.setConversations({});
             commonStore.setConversationsOrder([]);
-          }}
-        />
+          }} />
         <Textarea
           ref={inputRef}
           className="grow"
