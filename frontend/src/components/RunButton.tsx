@@ -196,7 +196,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
               model: modelPath,
               strategy: getStrategy(modelConfig),
               customCuda: customCudaFile !== ''
-            }).then((r) => {
+            }).then(async (r) => {
               if (r.ok) {
                 commonStore.setStatus({ status: ModelStatus.Working });
                 toastWithButton(t('Startup Completed'), t('Chat'), () => {
@@ -206,14 +206,11 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
                 toast(t('Loading Model'), { type: 'info' });
               } else {
                 commonStore.setStatus({ status: ModelStatus.Offline });
-                toast(t('Failed to switch model'), { type: 'error' });
+                toast(t('Failed to switch model') + ' - ' + await r.text(), { type: 'error' });
               }
-            }).catch(() => {
+            }).catch((e) => {
               commonStore.setStatus({ status: ModelStatus.Offline });
-              if (commonStore.platform === 'windows')
-                toast(t('Failed to switch model, please try starting the program with administrator privileges or increasing your virtual memory.'), { type: 'error' });
-              else
-                toast(t('Failed to switch model'), { type: 'error' });
+              toast(t('Failed to switch model') + ' - ' + e.message || e, { type: 'error' });
             });
           }
         }).catch(() => {

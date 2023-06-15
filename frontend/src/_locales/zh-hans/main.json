@@ -137,7 +137,6 @@
   "Custom Models Path": "自定义模型路径",
   "Microsoft Visual C++ Redistributable is not installed, would you like to download it?": "微软VC++组件未安装, 是否下载?",
   "File Path Cannot Contain Space": "文件路径不能包含空格",
-  "Failed to switch model, please try starting the program with administrator privileges or increasing your virtual memory.": "切换模型失败, 请尝试以管理员权限启动程序, 或增加你的虚拟内存",
   "Current Strategy": "当前Strategy",
   "MacOS is not yet supported for performing this operation, please do it manually.": "MacOS尚未支持此操作, 请手动执行",
   "Linux is not yet supported for performing this operation, please do it manually.": "Linux尚未支持此操作, 请手动执行",
