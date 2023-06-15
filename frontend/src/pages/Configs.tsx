@@ -259,7 +259,7 @@ export const Configs: FC = observer(() => {
                       }).catch(e => {
                         const errMsg = e.message || e;
                         if (errMsg.includes('path contains space'))
-                          toast(`${t('Convert Failed')} - ${t('Path Cannot Contain Space')}`, { type: 'error' });
+                          toast(`${t('Convert Failed')} - ${t('File Path Cannot Contain Space')}`, { type: 'error' });
                         else
                           toast(`${t('Convert Failed')} - ${e.message || e}`, { type: 'error' });
                       });

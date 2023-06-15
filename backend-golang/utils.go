@@ -115,19 +115,11 @@ func GetPython() (string, error) {
 				if err != nil {
 					return "", errors.New("failed to unzip python")
 				} else {
-					python, err := filepath.Abs("py310/python.exe")
-					if err != nil {
-						return "", err
-					}
-					return python, nil
+					return "py310/python.exe", nil
 				}
 			}
 		} else {
-			python, err := filepath.Abs("py310/python.exe")
-			if err != nil {
-				return "", err
-			}
-			return python, nil
+			return "py310/python.exe", nil
 		}
 	case "darwin":
 		return "python3", nil

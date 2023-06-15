@@ -78,8 +78,13 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
               toast(depErrorMsg, { type: 'info', position: 'bottom-left' });
               if (commonStore.platform != 'linux')
                 toastWithButton(t('Python dependencies are incomplete, would you like to install them?'), t('Install'), () => {
-                  InstallPyDep(commonStore.settings.customPythonPath, commonStore.settings.cnMirror);
+                  InstallPyDep(commonStore.settings.customPythonPath, commonStore.settings.cnMirror).catch((e) => {
+                    const errMsg = e.message || e;
+                    toast(t('Error') + ' - ' + errMsg, { type: 'error' });
+                  });
                   setTimeout(WindowShow, 1000);
+                }, {
+                  autoClose: 8000
                 });
               else
                 toastWithButton(t('On Linux system, you must manually install python dependencies.'), t('Check'), () => {
@@ -131,7 +136,13 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
 
       await exit(1000).catch(() => {
       });
-      StartServer(commonStore.settings.customPythonPath, port, commonStore.settings.host !== '127.0.0.1' ? '0.0.0.0' : '127.0.0.1');
+      StartServer(commonStore.settings.customPythonPath, port, commonStore.settings.host !== '127.0.0.1' ? '0.0.0.0' : '127.0.0.1').catch((e) => {
+        const errMsg = e.message || e;
+        if (errMsg.includes('path contains space'))
+          toast(`${t('Error')} - ${t('File Path Cannot Contain Space')}`, { type: 'error' });
+        else
+          toast(t('Error') + ' - ' + errMsg, { type: 'error' });
+      });
       setTimeout(WindowShow, 1000);
 
       let timeoutCount = 6;

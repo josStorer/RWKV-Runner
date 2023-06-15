@@ -136,7 +136,7 @@
   "Custom Python Path": "自定义Python路径",
   "Custom Models Path": "自定义模型路径",
   "Microsoft Visual C++ Redistributable is not installed, would you like to download it?": "微软VC++组件未安装, 是否下载?",
-  "Path Cannot Contain Space": "路径不能包含空格",
+  "File Path Cannot Contain Space": "文件路径不能包含空格",
   "Failed to switch model, please try starting the program with administrator privileges or increasing your virtual memory.": "切换模型失败, 请尝试以管理员权限启动程序, 或增加你的虚拟内存",
   "Current Strategy": "当前Strategy",
   "MacOS is not yet supported for performing this operation, please do it manually.": "MacOS尚未支持此操作, 请手动执行",
@@ -144,5 +144,6 @@
   "On Linux system, you must manually install python dependencies.": "在Linux系统下, 你必须手动安装python依赖",
   "Update completed, please restart the program.": "更新完成, 请重启程序",
   "Are you sure you want to reset this page? It cannot be undone.": "你确定要重置本页吗？这无法撤销",
-  "Model file download is not complete": "模型文件下载未完成"
+  "Model file download is not complete": "模型文件下载未完成",
+  "Error": "错误"
 }
