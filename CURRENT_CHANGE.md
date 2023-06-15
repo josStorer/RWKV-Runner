@@ -1,11 +1,11 @@
 ## Changes
 
-- global sse AbortController even if switching pages
-- remember current chat input even if switching pages
-- reset confirm for completion page
-- improve OpenFileFolder
-- improve python dependencies installation
-- add additional startup condition
+- improve api docs
+- improve error messages
+- fix the state cache crash caused by bad prompts
+- clear confirm for chat page
+- save conversation button
+- chore
 
 ## Install
 
