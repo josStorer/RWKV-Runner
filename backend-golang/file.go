@@ -10,6 +10,8 @@ import (
 	"runtime"
 	"strings"
 	"time"
+
+	wruntime "github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 func (a *App) SaveJson(fileName string, jsonData any) error {
@@ -117,6 +119,26 @@ func (a *App) CopyFile(src string, dst string) error {
 		return err
 	}
 	return nil
+}
+
+func (a *App) OpenSaveFileDialog(filterPattern string, defaultFileName string, savedContent string) (string, error) {
+	path, err := wruntime.SaveFileDialog(a.ctx, wruntime.SaveDialogOptions{
+		DefaultFilename: defaultFileName,
+		Filters: []wruntime.FileFilter{{
+			Pattern: filterPattern,
+		}},
+		CanCreateDirectories: true,
+	})
+	if err != nil {
+		return "", err
+	}
+	if path == "" {
+		return "", nil
+	}
+	if err := os.WriteFile(path, []byte(savedContent), 0644); err != nil {
+		return "", err
+	}
+	return path, nil
 }
 
 func (a *App) OpenFileFolder(path string, relative bool) error {

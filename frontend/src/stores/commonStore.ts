@@ -3,7 +3,7 @@ import { getUserLanguage, isSystemLightMode, saveConfigs } from '../utils';
 import { WindowSetDarkTheme, WindowSetLightTheme } from '../../wailsjs/runtime';
 import manifest from '../../../manifest.json';
 import { ModelConfig } from '../pages/Configs';
-import { Conversations } from '../pages/Chat';
+import { Conversation } from '../pages/Chat';
 import { ModelSourceItem } from '../pages/Models';
 import { DownloadStatus } from '../pages/Downloads';
 import { SettingsType } from '../pages/Settings';
@@ -42,8 +42,8 @@ class CommonStore {
   introduction: IntroductionContent = manifest.introduction;
   // chat
   currentInput: string = '';
-  conversations: Conversations = {};
-  conversationsOrder: string[] = [];
+  conversation: Conversation = {};
+  conversationOrder: string[] = [];
   // completion
   completionPreset: CompletionPreset | null = null;
   completionGenerating: boolean = false;
@@ -164,12 +164,12 @@ class CommonStore {
     this.downloadList = value;
   };
 
-  setConversations = (value: Conversations) => {
-    this.conversations = value;
+  setConversation = (value: Conversation) => {
+    this.conversation = value;
   };
 
-  setConversationsOrder = (value: string[]) => {
-    this.conversationsOrder = value;
+  setConversationOrder = (value: string[]) => {
+    this.conversationOrder = value;
   };
 
   setCompletionPreset(value: CompletionPreset) {

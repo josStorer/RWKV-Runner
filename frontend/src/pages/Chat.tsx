@@ -10,12 +10,14 @@ import { ConversationPair, getConversationPairs, Record } from '../utils/get-con
 import logo from '../assets/images/logo.jpg';
 import MarkdownRender from '../components/MarkdownRender';
 import { ToolTipButton } from '../components/ToolTipButton';
-import { ArrowCircleUp28Regular, Delete28Regular, RecordStop28Regular } from '@fluentui/react-icons';
+import { ArrowCircleUp28Regular, Delete28Regular, RecordStop28Regular, Save28Regular } from '@fluentui/react-icons';
 import { CopyButton } from '../components/CopyButton';
 import { ReadButton } from '../components/ReadButton';
 import { toast } from 'react-toastify';
 import { WorkHeader } from '../components/WorkHeader';
 import { DialogButton } from '../components/DialogButton';
+import { OpenFileFolder, OpenSaveFileDialog } from '../../wailsjs/go/backend_golang/App';
+import { toastWithButton } from '../utils';
 
 export const userName = 'M E';
 export const botName = 'A I';
@@ -40,7 +42,7 @@ export type MessageItem = {
   done: boolean
 }
 
-export type Conversations = {
+export type Conversation = {
   [uuid: string]: MessageItem
 }
 
@@ -54,9 +56,9 @@ const ChatPanel: FC = observer(() => {
 
   let lastMessageId: string;
   let generating: boolean = false;
-  if (commonStore.conversationsOrder.length > 0) {
-    lastMessageId = commonStore.conversationsOrder[commonStore.conversationsOrder.length - 1];
-    const lastMessage = commonStore.conversations[lastMessageId];
+  if (commonStore.conversationOrder.length > 0) {
+    lastMessageId = commonStore.conversationOrder[commonStore.conversationOrder.length - 1];
+    const lastMessage = commonStore.conversation[lastMessageId];
     if (lastMessage.sender === botName)
       generating = !lastMessage.done;
   }
@@ -68,9 +70,9 @@ const ChatPanel: FC = observer(() => {
   }, []);
 
   useEffect(() => {
-    if (commonStore.conversationsOrder.length === 0) {
-      commonStore.setConversationsOrder(['welcome']);
-      commonStore.setConversations({
+    if (commonStore.conversationOrder.length === 0) {
+      commonStore.setConversationOrder(['welcome']);
+      commonStore.setConversation({
         'welcome': {
           sender: botName,
           type: MessageType.Normal,
@@ -106,7 +108,7 @@ const ChatPanel: FC = observer(() => {
 
   const onSubmit = (message: string) => {
     const newId = uuid();
-    commonStore.conversations[newId] = {
+    commonStore.conversation[newId] = {
       sender: userName,
       type: MessageType.Normal,
       color: 'brand',
@@ -115,19 +117,19 @@ const ChatPanel: FC = observer(() => {
       side: 'right',
       done: true
     };
-    commonStore.setConversations(commonStore.conversations);
-    commonStore.conversationsOrder.push(newId);
-    commonStore.setConversationsOrder(commonStore.conversationsOrder);
+    commonStore.setConversation(commonStore.conversation);
+    commonStore.conversationOrder.push(newId);
+    commonStore.setConversationOrder(commonStore.conversationOrder);
 
     const records: Record[] = [];
-    commonStore.conversationsOrder.forEach((uuid, index) => {
-      const conversation = commonStore.conversations[uuid];
-      if (conversation.done && conversation.type === MessageType.Normal && conversation.sender === botName) {
+    commonStore.conversationOrder.forEach((uuid, index) => {
+      const messageItem = commonStore.conversation[uuid];
+      if (messageItem.done && messageItem.type === MessageType.Normal && messageItem.sender === botName) {
         if (index > 0) {
-          const questionId = commonStore.conversationsOrder[index - 1];
-          const question = commonStore.conversations[questionId];
+          const questionId = commonStore.conversationOrder[index - 1];
+          const question = commonStore.conversation[questionId];
           if (question.done && question.type === MessageType.Normal && question.sender === userName) {
-            records.push({ question: question.content, answer: conversation.content });
+            records.push({ question: question.content, answer: messageItem.content });
           }
         }
       }
@@ -136,7 +138,7 @@ const ChatPanel: FC = observer(() => {
     (messages as ConversationPair[]).push({ role: 'user', content: message });
 
     const answerId = uuid();
-    commonStore.conversations[answerId] = {
+    commonStore.conversation[answerId] = {
       sender: botName,
       type: MessageType.Normal,
       color: 'colorful',
@@ -146,9 +148,9 @@ const ChatPanel: FC = observer(() => {
       side: 'left',
       done: false
     };
-    commonStore.setConversations(commonStore.conversations);
-    commonStore.conversationsOrder.push(answerId);
-    commonStore.setConversationsOrder(commonStore.conversationsOrder);
+    commonStore.setConversation(commonStore.conversation);
+    commonStore.conversationOrder.push(answerId);
+    commonStore.setConversationOrder(commonStore.conversationOrder);
     setTimeout(scrollToBottom);
     let answer = '';
     chatSseController = new AbortController();
@@ -169,10 +171,10 @@ const ChatPanel: FC = observer(() => {
           console.log('sse message', e);
           scrollToBottom();
           if (e.data === '[DONE]') {
-            commonStore.conversations[answerId].done = true;
-            commonStore.conversations[answerId].content = commonStore.conversations[answerId].content.trim();
-            commonStore.setConversations(commonStore.conversations);
-            commonStore.setConversationsOrder([...commonStore.conversationsOrder]);
+            commonStore.conversation[answerId].done = true;
+            commonStore.conversation[answerId].content = commonStore.conversation[answerId].content.trim();
+            commonStore.setConversation(commonStore.conversation);
+            commonStore.setConversationOrder([...commonStore.conversationOrder]);
             return;
           }
           let data;
@@ -184,19 +186,19 @@ const ChatPanel: FC = observer(() => {
           }
           if (data.choices && Array.isArray(data.choices) && data.choices.length > 0) {
             answer += data.choices[0]?.delta?.content || '';
-            commonStore.conversations[answerId].content = answer;
-            commonStore.setConversations(commonStore.conversations);
-            commonStore.setConversationsOrder([...commonStore.conversationsOrder]);
+            commonStore.conversation[answerId].content = answer;
+            commonStore.setConversation(commonStore.conversation);
+            commonStore.setConversationOrder([...commonStore.conversationOrder]);
           }
         },
         onclose() {
           console.log('Connection closed');
         },
         onerror(err) {
-          commonStore.conversations[answerId].type = MessageType.Error;
-          commonStore.conversations[answerId].done = true;
-          commonStore.setConversations(commonStore.conversations);
-          commonStore.setConversationsOrder([...commonStore.conversationsOrder]);
+          commonStore.conversation[answerId].type = MessageType.Error;
+          commonStore.conversation[answerId].done = true;
+          commonStore.setConversation(commonStore.conversation);
+          commonStore.setConversationOrder([...commonStore.conversationOrder]);
           throw err;
         }
       });
@@ -205,13 +207,13 @@ const ChatPanel: FC = observer(() => {
   return (
     <div className="flex flex-col w-full grow gap-4 pt-4 overflow-hidden">
       <div ref={bodyRef} className="grow overflow-y-scroll overflow-x-hidden pr-2">
-        {commonStore.conversationsOrder.map((uuid, index) => {
-          const conversation = commonStore.conversations[uuid];
+        {commonStore.conversationOrder.map((uuid, index) => {
+          const messageItem = commonStore.conversation[uuid];
           return <div
             key={uuid}
             className={classnames(
               'flex gap-2 mb-2 overflow-hidden',
-              conversation.side === 'left' ? 'flex-row' : 'flex-row-reverse'
+              messageItem.side === 'left' ? 'flex-row' : 'flex-row-reverse'
             )}
             onMouseEnter={() => {
               const utils = document.getElementById('utils-' + uuid);
@@ -223,29 +225,29 @@ const ChatPanel: FC = observer(() => {
             }}
           >
             <Avatar
-              color={conversation.color}
-              name={conversation.sender}
-              image={conversation.avatarImg ? { src: conversation.avatarImg } : undefined}
+              color={messageItem.color}
+              name={messageItem.sender}
+              image={messageItem.avatarImg ? { src: messageItem.avatarImg } : undefined}
             />
             <div
               className={classnames(
                 'p-2 rounded-lg overflow-hidden',
-                conversation.side === 'left' ? 'bg-gray-200' : 'bg-blue-500',
-                conversation.side === 'left' ? 'text-gray-600' : 'text-white'
+                messageItem.side === 'left' ? 'bg-gray-200' : 'bg-blue-500',
+                messageItem.side === 'left' ? 'text-gray-600' : 'text-white'
               )}
             >
-              <MarkdownRender>{conversation.content}</MarkdownRender>
+              <MarkdownRender>{messageItem.content}</MarkdownRender>
             </div>
             <div className="flex flex-col gap-1 items-start">
               <div className="grow" />
-              {(conversation.type === MessageType.Error || !conversation.done) &&
+              {(messageItem.type === MessageType.Error || !messageItem.done) &&
                 <PresenceBadge size="extra-small" status={
-                  conversation.type === MessageType.Error ? 'busy' : 'away'
+                  messageItem.type === MessageType.Error ? 'busy' : 'away'
                 } />
               }
               <div className="flex invisible" id={'utils-' + uuid}>
-                <ReadButton content={conversation.content} />
-                <CopyButton content={conversation.content} />
+                <ReadButton content={messageItem.content} />
+                <CopyButton content={messageItem.content} />
               </div>
             </div>
           </div>;
@@ -259,8 +261,8 @@ const ChatPanel: FC = observer(() => {
           onConfirm={() => {
             if (generating)
               chatSseController?.abort();
-            commonStore.setConversations({});
-            commonStore.setConversationsOrder([]);
+            commonStore.setConversation({});
+            commonStore.setConversationOrder([]);
           }} />
         <Textarea
           ref={inputRef}
@@ -278,14 +280,33 @@ const ChatPanel: FC = observer(() => {
             if (generating) {
               chatSseController?.abort();
               if (lastMessageId) {
-                commonStore.conversations[lastMessageId].type = MessageType.Error;
-                commonStore.conversations[lastMessageId].done = true;
-                commonStore.setConversations(commonStore.conversations);
-                commonStore.setConversationsOrder([...commonStore.conversationsOrder]);
+                commonStore.conversation[lastMessageId].type = MessageType.Error;
+                commonStore.conversation[lastMessageId].done = true;
+                commonStore.setConversation(commonStore.conversation);
+                commonStore.setConversationOrder([...commonStore.conversationOrder]);
               }
             } else {
               handleKeyDownOrClick(e);
             }
+          }} />
+        <ToolTipButton desc={t('Save')}
+          icon={<Save28Regular />}
+          size="large" shape="circular" appearance="subtle"
+          onClick={() => {
+            let savedContent: string = '';
+            commonStore.conversationOrder.forEach((uuid) => {
+              const messageItem = commonStore.conversation[uuid];
+              savedContent += `**${messageItem.sender}**\n - ${new Date(messageItem.time).toLocaleString()}\n\n${messageItem.content}\n\n`;
+            });
+
+            OpenSaveFileDialog('*.md', 'conversation.md', savedContent).then((path) => {
+              if (path)
+                toastWithButton(t('Conversation Saved'), t('Open'), () => {
+                  OpenFileFolder(path, false);
+                });
+            }).catch(e => {
+              toast(t('Error') + ' - ' + e.message || e, { type: 'error', autoClose: 2500 });
+            });
           }} />
       </div>
     </div>

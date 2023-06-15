@@ -26,6 +26,8 @@ export function ListDirFiles(arg1:string):Promise<Array<backend_golang.FileInfo>
 
 export function OpenFileFolder(arg1:string,arg2:boolean):Promise<void>;
 
+export function OpenSaveFileDialog(arg1:string,arg2:string,arg3:string):Promise<string>;
+
 export function PauseDownload(arg1:string):Promise<void>;
 
 export function ReadFileInfo(arg1:string):Promise<backend_golang.FileInfo>;
