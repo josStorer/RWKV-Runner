@@ -201,6 +201,17 @@ class ModelConfigBody(BaseModel):
     presence_penalty: float = Field(default=None, ge=-2, le=2)
     frequency_penalty: float = Field(default=None, ge=-2, le=2)
 
+    class Config:
+        schema_extra = {
+            "example": {
+                "max_tokens": 1000,
+                "temperature": 1.2,
+                "top_p": 0.5,
+                "presence_penalty": 0.4,
+                "frequency_penalty": 0.4,
+            }
+        }
+
 
 def set_rwkv_config(model: RWKV, body: ModelConfigBody):
     if body.max_tokens is not None:

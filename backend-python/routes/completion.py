@@ -24,6 +24,21 @@ class ChatCompletionBody(ModelConfigBody):
     stream: bool = False
     stop: str = None
 
+    class Config:
+        schema_extra = {
+            "example": {
+                "messages": [{"role": "user", "content": "hello"}],
+                "model": "rwkv",
+                "stream": False,
+                "stop": None,
+                "max_tokens": 1000,
+                "temperature": 1.2,
+                "top_p": 0.5,
+                "presence_penalty": 0.4,
+                "frequency_penalty": 0.4,
+            }
+        }
+
 
 completion_lock = Lock()
 
@@ -241,6 +256,21 @@ class CompletionBody(ModelConfigBody):
     model: str = "rwkv"
     stream: bool = False
     stop: str = None
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "prompt": "The following is an epic science fiction masterpiece that is immortalized, with delicate descriptions and grand depictions of interstellar civilization wars.\nChapter 1.\n",
+                "model": "rwkv",
+                "stream": False,
+                "stop": None,
+                "max_tokens": 100,
+                "temperature": 1.2,
+                "top_p": 0.5,
+                "presence_penalty": 0.4,
+                "frequency_penalty": 0.4,
+            }
+        }
 
 
 @router.post("/v1/completions")

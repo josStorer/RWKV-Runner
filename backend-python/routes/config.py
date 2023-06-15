@@ -29,6 +29,15 @@ class SwitchModelBody(BaseModel):
     strategy: str
     customCuda: bool = False
 
+    class Config:
+        schema_extra = {
+            "example": {
+                "model": "models/RWKV-4-World-3B-v1-OnlyForTest_80%_trained-20230612-ctx4096.pth",
+                "strategy": "cuda fp16",
+                "customCuda": False,
+            }
+        }
+
 
 @router.post("/switch-model")
 def switch_model(body: SwitchModelBody, response: Response, request: Request):
@@ -59,7 +68,9 @@ def switch_model(body: SwitchModelBody, response: Response, request: Request):
         print(e)
         quick_log(request, body, f"Exception: {e}")
         global_var.set(global_var.Model_Status, global_var.ModelStatus.Offline)
-        raise HTTPException(Status.HTTP_500_INTERNAL_SERVER_ERROR, "failed to load")
+        raise HTTPException(
+            Status.HTTP_500_INTERNAL_SERVER_ERROR, f"failed to load: {e}"
+        )
 
     if global_var.get(global_var.Model_Config) is None:
         global_var.set(

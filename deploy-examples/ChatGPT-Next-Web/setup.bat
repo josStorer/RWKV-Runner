@@ -11,8 +11,8 @@ start python ./RWKV-Runner/backend-python/main.py
 
 powershell -Command "(Test-Path ./RWKV-Runner/models) -or (mkdir RWKV-Runner/models)"
 powershell -Command "Import-Module BitsTransfer"
-powershell -Command "(Test-Path ./RWKV-Runner/models/RWKV-4-World-1.5B-v1-20230607-ctx4096.pth) -or (Start-BitsTransfer https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-1.5B-v1-20230607-ctx4096.pth ./RWKV-Runner/models/RWKV-4-World-1.5B-v1-20230607-ctx4096.pth)"
-powershell -Command "Invoke-WebRequest http://127.0.0.1:8000/switch-model -Method POST -ContentType 'application/json' -Body '{\"model\":\"./RWKV-Runner/models/RWKV-4-World-1.5B-v1-20230607-ctx4096.pth\",\"strategy\":\"cuda fp32 *20+\"}'"
+powershell -Command "(Test-Path ./RWKV-Runner/models/RWKV-4-World-1.5B-v1-fixed-20230612-ctx4096.pth) -or (Start-BitsTransfer https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-1.5B-v1-fixed-20230612-ctx4096.pth ./RWKV-Runner/models/RWKV-4-World-1.5B-v1-fixed-20230612-ctx4096.pth)"
+powershell -Command "Invoke-WebRequest http://127.0.0.1:8000/switch-model -Method POST -ContentType 'application/json' -Body '{\"model\":\"./RWKV-Runner/models/RWKV-4-World-1.5B-v1-fixed-20230612-ctx4096.pth\",\"strategy\":\"cuda fp32 *20+\"}'"
 
 git clone https://github.com/Yidadaa/ChatGPT-Next-Web --depth=1
 cd ChatGPT-Next-Web
