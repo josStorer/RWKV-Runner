@@ -79,7 +79,7 @@ const ChatPanel: FC = observer(() => {
           color: 'colorful',
           avatarImg: logo,
           time: new Date().toISOString(),
-          content: t('Hello! I\'m RWKV, an open-source and commercially available large language model.'),
+          content: t('Hello! I\'m RWKV, an open-source and commercially usable large language model.'),
           side: 'left',
           done: true
         }
