@@ -64,7 +64,8 @@ The following is a coherent verbose detailed conversation between a girl named {
 {bot} usually gives {user} kind, helpful and informative advices.\n
 """
             if self.user == "Bob"
-            else f"{user}{interface} hi\n\n{bot}{interface} Hi. I am your assistant and I will provide expert full response in full details. Please feel free to ask any question and I will always answer it.\n\n"
+            else f"{user}{interface} hi\n\n{bot}{interface} Hi. "
+            + "I am your assistant and I will provide expert full response in full details. Please feel free to ask any question and I will always answer it.\n\n"
         )
         logits = self.run_rnn(self.fix_tokens(self.pipeline.encode(preset_system)))
         try:
