@@ -21,6 +21,8 @@ class RWKV:
     def __init__(self, model: str, strategy: str, tokens_path: str) -> None:
         from rwkv.model import RWKV as Model  # dynamic import to make RWKV_CUDA_ON work
 
+        filename, _ = os.path.splitext(os.path.basename(model))
+        self.name = filename
         self.model = Model(model, strategy)
         self.pipeline = PIPELINE(self.model, tokens_path)
         self.model_state = None

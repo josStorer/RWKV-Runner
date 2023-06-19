@@ -117,7 +117,7 @@ async def eval_rwkv(
                 yield json.dumps(
                     {
                         "response": response,
-                        "model": "rwkv",
+                        "model": model.name,
                         "choices": [
                             {
                                 "delta": {"content": delta},
@@ -153,7 +153,7 @@ async def eval_rwkv(
             yield json.dumps(
                 {
                     "response": response,
-                    "model": "rwkv",
+                    "model": model.name,
                     "choices": [
                         {
                             "delta": {},
@@ -173,7 +173,7 @@ async def eval_rwkv(
         else:
             yield {
                 "response": response,
-                "model": "rwkv",
+                "model": model.name,
                 "choices": [
                     {
                         "message": {
