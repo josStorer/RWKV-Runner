@@ -1,4 +1,6 @@
+import tiktoken
 import GPUtil
+
 import torch
 import rwkv
 import fastapi
