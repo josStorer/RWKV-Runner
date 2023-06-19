@@ -87,6 +87,45 @@ body.json:
 }
 ```
 
+## Embeddings API Example
+
+If you are using langchain, just use `OpenAIEmbeddings(openai_api_base="http://127.0.0.1:8000", openai_api_key="sk-")`
+
+```python
+import numpy as np
+import requests
+
+
+def cosine_similarity(a, b):
+    return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
+
+
+values = [
+    "I am a girl",
+    "我是个女孩",
+    "私は女の子です",
+    "广东人爱吃福建人",
+    "我是个人类",
+    "I am a human",
+    "that dog is so cute",
+    "私はねこむすめです、にゃん♪",
+    "宇宙级特大事件！号外号外！"
+]
+
+embeddings = []
+for v in values:
+    r = requests.post("http://127.0.0.1:8000/embeddings", json={"input": v})
+    embedding = r.json()["data"][0]["embedding"]
+    embeddings.append(embedding)
+
+compared_embedding = embeddings[0]
+
+embeddings_cos_sim = [cosine_similarity(compared_embedding, e) for e in embeddings]
+
+for i in np.argsort(embeddings_cos_sim)[::-1]:
+    print(f"{embeddings_cos_sim[i]:.10f} - {values[i]}")
+```
+
 ## Todo
 
 - [ ] Model training functionality
