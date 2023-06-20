@@ -34,6 +34,8 @@ export function ReadFileInfo(arg1:string):Promise<backend_golang.FileInfo>;
 
 export function ReadJson(arg1:string):Promise<any>;
 
+export function RestartApp():Promise<void>;
+
 export function SaveJson(arg1:string,arg2:any):Promise<void>;
 
 export function StartServer(arg1:string,arg2:number,arg3:string):Promise<string>;

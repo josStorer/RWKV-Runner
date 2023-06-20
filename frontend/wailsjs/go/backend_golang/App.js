@@ -66,6 +66,10 @@ export function ReadJson(arg1) {
   return window['go']['backend_golang']['App']['ReadJson'](arg1);
 }
 
+export function RestartApp() {
+  return window['go']['backend_golang']['App']['RestartApp']();
+}
+
 export function SaveJson(arg1, arg2) {
   return window['go']['backend_golang']['App']['SaveJson'](arg1, arg2);
 }

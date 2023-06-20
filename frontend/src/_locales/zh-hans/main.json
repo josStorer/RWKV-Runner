@@ -148,5 +148,8 @@
   "Are you sure you want to clear the conversation? It cannot be undone.": "你确定要清空对话吗？这无法撤销",
   "Save": "保存",
   "Conversation Saved": "对话已保存",
-  "Open": "打开"
+  "Open": "打开",
+  "DPI Scaling": "显示缩放",
+  "Restart the app to apply DPI Scaling.": "重启应用以使显示缩放生效",
+  "Restart": "重启"
 }

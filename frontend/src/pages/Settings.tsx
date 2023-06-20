@@ -14,7 +14,8 @@ import { Labeled } from '../components/Labeled';
 import commonStore from '../stores/commonStore';
 import { observer } from 'mobx-react-lite';
 import { useTranslation } from 'react-i18next';
-import { checkUpdate } from '../utils';
+import { checkUpdate, toastWithButton } from '../utils';
+import { RestartApp } from '../../wailsjs/go/backend_golang/App';
 
 export const Languages = {
   dev: 'English', // i18n default
@@ -30,6 +31,7 @@ export type SettingsType = {
   giteeUpdatesSource: boolean
   cnMirror: boolean
   host: string
+  dpiScaling: number
   customModelsPath: string
   customPythonPath: string
 }
@@ -45,7 +47,7 @@ export const Settings: FC = observer(() => {
 
   return (
     <Page title={t('Settings')} content={
-      <div className="flex flex-col gap-2 overflow-hidden">
+      <div className="flex flex-col gap-2 overflow-y-auto overflow-x-hidden p-1">
         <Labeled label={t('Language')} flex spaceBetween content={
           <Dropdown style={{ minWidth: 0 }} listbox={{ style: { minWidth: 0 } }}
             value={Languages[commonStore.settings.language]}
@@ -56,7 +58,6 @@ export const Settings: FC = observer(() => {
                 commonStore.setSettings({
                   language: lang
                 });
-                i18n.changeLanguage(lang);
               }
             }}>
             {
@@ -65,6 +66,31 @@ export const Settings: FC = observer(() => {
             }
           </Dropdown>
         } />
+        {
+          commonStore.platform === 'windows' &&
+          <Labeled label={t('DPI Scaling')} flex spaceBetween content={
+            <Dropdown style={{ minWidth: 0 }} listbox={{ style: { minWidth: 0 } }}
+              value={commonStore.settings.dpiScaling + '%'}
+              selectedOptions={[commonStore.settings.dpiScaling.toString()]}
+              onOptionSelect={(_, data) => {
+                if (data.optionValue) {
+                  commonStore.setSettings({
+                    dpiScaling: Number(data.optionValue)
+                  });
+                  toastWithButton(t('Restart the app to apply DPI Scaling.'), t('Restart'), () => {
+                    RestartApp();
+                  }, {
+                    autoClose: 5000
+                  });
+                }
+              }}>
+              {
+                Array.from({ length: 7 }, (_, i) => (i + 2) * 25).map((v, i) =>
+                  <Option key={i} value={v.toString()}>{v + '%'}</Option>)
+              }
+            </Dropdown>
+          } />
+        }
         <Labeled label={t('Dark Mode')} flex spaceBetween content={
           <Switch checked={commonStore.settings.darkMode}
             onChange={(e, data) => {

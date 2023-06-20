@@ -2,6 +2,7 @@ package backend_golang
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"os"
 	"os/exec"
@@ -14,9 +15,11 @@ import (
 
 // App struct
 type App struct {
-	ctx       context.Context
-	exDir     string
-	cmdPrefix string
+	ctx           context.Context
+	HasConfigData bool
+	ConfigData    map[string]any
+	exDir         string
+	cmdPrefix     string
 }
 
 // NewApp creates a new App application struct
@@ -62,6 +65,19 @@ func (a *App) UpdateApp(url string) (broken bool, err error) {
 		wruntime.Quit(a.ctx)
 	}
 	return false, nil
+}
+
+func (a *App) RestartApp() error {
+	if runtime.GOOS == "windows" {
+		name, err := os.Executable()
+		if err != nil {
+			return err
+		}
+		exec.Command(name, os.Args[1:]...).Start()
+		wruntime.Quit(a.ctx)
+		return nil
+	}
+	return errors.New("unsupported OS")
 }
 
 func (a *App) GetPlatform() string {

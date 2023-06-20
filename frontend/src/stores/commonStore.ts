@@ -63,6 +63,7 @@ class CommonStore {
     giteeUpdatesSource: getUserLanguage() === 'zh',
     cnMirror: getUserLanguage() === 'zh',
     host: '127.0.0.1',
+    dpiScaling: 100,
     customModelsPath: './models',
     customPythonPath: ''
   };

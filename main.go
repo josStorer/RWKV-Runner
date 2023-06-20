@@ -11,6 +11,7 @@ import (
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
+	"github.com/wailsapp/wails/v2/pkg/options/windows"
 )
 
 //go:embed all:frontend/dist
@@ -36,13 +37,29 @@ func main() {
 	// Create an instance of the app structure
 	app := backend.NewApp()
 
+	var zoomFactor float64 = 1.0
+	data, err := app.ReadJson("config.json")
+	if err == nil {
+		app.HasConfigData = true
+		app.ConfigData = data.(map[string]any)
+		if dpiScaling, ok := app.ConfigData["settings"].(map[string]any)["dpiScaling"]; ok {
+			zoomFactor = dpiScaling.(float64) / 100
+		}
+	} else {
+		app.HasConfigData = false
+	}
+
 	// Create application with options
-	err := wails.Run(&options.App{
+	err = wails.Run(&options.App{
 		Title:     "RWKV-Runner",
 		Width:     1024,
 		Height:    680,
 		MinWidth:  375,
 		MinHeight: 640,
+		Windows: &windows.Options{
+			ZoomFactor:           zoomFactor,
+			IsZoomControlEnabled: true,
+		},
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
