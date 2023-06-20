@@ -1,9 +1,8 @@
 ## Changes
 
-- add usage and exact model name to API
-- embeddings API compatible with openai api and langchain (sdk)
-- update manifest
-- refactor and chore
+- add DPI Scaling setting
+- allow custom api url, key, model
+- add chat and completion error messages
 
 ## Install
 

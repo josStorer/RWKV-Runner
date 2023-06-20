@@ -153,5 +153,6 @@
   "Restart the app to apply DPI Scaling.": "重启应用以使显示缩放生效",
   "Restart": "重启",
   "API Chat Model Name": "API聊天模型名",
-  "API Completion Model Name": "API补全模型名"
+  "API Completion Model Name": "API补全模型名",
+  "Localhost": "本地"
 }

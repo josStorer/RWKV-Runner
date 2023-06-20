@@ -197,8 +197,8 @@ export const Settings: FC = observer(() => {
                               });
                           }
                         }}>
+                        <Option value="">{t('Localhost')!}</Option>
                         <Option value="https://api.openai.com">OpenAI</Option>
-                        <Option value="">Clear</Option>
                       </Dropdown>
                     </div>
                   } />
