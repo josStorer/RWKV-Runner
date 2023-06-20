@@ -96,7 +96,7 @@ const ChatPanel: FC = observer(() => {
     e.stopPropagation();
     if (e.type === 'click' || (e.keyCode === 13 && !e.shiftKey)) {
       e.preventDefault();
-      if (commonStore.status.status === ModelStatus.Offline) {
+      if (commonStore.status.status === ModelStatus.Offline && !commonStore.settings.apiUrl) {
         toast(t('Please click the button in the top right corner to start the model'), { type: 'warning' });
         return;
       }
@@ -194,14 +194,26 @@ const ChatPanel: FC = observer(() => {
             commonStore.setConversationOrder([...commonStore.conversationOrder]);
           }
         },
+        async onopen(response) {
+          if (response.status !== 200) {
+            commonStore.conversation[answerId].content += '\n[ERROR]\n```\n' + response.statusText + '\n' + (await response.text()) + '\n```';
+            commonStore.setConversation(commonStore.conversation);
+            commonStore.setConversationOrder([...commonStore.conversationOrder]);
+            setTimeout(scrollToBottom);
+          }
+        },
         onclose() {
           console.log('Connection closed');
         },
         onerror(err) {
           commonStore.conversation[answerId].type = MessageType.Error;
           commonStore.conversation[answerId].done = true;
+          err = err.message || err;
+          if (err && !err.includes('ReadableStreamDefaultReader'))
+            commonStore.conversation[answerId].content += '\n[ERROR]\n```\n' + err + '\n```';
           commonStore.setConversation(commonStore.conversation);
           commonStore.setConversationOrder([...commonStore.conversationOrder]);
+          setTimeout(scrollToBottom);
           throw err;
         }
       });

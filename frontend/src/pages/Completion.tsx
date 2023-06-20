@@ -180,7 +180,7 @@ const CompletionPanel: FC = observer(() => {
   };
 
   const onSubmit = (prompt: string) => {
-    if (commonStore.status.status === ModelStatus.Offline) {
+    if (commonStore.status.status === ModelStatus.Offline && !commonStore.settings.apiUrl) {
       toast(t('Please click the button in the top right corner to start the model'), { type: 'warning' });
       commonStore.setCompletionGenerating(false);
       return;
@@ -231,10 +231,22 @@ const CompletionPanel: FC = observer(() => {
             setPrompt(prompt + answer.trim() + params.injectEnd.replaceAll('\\n', '\n'));
           }
         },
+        async onopen(response) {
+          if (response.status !== 200) {
+            toast(response.statusText + '\n' + (await response.text()), {
+              type: 'error'
+            });
+          }
+        },
         onclose() {
           console.log('Connection closed');
         },
         onerror(err) {
+          err = err.message || err;
+          if (err && !err.includes('ReadableStreamDefaultReader'))
+            toast(err, {
+              type: 'error'
+            });
           commonStore.setCompletionGenerating(false);
           throw err;
         }
