@@ -1,11 +1,9 @@
 ## Changes
 
-- improve api docs
-- improve error messages
-- fix the state cache crash caused by bad prompts
-- clear confirm for chat page
-- save conversation button
-- chore
+- add usage and exact model name to API
+- embeddings API compatible with openai api and langchain (sdk)
+- update manifest
+- refactor and chore
 
 ## Install
 
