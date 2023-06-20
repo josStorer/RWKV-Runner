@@ -32,7 +32,7 @@ class SwitchModelBody(BaseModel):
     class Config:
         schema_extra = {
             "example": {
-                "model": "models/RWKV-4-World-3B-v1-OnlyForTest_80%_trained-20230612-ctx4096.pth",
+                "model": "models/RWKV-4-World-3B-v1-20230619-ctx4096.pth",
                 "strategy": "cuda fp16",
                 "customCuda": False,
             }
