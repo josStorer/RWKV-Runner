@@ -13,6 +13,7 @@ __pycache__
 /py310
 *.zip
 /cmd-helper.bat
+/install-py-dep.bat
 /backend-python/wkv_cuda
 *.exe
 *.old
