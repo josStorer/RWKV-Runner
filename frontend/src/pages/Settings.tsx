@@ -34,6 +34,10 @@ export type SettingsType = {
   dpiScaling: number
   customModelsPath: string
   customPythonPath: string
+  apiUrl: string
+  apiKey: string
+  apiChatModelName: string
+  apiCompletionModelName: string
 }
 
 export const Settings: FC = observer(() => {
@@ -139,8 +143,11 @@ export const Settings: FC = observer(() => {
               });
             }} />
         } />
-        <Accordion collapsible>
-          <AccordionItem value="1">
+        <Accordion collapsible openItems={!commonStore.advancedCollapsed && 'advanced'} onToggle={(e, data) => {
+          if (data.value === 'advanced')
+            commonStore.setAdvancedCollapsed(!commonStore.advancedCollapsed);
+        }}>
+          <AccordionItem value="advanced">
             <AccordionHeader ref={advancedHeaderRef} size="large">{t('Advanced')}</AccordionHeader>
             <AccordionPanel>
               <div className="flex flex-col gap-2 overflow-hidden">
@@ -163,6 +170,102 @@ export const Settings: FC = observer(() => {
                           customPythonPath: data.value
                         });
                       }} />
+                  } />
+                <Labeled label={'API URL'}
+                  content={
+                    <div className="flex gap-2">
+                      <Input style={{ minWidth: 0 }} className="grow" value={commonStore.settings.apiUrl}
+                        onChange={(e, data) => {
+                          commonStore.setSettings({
+                            apiUrl: data.value
+                          });
+                        }} />
+                      <Dropdown style={{ minWidth: 0 }} listbox={{ style: { minWidth: 0 } }}
+                        value="..." selectedOptions={[]} expandIcon={null}
+                        onOptionSelect={(_, data) => {
+                          commonStore.setSettings({
+                            apiUrl: data.optionValue
+                          });
+                          if (data.optionText === 'OpenAI') {
+                            if (commonStore.settings.apiChatModelName === 'rwkv')
+                              commonStore.setSettings({
+                                apiChatModelName: 'gpt-3.5-turbo'
+                              });
+                            if (commonStore.settings.apiCompletionModelName === 'rwkv')
+                              commonStore.setSettings({
+                                apiCompletionModelName: 'text-davinci-003'
+                              });
+                          }
+                        }}>
+                        <Option value="https://api.openai.com">OpenAI</Option>
+                        <Option value="">Clear</Option>
+                      </Dropdown>
+                    </div>
+                  } />
+                <Labeled label={'API Key'}
+                  content={
+                    <Input className="grow" placeholder="sk-" value={commonStore.settings.apiKey}
+                      onChange={(e, data) => {
+                        commonStore.setSettings({
+                          apiKey: data.value
+                        });
+                      }} />
+                  } />
+                <Labeled label={t('API Chat Model Name')}
+                  content={
+                    <div className="flex gap-2">
+                      <Input style={{ minWidth: 0 }} className="grow" placeholder="rwkv"
+                        value={commonStore.settings.apiChatModelName}
+                        onChange={(e, data) => {
+                          commonStore.setSettings({
+                            apiChatModelName: data.value
+                          });
+                        }} />
+                      <Dropdown style={{ minWidth: 0 }} listbox={{ style: { minWidth: 0 } }}
+                        value="..." selectedOptions={[]} expandIcon={null}
+                        onOptionSelect={(_, data) => {
+                          if (data.optionValue) {
+                            commonStore.setSettings({
+                              apiChatModelName: data.optionValue
+                            });
+                          }
+                        }}>
+                        {
+                          ['rwkv', 'gpt-4', 'gpt-4-0613', 'gpt-4-32k', 'gpt-4-32k-0613', 'gpt-3.5-turbo', 'gpt-3.5-turbo-0613', 'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-16k-0613']
+                          .map((v, i) =>
+                            <Option key={i} value={v}>{v}</Option>
+                          )
+                        }
+                      </Dropdown>
+                    </div>
+                  } />
+                <Labeled label={t('API Completion Model Name')}
+                  content={
+                    <div className="flex gap-2">
+                      <Input style={{ minWidth: 0 }} className="grow" placeholder="rwkv"
+                        value={commonStore.settings.apiCompletionModelName}
+                        onChange={(e, data) => {
+                          commonStore.setSettings({
+                            apiCompletionModelName: data.value
+                          });
+                        }} />
+                      <Dropdown style={{ minWidth: 0 }} listbox={{ style: { minWidth: 0 } }}
+                        value="..." selectedOptions={[]} expandIcon={null}
+                        onOptionSelect={(_, data) => {
+                          if (data.optionValue) {
+                            commonStore.setSettings({
+                              apiCompletionModelName: data.optionValue
+                            });
+                          }
+                        }}>
+                        {
+                          ['rwkv', 'text-davinci-003', 'text-davinci-002', 'text-curie-001', 'text-babbage-001', 'text-ada-001']
+                          .map((v, i) =>
+                            <Option key={i} value={v}>{v}</Option>
+                          )
+                        }
+                      </Dropdown>
+                    </div>
                   } />
               </div>
             </AccordionPanel>

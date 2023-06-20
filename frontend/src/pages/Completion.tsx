@@ -190,17 +190,20 @@ const CompletionPanel: FC = observer(() => {
 
     let answer = '';
     completionSseController = new AbortController();
-    fetchEventSource(`http://127.0.0.1:${port}/completions`, // https://api.openai.com/v1/completions || http://127.0.0.1:${port}/completions
+    fetchEventSource( // https://api.openai.com/v1/completions || http://127.0.0.1:${port}/completions
+      commonStore.settings.apiUrl ?
+        commonStore.settings.apiUrl + '/v1/completions' :
+        `http://127.0.0.1:${port}/completions`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer sk-`
+          Authorization: `Bearer ${commonStore.settings.apiKey}`
         },
         body: JSON.stringify({
           prompt,
           stream: true,
-          model: 'text-davinci-003',
+          model: commonStore.settings.apiCompletionModelName, // 'text-davinci-003'
           max_tokens: params.maxResponseToken,
           temperature: params.temperature,
           top_p: params.topP,

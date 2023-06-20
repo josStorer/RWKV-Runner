@@ -56,6 +56,7 @@ class CommonStore {
   // downloads
   downloadList: DownloadStatus[] = [];
   // settings
+  advancedCollapsed: boolean = true;
   settings: SettingsType = {
     language: getUserLanguage(),
     darkMode: !isSystemLightMode(),
@@ -65,7 +66,11 @@ class CommonStore {
     host: '127.0.0.1',
     dpiScaling: 100,
     customModelsPath: './models',
-    customPythonPath: ''
+    customPythonPath: '',
+    apiUrl: '',
+    apiKey: 'sk-',
+    apiChatModelName: 'rwkv',
+    apiCompletionModelName: 'rwkv'
   };
   // about
   about: AboutContent = manifest.about;
@@ -187,6 +192,10 @@ class CommonStore {
 
   setCurrentInput(value: string) {
     this.currentInput = value;
+  }
+
+  setAdvancedCollapsed(value: boolean) {
+    this.advancedCollapsed = value;
   }
 }
 

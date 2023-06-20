@@ -154,17 +154,20 @@ const ChatPanel: FC = observer(() => {
     setTimeout(scrollToBottom);
     let answer = '';
     chatSseController = new AbortController();
-    fetchEventSource(`http://127.0.0.1:${port}/chat/completions`, // https://api.openai.com/v1/chat/completions || http://127.0.0.1:${port}/chat/completions
+    fetchEventSource( // https://api.openai.com/v1/chat/completions || http://127.0.0.1:${port}/chat/completions
+      commonStore.settings.apiUrl ?
+        commonStore.settings.apiUrl + '/v1/chat/completions' :
+        `http://127.0.0.1:${port}/chat/completions`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer sk-`
+          Authorization: `Bearer ${commonStore.settings.apiKey}`
         },
         body: JSON.stringify({
           messages,
           stream: true,
-          model: 'gpt-3.5-turbo'
+          model: commonStore.settings.apiChatModelName // 'gpt-3.5-turbo'
         }),
         signal: chatSseController?.signal,
         onmessage(e) {
