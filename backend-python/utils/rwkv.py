@@ -325,7 +325,6 @@ The following is a coherent verbose detailed conversation between a girl named {
                 response += delta
                 if stop is not None:
                     if stop in response:
-                        response = response.split(stop)[0]
                         try:
                             state_cache.add_state(
                                 state_cache.AddStateBody(
@@ -337,6 +336,7 @@ The following is a coherent verbose detailed conversation between a girl named {
                             )
                         except HTTPException:
                             pass
+                        response = response.split(stop)[0]
                         yield response, "", prompt_token_len, completion_token_len
                         break
                 out_last = begin + i + 1
