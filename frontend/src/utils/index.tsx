@@ -126,7 +126,9 @@ export const getStrategy = (modelConfig: ModelConfig | undefined = undefined) =>
   let params: ModelParameters;
   if (modelConfig) params = modelConfig.modelParameters;
   else params = commonStore.getCurrentModelConfig().modelParameters;
-  const avoidOverflow = params.modelName.toLowerCase().includes('world') && params.precision !== 'fp32';
+  const modelName = params.modelName.toLowerCase();
+  const avoidOverflow = params.precision !== 'fp32' && modelName.includes('world') && (modelName.includes('0.1b') || modelName.includes('0.4b') ||
+    modelName.includes('1.5b') || modelName.includes('1b5'));
   let strategy = '';
   switch (params.device) {
     case 'CPU':
