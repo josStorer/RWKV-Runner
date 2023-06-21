@@ -4,7 +4,6 @@ import (
 	"errors"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"runtime"
 	"strconv"
 	"strings"
@@ -52,11 +51,7 @@ func (a *App) InstallPyDep(python string, cnMirror bool) (string, error) {
 	if python == "" {
 		python, err = GetPython()
 		if runtime.GOOS == "windows" {
-			python, err = filepath.Abs(python)
-			if err != nil {
-				return "", err
-			}
-			python = `"` + python + `"`
+			python = `"%CD%/` + python + `"`
 		}
 	}
 	if err != nil {
