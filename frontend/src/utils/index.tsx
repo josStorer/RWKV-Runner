@@ -126,19 +126,26 @@ export const getStrategy = (modelConfig: ModelConfig | undefined = undefined) =>
   let params: ModelParameters;
   if (modelConfig) params = modelConfig.modelParameters;
   else params = commonStore.getCurrentModelConfig().modelParameters;
+  const avoidOverflow = params.modelName.toLowerCase().includes('world') && params.precision !== 'fp32';
   let strategy = '';
   switch (params.device) {
     case 'CPU':
+      if (avoidOverflow)
+        strategy = 'cpu fp32 *1 -> ';
       strategy += 'cpu ';
       strategy += params.precision === 'int8' ? 'fp32i8' : 'fp32';
       break;
     case 'CUDA':
+      if (avoidOverflow)
+        strategy = 'cuda fp32 *1 -> ';
       strategy += 'cuda ';
       strategy += params.precision === 'fp16' ? 'fp16' : params.precision === 'int8' ? 'fp16i8' : 'fp32';
       if (params.storedLayers < params.maxStoredLayers)
         strategy += ` *${params.storedLayers}+`;
       break;
     case 'MPS':
+      if (avoidOverflow)
+        strategy = 'mps fp32 *1 -> ';
       strategy += 'mps ';
       strategy += params.precision === 'fp16' ? 'fp16' : params.precision === 'int8' ? 'fp16i8' : 'fp32';
       break;

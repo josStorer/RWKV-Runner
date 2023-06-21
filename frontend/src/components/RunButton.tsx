@@ -167,9 +167,10 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
               frequency_penalty: modelConfig.apiParameters.frequencyPenalty
             });
 
+            const strategy = getStrategy(modelConfig);
             let customCudaFile = '';
             if ((modelConfig.modelParameters.device === 'CUDA' || modelConfig.modelParameters.device === 'Custom')
-              && modelConfig.modelParameters.useCustomCuda && modelConfig.modelParameters.precision != 'fp32') {
+              && modelConfig.modelParameters.useCustomCuda && !strategy.includes('fp32')) {
               if (commonStore.platform === 'windows') {
                 customCudaFile = getSupportedCustomCudaFile();
                 if (customCudaFile) {
@@ -194,7 +195,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
 
             switchModel({
               model: modelPath,
-              strategy: getStrategy(modelConfig),
+              strategy: strategy,
               customCuda: customCudaFile !== ''
             }).then(async (r) => {
               if (r.ok) {
