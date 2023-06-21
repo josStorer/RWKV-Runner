@@ -312,7 +312,7 @@ const CompletionPanel: FC = observer(() => {
           <Labeled flex breakline label={t('Presence Penalty')}
             desc={t('Positive values penalize new tokens based on whether they appear in the text so far, increasing the model\'s likelihood to talk about new topics.')}
             content={
-              <ValuedSlider value={params.presencePenalty} min={-2} max={2}
+              <ValuedSlider value={params.presencePenalty} min={0} max={2}
                 step={0.1} input
                 onChange={(e, data) => {
                   setParams({
@@ -323,7 +323,7 @@ const CompletionPanel: FC = observer(() => {
           <Labeled flex breakline label={t('Frequency Penalty')}
             desc={t('Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model\'s likelihood to repeat the same line verbatim.')}
             content={
-              <ValuedSlider value={params.frequencyPenalty} min={-2} max={2}
+              <ValuedSlider value={params.frequencyPenalty} min={0} max={2}
                 step={0.1} input
                 onChange={(e, data) => {
                   setParams({
