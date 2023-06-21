@@ -11,6 +11,7 @@ export const ToolTipButton: FC<{
   appearance?: 'secondary' | 'primary' | 'outline' | 'subtle' | 'transparent';
   disabled?: boolean,
   onClick?: MouseEventHandler
+  showDelay?: number,
 }> = ({
   text,
   desc,
@@ -20,10 +21,11 @@ export const ToolTipButton: FC<{
   shape,
   appearance,
   disabled,
-  onClick
+  onClick,
+  showDelay = 0
 }) => {
   return (
-    <Tooltip content={desc} showDelay={0} hideDelay={0} relationship="label">
+    <Tooltip content={desc} showDelay={showDelay} hideDelay={0} relationship="label">
       <Button className={className} disabled={disabled} icon={icon} onClick={onClick} size={size} shape={shape}
         appearance={appearance}>{text}</Button>
     </Tooltip>

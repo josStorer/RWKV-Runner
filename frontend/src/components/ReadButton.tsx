@@ -7,12 +7,27 @@ import { observer } from 'mobx-react-lite';
 
 const synth = window.speechSynthesis;
 
-export const ReadButton: FC<{ content: string }> = observer(({ content }) => {
+export const ReadButton: FC<{
+  content: string,
+  inSpeaking?: boolean,
+  showDelay?: number,
+  setSpeakingOuter?: (speaking: boolean) => void
+}> = observer(({
+  content,
+  inSpeaking = false,
+  showDelay = 0,
+  setSpeakingOuter
+}) => {
   const { t } = useTranslation();
-  const [speaking, setSpeaking] = useState(false);
+  const [speaking, setSpeaking] = useState(inSpeaking);
   let lang: string = commonStore.settings.language;
   if (lang === 'dev')
     lang = 'en';
+
+  const setSpeakingInner = (speaking: boolean) => {
+    setSpeakingOuter?.(speaking);
+    setSpeaking(speaking);
+  };
 
   const startSpeak = () => {
     synth.cancel();
@@ -31,22 +46,22 @@ export const ReadButton: FC<{ content: string }> = observer(({ content }) => {
     Object.assign(utterance, {
       rate: 1,
       volume: 1,
-      onend: () => setSpeaking(false),
-      onerror: () => setSpeaking(false),
+      onend: () => setSpeakingInner(false),
+      onerror: () => setSpeakingInner(false),
       voice: voice
     });
 
     synth.speak(utterance);
-    setSpeaking(true);
+    setSpeakingInner(true);
   };
 
   const stopSpeak = () => {
     synth.cancel();
-    setSpeaking(false);
+    setSpeakingInner(false);
   };
 
   return (
-    <ToolTipButton desc={t('Read Aloud')} size="small" appearance="subtle"
+    <ToolTipButton desc={t('Read Aloud')} size="small" appearance="subtle" showDelay={showDelay}
       icon={speaking ? <MuteIcon /> : <UnmuteIcon />}
       onClick={speaking ? stopSpeak : startSpeak} />
   );

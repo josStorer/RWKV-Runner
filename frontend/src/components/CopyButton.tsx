@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ClipboardSetText } from '../../wailsjs/runtime';
 import { ToolTipButton } from './ToolTipButton';
 
-export const CopyButton: FC<{ content: string }> = ({ content }) => {
+export const CopyButton: FC<{ content: string, showDelay?: number, }> = ({ content, showDelay = 0 }) => {
   const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
 
@@ -19,7 +19,8 @@ export const CopyButton: FC<{ content: string }> = ({ content }) => {
   };
 
   return (
-    <ToolTipButton desc={t('Copy')} size="small" appearance="subtle" icon={copied ? <CheckIcon /> : <CopyIcon />}
+    <ToolTipButton desc={t('Copy')} size="small" appearance="subtle" showDelay={showDelay}
+      icon={copied ? <CheckIcon /> : <CopyIcon />}
       onClick={onClick} />
   );
 };

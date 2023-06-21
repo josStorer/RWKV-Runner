@@ -1,12 +1,13 @@
-import React, { FC, useEffect, useRef } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Avatar, PresenceBadge, Textarea } from '@fluentui/react-components';
+import { Avatar, Button, Menu, MenuPopover, MenuTrigger, PresenceBadge, Textarea } from '@fluentui/react-components';
 import commonStore, { ModelStatus } from '../stores/commonStore';
 import { observer } from 'mobx-react-lite';
 import { v4 as uuid } from 'uuid';
 import classnames from 'classnames';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
-import { ConversationPair, getConversationPairs, Record } from '../utils/get-conversation-pairs';
+import { KebabHorizontalIcon, PencilIcon, SyncIcon, TrashIcon } from '@primer/octicons-react';
+import { ConversationPair } from '../utils/get-conversation-pairs';
 import logo from '../assets/images/logo.jpg';
 import MarkdownRender from '../components/MarkdownRender';
 import { ToolTipButton } from '../components/ToolTipButton';
@@ -21,6 +22,8 @@ import { toastWithButton } from '../utils';
 
 export const userName = 'M E';
 export const botName = 'A I';
+
+export const welcomeUuid = 'welcome';
 
 export enum MessageType {
   Normal,
@@ -48,6 +51,122 @@ export type Conversation = {
 
 let chatSseController: AbortController | null = null;
 
+const MoreUtilsButton: FC<{ uuid: string, setEditing: (editing: boolean) => void }> = observer(({
+  uuid,
+  setEditing
+}) => {
+  const { t } = useTranslation();
+  const [speaking, setSpeaking] = useState(false);
+
+  const messageItem = commonStore.conversation[uuid];
+
+  return <Menu>
+    <MenuTrigger disableButtonEnhancement>
+      <Button icon={<KebabHorizontalIcon />} size="small" appearance="subtle" />
+    </MenuTrigger>
+    <MenuPopover style={{ minWidth: 0 }}>
+      <ReadButton content={messageItem.content} inSpeaking={speaking} showDelay={500} setSpeakingOuter={setSpeaking} />
+      <ToolTipButton desc={t('Edit')} icon={<PencilIcon />} showDelay={500} size="small" appearance="subtle"
+        onClick={() => {
+          setEditing(true);
+        }} />
+      <ToolTipButton desc={t('Delete')} icon={<TrashIcon />} showDelay={500} size="small" appearance="subtle"
+        onClick={() => {
+          commonStore.conversationOrder.splice(commonStore.conversationOrder.indexOf(uuid), 1);
+          delete commonStore.conversation[uuid];
+        }} />
+    </MenuPopover>
+  </Menu>;
+});
+
+const ChatMessageItem: FC<{
+  uuid: string, onSubmit: (message: string | null, answerId: string | null,
+    startUuid: string | null, endUuid: string | null, includeEndUuid: boolean) => void
+}> = observer(({ uuid, onSubmit }) => {
+  const { t } = useTranslation();
+  const [editing, setEditing] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const messageItem = commonStore.conversation[uuid];
+
+  console.log(uuid);
+
+  const setEditingInner = (editing: boolean) => {
+    setEditing(editing);
+    if (editing) {
+      setTimeout(() => {
+        const textarea = textareaRef.current;
+        if (textarea) {
+          textarea.focus();
+          textarea.selectionStart = textarea.value.length;
+          textarea.selectionEnd = textarea.value.length;
+          textarea.style.height = textarea.scrollHeight + 'px';
+        }
+      });
+    }
+  };
+
+  return <div
+    className={classnames(
+      'flex gap-2 mb-2 overflow-hidden',
+      messageItem.side === 'left' ? 'flex-row' : 'flex-row-reverse'
+    )}
+    onMouseEnter={() => {
+      const utils = document.getElementById('utils-' + uuid);
+      if (utils) utils.classList.remove('invisible');
+    }}
+    onMouseLeave={() => {
+      const utils = document.getElementById('utils-' + uuid);
+      if (utils) utils.classList.add('invisible');
+    }}
+  >
+    <Avatar
+      color={messageItem.color}
+      name={messageItem.sender}
+      image={messageItem.avatarImg ? { src: messageItem.avatarImg } : undefined}
+    />
+    <div
+      className={classnames(
+        'flex p-2 rounded-lg overflow-hidden',
+        editing ? 'grow' : '',
+        messageItem.side === 'left' ? 'bg-gray-200' : 'bg-blue-500',
+        messageItem.side === 'left' ? 'text-gray-600' : 'text-white'
+      )}
+    >
+      {!editing ?
+        <MarkdownRender>{messageItem.content}</MarkdownRender> :
+        <Textarea ref={textareaRef}
+          className="grow"
+          style={{ minWidth: 0 }}
+          value={messageItem.content}
+          onChange={(e) => {
+            messageItem.content = e.target.value;
+          }}
+          onBlur={() => {
+            setEditingInner(false);
+          }} />}
+    </div>
+    <div className="flex flex-col gap-1 items-start">
+      <div className="grow" />
+      {(messageItem.type === MessageType.Error || !messageItem.done) &&
+        <PresenceBadge size="extra-small" status={
+          messageItem.type === MessageType.Error ? 'busy' : 'away'
+        } />
+      }
+      <div className="flex invisible" id={'utils-' + uuid}>
+        {
+          messageItem.sender === botName && uuid !== welcomeUuid &&
+          <ToolTipButton desc={t('Retry')} size="small" appearance="subtle"
+            icon={<SyncIcon />} onClick={() => {
+            onSubmit(null, uuid, null, uuid, false);
+          }} />
+        }
+        <CopyButton content={messageItem.content} />
+        <MoreUtilsButton uuid={uuid} setEditing={setEditingInner} />
+      </div>
+    </div>
+  </div>;
+});
+
 const ChatPanel: FC = observer(() => {
   const { t } = useTranslation();
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -71,9 +190,9 @@ const ChatPanel: FC = observer(() => {
 
   useEffect(() => {
     if (commonStore.conversationOrder.length === 0) {
-      commonStore.setConversationOrder(['welcome']);
+      commonStore.setConversationOrder([welcomeUuid]);
       commonStore.setConversation({
-        'welcome': {
+        [welcomeUuid]: {
           sender: botName,
           type: MessageType.Normal,
           color: 'colorful',
@@ -106,38 +225,48 @@ const ChatPanel: FC = observer(() => {
     }
   };
 
-  const onSubmit = (message: string) => {
-    const newId = uuid();
-    commonStore.conversation[newId] = {
-      sender: userName,
-      type: MessageType.Normal,
-      color: 'brand',
-      time: new Date().toISOString(),
-      content: message,
-      side: 'right',
-      done: true
-    };
-    commonStore.setConversation(commonStore.conversation);
-    commonStore.conversationOrder.push(newId);
-    commonStore.setConversationOrder(commonStore.conversationOrder);
+  // if message is not null, create a user message;
+  // if answerId is not null, override the answer with new response;
+  // if startUuid is null, start generating api body messages from first message;
+  // if endUuid is null, generate api body messages until last message;
+  const onSubmit = useCallback((message: string | null = null, answerId: string | null = null,
+    startUuid: string | null = null, endUuid: string | null = null, includeEndUuid: boolean = false) => {
+    if (message) {
+      const newId = uuid();
+      commonStore.conversation[newId] = {
+        sender: userName,
+        type: MessageType.Normal,
+        color: 'brand',
+        time: new Date().toISOString(),
+        content: message,
+        side: 'right',
+        done: true
+      };
+      commonStore.setConversation(commonStore.conversation);
+      commonStore.conversationOrder.push(newId);
+      commonStore.setConversationOrder(commonStore.conversationOrder);
+    }
 
-    const records: Record[] = [];
-    commonStore.conversationOrder.forEach((uuid, index) => {
+    let startIndex = startUuid ? commonStore.conversationOrder.indexOf(startUuid) : 0;
+    let endIndex = endUuid ? (commonStore.conversationOrder.indexOf(endUuid) + (includeEndUuid ? 1 : 0)) : commonStore.conversationOrder.length;
+    let targetRange = commonStore.conversationOrder.slice(startIndex, endIndex);
+
+    const messages: ConversationPair[] = [];
+    targetRange.forEach((uuid, index) => {
+      if (uuid === welcomeUuid)
+        return;
       const messageItem = commonStore.conversation[uuid];
-      if (messageItem.done && messageItem.type === MessageType.Normal && messageItem.sender === botName) {
-        if (index > 0) {
-          const questionId = commonStore.conversationOrder[index - 1];
-          const question = commonStore.conversation[questionId];
-          if (question.done && question.type === MessageType.Normal && question.sender === userName) {
-            records.push({ question: question.content, answer: messageItem.content });
-          }
-        }
+      if (messageItem.done && messageItem.type === MessageType.Normal && messageItem.sender === userName) {
+        messages.push({ role: 'user', content: messageItem.content });
+      } else if (messageItem.done && messageItem.type === MessageType.Normal && messageItem.sender === botName) {
+        messages.push({ role: 'assistant', content: messageItem.content });
       }
     });
-    const messages = getConversationPairs(records, false);
-    (messages as ConversationPair[]).push({ role: 'user', content: message });
 
-    const answerId = uuid();
+    if (answerId === null) {
+      answerId = uuid();
+      commonStore.conversationOrder.push(answerId);
+    }
     commonStore.conversation[answerId] = {
       sender: botName,
       type: MessageType.Normal,
@@ -149,7 +278,6 @@ const ChatPanel: FC = observer(() => {
       done: false
     };
     commonStore.setConversation(commonStore.conversation);
-    commonStore.conversationOrder.push(answerId);
     commonStore.setConversationOrder(commonStore.conversationOrder);
     setTimeout(scrollToBottom);
     let answer = '';
@@ -171,11 +299,10 @@ const ChatPanel: FC = observer(() => {
         }),
         signal: chatSseController?.signal,
         onmessage(e) {
-          console.log('sse message', e);
           scrollToBottom();
           if (e.data === '[DONE]') {
-            commonStore.conversation[answerId].done = true;
-            commonStore.conversation[answerId].content = commonStore.conversation[answerId].content.trim();
+            commonStore.conversation[answerId!].done = true;
+            commonStore.conversation[answerId!].content = commonStore.conversation[answerId!].content.trim();
             commonStore.setConversation(commonStore.conversation);
             commonStore.setConversationOrder([...commonStore.conversationOrder]);
             return;
@@ -189,14 +316,14 @@ const ChatPanel: FC = observer(() => {
           }
           if (data.choices && Array.isArray(data.choices) && data.choices.length > 0) {
             answer += data.choices[0]?.delta?.content || '';
-            commonStore.conversation[answerId].content = answer;
+            commonStore.conversation[answerId!].content = answer;
             commonStore.setConversation(commonStore.conversation);
             commonStore.setConversationOrder([...commonStore.conversationOrder]);
           }
         },
         async onopen(response) {
           if (response.status !== 200) {
-            commonStore.conversation[answerId].content += '\n[ERROR]\n```\n' + response.statusText + '\n' + (await response.text()) + '\n```';
+            commonStore.conversation[answerId!].content += '\n[ERROR]\n```\n' + response.statusText + '\n' + (await response.text()) + '\n```';
             commonStore.setConversation(commonStore.conversation);
             commonStore.setConversationOrder([...commonStore.conversationOrder]);
             setTimeout(scrollToBottom);
@@ -206,67 +333,25 @@ const ChatPanel: FC = observer(() => {
           console.log('Connection closed');
         },
         onerror(err) {
-          commonStore.conversation[answerId].type = MessageType.Error;
-          commonStore.conversation[answerId].done = true;
+          commonStore.conversation[answerId!].type = MessageType.Error;
+          commonStore.conversation[answerId!].done = true;
           err = err.message || err;
           if (err && !err.includes('ReadableStreamDefaultReader'))
-            commonStore.conversation[answerId].content += '\n[ERROR]\n```\n' + err + '\n```';
+            commonStore.conversation[answerId!].content += '\n[ERROR]\n```\n' + err + '\n```';
           commonStore.setConversation(commonStore.conversation);
           commonStore.setConversationOrder([...commonStore.conversationOrder]);
           setTimeout(scrollToBottom);
           throw err;
         }
       });
-  };
+  }, []);
 
   return (
     <div className="flex flex-col w-full grow gap-4 pt-4 overflow-hidden">
       <div ref={bodyRef} className="grow overflow-y-scroll overflow-x-hidden pr-2">
-        {commonStore.conversationOrder.map((uuid, index) => {
-          const messageItem = commonStore.conversation[uuid];
-          return <div
-            key={uuid}
-            className={classnames(
-              'flex gap-2 mb-2 overflow-hidden',
-              messageItem.side === 'left' ? 'flex-row' : 'flex-row-reverse'
-            )}
-            onMouseEnter={() => {
-              const utils = document.getElementById('utils-' + uuid);
-              if (utils) utils.classList.remove('invisible');
-            }}
-            onMouseLeave={() => {
-              const utils = document.getElementById('utils-' + uuid);
-              if (utils) utils.classList.add('invisible');
-            }}
-          >
-            <Avatar
-              color={messageItem.color}
-              name={messageItem.sender}
-              image={messageItem.avatarImg ? { src: messageItem.avatarImg } : undefined}
-            />
-            <div
-              className={classnames(
-                'p-2 rounded-lg overflow-hidden',
-                messageItem.side === 'left' ? 'bg-gray-200' : 'bg-blue-500',
-                messageItem.side === 'left' ? 'text-gray-600' : 'text-white'
-              )}
-            >
-              <MarkdownRender>{messageItem.content}</MarkdownRender>
-            </div>
-            <div className="flex flex-col gap-1 items-start">
-              <div className="grow" />
-              {(messageItem.type === MessageType.Error || !messageItem.done) &&
-                <PresenceBadge size="extra-small" status={
-                  messageItem.type === MessageType.Error ? 'busy' : 'away'
-                } />
-              }
-              <div className="flex invisible" id={'utils-' + uuid}>
-                <ReadButton content={messageItem.content} />
-                <CopyButton content={messageItem.content} />
-              </div>
-            </div>
-          </div>;
-        })}
+        {commonStore.conversationOrder.map(uuid =>
+          <ChatMessageItem key={uuid} uuid={uuid} onSubmit={onSubmit} />
+        )}
       </div>
       <div className="flex items-end gap-2">
         <DialogButton tooltip={t('Clear')}

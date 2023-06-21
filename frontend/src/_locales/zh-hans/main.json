@@ -154,5 +154,8 @@
   "Restart": "重启",
   "API Chat Model Name": "API聊天模型名",
   "API Completion Model Name": "API补全模型名",
-  "Localhost": "本地"
+  "Localhost": "本地",
+  "Retry": "重试",
+  "Delete": "删除",
+  "Edit": "编辑"
 }
