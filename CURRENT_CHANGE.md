@@ -1,8 +1,13 @@
 ## Changes
 
-- add DPI Scaling setting
-- allow custom api url, key, model
-- add chat and completion error messages
+- add more chat utils (retry, edit, delete)
+- improve InstallPyDep for non-english path
+- when precision is fp32, disable customCuda
+- rename 100+ Languages to Global Languages
+- update SupportedCustomCudaDevices
+- fix the prompt cache that contains potential error
+- avoid overflow
+- chore
 
 ## Install
 
