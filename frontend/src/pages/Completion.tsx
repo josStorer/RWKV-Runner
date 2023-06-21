@@ -213,7 +213,6 @@ const CompletionPanel: FC = observer(() => {
         }),
         signal: completionSseController?.signal,
         onmessage(e) {
-          console.log('sse message', e);
           scrollToBottom();
           if (e.data === '[DONE]') {
             commonStore.setCompletionGenerating(false);
