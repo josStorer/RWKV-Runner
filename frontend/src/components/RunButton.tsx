@@ -169,7 +169,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
 
             let customCudaFile = '';
             if ((modelConfig.modelParameters.device === 'CUDA' || modelConfig.modelParameters.device === 'Custom')
-              && modelConfig.modelParameters.useCustomCuda) {
+              && modelConfig.modelParameters.useCustomCuda && modelConfig.modelParameters.precision != 'fp32') {
               if (commonStore.platform === 'windows') {
                 customCudaFile = getSupportedCustomCudaFile();
                 if (customCudaFile) {
