@@ -65,6 +65,7 @@ const MoreUtilsButton: FC<{ uuid: string, setEditing: (editing: boolean) => void
       <Button icon={<KebabHorizontalIcon />} size="small" appearance="subtle" />
     </MenuTrigger>
     <MenuPopover style={{ minWidth: 0 }}>
+      <CopyButton content={messageItem.content} showDelay={500} />
       <ReadButton content={messageItem.content} inSpeaking={speaking} showDelay={500} setSpeakingOuter={setSpeaking} />
       <ToolTipButton desc={t('Edit')} icon={<PencilIcon />} showDelay={500} size="small" appearance="subtle"
         onClick={() => {
@@ -160,7 +161,10 @@ const ChatMessageItem: FC<{
             onSubmit(null, uuid, null, uuid, false);
           }} />
         }
-        <CopyButton content={messageItem.content} />
+        <ToolTipButton desc={t('Edit')} icon={<PencilIcon />} size="small" appearance="subtle"
+          onClick={() => {
+            setEditingInner(true);
+          }} />
         <MoreUtilsButton uuid={uuid} setEditing={setEditingInner} />
       </div>
     </div>
