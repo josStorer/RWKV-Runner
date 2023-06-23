@@ -16,6 +16,7 @@ import { Button } from '@fluentui/react-components';
 import { Language, Languages, SettingsType } from '../pages/Settings';
 import { ModelSourceItem } from '../pages/Models';
 import { ModelConfig, ModelParameters } from '../pages/Configs';
+import { DownloadStatus } from '../pages/Downloads';
 
 export type Cache = {
   models: ModelSourceItem[]
@@ -47,9 +48,11 @@ export async function refreshBuiltInModels(readCache: boolean = false) {
   return cache;
 }
 
-export async function refreshLocalModels(cache: { models: ModelSourceItem[] }, filter: boolean = true) {
+export async function refreshLocalModels(cache: {
+  models: ModelSourceItem[]
+}, filter: boolean = true, initUnfinishedModels: boolean = false) {
   if (filter)
-    cache.models = cache.models.filter(m => !m.isLocal); //TODO BUG cause local but in manifest files to be removed, so currently cache is disabled
+    cache.models = cache.models.filter(m => !m.isComplete); //TODO BUG cause local but in manifest files to be removed, so currently cache is disabled
 
   await ListDirFiles(commonStore.settings.customModelsPath).then((data) => {
     cache.models.push(...data.flatMap(d => {
@@ -58,8 +61,9 @@ export async function refreshLocalModels(cache: { models: ModelSourceItem[] }, f
           name: d.name,
           size: d.size,
           lastUpdated: d.modTime,
+          isComplete: true,
           isLocal: true
-        }];
+        }] as ModelSourceItem[];
       return [];
     }));
   }).catch(() => {
@@ -80,15 +84,41 @@ export async function refreshLocalModels(cache: { models: ModelSourceItem[] }, f
           } else {
             cache.models[i] = Object.assign({}, cache.models[j], cache.models[i]);
           }
-        } // else is bad local file
+        } // else is not complete local file
+        cache.models[i].isLocal = true;
+        cache.models[i].localSize = cache.models[j].size;
         cache.models.splice(j, 1);
         j--;
       }
     }
   }
   commonStore.setModelSourceList(cache.models);
+  if (initUnfinishedModels)
+    initLastUnfinishedModelDownloads();
   await saveCache().catch(() => {
   });
+}
+
+function initLastUnfinishedModelDownloads() {
+  const list: DownloadStatus[] = [];
+  commonStore.modelSourceList.forEach((item) => {
+    if (item.isLocal && !item.isComplete) {
+      list.push(
+        {
+          name: item.name,
+          path: `${commonStore.settings.customModelsPath}/${item.name}`,
+          url: item.downloadUrl!,
+          transferred: item.localSize!,
+          size: item.size,
+          speed: 0,
+          progress: item.localSize! / item.size * 100,
+          downloading: false,
+          done: false
+        }
+      );
+    }
+  });
+  commonStore.setLastUnfinishedModelDownloads(list);
 }
 
 export async function refreshRemoteModels(cache: { models: ModelSourceItem[] }) {
@@ -116,9 +146,9 @@ export async function refreshRemoteModels(cache: { models: ModelSourceItem[] }) 
   });
 }
 
-export const refreshModels = async (readCache: boolean = false) => {
+export const refreshModels = async (readCache: boolean = false, initUnfinishedModels: boolean = false) => {
   const cache = await refreshBuiltInModels(readCache);
-  await refreshLocalModels(cache);
+  await refreshLocalModels(cache, false, initUnfinishedModels);
   await refreshRemoteModels(cache);
 };
 

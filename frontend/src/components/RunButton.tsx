@@ -126,7 +126,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
         showDownloadPrompt(t('Model file not found'), modelName);
         commonStore.setStatus({ status: ModelStatus.Offline });
         return;
-      } else if (!currentModelSource?.isLocal) {
+      } else if (!currentModelSource?.isComplete) {
         showDownloadPrompt(t('Model file download is not complete'), modelName);
         commonStore.setStatus({ status: ModelStatus.Offline });
         return;

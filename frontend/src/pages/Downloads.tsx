@@ -7,7 +7,7 @@ import { Divider, Field, ProgressBar } from '@fluentui/react-components';
 import { bytesToGb, bytesToKb, bytesToMb, refreshLocalModels } from '../utils';
 import { ToolTipButton } from '../components/ToolTipButton';
 import { Folder20Regular, Pause20Regular, Play20Regular } from '@fluentui/react-icons';
-import { ContinueDownload, OpenFileFolder, PauseDownload } from '../../wailsjs/go/backend_golang/App';
+import { AddToDownloadList, OpenFileFolder, PauseDownload } from '../../wailsjs/go/backend_golang/App';
 
 export type DownloadStatus = {
   name: string;
@@ -30,10 +30,27 @@ export const Downloads: FC = observer(() => {
     console.log('finishedModelsLen:', finishedModelsLen);
   }, [finishedModelsLen]);
 
+  let displayList = commonStore.downloadList.slice();
+  const downloadListNames = displayList.map(s => s.name);
+  commonStore.lastUnfinishedModelDownloads.forEach((status) => {
+    const unfinishedIndex = downloadListNames.indexOf(status.name);
+    if (unfinishedIndex === -1) {
+      displayList.push(status);
+    } else {
+      const unfinishedStatus = displayList[unfinishedIndex];
+      if (unfinishedStatus.transferred < status.transferred) {
+        status.downloading = unfinishedStatus.downloading;
+        delete displayList[unfinishedIndex];
+        displayList.push(status);
+      }
+    }
+  });
+  displayList = displayList.reverse();
+
   return (
     <Page title={t('Downloads')} content={
       <div className="flex flex-col gap-2 overflow-y-auto overflow-x-hidden p-1">
-        {commonStore.downloadList.slice().reverse().map((status, index) => {
+        {displayList.map((status, index) => {
           const downloadProgress = `${status.progress.toFixed(2)}%`;
           const downloadSpeed = `${status.downloading ? bytesToMb(status.speed) : '0'}MB/s`;
           let downloadDetails: string;
@@ -59,7 +76,7 @@ export const Downloads: FC = observer(() => {
                       if (status.downloading)
                         PauseDownload(status.url);
                       else
-                        ContinueDownload(status.url);
+                        AddToDownloadList(status.path, status.url);
                     }} />}
                 <ToolTipButton desc={t('Open Folder')} icon={<Folder20Regular />} onClick={() => {
                   OpenFileFolder(status.path, false);

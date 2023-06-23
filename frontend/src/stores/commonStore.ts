@@ -55,6 +55,7 @@ class CommonStore {
   modelSourceList: ModelSourceItem[] = [];
   // downloads
   downloadList: DownloadStatus[] = [];
+  lastUnfinishedModelDownloads: DownloadStatus[] = [];
   // settings
   advancedCollapsed: boolean = true;
   settings: SettingsType = {
@@ -196,6 +197,10 @@ class CommonStore {
 
   setAdvancedCollapsed(value: boolean) {
     this.advancedCollapsed = value;
+  }
+
+  setLastUnfinishedModelDownloads(value: DownloadStatus[]) {
+    this.lastUnfinishedModelDownloads = value;
   }
 }
 

@@ -31,7 +31,9 @@ export type ModelSourceItem = {
   SHA256?: string;
   url?: string;
   downloadUrl?: string;
+  isComplete?: boolean;
   isLocal?: boolean;
+  localSize?: number;
   lastUpdatedMs?: number;
   hide?: boolean;
 };
@@ -125,7 +127,7 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
   createTableColumn<ModelSourceItem>({
     columnId: 'actions',
     compare: (a, b) => {
-      return a.isLocal ? -1 : 1;
+      return a.isComplete ? -1 : 1;
     },
     renderHeaderCell: () => {
       const { t } = useTranslation();
@@ -140,12 +142,12 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
         <TableCellLayout>
           <div className="flex gap-1">
             {
-              item.isLocal &&
+              item.isComplete &&
               <ToolTipButton desc={t('Open Folder')} icon={<Folder20Regular />} onClick={() => {
                 OpenFileFolder(`${commonStore.settings.customModelsPath}/${item.name}`, true);
               }} />
             }
-            {item.downloadUrl && !item.isLocal &&
+            {item.downloadUrl && !item.isComplete &&
               <ToolTipButton desc={t('Download')} icon={<ArrowDownload20Regular />} onClick={() => {
                 toastWithButton(`${t('Downloading')} ${item.name}`, t('Check'), () => {
                     navigate({ pathname: '/downloads' });
@@ -203,7 +205,7 @@ export const Models: FC = observer(() => {
             <div className="overflow-y-auto overflow-x-hidden">
               <DataGridBody<ModelSourceItem>>
                 {({ item, rowId }) => (
-                  (!item.hide || item.isLocal) &&
+                  (!item.hide || item.isComplete) &&
                   <DataGridRow<ModelSourceItem> key={rowId}>
                     {({ renderCell }) => (
                       <DataGridCell>{renderCell(item)}</DataGridCell>

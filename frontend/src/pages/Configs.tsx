@@ -224,12 +224,12 @@ export const Configs: FC = observer(() => {
                           modelName: data.value
                         });
                       }}>
-                      {!commonStore.modelSourceList.find(item => item.name === selectedConfig.modelParameters.modelName)?.isLocal
+                      {!commonStore.modelSourceList.find(item => item.name === selectedConfig.modelParameters.modelName)?.isComplete
                         && <option key={-1}
                           value={selectedConfig.modelParameters.modelName}>{selectedConfig.modelParameters.modelName}
                         </option>}
                       {commonStore.modelSourceList.map((modelItem, index) =>
-                        modelItem.isLocal && <option key={index} value={modelItem.name}>{modelItem.name}</option>
+                        modelItem.isComplete && <option key={index} value={modelItem.name}>{modelItem.name}</option>
                       )}
                     </Select>
                     <ToolTipButton desc={t('Manage Models')} icon={<DataUsageSettings20Regular />} onClick={() => {

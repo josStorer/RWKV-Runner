@@ -16,7 +16,7 @@ export async function startup() {
   await GetPlatform().then(p => commonStore.setPlatform(p as Platform));
   await initConfig();
 
-  initCache().then(initRemoteText); // depends on config customModelsPath
+  initCache(true).then(initRemoteText); // depends on config customModelsPath
 
   if (commonStore.settings.autoUpdatesCheck) // depends on config settings
     checkUpdate();
@@ -58,11 +58,11 @@ async function initConfig() {
   });
 }
 
-async function initCache() {
+async function initCache(initUnfinishedModels: boolean) {
   await ReadJson('cache.json').then((cacheData: Cache) => {
     if (cacheData.depComplete)
       commonStore.setDepComplete(cacheData.depComplete);
   }).catch(() => {
   });
-  await refreshModels(false);
+  await refreshModels(false, initUnfinishedModels);
 }
