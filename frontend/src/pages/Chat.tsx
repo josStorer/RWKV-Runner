@@ -409,7 +409,7 @@ const ChatPanel: FC = observer(() => {
                   OpenFileFolder(path, false);
                 });
             }).catch(e => {
-              toast(t('Error') + ' - ' + e.message || e, { type: 'error', autoClose: 2500 });
+              toast(t('Error') + ' - ' + (e.message || e), { type: 'error', autoClose: 2500 });
             });
           }} />
       </div>

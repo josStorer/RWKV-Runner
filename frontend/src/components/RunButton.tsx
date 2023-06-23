@@ -207,11 +207,21 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
                 toast(t('Loading Model'), { type: 'info' });
               } else {
                 commonStore.setStatus({ status: ModelStatus.Offline });
-                toast(t('Failed to switch model') + ' - ' + await r.text(), { type: 'error' });
+                const error = await r.text();
+                const errorsMap = {
+                  'not enough memory': 'Memory is not enough, try to increase the virtual memory or use a smaller model.',
+                  'not compiled with CUDA': 'Bad pytorch version, please reinstall pytorch with cuda.',
+                  'invalid header or archive is corrupted': 'The model file is corrupted, please download again.',
+                  'no NVIDIA driver': 'Found no NVIDIA driver, please install the latest driver.',
+                  'CUDA out of memory': 'VRAM is not enough, please reduce stored layers or use a lower precision in Configs page.'
+                };
+                const matchedError = Object.entries(errorsMap).find(([key, _]) => error.includes(key));
+                const message = matchedError ? t(matchedError[1]) : error;
+                toast(t('Failed to switch model') + ' - ' + message, { autoClose: 5000, type: 'error' });
               }
             }).catch((e) => {
               commonStore.setStatus({ status: ModelStatus.Offline });
-              toast(t('Failed to switch model') + ' - ' + e.message || e, { type: 'error' });
+              toast(t('Failed to switch model') + ' - ' + (e.message || e), { type: 'error' });
             });
           }
         }).catch(() => {

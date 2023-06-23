@@ -270,7 +270,7 @@ export async function checkUpdate(notifyEvenLatest: boolean = false) {
                                 }
                               );
                             }).catch((e) => {
-                              toast(t('Update Error') + ' - ' + e.message || e, {
+                              toast(t('Update Error') + ' - ' + (e.message || e), {
                                 type: 'error',
                                 position: 'bottom-left',
                                 autoClose: false
@@ -302,7 +302,7 @@ export async function checkUpdate(notifyEvenLatest: boolean = false) {
       }
     }
   ).catch((e) => {
-    toast(t('Updates Check Error') + ' - ' + e.message || e, { type: 'error', position: 'bottom-left' });
+    toast(t('Updates Check Error') + ' - ' + (e.message || e), { type: 'error', position: 'bottom-left' });
   });
 }
 
