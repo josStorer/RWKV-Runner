@@ -328,7 +328,8 @@ export const Configs: FC = observer(() => {
                 }
                 {
                   displayStrategyImg &&
-                  <img style={{ width: '80vh', height: 'auto', zIndex: 100 }} className="fixed left-0 top-0"
+                  <img style={{ width: '80vh', height: 'auto', zIndex: 100 }}
+                    className="fixed left-0 top-0 rounded-xl select-none"
                     src={commonStore.settings.language === 'zh' ? strategyZhImg : strategyImg} />
                 }
                 {
