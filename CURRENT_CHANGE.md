@@ -1,7 +1,8 @@
 ## Changes
 
-- exact avoidOverflow
-- adjust MoreUtilsButton
+- Chat Presets (Experimental)
+- display models that have not been fully downloaded in Downloads page, even if the program is restarted
+- improve error messages
 
 ## Install
 
