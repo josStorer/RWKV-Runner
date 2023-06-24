@@ -19,6 +19,7 @@
     "mobx": "^6.9.0",
     "mobx-react-lite": "^3.4.3",
     "react": "^18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
     "react-i18next": "^12.2.2",
     "react-markdown": "^8.0.7",
@@ -34,6 +35,7 @@
   },
   "devDependencies": {
     "@types/react": "^18.2.6",
+    "@types/react-beautiful-dnd": "^13.1.4",
     "@types/react-dom": "^18.2.4",
     "@types/uuid": "^9.0.1",
     "@vitejs/plugin-react": "^4.0.0",

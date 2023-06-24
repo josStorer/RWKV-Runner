@@ -28,10 +28,10 @@ import { FC, useEffect, useState } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router';
 import { pages } from './pages';
 import { useMediaQuery } from 'usehooks-ts';
-import { ToastContainer } from 'react-toastify';
 import commonStore from './stores/commonStore';
 import { observer } from 'mobx-react-lite';
 import { useTranslation } from 'react-i18next';
+import { CustomToastContainer } from './components/CustomToastContainer';
 
 const App: FC = observer(() => {
   const { t } = useTranslation();
@@ -87,21 +87,7 @@ const App: FC = observer(() => {
           </Routes>
         </div>
       </div>
-      <ToastContainer
-        style={{
-          width: '350px'
-        }}
-        position="top-center"
-        autoClose={4000}
-        pauseOnHover={true}
-        hideProgressBar={true}
-        newestOnTop={true}
-        closeOnClick={false}
-        rtl={false}
-        pauseOnFocusLoss={false}
-        draggable={false}
-        theme={commonStore.settings.darkMode ? 'dark' : 'light'}
-      />
+      <CustomToastContainer />
     </FluentProvider>
   );
 });

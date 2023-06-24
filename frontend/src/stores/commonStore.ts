@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx';
-import { getUserLanguage, isSystemLightMode, saveConfigs } from '../utils';
+import { getUserLanguage, isSystemLightMode, saveConfigs, savePresets } from '../utils';
 import { WindowSetDarkTheme, WindowSetLightTheme } from '../../wailsjs/runtime';
 import manifest from '../../../manifest.json';
 import { ModelConfig } from '../pages/Configs';
@@ -13,6 +13,7 @@ import i18n from 'i18next';
 import { CompletionPreset } from '../pages/Completion';
 import { defaultModelConfigs, defaultModelConfigsMac } from '../pages/defaultModelConfigs';
 import commonStore from './commonStore';
+import { Preset } from '../pages/PresetsManager/PresetsButton';
 
 export enum ModelStatus {
   Offline,
@@ -38,12 +39,16 @@ class CommonStore {
   };
   depComplete: boolean = false;
   platform: Platform = 'windows';
+  // presets manager
+  editingPreset: Preset | null = null;
+  presets: Preset[] = [];
   // home
   introduction: IntroductionContent = manifest.introduction;
   // chat
   currentInput: string = '';
   conversation: Conversation = {};
   conversationOrder: string[] = [];
+  activePreset: Preset | null = null;
   // completion
   completionPreset: CompletionPreset | null = null;
   completionGenerating: boolean = false;
@@ -201,6 +206,20 @@ class CommonStore {
 
   setLastUnfinishedModelDownloads(value: DownloadStatus[]) {
     this.lastUnfinishedModelDownloads = value;
+  }
+
+  setEditingPreset(value: Preset) {
+    this.editingPreset = value;
+  }
+
+  setPresets(value: Preset[], savePreset: boolean = true) {
+    this.presets = value;
+    if (savePreset)
+      savePresets();
+  }
+
+  setActivePreset(value: Preset) {
+    this.activePreset = value;
   }
 }
 

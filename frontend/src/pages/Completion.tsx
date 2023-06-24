@@ -10,6 +10,7 @@ import commonStore, { ModelStatus } from '../stores/commonStore';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { toast } from 'react-toastify';
 import { DialogButton } from '../components/DialogButton';
+import { PresetsButton } from './PresetsManager/PresetsButton';
 
 export type CompletionParams = Omit<ApiParameters, 'apiPort'> & {
   stop: string,
@@ -261,19 +262,23 @@ const CompletionPanel: FC = observer(() => {
         onChange={(e) => setPrompt(e.target.value)}
       />
       <div className="flex flex-col gap-1 max-h-48 sm:max-w-sm sm:max-h-full">
-        <Dropdown style={{ minWidth: 0 }}
-          value={t(commonStore.completionPreset!.name)!}
-          selectedOptions={[commonStore.completionPreset!.name]}
-          onOptionSelect={(_, data) => {
-            if (data.optionValue) {
-              setPreset(defaultPresets.find((preset) => preset.name === data.optionValue)!);
+        <div className="flex gap-2">
+          <Dropdown style={{ minWidth: 0 }}
+            className="grow"
+            value={t(commonStore.completionPreset!.name)!}
+            selectedOptions={[commonStore.completionPreset!.name]}
+            onOptionSelect={(_, data) => {
+              if (data.optionValue) {
+                setPreset(defaultPresets.find((preset) => preset.name === data.optionValue)!);
+              }
+            }}>
+            {
+              defaultPresets.map((preset) =>
+                <Option key={preset.name} value={preset.name}>{t(preset.name)!}</Option>)
             }
-          }}>
-          {
-            defaultPresets.map((preset) =>
-              <Option key={preset.name} value={preset.name}>{t(preset.name)!}</Option>)
-          }
-        </Dropdown>
+          </Dropdown>
+          <PresetsButton tab="Completion" />
+        </div>
         <div className="flex flex-col gap-1 overflow-x-hidden overflow-y-auto p-1">
           <Labeled flex breakline label={t('Max Response Token')}
             desc={t('By default, the maximum number of tokens that can be answered in a single response, it can be changed by the user by specifying API parameters.')}

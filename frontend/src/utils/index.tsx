@@ -206,6 +206,10 @@ export const saveCache = async () => {
   return SaveJson('cache.json', data);
 };
 
+export const savePresets = async () => {
+  return SaveJson('presets.json', commonStore.presets);
+};
+
 export function getUserLanguage(): Language {
   // const l = navigator.language.toLowerCase();
   // if (['zh-hk', 'zh-mo', 'zh-tw', 'zh-cht', 'zh-hant'].includes(l)) return 'zhHant'

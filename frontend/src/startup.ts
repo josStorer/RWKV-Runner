@@ -5,6 +5,7 @@ import { getStatus } from './apis';
 import { EventsOn } from '../wailsjs/runtime';
 import manifest from '../../manifest.json';
 import { defaultModelConfigs, defaultModelConfigsMac } from './pages/defaultModelConfigs';
+import { Preset } from './pages/PresetsManager/PresetsButton';
 
 export async function startup() {
   downloadProgramFiles();
@@ -13,6 +14,8 @@ export async function startup() {
       commonStore.setDownloadList(data);
   });
 
+  initPresets();
+  
   await GetPlatform().then(p => commonStore.setPlatform(p as Platform));
   await initConfig();
 
@@ -65,4 +68,11 @@ async function initCache(initUnfinishedModels: boolean) {
   }).catch(() => {
   });
   await refreshModels(false, initUnfinishedModels);
+}
+
+async function initPresets() {
+  await ReadJson('presets.json').then((presets: Preset[]) => {
+    commonStore.setPresets(presets, false);
+  }).catch(() => {
+  });
 }

@@ -7,7 +7,6 @@ import { v4 as uuid } from 'uuid';
 import classnames from 'classnames';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { KebabHorizontalIcon, PencilIcon, SyncIcon, TrashIcon } from '@primer/octicons-react';
-import { ConversationPair } from '../utils/get-conversation-pairs';
 import logo from '../assets/images/logo.jpg';
 import MarkdownRender from '../components/MarkdownRender';
 import { ToolTipButton } from '../components/ToolTipButton';
@@ -19,6 +18,8 @@ import { WorkHeader } from '../components/WorkHeader';
 import { DialogButton } from '../components/DialogButton';
 import { OpenFileFolder, OpenSaveFileDialog } from '../../wailsjs/go/backend_golang/App';
 import { toastWithButton } from '../utils';
+import { PresetsButton } from './PresetsManager/PresetsButton';
+import { useMediaQuery } from 'usehooks-ts';
 
 export const userName = 'M E';
 export const botName = 'A I';
@@ -47,6 +48,13 @@ export type MessageItem = {
 
 export type Conversation = {
   [uuid: string]: MessageItem
+}
+
+export type Role = 'assistant' | 'user' | 'system';
+
+export type ConversationMessage = {
+  role: Role;
+  content: string;
 }
 
 let chatSseController: AbortController | null = null;
@@ -123,7 +131,7 @@ const ChatMessageItem: FC<{
     <Avatar
       color={messageItem.color}
       name={messageItem.sender}
-      image={messageItem.avatarImg ? { src: messageItem.avatarImg } : undefined}
+      image={(commonStore.activePreset && messageItem.sender === botName) ? { src: commonStore.activePreset.avatarImg } : messageItem.avatarImg ? { src: messageItem.avatarImg } : undefined}
     />
     <div
       className={classnames(
@@ -175,6 +183,7 @@ const ChatPanel: FC = observer(() => {
   const { t } = useTranslation();
   const bodyRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const mq = useMediaQuery('(min-width: 640px)');
   const port = commonStore.getCurrentModelConfig().apiParameters.apiPort;
 
   let lastMessageId: string;
@@ -255,7 +264,7 @@ const ChatPanel: FC = observer(() => {
     let endIndex = endUuid ? (commonStore.conversationOrder.indexOf(endUuid) + (includeEndUuid ? 1 : 0)) : commonStore.conversationOrder.length;
     let targetRange = commonStore.conversationOrder.slice(startIndex, endIndex);
 
-    const messages: ConversationPair[] = [];
+    const messages: ConversationMessage[] = [];
     targetRange.forEach((uuid, index) => {
       if (uuid === welcomeUuid)
         return;
@@ -357,10 +366,11 @@ const ChatPanel: FC = observer(() => {
           <ChatMessageItem key={uuid} uuid={uuid} onSubmit={onSubmit} />
         )}
       </div>
-      <div className="flex items-end gap-2">
+      <div className={classnames('flex items-end', mq ? 'gap-2' : '')}>
+        <PresetsButton tab="Chat" size={mq ? 'large' : 'small'} shape="circular" appearance="subtle" />
         <DialogButton tooltip={t('Clear')}
           icon={<Delete28Regular />}
-          size="large" shape="circular" appearance="subtle" title={t('Clear')}
+          size={mq ? 'large' : 'small'} shape="circular" appearance="subtle" title={t('Clear')}
           contentText={t('Are you sure you want to clear the conversation? It cannot be undone.')}
           onConfirm={() => {
             if (generating)
@@ -370,6 +380,7 @@ const ChatPanel: FC = observer(() => {
           }} />
         <Textarea
           ref={inputRef}
+          style={{ minWidth: 0 }}
           className="grow"
           resize="vertical"
           placeholder={t('Type your message here')!}
@@ -379,7 +390,7 @@ const ChatPanel: FC = observer(() => {
         />
         <ToolTipButton desc={generating ? t('Stop') : t('Send')}
           icon={generating ? <RecordStop28Regular /> : <ArrowCircleUp28Regular />}
-          size="large" shape="circular" appearance="subtle"
+          size={mq ? 'large' : 'small'} shape="circular" appearance="subtle"
           onClick={(e) => {
             if (generating) {
               chatSseController?.abort();
@@ -395,7 +406,7 @@ const ChatPanel: FC = observer(() => {
           }} />
         <ToolTipButton desc={t('Save')}
           icon={<Save28Regular />}
-          size="large" shape="circular" appearance="subtle"
+          size={mq ? 'large' : 'small'} shape="circular" appearance="subtle"
           onClick={() => {
             let savedContent: string = '';
             commonStore.conversationOrder.forEach((uuid) => {
