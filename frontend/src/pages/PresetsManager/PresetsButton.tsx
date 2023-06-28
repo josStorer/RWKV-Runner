@@ -248,10 +248,9 @@ export const ChatPresetEditor: FC<{
                     name: data.value
                   });
                 }} />
-                <ToolTipButton desc={!editingMessages ? t('Edit Messages') : t('Go Back')}
-                  icon={!editingMessages ? <Chat20Regular /> : <Dismiss20Regular />} onClick={() => {
+                <Button onClick={() => {
                   setEditingMessages(!editingMessages);
-                }} />
+                }}>{!editingMessages ? t('Edit Messages') : t('Go Back')}</Button>
               </div>
             } />
           {

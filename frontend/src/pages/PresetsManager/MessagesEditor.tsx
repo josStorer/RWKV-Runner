@@ -122,7 +122,7 @@ export const MessagesEditor: FC = observer(() => {
                             }}>
                             <Option value="user">{t('user')!}</Option>
                             <Option value="assistant">{t('assistant')!}</Option>
-                            <Option value="system">{t('system')!}</Option>
+                            {/* TODO <Option value="system">{t('system')!}</Option>*/}
                           </Dropdown>
                           <Textarea resize="vertical" className="grow" value={item.content}
                             style={{ minWidth: 0, borderRadius: 0 }}
