@@ -12,7 +12,6 @@ from routes import state_cache
 
 
 END_OF_TEXT = 0
-END_OF_LINE = 187
 END_OF_LINE_DOUBLE = 535
 
 
@@ -39,12 +38,14 @@ class RWKV:
         self.penalty_alpha_frequency = 0.4
 
         self.interface = ":"
-        if "rwkv_vocab" in tokens_path:
+        if "world" in self.name.lower():
             self.user = "Question"
             self.bot = "Answer"
+            self.END_OF_LINE = 11
         else:
             self.user = "Bob"
             self.bot = "Alice"
+            self.END_OF_LINE = 187
 
         self.AVOID_REPEAT_TOKENS = []
         AVOID_REPEAT = "，：？！"
@@ -86,8 +87,10 @@ The following is a coherent verbose detailed conversation between a girl named {
 
     # Model only saw '\n\n' as [187, 187] before, but the tokenizer outputs [535] for it at the end
     def fix_tokens(self, tokens):
+        if "world" in self.name.lower():
+            return tokens
         if len(tokens) > 0 and tokens[-1] == END_OF_LINE_DOUBLE:
-            tokens = tokens[:-1] + [END_OF_LINE, END_OF_LINE]
+            tokens = tokens[:-1] + [self.END_OF_LINE, self.END_OF_LINE]
         return tokens
 
     def run_rnn(self, _tokens: List[str], newline_adj: int = 0):
@@ -101,7 +104,7 @@ The following is a coherent verbose detailed conversation between a girl named {
             )
             tokens = tokens[self.CHUNK_LEN :]
 
-        out[END_OF_LINE] += newline_adj  # adjust \n probability
+        out[self.END_OF_LINE] += newline_adj  # adjust \n probability
 
         if self.model_tokens[-1] in self.AVOID_REPEAT_TOKENS:
             out[self.model_tokens[-1]] = -999999999
@@ -313,6 +316,8 @@ The following is a coherent verbose detailed conversation between a girl named {
             if token == END_OF_TEXT:
                 yield response, "", prompt_token_len, completion_token_len
                 break
+            for xxx in occurrence:
+                occurrence[xxx] *= 0.996
             if token not in occurrence:
                 occurrence[token] = 1
             else:
