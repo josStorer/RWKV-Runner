@@ -191,6 +191,18 @@
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-3B-v1-20230619-ctx4096.pth"
     },
     {
+      "name": "RWKV-4-World-CHNtuned-3B-v1-20230625-ctx4096.pth",
+      "desc": {
+        "en": "Global Languages 3B v1 Enhanced Chinese",
+        "zh": "全球语言 3B v1 中文增强"
+      },
+      "size": 6125597618,
+      "SHA256": "7d3b5a4d0e9780a3e3d9ae7c2defbe8564d240bc9a238db4ba70cfb66dc33888",
+      "lastUpdated": "2023-06-25T14:53:27",
+      "url": "https://huggingface.co/BlinkDL/rwkv-4-world/blob/main/RWKV-4-World-CHNtuned-3B-v1-20230625-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-CHNtuned-3B-v1-20230625-ctx4096.pth"
+    },
+    {
       "name": "RWKV-4-World-7B-v1-OnlyForTest_30%_trained-20230529-ctx4096.pth",
       "desc": {
         "en": "Global Languages 7B v1 Test",
@@ -265,7 +277,20 @@
       "SHA256": "dfb56e8ba32907cb47df83c8d702e7f350d9ad50a59b71b031da4681637588b3",
       "lastUpdated": "2023-06-19T01:28:17",
       "url": "https://huggingface.co/BlinkDL/rwkv-4-world/blob/main/RWKV-4-World-7B-v1-OnlyForTest_84%25_trained-20230618-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-7B-v1-OnlyForTest_84%25_trained-20230618-ctx4096.pth"
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-7B-v1-OnlyForTest_84%25_trained-20230618-ctx4096.pth",
+      "hide": true
+    },
+    {
+      "name": "RWKV-4-World-7B-v1-20230626-ctx4096.pth",
+      "desc": {
+        "en": "Global Languages 7B v1",
+        "zh": "全球语言 7B v1"
+      },
+      "size": 15035393586,
+      "SHA256": "db7b011247a0fe4389e1d76e3d6a904185f85d509c8a44ad18bf401094efc293",
+      "lastUpdated": "2023-06-26T16:40:04",
+      "url": "https://huggingface.co/BlinkDL/rwkv-4-world/blob/main/RWKV-4-World-7B-v1-20230626-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-7B-v1-20230626-ctx4096.pth"
     },
     {
       "name": "RWKV-4-Novel-7B-v1-ChnEng-ChnPro-20230410-ctx4096.pth",
