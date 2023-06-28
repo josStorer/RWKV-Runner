@@ -188,5 +188,6 @@
   "New": "新建",
   "user": "用户",
   "assistant": "AI",
-  "system": "系统"
+  "system": "系统",
+  "Regenerate": "重新生成"
 }

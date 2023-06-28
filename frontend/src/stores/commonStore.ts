@@ -52,6 +52,7 @@ class CommonStore {
   // completion
   completionPreset: CompletionPreset | null = null;
   completionGenerating: boolean = false;
+  completionSubmittedPrompt: string = '';
   // configs
   currentModelConfigIndex: number = 0;
   modelConfigs: ModelConfig[] = [];
@@ -220,6 +221,10 @@ class CommonStore {
 
   setActivePreset(value: Preset) {
     this.activePreset = value;
+  }
+
+  setCompletionSubmittedPrompt(value: string) {
+    this.completionSubmittedPrompt = value;
   }
 }
 

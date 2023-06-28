@@ -11,6 +11,8 @@ import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { toast } from 'react-toastify';
 import { DialogButton } from '../components/DialogButton';
 import { PresetsButton } from './PresetsManager/PresetsButton';
+import { ToolTipButton } from '../components/ToolTipButton';
+import { ArrowSync20Regular } from '@fluentui/react-icons';
 
 export type CompletionParams = Omit<ApiParameters, 'apiPort'> & {
   stop: string,
@@ -150,6 +152,7 @@ const CompletionPanel: FC = observer(() => {
   }, []);
 
   const setPreset = (preset: CompletionPreset) => {
+    commonStore.setCompletionSubmittedPrompt(t(preset.prompt));
     commonStore.setCompletionPreset({
       ...preset,
       prompt: t(preset.prompt)
@@ -181,6 +184,8 @@ const CompletionPanel: FC = observer(() => {
   };
 
   const onSubmit = (prompt: string) => {
+    commonStore.setCompletionSubmittedPrompt(prompt);
+
     if (commonStore.status.status === ModelStatus.Offline && !commonStore.settings.apiUrl) {
       toast(t('Please click the button in the top right corner to start the model'), { type: 'warning' });
       commonStore.setCompletionGenerating(false);
@@ -259,7 +264,10 @@ const CompletionPanel: FC = observer(() => {
         ref={inputRef}
         className="grow"
         value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
+        onChange={(e) => {
+          commonStore.setCompletionSubmittedPrompt(e.target.value);
+          setPrompt(e.target.value);
+        }}
       />
       <div className="flex flex-col gap-1 max-h-48 sm:max-w-sm sm:max-h-full">
         <div className="flex gap-2">
@@ -368,6 +376,12 @@ const CompletionPanel: FC = observer(() => {
         </div>
         <div className="grow" />
         <div className="flex justify-between gap-2">
+          <ToolTipButton desc={t('Regenerate')} icon={<ArrowSync20Regular />} onClick={() => {
+            completionSseController?.abort();
+            commonStore.setCompletionGenerating(true);
+            setPrompt(commonStore.completionSubmittedPrompt);
+            onSubmit(commonStore.completionSubmittedPrompt);
+          }} />
           <DialogButton className="grow" text={t('Reset')} title={t('Reset')}
             contentText={t('Are you sure you want to reset this page? It cannot be undone.')}
             onConfirm={() => {
