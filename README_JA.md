@@ -13,7 +13,7 @@
 [![license][license-image]][license-url]
 [![release][release-image]][release-url]
 
-English | [简体中文](README_ZH.md) | 日本語
+[English](README.md) | [简体中文](README_ZH.md) | 日本語
 
 ### インストール
 
