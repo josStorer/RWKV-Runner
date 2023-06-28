@@ -12,7 +12,7 @@ API兼容的接口，这意味着一切ChatGPT客户端都是RWKV客户端。
 [![license][license-image]][license-url]
 [![release][release-image]][release-url]
 
-[English](README.md) | 简体中文
+[English](README.md) | 简体中文 | [日本語](README_JA.md)
 
 ### 安装
 

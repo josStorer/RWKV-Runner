@@ -6,69 +6,59 @@
 
 <div align="center">
 
-This project aims to eliminate the barriers of using large language models by automating everything for you. All you
-need is a lightweight executable program of just a few megabytes. Additionally, this project provides an interface
-compatible with the OpenAI API, which means that every ChatGPT client is an RWKV client.
+このプロジェクトは、すべてを自動化することで、大規模な言語モデルを使用する際の障壁をなくすことを目的としています。必要なのは、
+わずか数メガバイトの軽量な実行プログラムだけです。さらに、このプロジェクトは OpenAI API と互換性のあるインターフェイスを提供しており、
+すべての ChatGPT クライアントは RWKV クライアントであることを意味します。
 
 [![license][license-image]][license-url]
 [![release][release-image]][release-url]
 
-English | [简体中文](README_ZH.md) | [日本語](README_JA.md)
+English | [简体中文](README_ZH.md) | 日本語
 
-### Install
+### インストール
 
 [![Windows][Windows-image]][Windows-url]
 [![MacOS][MacOS-image]][MacOS-url]
 [![Linux][Linux-image]][Linux-url]
 
-[FAQs](https://github.com/josStorer/RWKV-Runner/wiki/FAQs) | [Preview](#Preview) | [Download][download-url] | [Server-Deploy-Examples](https://github.com/josStorer/RWKV-Runner/tree/master/deploy-examples)
+[FAQs](https://github.com/josStorer/RWKV-Runner/wiki/FAQs) | [プレビュー](#Preview) | [ダウンロード][download-url] | [サーバーデプロイ例](https://github.com/josStorer/RWKV-Runner/tree/master/deploy-examples)
 
 [license-image]: http://img.shields.io/badge/license-MIT-blue.svg
-
 [license-url]: https://github.com/josStorer/RWKV-Runner/blob/master/LICENSE
-
 [release-image]: https://img.shields.io/github/release/josStorer/RWKV-Runner.svg
-
 [release-url]: https://github.com/josStorer/RWKV-Runner/releases/latest
-
 [download-url]: https://github.com/josStorer/RWKV-Runner/releases
-
 [Windows-image]: https://img.shields.io/badge/-Windows-blue?logo=windows
-
 [Windows-url]: https://github.com/josStorer/RWKV-Runner/blob/master/build/windows/Readme_Install.txt
-
 [MacOS-image]: https://img.shields.io/badge/-MacOS-black?logo=apple
-
 [MacOS-url]: https://github.com/josStorer/RWKV-Runner/blob/master/build/darwin/Readme_Install.txt
-
 [Linux-image]: https://img.shields.io/badge/-Linux-black?logo=linux
-
 [Linux-url]: https://github.com/josStorer/RWKV-Runner/blob/master/build/linux/Readme_Install.txt
 
 </div>
 
-#### Default configs has enabled custom CUDA kernel acceleration, which is much faster and consumes much less VRAM. If you encounter possible compatibility issues, go to the Configs page and turn off `Use Custom CUDA kernel to Accelerate`.
+#### デフォルトの設定はカスタム CUDA カーネルアクセラレーションを有効にしています。互換性の問題が発生する可能性がある場合は、コンフィグページに移動し、`Use Custom CUDA kernel to Accelerate` をオフにしてください。
 
-#### If Windows Defender claims this is a virus, you can try downloading [v1.0.8](https://github.com/josStorer/RWKV-Runner/releases/tag/v1.0.8)/[v1.0.9](https://github.com/josStorer/RWKV-Runner/releases/tag/v1.0.9) and letting it update automatically to the latest version, or add it to the trusted list.
+#### Windows Defender がこれをウイルスだと主張する場合は、[v1.0.8](https://github.com/josStorer/RWKV-Runner/releases/tag/v1.0.8) / [v1.0.9](https://github.com/josStorer/RWKV-Runner/releases/tag/v1.0.9) をダウンロードして最新版に自動更新させるか、信頼済みリストに追加してみてください。
 
-#### For different tasks, adjusting API parameters can achieve better results. For example, for translation tasks, you can try setting Temperature to 1 and Top_P to 0.3.
+#### 異なるタスクについては、API パラメータを調整することで、より良い結果を得ることができます。例えば、翻訳タスクの場合、Temperature を 1 に、Top_P を 0.3 に設定してみてください。
 
-## Features
+## 特徴
 
-- RWKV model management and one-click startup
-- Fully compatible with the OpenAI API, making every ChatGPT client an RWKV client. After starting the model,
-  open http://127.0.0.1:8000/docs to view more details.
-- Automatic dependency installation, requiring only a lightweight executable program
-- Configs with 2G to 32G VRAM are included, works well on almost all computers
-- User-friendly chat and completion interaction interface included
-- Easy-to-understand and operate parameter configuration
-- Built-in model conversion tool
-- Built-in download management and remote model inspection
-- Multilingual localization
-- Theme switching
-- Automatic updates
+- RWKV モデル管理とワンクリック起動
+- OpenAI API と完全に互換性があり、すべての ChatGPT クライアントを RWKV クライアントにします。モデル起動後、
+  http://127.0.0.1:8000/docs を開いて詳細をご覧ください。
+- 依存関係の自動インストールにより、軽量な実行プログラムのみを必要とします
+- 2G から 32G の VRAM のコンフィグが含まれており、ほとんどのコンピュータで動作します
+- ユーザーフレンドリーなチャットと完成インタラクションインターフェースを搭載
+- 分かりやすく操作しやすいパラメータ設定
+- 内蔵モデル変換ツール
+- ダウンロード管理とリモートモデル検査機能内蔵
+- 多言語ローカライズ
+- テーマ切り替え
+- 自動アップデート
 
-## API Concurrency Stress Testing
+## API 同時実行ストレステスト
 
 ```bash
 ab -p body.json -T application/json -c 20 -n 100 -l http://127.0.0.1:8000/chat/completions
@@ -87,9 +77,9 @@ body.json:
 }
 ```
 
-## Embeddings API Example
+## 埋め込み API の例
 
-If you are using langchain, just use `OpenAIEmbeddings(openai_api_base="http://127.0.0.1:8000", openai_api_key="sk-")`
+LangChain を使用している場合は、`OpenAIEmbeddings(openai_api_base="http://127.0.0.1:8000", openai_api_key="sk-")`を使用してください
 
 ```python
 import numpy as np
@@ -128,44 +118,44 @@ for i in np.argsort(embeddings_cos_sim)[::-1]:
 
 ## Todo
 
-- [ ] Model training functionality
-- [x] CUDA operator int8 acceleration
-- [x] macOS support
-- [x] Linux support
-- [ ] Local State Cache DB
+- [ ] モデル学習機能
+- [x] CUDA オペレータ int8 アクセラレーション
+- [x] macOS サポート
+- [x] Linux サポート
+- [ ] ローカルステートキャッシュ DB
 
-## Related Repositories:
+## 関連リポジトリ:
 
 - RWKV-4-Raven: https://huggingface.co/BlinkDL/rwkv-4-raven/tree/main
 - ChatRWKV: https://github.com/BlinkDL/ChatRWKV
 - RWKV-LM: https://github.com/BlinkDL/RWKV-LM
 
-## Preview
+## プレビュー
 
-### Homepage
+### ホームページ
 
 ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/60efbb65-29e3-4346-a597-5bdcd099251c)
 
-### Chat
+### チャット
 
 ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/6cde9c45-51bb-4dee-b1fe-746862448520)
 
-### Completion
+### 補完
 
 ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/52f47f92-d21d-4cd7-b04e-d6f9af937a97)
 
-### Configuration
+### コンフィグ
 
 ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/93270a68-9d6d-4247-b6a3-e543c65a876b)
 
-### Model Management
+### モデル管理
 
 ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/6f96fdd3-fdf5-4b78-af80-2afbd1ad173b)
 
-### Download Management
+### ダウンロード管理
 
 ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/6982e7ee-bace-4a88-bb47-92379185bf9d)
 
-### Settings
+### 設定
 
 ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/b3b2ab46-344c-4f04-b066-1503f776eeb9)
