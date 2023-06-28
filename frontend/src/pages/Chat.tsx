@@ -409,9 +409,16 @@ const ChatPanel: FC = observer(() => {
           size={mq ? 'large' : 'small'} shape="circular" appearance="subtle"
           onClick={() => {
             let savedContent: string = '';
+            const isWorldModel = commonStore.getCurrentModelConfig().modelParameters.modelName.toLowerCase().includes('world');
+            const user = isWorldModel ? 'Question' : 'Bob';
+            const bot = isWorldModel ? 'Answer' : 'Alice';
             commonStore.conversationOrder.forEach((uuid) => {
+              if (uuid === welcomeUuid)
+                return;
               const messageItem = commonStore.conversation[uuid];
-              savedContent += `**${messageItem.sender}**\n - ${new Date(messageItem.time).toLocaleString()}\n\n${messageItem.content}\n\n`;
+              if (messageItem.type !== MessageType.Error) {
+                savedContent += `${messageItem.sender === userName ? user : bot}: ${messageItem.content}\n\n`;
+              }
             });
 
             OpenSaveFileDialog('*.md', 'conversation.md', savedContent).then((path) => {
