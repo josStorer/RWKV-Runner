@@ -1,8 +1,11 @@
 ## Changes
 
-- Chat Presets (Experimental)
-- display models that have not been fully downloaded in Downloads page, even if the program is restarted
-- improve error messages
+- upgrade to rwkv 0.8.0
+- change i18n
+- Completion Regenerate Button
+- change chat saving format
+- update manifest
+- chore
 
 ## Install
 
