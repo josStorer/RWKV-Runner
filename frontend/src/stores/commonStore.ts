@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx';
-import { getUserLanguage, isSystemLightMode, saveConfigs, savePresets } from '../utils';
+import { getUserLanguage, isSystemLightMode, saveCache, saveConfigs, savePresets } from '../utils';
 import { WindowSetDarkTheme, WindowSetLightTheme } from '../../wailsjs/runtime';
 import manifest from '../../../manifest.json';
 import { ModelConfig } from '../pages/Configs';
@@ -169,8 +169,10 @@ class CommonStore {
     this.about = value;
   };
 
-  setDepComplete = (value: boolean) => {
+  setDepComplete = (value: boolean, inSaveCache: boolean = true) => {
     this.depComplete = value;
+    if (inSaveCache)
+      saveCache();
   };
 
   setDownloadList = (value: DownloadStatus[]) => {

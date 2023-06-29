@@ -63,8 +63,8 @@ async function initConfig() {
 
 async function initCache(initUnfinishedModels: boolean) {
   await ReadJson('cache.json').then((cacheData: Cache) => {
-    if (cacheData.depComplete)
-      commonStore.setDepComplete(cacheData.depComplete);
+    if (cacheData.version === manifest.version && cacheData.depComplete)
+      commonStore.setDepComplete(cacheData.depComplete, false);
   }).catch(() => {
   });
   await refreshModels(false, initUnfinishedModels);

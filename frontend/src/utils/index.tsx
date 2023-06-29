@@ -19,6 +19,7 @@ import { ModelConfig, ModelParameters } from '../pages/Configs';
 import { DownloadStatus } from '../pages/Downloads';
 
 export type Cache = {
+  version: string
   models: ModelSourceItem[]
   depComplete: boolean
 }
@@ -200,6 +201,7 @@ export const saveConfigs = async () => {
 
 export const saveCache = async () => {
   const data: Cache = {
+    version: manifest.version,
     models: commonStore.modelSourceList,
     depComplete: commonStore.depComplete
   };

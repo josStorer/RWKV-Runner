@@ -12,7 +12,7 @@ import { Button } from '@fluentui/react-components';
 import { observer } from 'mobx-react-lite';
 import { exit, getStatus, readRoot, switchModel, updateConfig } from '../apis';
 import { toast } from 'react-toastify';
-import { getStrategy, getSupportedCustomCudaFile, saveCache, toastWithButton } from '../utils';
+import { getStrategy, getSupportedCustomCudaFile, toastWithButton } from '../utils';
 import { useTranslation } from 'react-i18next';
 import { ToolTipButton } from './ToolTipButton';
 import { Play16Regular, Stop16Regular } from '@fluentui/react-icons';
@@ -102,7 +102,6 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
         commonStore.setDepComplete(true);
         if (commonStore.platform === 'windows')
           CopyFile('./backend-python/wkv_cuda_utils/wkv_cuda_model.py', './py310/Lib/site-packages/rwkv/model.py');
-        saveCache();
       }
 
       const currentModelSource = commonStore.modelSourceList.find(item => item.name === modelName);

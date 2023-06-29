@@ -166,6 +166,7 @@ export const Settings: FC = observer(() => {
                   content={
                     <Input className="grow" placeholder="./py310/python" value={commonStore.settings.customPythonPath}
                       onChange={(e, data) => {
+                        commonStore.setDepComplete(false);
                         commonStore.setSettings({
                           customPythonPath: data.value
                         });
