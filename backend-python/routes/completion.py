@@ -325,7 +325,7 @@ async def completions(body: CompletionBody, request: Request):
 
 
 class EmbeddingsBody(BaseModel):
-    input: str | List[str] | List[List[int]]
+    input: str or List[str] or List[List[int]]
     model: str = "rwkv"
     encoding_format: str = None
     fast_mode: bool = False
