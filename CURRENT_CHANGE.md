@@ -1,11 +1,8 @@
 ## Changes
 
-- upgrade to rwkv 0.8.0
-- change i18n
-- Completion Regenerate Button
-- change chat saving format
-- update manifest
-- chore
+- improve compatibility for python3.8/3.9
+- improve dependency checking when manually updated
+- improve glibc compatibility for linux
 
 ## Install
 
