@@ -37,6 +37,7 @@ func main() {
 		backend.CopyEmbed(finetune)
 		os.Mkdir("models", os.ModePerm)
 		os.Mkdir("lora-models", os.ModePerm)
+		os.Mkdir("finetune/json2binidx_tool/data", os.ModePerm)
 	}
 
 	f, err := os.Create("lora-models/train_log.txt")

@@ -17,10 +17,13 @@
 
 """Processing data for pretraining."""
 
-import argparse
-import multiprocessing
 import os
 import sys
+
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+
+import argparse
+import multiprocessing
 
 import lm_dataformat as lmd
 import numpy as np
