@@ -288,6 +288,7 @@ const LoraFinetune: FC = observer(() => {
         });
         WslCommand(`export cnMirror=${commonStore.settings.cnMirror ? '1' : '0'} ` +
           `&& export loadModel=models/${loraParams.baseModel} ` +
+          `&& sed -i 's/\\r$//' finetune/install-wsl-dep-and-train.sh ` +
           `&& chmod +x finetune/install-wsl-dep-and-train.sh && ./finetune/install-wsl-dep-and-train.sh ` +
           (loraParams.baseModel ? `--load_model models/${loraParams.baseModel} ` : '') +
           (loraParams.loraLoad ? `--lora_load lora-models/${loraParams.loraLoad} ` : '') +
