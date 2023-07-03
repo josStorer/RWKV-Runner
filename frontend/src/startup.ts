@@ -1,11 +1,12 @@
 import commonStore, { Platform } from './stores/commonStore';
-import { GetPlatform, ReadJson } from '../wailsjs/go/backend_golang/App';
+import { GetPlatform, ListDirFiles, ReadJson } from '../wailsjs/go/backend_golang/App';
 import { Cache, checkUpdate, downloadProgramFiles, LocalConfig, refreshModels } from './utils';
 import { getStatus } from './apis';
 import { EventsOn } from '../wailsjs/runtime';
 import manifest from '../../manifest.json';
 import { defaultModelConfigs, defaultModelConfigsMac } from './pages/defaultModelConfigs';
 import { Preset } from './pages/PresetsManager/PresetsButton';
+import { wslHandler } from './pages/Train';
 
 export async function startup() {
   downloadProgramFiles();
@@ -13,9 +14,14 @@ export async function startup() {
     if (data)
       commonStore.setDownloadList(data);
   });
+  EventsOn('wsl', wslHandler);
+  EventsOn('wslerr', (e) => {
+    console.log(e);
+  });
+  initLoraModels();
 
   initPresets();
-  
+
   await GetPlatform().then(p => commonStore.setPlatform(p as Platform));
   await initConfig();
 
@@ -50,6 +56,9 @@ async function initConfig() {
     if (configData.settings)
       commonStore.setSettings(configData.settings, false);
 
+    if (configData.dataProcessParams)
+      commonStore.setDataProcessParams(configData.dataProcessParams, false);
+
     if (configData.modelConfigs && Array.isArray(configData.modelConfigs))
       commonStore.setModelConfigs(configData.modelConfigs, false);
     else throw new Error('Invalid config.json');
@@ -74,5 +83,26 @@ async function initPresets() {
   await ReadJson('presets.json').then((presets: Preset[]) => {
     commonStore.setPresets(presets, false);
   }).catch(() => {
+  });
+}
+
+async function initLoraModels() {
+  const refreshLoraModels = () => {
+    ListDirFiles('lora-models').then((data) => {
+      if (!data) return;
+      const loraModels = [];
+      for (const f of data) {
+        if (!f.isDir && f.name.endsWith('.pth')) {
+          loraModels.push(f.name);
+        }
+      }
+      commonStore.setLoraModels(loraModels);
+    });
+  };
+
+  refreshLoraModels();
+  EventsOn('fsnotify', (data: string) => {
+    if (data.includes('lora-models'))
+      refreshLoraModels();
   });
 }

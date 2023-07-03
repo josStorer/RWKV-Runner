@@ -95,27 +95,64 @@ async def eval_rwkv(
             return
         await asyncio.sleep(0.1)
     else:
-        completion_lock.acquire()
-        if await request.is_disconnected():
-            completion_lock.release()
+        with completion_lock:
+            if await request.is_disconnected():
+                requests_num = requests_num - 1
+                print(f"{request.client} Stop Waiting (Lock)")
+                quick_log(
+                    request,
+                    None,
+                    "Stop Waiting (Lock). RequestsNum: " + str(requests_num),
+                )
+                return
+            set_rwkv_config(model, global_var.get(global_var.Model_Config))
+            set_rwkv_config(model, body)
+
+            response, prompt_tokens, completion_tokens = "", 0, 0
+            for response, delta, prompt_tokens, completion_tokens in model.generate(
+                prompt,
+                stop=stop,
+            ):
+                if await request.is_disconnected():
+                    break
+                if stream:
+                    yield json.dumps(
+                        {
+                            "object": "chat.completion.chunk"
+                            if chat_mode
+                            else "text_completion",
+                            "response": response,
+                            "model": model.name,
+                            "choices": [
+                                {
+                                    "delta": {"content": delta},
+                                    "index": 0,
+                                    "finish_reason": None,
+                                }
+                                if chat_mode
+                                else {
+                                    "text": delta,
+                                    "index": 0,
+                                    "finish_reason": None,
+                                }
+                            ],
+                        }
+                    )
+            # torch_gc()
             requests_num = requests_num - 1
-            print(f"{request.client} Stop Waiting (Lock)")
+            if await request.is_disconnected():
+                print(f"{request.client} Stop Waiting")
+                quick_log(
+                    request,
+                    body,
+                    response + "\nStop Waiting. RequestsNum: " + str(requests_num),
+                )
+                return
             quick_log(
                 request,
-                None,
-                "Stop Waiting (Lock). RequestsNum: " + str(requests_num),
+                body,
+                response + "\nFinished. RequestsNum: " + str(requests_num),
             )
-            return
-        set_rwkv_config(model, global_var.get(global_var.Model_Config))
-        set_rwkv_config(model, body)
-
-        response, prompt_tokens, completion_tokens = "", 0, 0
-        for response, delta, prompt_tokens, completion_tokens in model.generate(
-            prompt,
-            stop=stop,
-        ):
-            if await request.is_disconnected():
-                break
             if stream:
                 yield json.dumps(
                     {
@@ -126,86 +163,47 @@ async def eval_rwkv(
                         "model": model.name,
                         "choices": [
                             {
-                                "delta": {"content": delta},
+                                "delta": {},
                                 "index": 0,
-                                "finish_reason": None,
+                                "finish_reason": "stop",
                             }
                             if chat_mode
                             else {
-                                "text": delta,
+                                "text": "",
                                 "index": 0,
-                                "finish_reason": None,
+                                "finish_reason": "stop",
                             }
                         ],
                     }
                 )
-        # torch_gc()
-        requests_num = requests_num - 1
-        completion_lock.release()
-        if await request.is_disconnected():
-            print(f"{request.client} Stop Waiting")
-            quick_log(
-                request,
-                body,
-                response + "\nStop Waiting. RequestsNum: " + str(requests_num),
-            )
-            return
-        quick_log(
-            request,
-            body,
-            response + "\nFinished. RequestsNum: " + str(requests_num),
-        )
-        if stream:
-            yield json.dumps(
-                {
-                    "object": "chat.completion.chunk"
-                    if chat_mode
-                    else "text_completion",
+                yield "[DONE]"
+            else:
+                yield {
+                    "object": "chat.completion" if chat_mode else "text_completion",
                     "response": response,
                     "model": model.name,
+                    "usage": {
+                        "prompt_tokens": prompt_tokens,
+                        "completion_tokens": completion_tokens,
+                        "total_tokens": prompt_tokens + completion_tokens,
+                    },
                     "choices": [
                         {
-                            "delta": {},
+                            "message": {
+                                "role": "assistant",
+                                "content": response,
+                            },
                             "index": 0,
                             "finish_reason": "stop",
                         }
                         if chat_mode
                         else {
-                            "text": "",
+                            "text": response,
                             "index": 0,
                             "finish_reason": "stop",
                         }
                     ],
                 }
-            )
-            yield "[DONE]"
-        else:
-            yield {
-                "object": "chat.completion" if chat_mode else "text_completion",
-                "response": response,
-                "model": model.name,
-                "usage": {
-                    "prompt_tokens": prompt_tokens,
-                    "completion_tokens": completion_tokens,
-                    "total_tokens": prompt_tokens + completion_tokens,
-                },
-                "choices": [
-                    {
-                        "message": {
-                            "role": "assistant",
-                            "content": response,
-                        },
-                        "index": 0,
-                        "finish_reason": "stop",
-                    }
-                    if chat_mode
-                    else {
-                        "text": response,
-                        "index": 0,
-                        "finish_reason": "stop",
-                    }
-                ],
-            }
 
 
 @router.post("/v1/chat/completions")
@@ -372,81 +370,88 @@ async def embeddings(body: EmbeddingsBody, request: Request):
             return
         await asyncio.sleep(0.1)
     else:
-        completion_lock.acquire()
-        if await request.is_disconnected():
-            completion_lock.release()
-            requests_num = requests_num - 1
-            print(f"{request.client} Stop Waiting (Lock)")
-            quick_log(
-                request,
-                None,
-                "Stop Waiting (Lock). RequestsNum: " + str(requests_num),
-            )
-            return
+        with completion_lock:
+            if await request.is_disconnected():
+                requests_num = requests_num - 1
+                print(f"{request.client} Stop Waiting (Lock)")
+                quick_log(
+                    request,
+                    None,
+                    "Stop Waiting (Lock). RequestsNum: " + str(requests_num),
+                )
+                return
 
-        base64_format = False
-        if body.encoding_format == "base64":
-            base64_format = True
+            base64_format = False
+            if body.encoding_format == "base64":
+                base64_format = True
 
-        embeddings = []
-        prompt_tokens = 0
-        if type(body.input) == list:
-            if type(body.input[0]) == list:
-                encoding = tiktoken.model.encoding_for_model("text-embedding-ada-002")
-                for i in range(len(body.input)):
-                    if await request.is_disconnected():
-                        break
-                    input = encoding.decode(body.input[i])
-                    embedding, token_len = model.get_embedding(input, body.fast_mode)
-                    prompt_tokens = prompt_tokens + token_len
-                    if base64_format:
-                        embedding = embedding_base64(embedding)
-                    embeddings.append(embedding)
-            else:
-                for i in range(len(body.input)):
-                    if await request.is_disconnected():
-                        break
-                    embedding, token_len = model.get_embedding(
-                        body.input[i], body.fast_mode
+            embeddings = []
+            prompt_tokens = 0
+            if type(body.input) == list:
+                if type(body.input[0]) == list:
+                    encoding = tiktoken.model.encoding_for_model(
+                        "text-embedding-ada-002"
                     )
-                    prompt_tokens = prompt_tokens + token_len
-                    if base64_format:
-                        embedding = embedding_base64(embedding)
-                    embeddings.append(embedding)
-        else:
-            embedding, prompt_tokens = model.get_embedding(body.input, body.fast_mode)
-            if base64_format:
-                embedding = embedding_base64(embedding)
-            embeddings.append(embedding)
+                    for i in range(len(body.input)):
+                        if await request.is_disconnected():
+                            break
+                        input = encoding.decode(body.input[i])
+                        embedding, token_len = model.get_embedding(
+                            input, body.fast_mode
+                        )
+                        prompt_tokens = prompt_tokens + token_len
+                        if base64_format:
+                            embedding = embedding_base64(embedding)
+                        embeddings.append(embedding)
+                else:
+                    for i in range(len(body.input)):
+                        if await request.is_disconnected():
+                            break
+                        embedding, token_len = model.get_embedding(
+                            body.input[i], body.fast_mode
+                        )
+                        prompt_tokens = prompt_tokens + token_len
+                        if base64_format:
+                            embedding = embedding_base64(embedding)
+                        embeddings.append(embedding)
+            else:
+                embedding, prompt_tokens = model.get_embedding(
+                    body.input, body.fast_mode
+                )
+                if base64_format:
+                    embedding = embedding_base64(embedding)
+                embeddings.append(embedding)
 
-        requests_num = requests_num - 1
-        completion_lock.release()
-        if await request.is_disconnected():
-            print(f"{request.client} Stop Waiting")
+            requests_num = requests_num - 1
+            if await request.is_disconnected():
+                print(f"{request.client} Stop Waiting")
+                quick_log(
+                    request,
+                    None,
+                    "Stop Waiting. RequestsNum: " + str(requests_num),
+                )
+                return
             quick_log(
                 request,
                 None,
-                "Stop Waiting. RequestsNum: " + str(requests_num),
+                "Finished. RequestsNum: " + str(requests_num),
             )
-            return
-        quick_log(
-            request,
-            None,
-            "Finished. RequestsNum: " + str(requests_num),
-        )
 
-        ret_data = [
-            {
-                "object": "embedding",
-                "index": i,
-                "embedding": embedding,
+            ret_data = [
+                {
+                    "object": "embedding",
+                    "index": i,
+                    "embedding": embedding,
+                }
+                for i, embedding in enumerate(embeddings)
+            ]
+
+            return {
+                "object": "list",
+                "data": ret_data,
+                "model": model.name,
+                "usage": {
+                    "prompt_tokens": prompt_tokens,
+                    "total_tokens": prompt_tokens,
+                },
             }
-            for i, embedding in enumerate(embeddings)
-        ]
-
-        return {
-            "object": "list",
-            "data": ret_data,
-            "model": model.name,
-            "usage": {"prompt_tokens": prompt_tokens, "total_tokens": prompt_tokens},
-        }

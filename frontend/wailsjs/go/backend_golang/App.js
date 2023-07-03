@@ -10,6 +10,10 @@ export function ContinueDownload(arg1) {
   return window['go']['backend_golang']['App']['ContinueDownload'](arg1);
 }
 
+export function ConvertData(arg1, arg2, arg3, arg4) {
+  return window['go']['backend_golang']['App']['ConvertData'](arg1, arg2, arg3, arg4);
+}
+
 export function ConvertModel(arg1, arg2, arg3, arg4) {
   return window['go']['backend_golang']['App']['ConvertModel'](arg1, arg2, arg3, arg4);
 }
@@ -46,6 +50,10 @@ export function ListDirFiles(arg1) {
   return window['go']['backend_golang']['App']['ListDirFiles'](arg1);
 }
 
+export function MergeLora(arg1, arg2, arg3, arg4, arg5, arg6) {
+  return window['go']['backend_golang']['App']['MergeLora'](arg1, arg2, arg3, arg4, arg5, arg6);
+}
+
 export function OpenFileFolder(arg1, arg2) {
   return window['go']['backend_golang']['App']['OpenFileFolder'](arg1, arg2);
 }
@@ -80,4 +88,28 @@ export function StartServer(arg1, arg2, arg3) {
 
 export function UpdateApp(arg1) {
   return window['go']['backend_golang']['App']['UpdateApp'](arg1);
+}
+
+export function WslCommand(arg1) {
+  return window['go']['backend_golang']['App']['WslCommand'](arg1);
+}
+
+export function WslEnable(arg1) {
+  return window['go']['backend_golang']['App']['WslEnable'](arg1);
+}
+
+export function WslInstallUbuntu() {
+  return window['go']['backend_golang']['App']['WslInstallUbuntu']();
+}
+
+export function WslIsEnabled() {
+  return window['go']['backend_golang']['App']['WslIsEnabled']();
+}
+
+export function WslStart() {
+  return window['go']['backend_golang']['App']['WslStart']();
+}
+
+export function WslStop() {
+  return window['go']['backend_golang']['App']['WslStop']();
 }

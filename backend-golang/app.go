@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"runtime"
 
+	"github.com/fsnotify/fsnotify"
 	"github.com/minio/selfupdate"
 	wruntime "github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -41,6 +42,27 @@ func (a *App) OnStartup(ctx context.Context) {
 	}
 
 	a.downloadLoop()
+
+	watcher, err := fsnotify.NewWatcher()
+	if err == nil {
+		watcher.Add("./lora-models")
+		watcher.Add("./models")
+		go func() {
+			for {
+				select {
+				case event, ok := <-watcher.Events:
+					if !ok {
+						return
+					}
+					wruntime.EventsEmit(ctx, "fsnotify", event.Name)
+				case _, ok := <-watcher.Errors:
+					if !ok {
+						return
+					}
+				}
+			}
+		}()
+	}
 }
 
 func (a *App) UpdateApp(url string) (broken bool, err error) {

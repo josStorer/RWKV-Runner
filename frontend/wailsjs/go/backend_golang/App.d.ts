@@ -6,6 +6,8 @@ export function AddToDownloadList(arg1:string,arg2:string):Promise<void>;
 
 export function ContinueDownload(arg1:string):Promise<void>;
 
+export function ConvertData(arg1:string,arg2:string,arg3:string,arg4:string):Promise<string>;
+
 export function ConvertModel(arg1:string,arg2:string,arg3:string,arg4:string):Promise<string>;
 
 export function CopyFile(arg1:string,arg2:string):Promise<void>;
@@ -24,6 +26,8 @@ export function InstallPyDep(arg1:string,arg2:boolean):Promise<string>;
 
 export function ListDirFiles(arg1:string):Promise<Array<backend_golang.FileInfo>>;
 
+export function MergeLora(arg1:string,arg2:boolean,arg3:number,arg4:string,arg5:string,arg6:string):Promise<string>;
+
 export function OpenFileFolder(arg1:string,arg2:boolean):Promise<void>;
 
 export function OpenSaveFileDialog(arg1:string,arg2:string,arg3:string):Promise<string>;
@@ -41,3 +45,15 @@ export function SaveJson(arg1:string,arg2:any):Promise<void>;
 export function StartServer(arg1:string,arg2:number,arg3:string):Promise<string>;
 
 export function UpdateApp(arg1:string):Promise<boolean>;
+
+export function WslCommand(arg1:string):Promise<void>;
+
+export function WslEnable(arg1:boolean):Promise<void>;
+
+export function WslInstallUbuntu():Promise<void>;
+
+export function WslIsEnabled():Promise<void>;
+
+export function WslStart():Promise<void>;
+
+export function WslStop():Promise<void>;

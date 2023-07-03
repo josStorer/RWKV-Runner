@@ -17,6 +17,7 @@ import { Language, Languages, SettingsType } from '../pages/Settings';
 import { ModelSourceItem } from '../pages/Models';
 import { ModelConfig, ModelParameters } from '../pages/Configs';
 import { DownloadStatus } from '../pages/Downloads';
+import { DataProcessParameters, LoraFinetuneParameters } from '../pages/Train';
 
 export type Cache = {
   version: string
@@ -28,7 +29,9 @@ export type LocalConfig = {
   modelSourceManifestList: string
   currentModelConfigIndex: number
   modelConfigs: ModelConfig[]
-  settings: SettingsType
+  settings: SettingsType,
+  dataProcessParams: DataProcessParameters,
+  loraFinetuneParams: LoraFinetuneParameters
 }
 
 export async function refreshBuiltInModels(readCache: boolean = false) {
@@ -194,7 +197,9 @@ export const saveConfigs = async () => {
     modelSourceManifestList: commonStore.modelSourceManifestList,
     currentModelConfigIndex: commonStore.currentModelConfigIndex,
     modelConfigs: commonStore.modelConfigs,
-    settings: commonStore.settings
+    settings: commonStore.settings,
+    dataProcessParams: commonStore.dataProcessParams,
+    loraFinetuneParams: commonStore.loraFinetuneParams
   };
   return SaveJson('config.json', data);
 };

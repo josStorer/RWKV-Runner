@@ -31,6 +31,38 @@ func (a *App) ConvertModel(python string, modelPath string, strategy string, out
 	return Cmd(python, "./backend-python/convert_model.py", "--in", modelPath, "--out", outPath, "--strategy", strategy)
 }
 
+func (a *App) ConvertData(python string, input string, outputPrefix string, vocab string) (string, error) {
+	var err error
+	if python == "" {
+		python, err = GetPython()
+	}
+	if err != nil {
+		return "", err
+	}
+	tokenizerType := "HFTokenizer"
+	if strings.Contains(vocab, "rwkv_vocab_v20230424") {
+		tokenizerType = "RWKVTokenizer"
+	}
+	return Cmd(python, "./finetune/json2binidx_tool/tools/preprocess_data.py", "--input", input, "--output-prefix", outputPrefix, "--vocab", vocab,
+		"--tokenizer-type", tokenizerType, "--dataset-impl", "mmap", "--append-eod")
+}
+
+func (a *App) MergeLora(python string, useGpu bool, loraAlpha int, baseModel string, loraPath string, outputPath string) (string, error) {
+	var err error
+	if python == "" {
+		python, err = GetPython()
+	}
+	if err != nil {
+		return "", err
+	}
+	args := []string{python, "./finetune/lora/merge_lora.py"}
+	if useGpu {
+		args = append(args, "--use-gpu")
+	}
+	args = append(args, strconv.Itoa(loraAlpha), baseModel, loraPath, outputPath)
+	return Cmd(args...)
+}
+
 func (a *App) DepCheck(python string) error {
 	var err error
 	if python == "" {

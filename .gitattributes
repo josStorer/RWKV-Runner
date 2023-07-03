@@ -3,4 +3,6 @@ backend-python/wkv_cuda_utils/** linguist-vendored
 backend-python/get-pip.py linguist-vendored
 backend-python/convert_model.py linguist-vendored
 build/** linguist-vendored
+finetune/lora/** linguist-vendored
+finetune/json2binidx_tool/** linguist-vendored
 frontend/wailsjs/** linguist-generated

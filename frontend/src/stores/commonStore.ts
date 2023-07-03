@@ -14,6 +14,8 @@ import { CompletionPreset } from '../pages/Completion';
 import { defaultModelConfigs, defaultModelConfigsMac } from '../pages/defaultModelConfigs';
 import commonStore from './commonStore';
 import { Preset } from '../pages/PresetsManager/PresetsButton';
+import { DataProcessParameters, LoraFinetuneParameters } from '../pages/Train';
+import { ChartData } from 'chart.js';
 
 export enum ModelStatus {
   Offline,
@@ -29,6 +31,8 @@ export type Status = {
 }
 
 export type Platform = 'windows' | 'darwin' | 'linux';
+
+const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
 class CommonStore {
   // global
@@ -62,6 +66,40 @@ class CommonStore {
   // downloads
   downloadList: DownloadStatus[] = [];
   lastUnfinishedModelDownloads: DownloadStatus[] = [];
+  // train
+  wslStdout: string = '';
+  chartTitle: string = '';
+  chartData: ChartData<'line', (number | null)[], string> = { labels: [], datasets: [] };
+  loraModels: string[] = [];
+  dataProcessParams: DataProcessParameters = {
+    dataPath: 'finetune/data/sample.jsonl',
+    vocabPath: 'backend-python/rwkv_pip/rwkv_vocab_v20230424.txt'
+  };
+  loraFinetuneParams: LoraFinetuneParameters = {
+    baseModel: '',
+    ctxLen: 1024,
+    epochSteps: 1000,
+    epochCount: 20,
+    epochBegin: 0,
+    epochSave: 5,
+    microBsz: 1,
+    accumGradBatches: 8,
+    preFfn: false,
+    headQk: false,
+    lrInit: '5e-5',
+    lrFinal: '5e-5',
+    warmupSteps: 0,
+    beta1: 0.9,
+    beta2: 0.999,
+    adamEps: '1e-8',
+    devices: 1,
+    precision: 'bf16',
+    gradCp: false,
+    loraR: 8,
+    loraAlpha: 32,
+    loraDropout: 0.01,
+    loraLoad: ''
+  };
   // settings
   advancedCollapsed: boolean = true;
   settings: SettingsType = {
@@ -227,6 +265,34 @@ class CommonStore {
 
   setCompletionSubmittedPrompt(value: string) {
     this.completionSubmittedPrompt = value;
+  }
+
+  setWslStdout(value: string) {
+    this.wslStdout = value;
+  }
+
+  setDataProcessParams(value: DataProcessParameters, saveConfig: boolean = true) {
+    this.dataProcessParams = value;
+    if (saveConfig)
+      saveConfigs();
+  }
+
+  setLoraFinetuneParameters(value: LoraFinetuneParameters, saveConfig: boolean = true) {
+    this.loraFinetuneParams = value;
+    if (saveConfig)
+      saveConfigs();
+  }
+
+  setChartTitle(value: string) {
+    this.chartTitle = value;
+  }
+
+  setChartData(value: ChartData<'line', (number | null)[], string>) {
+    this.chartData = value;
+  }
+
+  setLoraModels(value: string[]) {
+    this.loraModels = value;
   }
 }
 

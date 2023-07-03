@@ -1,0 +1,7 @@
+{"text": "1:This is the first document."}
+{"text": "2:Hello\nWorld"}
+{"text": "3:1+1=2\n1+2=3\n2+2=4"}
+{"text": "4:You will be training the GPT version because it's paralleziable and faster to train."}
+{"text": "5:Read the inference code in src/model.py and try using the final hidden state(.xx .aa .bb)"}
+{"text": "6:You can fine-tune the model with longer ctxLen and it can quickly adapt to longer ctxLens."}
+{"text": "7:Consider RWKV 14B. The state has 200 vectors, that is, 5 vectors for each block: fp16 (xx), fp32 (aa), fp32 (bb), fp32 (pp), fp16 (xx)."}

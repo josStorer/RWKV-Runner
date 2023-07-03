@@ -26,12 +26,22 @@ var cyacInfo embed.FS
 //go:embed backend-python
 var py embed.FS
 
+//go:embed finetune
+var finetune embed.FS
+
 func main() {
 	if buildInfo, ok := debug.ReadBuildInfo(); !ok || strings.Contains(buildInfo.String(), "-ldflags") {
 		backend.CopyEmbed(cyac)
 		backend.CopyEmbed(cyacInfo)
 		backend.CopyEmbed(py)
+		backend.CopyEmbed(finetune)
 		os.Mkdir("models", os.ModePerm)
+		os.Mkdir("lora-models", os.ModePerm)
+	}
+
+	f, err := os.Create("lora-models/train_log.txt")
+	if err == nil {
+		f.Close()
 	}
 
 	// Create an instance of the app structure

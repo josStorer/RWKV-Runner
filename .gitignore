@@ -21,3 +21,5 @@ __pycache__
 .DS_Store
 *.log.*
 *.log
+train_log.txt
+finetune/json2binidx_tool/data
