@@ -59,6 +59,9 @@ async function initConfig() {
     if (configData.dataProcessParams)
       commonStore.setDataProcessParams(configData.dataProcessParams, false);
 
+    if (configData.loraFinetuneParams)
+      commonStore.setLoraFinetuneParameters(configData.loraFinetuneParams, false);
+
     if (configData.modelConfigs && Array.isArray(configData.modelConfigs))
       commonStore.setModelConfigs(configData.modelConfigs, false);
     else throw new Error('Invalid config.json');

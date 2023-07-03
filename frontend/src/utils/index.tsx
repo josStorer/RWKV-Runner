@@ -1,6 +1,9 @@
 import {
   AddToDownloadList,
+  CopyFile,
   DeleteFile,
+  DepCheck,
+  InstallPyDep,
   ListDirFiles,
   ReadFileInfo,
   ReadJson,
@@ -8,7 +11,7 @@ import {
   UpdateApp
 } from '../../wailsjs/go/backend_golang/App';
 import manifest from '../../../manifest.json';
-import commonStore from '../stores/commonStore';
+import commonStore, { ModelStatus } from '../stores/commonStore';
 import { toast } from 'react-toastify';
 import { t } from 'i18next';
 import { ToastOptions } from 'react-toastify/dist/types';
@@ -18,6 +21,8 @@ import { ModelSourceItem } from '../pages/Models';
 import { ModelConfig, ModelParameters } from '../pages/Configs';
 import { DownloadStatus } from '../pages/Downloads';
 import { DataProcessParameters, LoraFinetuneParameters } from '../pages/Train';
+import { BrowserOpenURL, WindowShow } from '../../wailsjs/runtime';
+import { NavigateFunction } from 'react-router';
 
 export type Cache = {
   version: string
@@ -346,6 +351,56 @@ export async function checkUpdate(notifyEvenLatest: boolean = false) {
     toast(t('Updates Check Error') + ' - ' + (e.message || e), { type: 'error', position: 'bottom-left' });
   });
 }
+
+export const checkDependencies = async (navigate: NavigateFunction) => {
+  if (!commonStore.depComplete) {
+    let depErrorMsg = '';
+    await DepCheck(commonStore.settings.customPythonPath).catch((e) => {
+      depErrorMsg = e.message || e;
+      WindowShow();
+      if (depErrorMsg === 'python zip not found') {
+        toastWithButton(t('Python target not found, would you like to download it?'), t('Download'), () => {
+          toastWithButton(`${t('Downloading')} Python`, t('Check'), () => {
+            navigate({ pathname: '/downloads' });
+          }, { autoClose: 3000 });
+          AddToDownloadList('python-3.10.11-embed-amd64.zip', 'https://www.python.org/ftp/python/3.10.11/python-3.10.11-embed-amd64.zip');
+        });
+      } else if (depErrorMsg.includes('DepCheck Error')) {
+        if (depErrorMsg.includes('vc_redist')) {
+          toastWithButton(t('Microsoft Visual C++ Redistributable is not installed, would you like to download it?'), t('Download'), () => {
+            BrowserOpenURL('https://aka.ms/vs/16/release/vc_redist.x64.exe');
+          });
+        } else {
+          toast(depErrorMsg, { type: 'info', position: 'bottom-left' });
+          if (commonStore.platform != 'linux')
+            toastWithButton(t('Python dependencies are incomplete, would you like to install them?'), t('Install'), () => {
+              InstallPyDep(commonStore.settings.customPythonPath, commonStore.settings.cnMirror).catch((e) => {
+                const errMsg = e.message || e;
+                toast(t('Error') + ' - ' + errMsg, { type: 'error' });
+              });
+              setTimeout(WindowShow, 1000);
+            }, {
+              autoClose: 8000
+            });
+          else
+            toastWithButton(t('On Linux system, you must manually install python dependencies.'), t('Check'), () => {
+              BrowserOpenURL('https://github.com/josStorer/RWKV-Runner/blob/master/build/linux/Readme_Install.txt');
+            });
+        }
+      } else {
+        toast(depErrorMsg, { type: 'error' });
+      }
+    });
+    if (depErrorMsg) {
+      commonStore.setStatus({ status: ModelStatus.Offline });
+      return false;
+    }
+    commonStore.setDepComplete(true);
+    if (commonStore.platform === 'windows')
+      CopyFile('./backend-python/wkv_cuda_utils/wkv_cuda_model.py', './py310/Lib/site-packages/rwkv/model.py');
+  }
+  return true;
+};
 
 export function toastWithButton(text: string, buttonText: string, onClickButton: () => void, options?: ToastOptions) {
   let triggered = false;

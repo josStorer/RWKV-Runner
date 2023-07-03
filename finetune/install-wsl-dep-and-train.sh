@@ -11,13 +11,13 @@ fi
 if dpkg -s "python3-pip" >/dev/null 2>&1; then
   echo "pip installed"
 else
-  sudo apt install python3-pip
+  sudo apt -y install python3-pip
 fi
 
 if dpkg -s "ninja-build" >/dev/null 2>&1; then
   echo "ninja installed"
 else
-  sudo apt install ninja-build
+  sudo apt -y install ninja-build
 fi
 
 if dpkg -s "cuda" >/dev/null 2>&1; then

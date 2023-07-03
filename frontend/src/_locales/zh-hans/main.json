@@ -195,7 +195,7 @@
   "Please convert data first.": "请先转换数据",
   "Ubuntu is not installed, do you want to install it?": "Ubuntu未安装，是否安装？",
   "Install Ubuntu": "安装Ubuntu",
-  "Please install Ubuntu using Microsoft Store": "请用Microsoft Store安装Ubuntu",
+  "Please install Ubuntu using Microsoft Store, after installation click the Open button in Microsoft Store and then click the Train button": "请用Microsoft Store安装Ubuntu，安装完成后，点击Microsoft Store界面的“打开”按钮，然后点击“训练”按钮",
   "WSL is not enabled, do you want to enable it?": "WSL未启用，是否启用？",
   "Enable WSL": "启用WSL",
   "After installation, please restart your computer to enable WSL": "安装完成后，请重启电脑以启用WSL",
@@ -221,5 +221,7 @@
   "Pre-FFN": "前馈网络预处理",
   "None": "空",
   "Merge model successfully": "合并模型成功",
-  "Convert Data successfully": "数据转换成功"
+  "Convert Data successfully": "数据转换成功",
+  "Please select a LoRA model": "请选择一个LoRA模型",
+  "You are using sample data for training. For formal training, please make sure to create your own jsonl file.": "你正在使用示例数据训练，对于正式训练场合，请务必创建你自己的jsonl训练数据"
 }

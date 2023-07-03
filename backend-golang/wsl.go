@@ -1,3 +1,5 @@
+//go:build windows
+
 package backend_golang
 
 import (
@@ -8,7 +10,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"runtime"
 	"strings"
 	"time"
 
@@ -37,10 +38,6 @@ func isWslRunning() (bool, error) {
 }
 
 func (a *App) WslStart() error {
-	if runtime.GOOS != "windows" {
-		return errors.New("wsl not supported")
-	}
-
 	running, err := isWslRunning()
 	if err != nil {
 		return err
@@ -100,10 +97,6 @@ func (a *App) WslStart() error {
 }
 
 func (a *App) WslCommand(command string) error {
-	if runtime.GOOS != "windows" {
-		return errors.New("wsl not supported")
-	}
-
 	running, err := isWslRunning()
 	if err != nil {
 		return err
@@ -119,10 +112,6 @@ func (a *App) WslCommand(command string) error {
 }
 
 func (a *App) WslStop() error {
-	if runtime.GOOS != "windows" {
-		return errors.New("wsl not supported")
-	}
-
 	running, err := isWslRunning()
 	if err != nil {
 		return err
@@ -142,10 +131,6 @@ func (a *App) WslStop() error {
 }
 
 func (a *App) WslIsEnabled() error {
-	if runtime.GOOS != "windows" {
-		return errors.New("wsl not supported")
-	}
-
 	ex, err := os.Executable()
 	if err != nil {
 		return err
@@ -177,10 +162,6 @@ func (a *App) WslIsEnabled() error {
 }
 
 func (a *App) WslEnable(forceMode bool) error {
-	if runtime.GOOS != "windows" {
-		return errors.New("wsl not supported")
-	}
-
 	cmd := `/online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux`
 	_, err := su.ShellExecute(su.RUNAS, "dism", cmd, `C:\`)
 	if err != nil {
@@ -193,10 +174,6 @@ func (a *App) WslEnable(forceMode bool) error {
 }
 
 func (a *App) WslInstallUbuntu() error {
-	if runtime.GOOS != "windows" {
-		return errors.New("wsl not supported")
-	}
-
-	exec.Command("start", "ms-windows-store://pdp/?ProductId=9PN20MSR04DW").Start()
-	return nil
+	_, err := Cmd("ms-windows-store://pdp/?ProductId=9PN20MSR04DW")
+	return err
 }
