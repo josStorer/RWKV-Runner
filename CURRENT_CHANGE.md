@@ -1,8 +1,7 @@
 ## Changes
 
-- improve compatibility for python3.8/3.9
-- improve dependency checking when manually updated
-- improve glibc compatibility for linux
+- lora finetune (need to be refactored)
+- reduce package size for linux and macos
 
 ## Install
 
