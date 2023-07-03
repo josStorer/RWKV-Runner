@@ -81,6 +81,8 @@ jobs:
           sudo apt-get install upx
           sudo apt-get install build-essential libgtk-3-dev libwebkit2gtk-4.0-dev
           go install github.com/wailsapp/wails/v2/cmd/wails@latest
+          rm -rf ./backend-python/wkv_cuda_utils
+          rm ./backend-python/get-pip.py
           make
           mv build/bin/RWKV-Runner build/bin/RWKV-Runner_linux_x64
 
@@ -98,6 +100,8 @@ jobs:
           go-version: '1.20.5'
       - run: |
           go install github.com/wailsapp/wails/v2/cmd/wails@latest
+          rm -rf ./backend-python/wkv_cuda_utils
+          rm ./backend-python/get-pip.py
           make
           cp build/darwin/Readme_Install.txt build/bin/Readme_Install.txt
           cp build/bin/RWKV-Runner.app/Contents/MacOS/RWKV-Runner build/bin/RWKV-Runner_darwin_universal
