@@ -1,6 +1,7 @@
 ## Changes
 
-- improve lora finetune process (need to be refactored)
+- improve finetune compatibility
+- fix build for macos and linux
 
 ## Install
 
