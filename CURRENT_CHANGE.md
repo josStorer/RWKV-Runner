@@ -1,7 +1,6 @@
 ## Changes
 
-- lora finetune (need to be refactored)
-- reduce package size for linux and macos
+- improve lora finetune process (need to be refactored)
 
 ## Install
 
