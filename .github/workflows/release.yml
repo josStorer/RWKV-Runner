@@ -83,6 +83,8 @@ jobs:
           go install github.com/wailsapp/wails/v2/cmd/wails@latest
           rm -rf ./backend-python/wkv_cuda_utils
           rm ./backend-python/get-pip.py
+          sed -i '1,2d' ./backend-golang/wsl_not_windows.go
+          rm ./backend-golang/wsl.go
           make
           mv build/bin/RWKV-Runner build/bin/RWKV-Runner_linux_x64
 
@@ -102,6 +104,8 @@ jobs:
           go install github.com/wailsapp/wails/v2/cmd/wails@latest
           rm -rf ./backend-python/wkv_cuda_utils
           rm ./backend-python/get-pip.py
+          sed -i '1,2d' ./backend-golang/wsl_not_windows.go
+          rm ./backend-golang/wsl.go
           make
           cp build/darwin/Readme_Install.txt build/bin/Readme_Install.txt
           cp build/bin/RWKV-Runner.app/Contents/MacOS/RWKV-Runner build/bin/RWKV-Runner_darwin_universal
