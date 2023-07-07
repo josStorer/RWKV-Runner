@@ -11,6 +11,7 @@ import {
 } from '@fluentui/react-components';
 import { ToolTipButton } from './ToolTipButton';
 import { useTranslation } from 'react-i18next';
+import MarkdownRender from './MarkdownRender';
 
 export const DialogButton: FC<{
   text?: string | null
@@ -19,12 +20,13 @@ export const DialogButton: FC<{
   className?: string,
   title: string,
   contentText: string,
-  onConfirm: () => void,
+  markdown?: boolean,
+  onConfirm?: () => void,
   size?: 'small' | 'medium' | 'large',
   shape?: 'rounded' | 'circular' | 'square',
   appearance?: 'secondary' | 'primary' | 'outline' | 'subtle' | 'transparent',
 }> = ({
-  text, icon, tooltip, className, title, contentText,
+  text, icon, tooltip, className, title, contentText, markdown,
   onConfirm, size, shape, appearance
 }) => {
   const { t } = useTranslation();
@@ -41,7 +43,11 @@ export const DialogButton: FC<{
       <DialogBody>
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
-          {contentText}
+          {
+            markdown ?
+              <MarkdownRender>{contentText}</MarkdownRender> :
+              contentText
+          }
         </DialogContent>
         <DialogActions>
           <DialogTrigger disableButtonEnhancement>

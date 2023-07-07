@@ -43,6 +43,52 @@ func (a *App) ConvertData(python string, input string, outputPrefix string, voca
 	if strings.Contains(vocab, "rwkv_vocab_v20230424") {
 		tokenizerType = "RWKVTokenizer"
 	}
+
+	input = strings.TrimSuffix(input, "/")
+	if fi, err := os.Stat(input); err == nil && fi.IsDir() {
+		files, err := os.ReadDir(input)
+		if err != nil {
+			return "", err
+		}
+		jsonlFile, err := os.Create(outputPrefix + ".jsonl")
+		if err != nil {
+			return "", err
+		}
+		defer jsonlFile.Close()
+		for _, file := range files {
+			if file.IsDir() || !strings.HasSuffix(file.Name(), ".txt") {
+				continue
+			}
+			txtFile, err := os.Open(input + "/" + file.Name())
+			if err != nil {
+				return "", err
+			}
+			defer txtFile.Close()
+			jsonlFile.WriteString("{\"text\": \"")
+			buf := make([]byte, 1024)
+			for {
+				n, err := txtFile.Read(buf)
+				if err != nil {
+					break
+				}
+				// regex replace \r\n \n \r with \\n
+				jsonlFile.WriteString(
+					strings.ReplaceAll(
+						strings.ReplaceAll(
+							strings.ReplaceAll(
+								strings.ReplaceAll(string(buf[:n]),
+									"\r\n", "\\n"),
+								"\n", "\\n"),
+							"\r", "\\n"),
+						"\n\n", "\\n"))
+			}
+			jsonlFile.WriteString("\"}\n")
+		}
+		input = outputPrefix + ".jsonl"
+	} else if err != nil {
+		return "", err
+	}
+
 	return Cmd(python, "./finetune/json2binidx_tool/tools/preprocess_data.py", "--input", input, "--output-prefix", outputPrefix, "--vocab", vocab,
 		"--tokenizer-type", tokenizerType, "--dataset-impl", "mmap", "--append-eod")
 }

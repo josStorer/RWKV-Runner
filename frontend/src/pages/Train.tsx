@@ -39,6 +39,7 @@ import { Line } from 'react-chartjs-2';
 import { ChartJSOrUndefined } from 'react-chartjs-2/dist/types';
 import { WindowShow } from '../../wailsjs/runtime';
 import { t } from 'i18next';
+import { DialogButton } from '../components/DialogButton';
 
 ChartJS.register(
   CategoryScale,
@@ -400,29 +401,36 @@ const LoraFinetune: FC = observer(() => {
           title={t('Data Process')}
           content={
             <div className="flex flex-col gap-2">
-              <Labeled flex label={t('Data Path')}
-                content={
-                  <div className="grow flex gap-2">
-                    <Input className="grow ml-2" value={dataParams.dataPath}
-                      onChange={(e, data) => {
-                        setDataParams({ dataPath: data.value });
-                      }} />
-                    <ToolTipButton desc={t('Open Folder')} icon={<Folder20Regular />} onClick={() => {
-                      OpenFileFolder(dataParams.dataPath, false);
-                    }} />
-                  </div>
-                } />
+              <div className="flex gap-2 items-center">
+                {t('Data Path')}
+                <Input className="grow" style={{ minWidth: 0 }} value={dataParams.dataPath}
+                  onChange={(e, data) => {
+                    setDataParams({ dataPath: data.value });
+                  }} />
+                <DialogButton text={t('Help')} title={t('Help')} markdown
+                  contentText={t('The data path should be a directory or a file in jsonl format (more formats will be supported in the future).\n\n' +
+                    'When you provide a directory path, all the txt files within that directory will be automatically converted into training data. ' +
+                    'This is commonly used for large-scale training in writing, code generation, or knowledge bases.\n\n' +
+                    'The jsonl format file can be referenced at https://github.com/Abel2076/json2binidx_tool/blob/main/sample.jsonl.\n' +
+                    'You can also write it similar to OpenAI\'s playground format, as shown in https://platform.openai.com/playground/p/default-chat.\n' +
+                    'Even for multi-turn conversations, they must be written in a single line using `\\n` to indicate line breaks. ' +
+                    'If they are different dialogues or topics, they should be written in separate lines.')} />
+                <ToolTipButton desc={t('Open Folder')} icon={<Folder20Regular />} onClick={() => {
+                  OpenFileFolder(dataParams.dataPath, false);
+                }} />
+              </div>
               <div className="flex gap-2 items-center">
                 {t('Vocab Path')}
                 <Input className="grow" style={{ minWidth: 0 }} value={dataParams.vocabPath}
                   onChange={(e, data) => {
                     setDataParams({ vocabPath: data.value });
                   }} />
-                <Button appearance="secondary" size="large" onClick={async () => {
+                <Button appearance="secondary" onClick={async () => {
                   const ok = await checkDependencies(navigate);
                   if (!ok)
                     return;
-                  const outputPrefix = './finetune/json2binidx_tool/data/' + dataParams.dataPath.split(/[\/\\]/).pop()!.split('.')[0];
+                  const outputPrefix = './finetune/json2binidx_tool/data/' +
+                    dataParams.dataPath.replace(/[\/\\]$/, '').split(/[\/\\]/).pop()!.split('.')[0];
                   ConvertData(commonStore.settings.customPythonPath, dataParams.dataPath, outputPrefix, dataParams.vocabPath).then(async () => {
                     if (!await FileExists(outputPrefix + '_text_document.idx')) {
                       toast(t('Failed to convert data') + ' - ' + await GetPyError(), { type: 'error' });
