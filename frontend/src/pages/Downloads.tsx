@@ -1,10 +1,10 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Page } from '../components/Page';
 import { observer } from 'mobx-react-lite';
 import commonStore from '../stores/commonStore';
 import { Divider, Field, ProgressBar } from '@fluentui/react-components';
-import { bytesToGb, bytesToKb, bytesToMb, refreshLocalModels } from '../utils';
+import { bytesToGb, bytesToKb, bytesToMb } from '../utils';
 import { ToolTipButton } from '../components/ToolTipButton';
 import { Folder20Regular, Pause20Regular, Play20Regular } from '@fluentui/react-icons';
 import { AddToDownloadList, OpenFileFolder, PauseDownload } from '../../wailsjs/go/backend_golang/App';
@@ -23,12 +23,6 @@ export type DownloadStatus = {
 
 export const Downloads: FC = observer(() => {
   const { t } = useTranslation();
-  const finishedModelsLen = commonStore.downloadList.filter((status) => status.done && status.name.endsWith('.pth')).length;
-  useEffect(() => {
-    if (finishedModelsLen > 0)
-      refreshLocalModels({ models: commonStore.modelSourceList }, false);
-    console.log('finishedModelsLen:', finishedModelsLen);
-  }, [finishedModelsLen]);
 
   let displayList = commonStore.downloadList.slice();
   const downloadListNames = displayList.map(s => s.name);

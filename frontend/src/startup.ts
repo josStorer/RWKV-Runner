@@ -1,6 +1,6 @@
 import commonStore, { Platform } from './stores/commonStore';
 import { GetPlatform, ListDirFiles, ReadJson } from '../wailsjs/go/backend_golang/App';
-import { Cache, checkUpdate, downloadProgramFiles, LocalConfig, refreshModels } from './utils';
+import { Cache, checkUpdate, downloadProgramFiles, LocalConfig, refreshLocalModels, refreshModels } from './utils';
 import { getStatus } from './apis';
 import { EventsOn } from '../wailsjs/runtime';
 import manifest from '../../manifest.json';
@@ -18,6 +18,7 @@ export async function startup() {
   EventsOn('wslerr', (e) => {
     console.log(e);
   });
+  initLocalModelsNotify();
   initLoraModels();
 
   initPresets();
@@ -107,5 +108,12 @@ async function initLoraModels() {
   EventsOn('fsnotify', (data: string) => {
     if (data.includes('lora-models'))
       refreshLoraModels();
+  });
+}
+
+async function initLocalModelsNotify() {
+  EventsOn('fsnotify', (data: string) => {
+    if (data.includes('models') && !data.includes('lora-models'))
+      refreshLocalModels({ models: commonStore.modelSourceList }, false); //TODO fix bug that only add models
   });
 }
