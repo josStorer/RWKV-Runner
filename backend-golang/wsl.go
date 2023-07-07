@@ -119,8 +119,10 @@ func (a *App) WslStop() error {
 	if !running {
 		return errors.New("wsl not running")
 	}
-	err = cmd.Process.Kill()
-	cmd = nil
+	if cmd != nil {
+		err = cmd.Process.Kill()
+		cmd = nil
+	}
 	// stdin.Close()
 	stdin = nil
 	distro = nil
