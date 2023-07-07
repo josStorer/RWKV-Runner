@@ -49,7 +49,7 @@ ChartJS.register(
 );
 
 const parseLossData = (data: string) => {
-  const regex = /Epoch (\d+):\s+(\d+%)\|[\s\S]*\| (\d+)\/(\d+) \[(\d+:\d+)<(\d+:\d+),\s+(\d+.\d+it\/s), loss=(\d+.\d+),[\s\S]*\]/g;
+  const regex = /Epoch (\d+):\s+(\d+%)\|[\s\S]*\| (\d+)\/(\d+) \[(\d+:\d+)<(\d+:\d+),\s+(\d+.\d+it\/s), loss=(\S+),[\s\S]*\]/g;
   const matches = Array.from(data.matchAll(regex));
   if (matches.length === 0)
     return;
