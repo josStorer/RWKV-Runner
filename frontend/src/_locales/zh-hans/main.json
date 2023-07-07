@@ -223,5 +223,11 @@
   "Merge model successfully": "合并模型成功",
   "Convert Data successfully": "数据转换成功",
   "Please select a LoRA model": "请选择一个LoRA模型",
-  "You are using sample data for training. For formal training, please make sure to create your own jsonl file.": "你正在使用示例数据训练，对于正式训练场合，请务必创建你自己的jsonl训练数据"
+  "You are using sample data for training. For formal training, please make sure to create your own jsonl file.": "你正在使用示例数据训练，对于正式训练场合，请务必创建你自己的jsonl训练数据",
+  "WSL is not running. You may be using an outdated version of WSL, run \"wsl --update\" to update.": "WSL没有运行。你可能正在使用旧版本的WSL，请在cmd执行\"wsl --update\"以更新",
+  "Memory is not enough, try to increase the virtual memory or use a smaller base model.": "内存不足，尝试增加虚拟内存，或使用一个更小规模的基底模型",
+  "VRAM is not enough": "显存不足",
+  "Training data is not enough, reduce context length or add more data for training": "训练数据不足，请减小上下文长度或增加训练数据",
+  "You are using WSL 1 for training, please upgrade to WSL 2. e.g. Run \"wsl --set-version Ubuntu-22.04 2\"": "你正在使用WSL 1进行训练，请升级到WSL 2。例如，运行\"wsl --set-version Ubuntu-22.04 2\"",
+  "Matched CUDA is not installed": "未安装匹配的CUDA"
 }

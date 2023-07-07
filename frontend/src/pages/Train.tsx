@@ -37,6 +37,7 @@ import {
 import { Line } from 'react-chartjs-2';
 import { ChartJSOrUndefined } from 'react-chartjs-2/dist/types';
 import { WindowShow } from '../../wailsjs/runtime';
+import { t } from 'i18next';
 
 ChartJS.register(
   CategoryScale,
@@ -52,12 +53,13 @@ const parseLossData = (data: string) => {
   const regex = /Epoch (\d+):\s+(\d+%)\|[\s\S]*\| (\d+)\/(\d+) \[(\d+:\d+)<(\d+:\d+),\s+(\d+.\d+it\/s), loss=(\S+),[\s\S]*\]/g;
   const matches = Array.from(data.matchAll(regex));
   if (matches.length === 0)
-    return;
+    return false;
   const lastMatch = matches[matches.length - 1];
   const epoch = parseInt(lastMatch[1]);
   const loss = parseFloat(lastMatch[8]);
   commonStore.setChartTitle(`Epoch ${epoch}: ${lastMatch[2]} - ${lastMatch[3]}/${lastMatch[4]} - ${lastMatch[5]}/${lastMatch[6]} - ${lastMatch[7]} Loss=${loss}`);
   addLossDataToChart(epoch, loss);
+  return true;
 };
 
 let chartLine: ChartJSOrUndefined<'line', (number | null)[], string>;
@@ -140,10 +142,36 @@ const loraFinetuneParametersOptions: Array<[key: keyof LoraFinetuneParameters, t
   ['headQk', 'boolean', 'Head QK']
 ];
 
+const showError = (e: any) => {
+  const msg = e.message || e;
+  if (msg === 'wsl not running') {
+    toast(t('WSL is not running. You may be using an outdated version of WSL, run "wsl --update" to update.'), { type: 'error' });
+  } else {
+    toast(t(msg), { type: 'error' });
+  }
+};
+
+const errorsMap = Object.entries({
+  'killed python3 ./finetune/lora/train.py': 'Memory is not enough, try to increase the virtual memory or use a smaller base model.',
+  'cuda out of memory': 'VRAM is not enough',
+  'valueerror: high <= 0': 'Training data is not enough, reduce context length or add more data for training',
+  '+= \'+ptx\'': 'You are using WSL 1 for training, please upgrade to WSL 2. e.g. Run "wsl --set-version Ubuntu-22.04 2"',
+  'cuda_home environment variable is not set': 'Matched CUDA is not installed',
+  'unsupported gpu architecture': 'Matched CUDA is not installed',
+  'error building extension \'fused_adam\'': 'Matched CUDA is not installed'
+});
+
 export const wslHandler = (data: string) => {
   if (data) {
     addWslMessage(data);
-    parseLossData(data);
+    const ok = parseLossData(data);
+    if (!ok)
+      for (const [key, value] of errorsMap) {
+        if (data.toLowerCase().includes(key)) {
+          showError(value);
+          return;
+        }
+      }
   }
 };
 
@@ -188,12 +216,8 @@ const Terminal: FC = observer(() => {
       WslStart().then(() => {
         addWslMessage('WSL> ' + input);
         setInput('');
-        WslCommand(input).catch((e: any) => {
-          toast((e.message || e), { type: 'error' });
-        });
-      }).catch((e: any) => {
-        toast((e.message || e), { type: 'error' });
-      });
+        WslCommand(input).catch(showError);
+      }).catch(showError);
     }
   };
 
@@ -208,9 +232,7 @@ const Terminal: FC = observer(() => {
         <Button onClick={() => {
           WslStop().then(() => {
             toast(t('Command Stopped'), { type: 'success' });
-          }).catch((e: any) => {
-            toast((e.message || e), { type: 'error' });
-          });
+          }).catch(showError);
         }}>
           {t('Stop')}
         </Button>
@@ -256,7 +278,7 @@ const LoraFinetune: FC = observer(() => {
     if (!ok)
       return;
 
-    const convertedDataPath = `./finetune/json2binidx_tool/data/${dataParams.dataPath.split('/').pop()!.split('.')[0]}_text_document`;
+    const convertedDataPath = `./finetune/json2binidx_tool/data/${dataParams.dataPath.split(/[\/\\]/).pop()!.split('.')[0]}_text_document`;
     if (!await FileExists(convertedDataPath + '.idx')) {
       toast(t('Please convert data first.'), { type: 'error' });
       return;
@@ -302,9 +324,7 @@ const LoraFinetune: FC = observer(() => {
           `--beta1 ${loraParams.beta1} --beta2 ${loraParams.beta2} --adam_eps ${loraParams.adamEps} ` +
           `--devices ${loraParams.devices} --precision ${loraParams.precision} ` +
           `--grad_cp ${loraParams.gradCp ? '1' : '0'} ` +
-          `--lora_r ${loraParams.loraR} --lora_alpha ${loraParams.loraAlpha} --lora_dropout ${loraParams.loraDropout}`).catch((e: any) => {
-          toast((e.message || e), { type: 'error' });
-        });
+          `--lora_r ${loraParams.loraR} --lora_alpha ${loraParams.loraAlpha} --lora_dropout ${loraParams.loraDropout}`).catch(showError);
       }).catch(e => {
         const msg = e.message || e;
         if (msg === 'ubuntu not found') {
@@ -332,9 +352,7 @@ const LoraFinetune: FC = observer(() => {
               type: 'info',
               autoClose: false
             });
-          }).catch(e => {
-            toast((e.message || e), { type: 'error' });
-          });
+          }).catch(showError);
         });
       };
 
@@ -343,7 +361,7 @@ const LoraFinetune: FC = observer(() => {
       } else if (msg.includes('wsl.state: The system cannot find the file')) {
         enableWsl(true);
       } else {
-        toast(msg, { type: 'error' });
+        showError(msg);
       }
     });
   };
@@ -399,14 +417,15 @@ const LoraFinetune: FC = observer(() => {
                   onChange={(e, data) => {
                     setDataParams({ vocabPath: data.value });
                   }} />
-                <Button appearance="secondary" size="large" onClick={() => {
+                <Button appearance="secondary" size="large" onClick={async () => {
+                  const ok = await checkDependencies(navigate);
+                  if (!ok)
+                    return;
                   ConvertData(commonStore.settings.customPythonPath, dataParams.dataPath,
-                    './finetune/json2binidx_tool/data/' + dataParams.dataPath.split('/').pop()!.split('.')[0],
+                    './finetune/json2binidx_tool/data/' + dataParams.dataPath.split(/[\/\\]/).pop()!.split('.')[0],
                     dataParams.vocabPath).then(() => {
                     toast(t('Convert Data successfully'), { type: 'success' });
-                  }).catch((e: any) => {
-                    toast((e.message || e), { type: 'error' });
-                  });
+                  }).catch(showError);
                 }}>{t('Convert')}</Button>
               </div>
             </div>
@@ -458,9 +477,7 @@ const LoraFinetune: FC = observer(() => {
                     `models/${loraParams.baseModel}-LoRA-${loraParams.loraLoad}`).then(() => {
                     toast(t('Merge model successfully'), { type: 'success' });
                     refreshLocalModels({ models: commonStore.modelSourceList }, false);
-                  }).catch((e: any) => {
-                    toast((e.message || e), { type: 'error' });
-                  });
+                  }).catch(showError);
                 } else {
                   toast(t('Please select a LoRA model'), { type: 'info' });
                 }
@@ -522,9 +539,7 @@ const LoraFinetune: FC = observer(() => {
         <Button appearance="secondary" size="large" onClick={() => {
           WslStop().then(() => {
             toast(t('Command Stopped'), { type: 'success' });
-          }).catch((e: any) => {
-            toast((e.message || e), { type: 'error' });
-          });
+          }).catch(showError);
         }}>{t('Stop')}</Button>
         <Button appearance="primary" size="large" onClick={StartLoraFinetune}>{t('Train')}</Button>
       </div>
