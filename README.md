@@ -136,9 +136,11 @@ for i in np.argsort(embeddings_cos_sim)[::-1]:
 
 ## Related Repositories:
 
+- RWKV-4-World: https://huggingface.co/BlinkDL/rwkv-4-world/tree/main
 - RWKV-4-Raven: https://huggingface.co/BlinkDL/rwkv-4-raven/tree/main
 - ChatRWKV: https://github.com/BlinkDL/ChatRWKV
 - RWKV-LM: https://github.com/BlinkDL/RWKV-LM
+- RWKV-LM-LoRA: https://github.com/Blealtan/RWKV-LM-LoRA
 
 ## Preview
 
