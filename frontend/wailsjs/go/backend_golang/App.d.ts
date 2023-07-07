@@ -22,6 +22,8 @@ export function FileExists(arg1:string):Promise<boolean>;
 
 export function GetPlatform():Promise<string>;
 
+export function GetPyError():Promise<string>;
+
 export function InstallPyDep(arg1:string,arg2:boolean):Promise<string>;
 
 export function ListDirFiles(arg1:string):Promise<Array<backend_golang.FileInfo>>;

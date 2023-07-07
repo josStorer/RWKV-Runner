@@ -219,13 +219,17 @@ def get_args():
     return p.parse_args()
 
 
-args = get_args()
-if not args.quiet:
-    print(f"** {args}")
+try:
+    args = get_args()
+    if not args.quiet:
+        print(f"** {args}")
 
-RWKV(
-    getattr(args, "in"),
-    args.strategy,
-    verbose=not args.quiet,
-    convert_and_save_and_exit=args.out,
-)
+    RWKV(
+        getattr(args, "in"),
+        args.strategy,
+        verbose=not args.quiet,
+        convert_and_save_and_exit=args.out,
+    )
+except Exception as e:
+    with open("error.txt", "w") as f:
+        f.write(str(e))

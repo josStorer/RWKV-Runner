@@ -42,6 +42,10 @@ export function GetPlatform() {
   return window['go']['backend_golang']['App']['GetPlatform']();
 }
 
+export function GetPyError() {
+  return window['go']['backend_golang']['App']['GetPyError']();
+}
+
 export function InstallPyDep(arg1, arg2) {
   return window['go']['backend_golang']['App']['InstallPyDep'](arg1, arg2);
 }

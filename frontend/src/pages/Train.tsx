@@ -4,6 +4,7 @@ import { Button, Dropdown, Input, Option, Select, Switch, Tab, TabList } from '@
 import {
   ConvertData,
   FileExists,
+  GetPyError,
   MergeLora,
   OpenFileFolder,
   WslCommand,
@@ -17,7 +18,7 @@ import { toast } from 'react-toastify';
 import commonStore from '../stores/commonStore';
 import { observer } from 'mobx-react-lite';
 import { SelectTabEventHandler } from '@fluentui/react-tabs';
-import { checkDependencies, refreshLocalModels, toastWithButton } from '../utils';
+import { checkDependencies, toastWithButton } from '../utils';
 import { Section } from '../components/Section';
 import { Labeled } from '../components/Labeled';
 import { ToolTipButton } from '../components/ToolTipButton';
@@ -421,10 +422,13 @@ const LoraFinetune: FC = observer(() => {
                   const ok = await checkDependencies(navigate);
                   if (!ok)
                     return;
-                  ConvertData(commonStore.settings.customPythonPath, dataParams.dataPath,
-                    './finetune/json2binidx_tool/data/' + dataParams.dataPath.split(/[\/\\]/).pop()!.split('.')[0],
-                    dataParams.vocabPath).then(() => {
-                    toast(t('Convert Data successfully'), { type: 'success' });
+                  const outputPrefix = './finetune/json2binidx_tool/data/' + dataParams.dataPath.split(/[\/\\]/).pop()!.split('.')[0];
+                  ConvertData(commonStore.settings.customPythonPath, dataParams.dataPath, outputPrefix, dataParams.vocabPath).then(async () => {
+                    if (!await FileExists(outputPrefix + '_text_document.idx')) {
+                      toast(t('Failed to convert data') + ' - ' + await GetPyError(), { type: 'error' });
+                    } else {
+                      toast(t('Convert Data successfully'), { type: 'success' });
+                    }
                   }).catch(showError);
                 }}>{t('Convert')}</Button>
               </div>
@@ -472,11 +476,15 @@ const LoraFinetune: FC = observer(() => {
                 if (!ok)
                   return;
                 if (loraParams.loraLoad) {
+                  const outputPath = `models/${loraParams.baseModel}-LoRA-${loraParams.loraLoad}`;
                   MergeLora(commonStore.settings.customPythonPath, true, loraParams.loraAlpha,
                     'models/' + loraParams.baseModel, 'lora-models/' + loraParams.loraLoad,
-                    `models/${loraParams.baseModel}-LoRA-${loraParams.loraLoad}`).then(() => {
-                    toast(t('Merge model successfully'), { type: 'success' });
-                    refreshLocalModels({ models: commonStore.modelSourceList }, false);
+                    outputPath).then(async () => {
+                    if (!await FileExists(outputPath)) {
+                      toast(t('Failed to merge model') + ' - ' + await GetPyError(), { type: 'error' });
+                    } else {
+                      toast(t('Merge model successfully'), { type: 'success' });
+                    }
                   }).catch(showError);
                 } else {
                   toast(t('Please select a LoRA model'), { type: 'info' });

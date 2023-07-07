@@ -13,8 +13,8 @@ import { Page } from '../components/Page';
 import { useNavigate } from 'react-router';
 import { RunButton } from '../components/RunButton';
 import { updateConfig } from '../apis';
-import { ConvertModel, FileExists } from '../../wailsjs/go/backend_golang/App';
-import { getStrategy, refreshLocalModels } from '../utils';
+import { ConvertModel, FileExists, GetPyError } from '../../wailsjs/go/backend_golang/App';
+import { getStrategy } from '../utils';
 import { useTranslation } from 'react-i18next';
 import { WindowShow } from '../../wailsjs/runtime/runtime';
 import strategyImg from '../assets/images/strategy.jpg';
@@ -253,9 +253,12 @@ export const Configs: FC = observer(() => {
                       const strategy = getStrategy(selectedConfig);
                       const newModelPath = modelPath + '-' + strategy.replace(/[:> *+]/g, '-');
                       toast(t('Start Converting'), { autoClose: 1000, type: 'info' });
-                      ConvertModel(commonStore.settings.customPythonPath, modelPath, strategy, newModelPath).then(() => {
-                        toast(`${t('Convert Success')} - ${newModelPath}`, { type: 'success' });
-                        refreshLocalModels({ models: commonStore.modelSourceList }, false);
+                      ConvertModel(commonStore.settings.customPythonPath, modelPath, strategy, newModelPath).then(async () => {
+                        if (!await FileExists(newModelPath)) {
+                          toast(t('Convert Failed') + ' - ' + await GetPyError(), { type: 'error' });
+                        } else {
+                          toast(`${t('Convert Success')} - ${newModelPath}`, { type: 'success' });
+                        }
                       }).catch(e => {
                         const errMsg = e.message || e;
                         if (errMsg.includes('path contains space'))

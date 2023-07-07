@@ -113,3 +113,11 @@ func (a *App) InstallPyDep(python string, cnMirror bool) (string, error) {
 		return Cmd(python, "-m", "pip", "install", "-r", "./backend-python/requirements_without_cyac.txt")
 	}
 }
+
+func (a *App) GetPyError() string {
+	content, err := os.ReadFile("./error.txt")
+	if err != nil {
+		return ""
+	}
+	return string(content)
+}
