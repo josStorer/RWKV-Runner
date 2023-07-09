@@ -41,6 +41,14 @@ func (a *App) OnStartup(ctx context.Context) {
 		a.cmdPrefix = "cd " + a.exDir + " && "
 	}
 
+	os.Mkdir(a.exDir+"models", os.ModePerm)
+	os.Mkdir(a.exDir+"lora-models", os.ModePerm)
+	os.Mkdir(a.exDir+"finetune/json2binidx_tool/data", os.ModePerm)
+	f, err := os.Create(a.exDir + "lora-models/train_log.txt")
+	if err == nil {
+		f.Close()
+	}
+
 	a.downloadLoop()
 
 	watcher, err := fsnotify.NewWatcher()
