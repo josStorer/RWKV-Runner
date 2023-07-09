@@ -64,6 +64,8 @@ API兼容的接口，这意味着一切ChatGPT客户端都是RWKV客户端。
 - 易于理解和操作的参数配置
 - 内置模型转换工具
 - 内置下载管理和远程模型检视
+- 内置一键LoRA微调
+- 也可用作 OpenAI ChatGPT 和 GPT Playground 客户端
 - 多语言本地化
 - 主题切换
 - 自动更新
@@ -126,14 +128,6 @@ for i in np.argsort(embeddings_cos_sim)[::-1]:
     print(f"{embeddings_cos_sim[i]:.10f} - {values[i]}")
 ```
 
-## Todo
-
-- [ ] 模型训练功能
-- [x] CUDA算子int8提速
-- [x] macOS支持
-- [x] linux支持
-- [ ] 本地状态缓存数据库
-
 ## 相关仓库:
 
 - RWKV-4-World: https://huggingface.co/BlinkDL/rwkv-4-world/tree/main
@@ -146,28 +140,32 @@ for i in np.argsort(embeddings_cos_sim)[::-1]:
 
 ### 主页
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/9d25380a-a17b-443f-b823-86c754ebebf0)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/ff2b1eef-dd3b-4cbf-98fb-b5a1ecee43e1)
 
 ### 聊天
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/0e66d5fa-f34a-409f-9cd4-d880815733f3)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/9570e73b-dca2-4316-9e92-09961f3c48c4)
 
 ### 补全
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/d4178ee9-a188-4878-9777-25c916872c29)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/69f9ba7a-2fe8-4a5e-94cb-aa655aa409e2)
 
 ### 配置
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/ad9921fc-7248-40a3-9e18-03445b86e4bf)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/59460f69-b172-4c7a-86cb-573262543076)
 
 ### 模型管理
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/7c36f15f-3e77-49cd-a16d-99a29f870bdf)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/551121ee-1bfe-421b-a9d1-24125126ab4b)
 
 ### 下载管理
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/32fde30b-11dd-43b9-9667-ad6975be2106)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/cc076038-2a91-4d36-bd39-266020e8ea87)
+
+### LoRA微调
+
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/31939b8f-9546-4f44-b434-295b492ec625)
 
 ### 设置
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/e8a0f746-9da7-48e3-b3fc-e1453ac50de2)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/9652d7cc-ac33-4587-a8fb-03e5a6f5ea77)

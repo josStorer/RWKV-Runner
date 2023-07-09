@@ -64,6 +64,8 @@ English | [简体中文](README_ZH.md) | [日本語](README_JA.md)
 - Easy-to-understand and operate parameter configuration
 - Built-in model conversion tool
 - Built-in download management and remote model inspection
+- Built-in one-click LoRA Finetune
+- Can also be used as an OpenAI ChatGPT and GPT-Playground client
 - Multilingual localization
 - Theme switching
 - Automatic updates
@@ -126,14 +128,6 @@ for i in np.argsort(embeddings_cos_sim)[::-1]:
     print(f"{embeddings_cos_sim[i]:.10f} - {values[i]}")
 ```
 
-## Todo
-
-- [ ] Model training functionality
-- [x] CUDA operator int8 acceleration
-- [x] macOS support
-- [x] Linux support
-- [ ] Local State Cache DB
-
 ## Related Repositories:
 
 - RWKV-4-World: https://huggingface.co/BlinkDL/rwkv-4-world/tree/main
@@ -146,28 +140,32 @@ for i in np.argsort(embeddings_cos_sim)[::-1]:
 
 ### Homepage
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/60efbb65-29e3-4346-a597-5bdcd099251c)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/d7f24d80-f382-428d-8b28-edf87e1549e2)
 
 ### Chat
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/6cde9c45-51bb-4dee-b1fe-746862448520)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/80009872-528f-4932-aeb2-f724fa892e7c)
 
 ### Completion
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/52f47f92-d21d-4cd7-b04e-d6f9af937a97)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/bf49de8e-3b89-4543-b1ef-7cd4b19a1836)
 
 ### Configuration
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/93270a68-9d6d-4247-b6a3-e543c65a876b)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/48befdc6-e03c-4851-9bee-22f77ee2640e)
 
 ### Model Management
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/6f96fdd3-fdf5-4b78-af80-2afbd1ad173b)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/367fe4f8-cc12-475f-9371-3cf62cdbf293)
 
 ### Download Management
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/6982e7ee-bace-4a88-bb47-92379185bf9d)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/c8153cf9-c8cb-4618-8268-60c82a5be539)
+
+### LoRA Finetune
+
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/4715045a-683e-4d2a-9b0e-090c7a5df63f)
 
 ### Settings
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/b3b2ab46-344c-4f04-b066-1503f776eeb9)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/1067e635-8c07-4217-86a8-e48a5fcbb075)
