@@ -1,6 +1,7 @@
 package backend_golang
 
 import (
+	"encoding/json"
 	"errors"
 	"os"
 	"os/exec"
@@ -59,30 +60,17 @@ func (a *App) ConvertData(python string, input string, outputPrefix string, voca
 			if file.IsDir() || !strings.HasSuffix(file.Name(), ".txt") {
 				continue
 			}
-			txtFile, err := os.Open(input + "/" + file.Name())
+			textContent, err := os.ReadFile(input + "/" + file.Name())
 			if err != nil {
 				return "", err
 			}
-			defer txtFile.Close()
-			jsonlFile.WriteString("{\"text\": \"")
-			buf := make([]byte, 1024)
-			for {
-				n, err := txtFile.Read(buf)
-				if err != nil {
-					break
-				}
-				// regex replace \r\n \n \r with \\n
-				jsonlFile.WriteString(
-					strings.ReplaceAll(
-						strings.ReplaceAll(
-							strings.ReplaceAll(
-								strings.ReplaceAll(string(buf[:n]),
-									"\r\n", "\\n"),
-								"\n", "\\n"),
-							"\r", "\\n"),
-						"\n\n", "\\n"))
+			textJson, err := json.Marshal(map[string]string{"text": string(textContent)})
+			if err != nil {
+				return "", err
 			}
-			jsonlFile.WriteString("\"}\n")
+			if _, err := jsonlFile.WriteString(string(textJson) + "\n"); err != nil {
+				return "", err
+			}
 		}
 		input = outputPrefix + ".jsonl"
 	} else if err != nil {
