@@ -366,7 +366,7 @@ export const checkDependencies = async (navigate: NavigateFunction) => {
           AddToDownloadList('python-3.10.11-embed-amd64.zip', 'https://www.python.org/ftp/python/3.10.11/python-3.10.11-embed-amd64.zip');
         });
       } else if (depErrorMsg.includes('DepCheck Error')) {
-        if (depErrorMsg.includes('vc_redist')) {
+        if (depErrorMsg.includes('vc_redist') || depErrorMsg.includes('DLL load failed while importing')) {
           toastWithButton(t('Microsoft Visual C++ Redistributable is not installed, would you like to download it?'), t('Download'), () => {
             BrowserOpenURL('https://aka.ms/vs/16/release/vc_redist.x64.exe');
           });
