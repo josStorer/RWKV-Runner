@@ -29,7 +29,7 @@ import { botName, Conversation, ConversationMessage, MessageType, userName } fro
 import { SelectTabEventHandler } from '@fluentui/react-tabs';
 import { Labeled } from '../../components/Labeled';
 import commonStore from '../../stores/commonStore';
-import logo from '../../assets/images/logo.jpg';
+import logo from '../../assets/images/logo.png';
 import { observer } from 'mobx-react-lite';
 import { MessagesEditor } from './MessagesEditor';
 import { ClipboardGetText, ClipboardSetText } from '../../../wailsjs/runtime';

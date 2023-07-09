@@ -7,7 +7,7 @@ import { v4 as uuid } from 'uuid';
 import classnames from 'classnames';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { KebabHorizontalIcon, PencilIcon, SyncIcon, TrashIcon } from '@primer/octicons-react';
-import logo from '../assets/images/logo.jpg';
+import logo from '../assets/images/logo.png';
 import MarkdownRender from '../components/MarkdownRender';
 import { ToolTipButton } from '../components/ToolTipButton';
 import { ArrowCircleUp28Regular, Delete28Regular, RecordStop28Regular, Save28Regular } from '@fluentui/react-icons';
