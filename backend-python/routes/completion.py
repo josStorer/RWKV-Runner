@@ -44,7 +44,7 @@ class ChatCompletionBody(ModelConfigBody):
 
 
 class CompletionBody(ModelConfigBody):
-    prompt: str
+    prompt: str or List[str]
     model: str = "rwkv"
     stream: bool = False
     stop: str = None
@@ -306,8 +306,11 @@ async def completions(body: CompletionBody, request: Request):
     if model is None:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "model not loaded")
 
-    if body.prompt is None or body.prompt == "":
+    if body.prompt is None or body.prompt == "" or body.prompt == []:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "prompt not found")
+
+    if type(body.prompt) == list:
+        body.prompt = body.prompt[0]  # TODO: support multiple prompts
 
     if body.stream:
         return EventSourceResponse(
