@@ -46,11 +46,9 @@ API兼容的接口，这意味着一切ChatGPT客户端都是RWKV客户端。
 
 </div>
 
-#### 注意 目前RWKV中文模型质量一般，推荐使用英文模型或World(全球语言)体验实际RWKV能力
-
 #### 预设配置已经开启自定义CUDA算子加速，速度更快，且显存消耗更少。如果你遇到可能的兼容性问题，前往配置页面，关闭`使用自定义CUDA算子加速`
 
-#### 如果Windows Defender说这是一个病毒，你可以尝试下载[v1.0.8](https://github.com/josStorer/RWKV-Runner/releases/tag/v1.0.8)/[v1.0.9](https://github.com/josStorer/RWKV-Runner/releases/tag/v1.0.9)然后让其自动更新到最新版，或添加信任
+#### 如果Windows Defender说这是一个病毒，你可以尝试下载[v1.3.7_win.zip](https://github.com/josStorer/RWKV-Runner/releases/download/v1.3.7/RWKV-Runner_win.zip)，然后让其自动更新到最新版，或添加信任
 
 #### 对于不同的任务，调整API参数会获得更好的效果，例如对于翻译任务，你可以尝试设置Temperature为1，Top_P为0.3
 
