@@ -281,7 +281,9 @@ const LoraFinetune: FC = observer(() => {
     if (!ok)
       return;
 
-    const convertedDataPath = `./finetune/json2binidx_tool/data/${dataParams.dataPath.split(/[\/\\]/).pop()!.split('.')[0]}_text_document`;
+    const convertedDataPath = './finetune/json2binidx_tool/data/' +
+      dataParams.dataPath.replace(/[\/\\]$/, '').split(/[\/\\]/).pop()!.split('.')[0] +
+      '_text_document';
     if (!await FileExists(convertedDataPath + '.idx')) {
       toast(t('Please convert data first.'), { type: 'error' });
       return;
@@ -432,7 +434,10 @@ const LoraFinetune: FC = observer(() => {
                     return;
                   const outputPrefix = './finetune/json2binidx_tool/data/' +
                     dataParams.dataPath.replace(/[\/\\]$/, '').split(/[\/\\]/).pop()!.split('.')[0];
-                  ConvertData(commonStore.settings.customPythonPath, dataParams.dataPath, outputPrefix, dataParams.vocabPath).then(async () => {
+                  ConvertData(commonStore.settings.customPythonPath,
+                    dataParams.dataPath.replaceAll('\\', '/'),
+                    outputPrefix,
+                    dataParams.vocabPath).then(async () => {
                     if (!await FileExists(outputPrefix + '_text_document.idx')) {
                       toast(t('Failed to convert data') + ' - ' + await GetPyError(), { type: 'error' });
                     } else {
