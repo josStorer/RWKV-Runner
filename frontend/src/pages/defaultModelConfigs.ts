@@ -6,10 +6,10 @@ export const defaultModelConfigsMac: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-0.1B-v1-20230520-ctx4096.pth',
@@ -25,10 +25,10 @@ export const defaultModelConfigsMac: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-0.4B-v1-20230529-ctx4096.pth',
@@ -44,10 +44,10 @@ export const defaultModelConfigsMac: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-1.5B-v1-fixed-20230612-ctx4096.pth',
@@ -63,10 +63,10 @@ export const defaultModelConfigsMac: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-Raven-1B5-v12-Eng98%-Other2%-20230520-ctx4096.pth',
@@ -82,10 +82,10 @@ export const defaultModelConfigsMac: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-3B-v1-20230619-ctx4096.pth',
@@ -101,10 +101,10 @@ export const defaultModelConfigsMac: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-Raven-3B-v12-Eng98%-Other2%-20230520-ctx4096.pth',
@@ -120,10 +120,10 @@ export const defaultModelConfigsMac: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-CHNtuned-3B-v1-20230625-ctx4096.pth',
@@ -139,10 +139,10 @@ export const defaultModelConfigsMac: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-7B-v1-20230626-ctx4096.pth',
@@ -158,10 +158,10 @@ export const defaultModelConfigsMac: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-1.5B-v1-fixed-20230612-ctx4096.pth',
@@ -176,10 +176,10 @@ export const defaultModelConfigsMac: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-Raven-1B5-v12-Eng98%-Other2%-20230520-ctx4096.pth',
@@ -194,10 +194,10 @@ export const defaultModelConfigsMac: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-3B-v1-20230619-ctx4096.pth',
@@ -212,10 +212,10 @@ export const defaultModelConfigsMac: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-Raven-3B-v12-Eng98%-Other2%-20230520-ctx4096.pth',
@@ -230,10 +230,10 @@ export const defaultModelConfigsMac: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-CHNtuned-3B-v1-20230625-ctx4096.pth',
@@ -248,10 +248,10 @@ export const defaultModelConfigsMac: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-7B-v1-20230626-ctx4096.pth',
@@ -266,10 +266,10 @@ export const defaultModelConfigsMac: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-Raven-7B-v12-Eng98%-Other2%-20230521-ctx8192.pth',
@@ -284,10 +284,10 @@ export const defaultModelConfigsMac: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-CHNtuned-7B-v1-20230709-ctx4096.pth',
@@ -305,10 +305,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-3B-v1-20230619-ctx4096.pth',
@@ -324,10 +324,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-0.1B-v1-20230520-ctx4096.pth',
@@ -342,10 +342,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-Raven-1B5-v12-Eng98%-Other2%-20230520-ctx4096.pth',
@@ -361,10 +361,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-0.4B-v1-20230529-ctx4096.pth',
@@ -379,10 +379,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-1.5B-v1-fixed-20230612-ctx4096.pth',
@@ -397,10 +397,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-Raven-1B5-v12-Eng98%-Other2%-20230520-ctx4096.pth',
@@ -416,10 +416,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-3B-v1-20230619-ctx4096.pth',
@@ -435,10 +435,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-Raven-3B-v12-Eng98%-Other2%-20230520-ctx4096.pth',
@@ -454,10 +454,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-CHNtuned-3B-v1-20230625-ctx4096.pth',
@@ -473,10 +473,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-7B-v1-20230626-ctx4096.pth',
@@ -492,10 +492,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-Raven-7B-v12-Eng98%-Other2%-20230521-ctx8192.pth',
@@ -511,10 +511,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-CHNtuned-7B-v1-20230709-ctx4096.pth',
@@ -530,10 +530,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-Raven-1B5-v12-Eng98%-Other2%-20230520-ctx4096.pth',
@@ -549,10 +549,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-3B-v1-20230619-ctx4096.pth',
@@ -568,10 +568,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-Raven-3B-v12-Eng98%-Other2%-20230520-ctx4096.pth',
@@ -587,10 +587,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-CHNtuned-3B-v1-20230625-ctx4096.pth',
@@ -606,10 +606,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-7B-v1-20230626-ctx4096.pth',
@@ -625,10 +625,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-Raven-7B-v12-Eng98%-Other2%-20230521-ctx8192.pth',
@@ -644,10 +644,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-CHNtuned-7B-v1-20230709-ctx4096.pth',
@@ -663,10 +663,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-1.5B-v1-fixed-20230612-ctx4096.pth',
@@ -681,10 +681,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-3B-v1-20230619-ctx4096.pth',
@@ -700,10 +700,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-Raven-3B-v12-Eng98%-Other2%-20230520-ctx4096.pth',
@@ -719,10 +719,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-CHNtuned-3B-v1-20230625-ctx4096.pth',
@@ -738,10 +738,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-7B-v1-20230626-ctx4096.pth',
@@ -757,10 +757,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-Raven-7B-v12-Eng98%-Other2%-20230521-ctx8192.pth',
@@ -776,10 +776,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-CHNtuned-7B-v1-20230709-ctx4096.pth',
@@ -795,10 +795,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-7B-v1-20230626-ctx4096.pth',
@@ -814,10 +814,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-Raven-7B-v12-Eng98%-Other2%-20230521-ctx8192.pth',
@@ -833,10 +833,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-CHNtuned-7B-v1-20230709-ctx4096.pth',
@@ -852,10 +852,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-Raven-14B-v12-Eng98%-Other2%-20230523-ctx8192.pth',
@@ -871,10 +871,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-7B-v1-20230626-ctx4096.pth',
@@ -890,10 +890,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-Raven-7B-v12-Eng98%-Other2%-20230521-ctx8192.pth',
@@ -909,10 +909,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-CHNtuned-7B-v1-20230709-ctx4096.pth',
@@ -928,10 +928,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-Raven-14B-v12-Eng98%-Other2%-20230523-ctx8192.pth',
@@ -947,10 +947,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-Raven-14B-v12-Eng98%-Other2%-20230523-ctx8192.pth',
@@ -966,10 +966,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-Raven-14B-v12-Eng98%-Other2%-20230523-ctx8192.pth',
@@ -985,10 +985,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-1.5B-v1-fixed-20230612-ctx4096.pth',
@@ -1003,10 +1003,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-Raven-1B5-v12-Eng98%-Other2%-20230520-ctx4096.pth',
@@ -1021,10 +1021,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-3B-v1-20230619-ctx4096.pth',
@@ -1039,10 +1039,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-Raven-3B-v12-Eng98%-Other2%-20230520-ctx4096.pth',
@@ -1057,10 +1057,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-CHNtuned-3B-v1-20230625-ctx4096.pth',
@@ -1075,10 +1075,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-7B-v1-20230626-ctx4096.pth',
@@ -1093,10 +1093,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-Raven-7B-v12-Eng98%-Other2%-20230521-ctx8192.pth',
@@ -1111,10 +1111,10 @@ export const defaultModelConfigs: ModelConfig[] = [
     apiParameters: {
       apiPort: 8000,
       maxResponseToken: 4100,
-      temperature: 1.2,
-      topP: 0.5,
-      presencePenalty: 0.4,
-      frequencyPenalty: 0.4
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-World-CHNtuned-7B-v1-20230709-ctx4096.pth',

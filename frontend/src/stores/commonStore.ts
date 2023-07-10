@@ -78,10 +78,10 @@ class CommonStore {
   loraFinetuneParams: LoraFinetuneParameters = {
     baseModel: '',
     ctxLen: 1024,
-    epochSteps: 1000,
+    epochSteps: 200,
     epochCount: 20,
     epochBegin: 0,
-    epochSave: 5,
+    epochSave: 2,
     microBsz: 1,
     accumGradBatches: 8,
     preFfn: false,

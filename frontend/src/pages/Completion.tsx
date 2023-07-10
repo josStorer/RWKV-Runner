@@ -35,7 +35,7 @@ export const defaultPresets: CompletionPreset[] = [{
     topP: 0.5,
     presencePenalty: 0.4,
     frequencyPenalty: 0.4,
-    stop: '\\n\\nBob',
+    stop: '\\n\\nUser',
     injectStart: '',
     injectEnd: ''
   }
@@ -46,37 +46,37 @@ export const defaultPresets: CompletionPreset[] = [{
     maxResponseToken: 500,
     temperature: 1,
     topP: 0.3,
-    presencePenalty: 0.4,
-    frequencyPenalty: 0.4,
+    presencePenalty: 0,
+    frequencyPenalty: 1,
     stop: '\\nEnglish',
     injectStart: '\\nChinese: ',
     injectEnd: '\\nEnglish: '
   }
 }, {
   name: 'Catgirl',
-  prompt: 'The following is a conversation between a cat girl and her owner. The cat girl is a humanized creature that behaves like a cat but is humanoid. At the end of each sentence in the dialogue, she will add \"Meow~\". In the following content, Bob represents the owner and Alice represents the cat girl.\n\nBob: Hello.\n\nAlice: I\'m here, meow~.\n\nBob: Can you tell jokes?',
+  prompt: 'The following is a conversation between a cat girl and her owner. The cat girl is a humanized creature that behaves like a cat but is humanoid. At the end of each sentence in the dialogue, she will add \"Meow~\". In the following content, User represents the owner and Assistant represents the cat girl.\n\nUser: Hello.\n\nAssistant: I\'m here, meow~.\n\nUser: Can you tell jokes?',
   params: {
     maxResponseToken: 500,
     temperature: 1.2,
     topP: 0.5,
     presencePenalty: 0.4,
     frequencyPenalty: 0.4,
-    stop: '\\n\\nBob',
-    injectStart: '\\n\\nAlice: ',
-    injectEnd: '\\n\\nBob: '
+    stop: '\\n\\nUser',
+    injectStart: '\\n\\nAssistant: ',
+    injectEnd: '\\n\\nUser: '
   }
 }, {
   name: 'Chinese Kongfu',
-  prompt: 'Bob: 请你扮演一个文本冒险游戏，我是游戏主角。这是一个玄幻修真世界，有四大门派。我输入我的行动，请你显示行动结果，并具体描述环境。我的第一个行动是“醒来”，请开始故事。',
+  prompt: 'User: 请你扮演一个文本冒险游戏，我是游戏主角。这是一个玄幻修真世界，有四大门派。我输入我的行动，请你显示行动结果，并具体描述环境。我的第一个行动是“醒来”，请开始故事。',
   params: {
     maxResponseToken: 500,
     temperature: 1.1,
     topP: 0.7,
     presencePenalty: 0.3,
     frequencyPenalty: 0.3,
-    stop: '\\n\\nBob',
-    injectStart: '\\n\\nAlice: ',
-    injectEnd: '\\n\\nBob: '
+    stop: '\\n\\nUser',
+    injectStart: '\\n\\nAssistant: ',
+    injectEnd: '\\n\\nUser: '
   }
 }, {
 // }, {
@@ -94,26 +94,26 @@ export const defaultPresets: CompletionPreset[] = [{
 //   }
 // }, {
   name: 'Werewolf',
-  prompt: 'There is currently a game of Werewolf with six players, including a Seer (who can check identities at night), two Werewolves (who can choose someone to kill at night), a Bodyguard (who can choose someone to protect at night), two Villagers (with no special abilities), and a game host. Bob will play as Player 1, Alice will play as Players 2-6 and the game host, and they will begin playing together. Every night, the host will ask Bob for his action and simulate the actions of the other players. During the day, the host will oversee the voting process and ask Bob for his vote. \n\nAlice: Next, I will act as the game host and assign everyone their roles, including randomly assigning yours. Then, I will simulate the actions of Players 2-6 and let you know what happens each day. Based on your assigned role, you can tell me your actions and I will let you know the corresponding results each day.\n\nBob: Okay, I understand. Let\'s begin. Please assign me a role. Am I the Seer, Werewolf, Villager, or Bodyguard?\n\nAlice: You are the Seer. Now that night has fallen, please choose a player to check his identity.\n\nBob: Tonight, I want to check Player 2 and find out his role.',
+  prompt: 'There is currently a game of Werewolf with six players, including a Seer (who can check identities at night), two Werewolves (who can choose someone to kill at night), a Bodyguard (who can choose someone to protect at night), two Villagers (with no special abilities), and a game host. User will play as Player 1, Assistant will play as Players 2-6 and the game host, and they will begin playing together. Every night, the host will ask User for his action and simulate the actions of the other players. During the day, the host will oversee the voting process and ask User for his vote. \n\nAssistant: Next, I will act as the game host and assign everyone their roles, including randomly assigning yours. Then, I will simulate the actions of Players 2-6 and let you know what happens each day. Based on your assigned role, you can tell me your actions and I will let you know the corresponding results each day.\n\nUser: Okay, I understand. Let\'s begin. Please assign me a role. Am I the Seer, Werewolf, Villager, or Bodyguard?\n\nAssistant: You are the Seer. Now that night has fallen, please choose a player to check his identity.\n\nUser: Tonight, I want to check Player 2 and find out his role.',
   params: {
     maxResponseToken: 500,
     temperature: 1.2,
     topP: 0.4,
     presencePenalty: 0.5,
     frequencyPenalty: 0.5,
-    stop: '\\n\\nBob',
-    injectStart: '\\n\\nAlice: ',
-    injectEnd: '\\n\\nBob: '
+    stop: '\\n\\nUser',
+    injectStart: '\\n\\nAssistant: ',
+    injectEnd: '\\n\\nUser: '
   }
 }, {
   name: 'Instruction',
-  prompt: 'Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n# Instruction:\nWrite a story using the following information\n\n# Input:\nA man named Alex chops a tree down\n\n# Response:\n',
+  prompt: 'Instruction: Write a story using the following information\n\nInput: A man named Alex chops a tree down\n\nResponse:',
   params: {
     maxResponseToken: 500,
-    temperature: 1.2,
-    topP: 0.5,
-    presencePenalty: 0.4,
-    frequencyPenalty: 0.4,
+    temperature: 1,
+    topP: 0.3,
+    presencePenalty: 0,
+    frequencyPenalty: 1,
     stop: '',
     injectStart: '',
     injectEnd: ''
@@ -124,9 +124,9 @@ export const defaultPresets: CompletionPreset[] = [{
   params: {
     maxResponseToken: 500,
     temperature: 1,
-    topP: 0.5,
-    presencePenalty: 0.4,
-    frequencyPenalty: 0.4,
+    topP: 0.3,
+    presencePenalty: 0,
+    frequencyPenalty: 1,
     stop: '',
     injectStart: '',
     injectEnd: ''
