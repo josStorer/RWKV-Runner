@@ -1,11 +1,10 @@
 ## Changes
 
-- fix jsonl data when using directory as training data
-- fix loss parser
-- improve error messages for training
-- update logo
-- extra vc check
-- fix load_state_dict crash
+- improve `/completions` api compatibility
+- improve training data path compatibility
+- update manifest
+- update presets
+- chore
 
 ## Install
 
