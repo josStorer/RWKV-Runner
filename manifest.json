@@ -293,6 +293,18 @@
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-7B-v1-20230626-ctx4096.pth"
     },
     {
+      "name": "RWKV-4-World-CHNtuned-7B-v1-20230709-ctx4096.pth",
+      "desc": {
+        "en": "Global Languages 7B v1 Enhanced Chinese",
+        "zh": "全球语言 7B v1 中文增强"
+      },
+      "size": 15035393458,
+      "SHA256": "52d33e8352a40158d21425fee4f68df1515d6324056f788d2c78a366ef578ffa",
+      "lastUpdated": "2023-07-09T18:23:33",
+      "url": "https://huggingface.co/BlinkDL/rwkv-4-world/blob/main/RWKV-4-World-CHNtuned-7B-v1-20230709-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-CHNtuned-7B-v1-20230709-ctx4096.pth"
+    },
+    {
       "name": "RWKV-4-Novel-7B-v1-ChnEng-ChnPro-20230410-ctx4096.pth",
       "desc": {
         "en": "Professional Writer 7B v1",
