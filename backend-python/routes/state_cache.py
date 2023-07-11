@@ -34,6 +34,32 @@ def init():
         print("cyac not found")
 
 
+@router.post("/disable-state-cache")
+def disable_state_cache():
+    global trie, dtrie
+
+    trie = None
+    dtrie = {}
+    gc.collect()
+
+    return "success"
+
+
+@router.post("/enable-state-cache")
+def enable_state_cache():
+    global trie, dtrie
+    try:
+        import cyac
+
+        trie = cyac.Trie()
+        dtrie = {}
+        gc.collect()
+
+        return "success"
+    except ModuleNotFoundError:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "cyac not found")
+
+
 class AddStateBody(BaseModel):
     prompt: str
     tokens: List[str]
@@ -84,6 +110,8 @@ def reset_state():
     global trie, dtrie
     if trie is None:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "trie not loaded")
+
+    import cyac
 
     trie = cyac.Trie()
     dtrie = {}

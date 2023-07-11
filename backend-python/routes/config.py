@@ -52,6 +52,14 @@ def switch_model(body: SwitchModelBody, response: Response, request: Request):
     if body.model == "":
         return "success"
 
+    if "->" in body.strategy:
+        state_cache.disable_state_cache()
+    else:
+        try:
+            state_cache.enable_state_cache()
+        except HTTPException:
+            pass
+
     os.environ["RWKV_CUDA_ON"] = "1" if body.customCuda else "0"
 
     global_var.set(global_var.Model_Status, global_var.ModelStatus.Loading)
