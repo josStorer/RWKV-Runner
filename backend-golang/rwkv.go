@@ -64,7 +64,7 @@ func (a *App) ConvertData(python string, input string, outputPrefix string, voca
 			if err != nil {
 				return "", err
 			}
-			textJson, err := json.Marshal(map[string]string{"text": string(textContent)})
+			textJson, err := json.Marshal(map[string]string{"text": strings.ReplaceAll(strings.ReplaceAll(string(textContent), "\r\n", "\n"), "\r", "\n")})
 			if err != nil {
 				return "", err
 			}
