@@ -1,10 +1,8 @@
 ## Changes
 
-- improve `/completions` api compatibility
-- improve training data path compatibility
-- update manifest
-- update presets
-- chore
+- fix cross-device state cache exception
+- training: fix data EOL format
+- save conversation as txt (originally in md)
 
 ## Install
 
