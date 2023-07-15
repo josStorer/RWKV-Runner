@@ -421,7 +421,7 @@ const ChatPanel: FC = observer(() => {
               }
             });
 
-            OpenSaveFileDialog('*.md', 'conversation.md', savedContent).then((path) => {
+            OpenSaveFileDialog('*.txt', 'conversation.txt', savedContent).then((path) => {
               if (path)
                 toastWithButton(t('Conversation Saved'), t('Open'), () => {
                   OpenFileFolder(path, false);
