@@ -254,7 +254,7 @@ export const Configs: FC = observer(() => {
                       const newModelPath = modelPath + '-' + strategy.replace(/[:> *+]/g, '-');
                       toast(t('Start Converting'), { autoClose: 1000, type: 'info' });
                       ConvertModel(commonStore.settings.customPythonPath, modelPath, strategy, newModelPath).then(async () => {
-                        if (!await FileExists(newModelPath)) {
+                        if (!await FileExists(newModelPath + '.pth')) {
                           toast(t('Convert Failed') + ' - ' + await GetPyError(), { type: 'error' });
                         } else {
                           toast(`${t('Convert Success')} - ${newModelPath}`, { type: 'success' });
