@@ -1,8 +1,8 @@
 ## Changes
 
-- fix cross-device state cache exception
-- training: fix data EOL format
-- save conversation as txt (originally in md)
+- fix always show `Convert Failed` when converting model
+- fix input with array type (#96, #107)
+- change chinese translation of `completion`
 
 ## Install
 
