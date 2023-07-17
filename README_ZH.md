@@ -58,7 +58,7 @@ API兼容的接口，这意味着一切ChatGPT客户端都是RWKV客户端。
 - 与OpenAI API完全兼容，一切ChatGPT客户端，都是RWKV客户端。启动模型后，打开 http://127.0.0.1:8000/docs 查看详细内容
 - 全自动依赖安装，你只需要一个轻巧的可执行程序
 - 预设了2G至32G显存的配置，几乎在各种电脑上工作良好
-- 自带用户友好的聊天和补全交互页面
+- 自带用户友好的聊天和续写交互页面
 - 易于理解和操作的参数配置
 - 内置模型转换工具
 - 内置下载管理和远程模型检视
@@ -144,7 +144,7 @@ for i in np.argsort(embeddings_cos_sim)[::-1]:
 
 ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/9570e73b-dca2-4316-9e92-09961f3c48c4)
 
-### 补全
+### 续写
 
 ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/69f9ba7a-2fe8-4a5e-94cb-aa655aa409e2)
 
