@@ -1,7 +1,7 @@
 import asyncio
 import json
 from threading import Lock
-from typing import List
+from typing import List, Union
 import base64
 
 from fastapi import APIRouter, Request, status, HTTPException
@@ -44,7 +44,7 @@ class ChatCompletionBody(ModelConfigBody):
 
 
 class CompletionBody(ModelConfigBody):
-    prompt: str or List[str]
+    prompt: Union[str, List[str]]
     model: str = "rwkv"
     stream: bool = False
     stop: str = None
@@ -326,7 +326,7 @@ async def completions(body: CompletionBody, request: Request):
 
 
 class EmbeddingsBody(BaseModel):
-    input: str or List[str] or List[List[int]]
+    input: Union[str, List[str], List[List[int]]]
     model: str = "rwkv"
     encoding_format: str = None
     fast_mode: bool = False
