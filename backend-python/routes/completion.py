@@ -25,7 +25,7 @@ class ChatCompletionBody(ModelConfigBody):
     messages: List[Message]
     model: str = "rwkv"
     stream: bool = False
-    stop: str = None
+    stop: str | List[str] = None
 
     class Config:
         schema_extra = {
@@ -47,7 +47,7 @@ class CompletionBody(ModelConfigBody):
     prompt: Union[str, List[str]]
     model: str = "rwkv"
     stream: bool = False
-    stop: str = None
+    stop: str | List[str] = None
 
     class Config:
         schema_extra = {
