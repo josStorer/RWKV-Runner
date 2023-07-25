@@ -7,9 +7,7 @@ from typing import Dict, Iterable, List, Tuple
 from utils.log import quick_log
 from fastapi import HTTPException
 from pydantic import BaseModel, Field
-import torch
 import numpy as np
-from rwkv_pip.utils import PIPELINE
 from routes import state_cache
 
 
@@ -23,6 +21,7 @@ os.environ["TORCH_EXTENSIONS_DIR"] = f"{pathlib.Path(__file__).parent.parent.res
 class AbstractRWKV(ABC):
     def __init__(self, model: str, strategy: str, tokens_path: str):
         from rwkv.model import RWKV as Model  # dynamic import to make RWKV_CUDA_ON work
+        from rwkv_pip.utils import PIPELINE
 
         filename, _ = os.path.splitext(os.path.basename(model))
         self.name = filename
@@ -75,6 +74,8 @@ class AbstractRWKV(ABC):
         return embedding, token_len
 
     def __fast_embedding(self, tokens: List[str], state):
+        import torch
+
         tokens = [int(x) for x in tokens]
         token_len = len(tokens)
         self = self.model

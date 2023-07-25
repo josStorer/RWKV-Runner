@@ -4,8 +4,6 @@ from fastapi import APIRouter, HTTPException, Request, Response, status
 from pydantic import BaseModel
 import gc
 import copy
-import sys
-import torch
 
 router = APIRouter()
 
@@ -72,6 +70,8 @@ def add_state(body: AddStateBody):
     global trie, dtrie, loop_del_trie_id
     if trie is None:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "trie not loaded")
+
+    import torch
 
     try:
         id: int = trie.insert(body.prompt)
@@ -146,6 +146,8 @@ def longest_prefix_state(body: LongestPrefixStateBody, request: Request):
     global trie
     if trie is None:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "trie not loaded")
+
+    import torch
 
     id = -1
     try:
