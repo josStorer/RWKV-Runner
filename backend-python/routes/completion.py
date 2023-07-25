@@ -72,7 +72,7 @@ requests_num = 0
 
 
 async def eval_rwkv(
-    model: RWKV,
+    model: AbstractRWKV,
     request: Request,
     body: ModelConfigBody,
     prompt: str,
@@ -209,7 +209,7 @@ async def eval_rwkv(
 @router.post("/v1/chat/completions")
 @router.post("/chat/completions")
 async def chat_completions(body: ChatCompletionBody, request: Request):
-    model: RWKV = global_var.get(global_var.Model)
+    model: TextRWKV = global_var.get(global_var.Model)
     if model is None:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "model not loaded")
 
@@ -302,7 +302,7 @@ The following is a coherent verbose detailed conversation between a girl named {
 @router.post("/v1/completions")
 @router.post("/completions")
 async def completions(body: CompletionBody, request: Request):
-    model: RWKV = global_var.get(global_var.Model)
+    model: AbstractRWKV = global_var.get(global_var.Model)
     if model is None:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "model not loaded")
 
@@ -351,7 +351,7 @@ def embedding_base64(embedding: List[float]) -> str:
 @router.post("/v1/engines/text-embedding-ada-002/embeddings")
 @router.post("/engines/text-embedding-ada-002/embeddings")
 async def embeddings(body: EmbeddingsBody, request: Request):
-    model: RWKV = global_var.get(global_var.Model)
+    model: AbstractRWKV = global_var.get(global_var.Model)
     if model is None:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "model not loaded")
 

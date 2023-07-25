@@ -526,6 +526,30 @@
       "lastUpdated": "2023-05-23T11:22:41",
       "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-14B-v12-Eng98%25-Other2%25-20230523-ctx8192.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-14B-v12-Eng98%25-Other2%25-20230523-ctx8192.pth"
+    },
+    {
+      "name": "RWKV-4-MIDI-120M-v1-20230714-ctx4096.pth",
+      "desc": {
+        "en": "Music 120M v1",
+        "zh": "作曲 120M v1"
+      },
+      "size": 239224753,
+      "SHA256": "161d27dcf50d0958d230601ba1e0f8e7dd9c236105e92d2b833496412ace430c",
+      "lastUpdated": "2023-07-15T08:03:36",
+      "url": "https://huggingface.co/BlinkDL/rwkv-4-music/blob/main/RWKV-4-MIDI-120M-v1-20230714-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-music/resolve/main/RWKV-4-MIDI-120M-v1-20230714-ctx4096.pth"
+    },
+    {
+      "name": "RWKV-4-MIDI-560M-v1-20230717-ctx4096.pth",
+      "desc": {
+        "en": "Music 560M v1",
+        "zh": "作曲 560M v1"
+      },
+      "size": 1130577457,
+      "SHA256": "62b21841b24af38ef176e9e9d895d9fff730cea8aa0623f53a1784d74ce828d6",
+      "lastUpdated": "2023-07-17T15:02:08",
+      "url": "https://huggingface.co/BlinkDL/rwkv-4-music/blob/main/RWKV-4-MIDI-560M-v1-20230717-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-music/resolve/main/RWKV-4-MIDI-560M-v1-20230717-ctx4096.pth"
     }
   ]
 }

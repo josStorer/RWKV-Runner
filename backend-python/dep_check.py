@@ -1,3 +1,5 @@
+import midi2audio
+import mido
 import lm_dataformat
 import ftfy
 import tqdm
