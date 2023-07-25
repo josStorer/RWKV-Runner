@@ -184,7 +184,9 @@ const ChatPanel: FC = observer(() => {
   const bodyRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const mq = useMediaQuery('(min-width: 640px)');
-  const port = commonStore.getCurrentModelConfig().apiParameters.apiPort;
+  const currentConfig = commonStore.getCurrentModelConfig();
+  const apiParams = currentConfig.apiParameters;
+  const port = apiParams.apiPort;
 
   let lastMessageId: string;
   let generating: boolean = false;
@@ -308,12 +310,14 @@ const ChatPanel: FC = observer(() => {
         body: JSON.stringify({
           messages,
           stream: true,
-          model: commonStore.settings.apiChatModelName // 'gpt-3.5-turbo'
+          model: commonStore.settings.apiChatModelName, // 'gpt-3.5-turbo'
+          temperature: apiParams.temperature,
+          top_p: apiParams.topP
         }),
         signal: chatSseController?.signal,
         onmessage(e) {
           scrollToBottom();
-          if (e.data === '[DONE]') {
+          if (e.data.trim() === '[DONE]') {
             commonStore.conversation[answerId!].done = true;
             commonStore.conversation[answerId!].content = commonStore.conversation[answerId!].content.trim();
             commonStore.setConversation(commonStore.conversation);
