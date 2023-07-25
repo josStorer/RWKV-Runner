@@ -12,7 +12,7 @@ from utils.rwkv import *
 from utils.torch import *
 from utils.ngrok import *
 from utils.log import log_middleware
-from routes import completion, config, state_cache
+from routes import completion, config, state_cache, midi
 import global_var
 
 app = FastAPI(dependencies=[Depends(log_middleware)])
@@ -27,6 +27,7 @@ app.add_middleware(
 
 app.include_router(completion.router)
 app.include_router(config.router)
+app.include_router(midi.router)
 app.include_router(state_cache.router)
 
 
@@ -55,20 +56,9 @@ def exit():
     parent.kill()
 
 
-def debug():
-    model = RWKV(
-        model="../models/RWKV-4-Raven-7B-v11-Eng49%-Chn49%-Jpn1%-Other1%-20230430-ctx8192.pth",
-        strategy="cuda fp16",
-        tokens_path="20B_tokenizer.json",
-    )
-    d = model.pipeline.decode([])
-    print(d)
-
-
 if __name__ == "__main__":
     uvicorn.run(
         "main:app",
         port=8000 if len(sys.argv) < 2 else int(sys.argv[1]),
         host="127.0.0.1" if len(sys.argv) < 3 else sys.argv[2],
     )
-    # debug()
