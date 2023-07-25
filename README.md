@@ -91,6 +91,9 @@ body.json:
 
 ## Embeddings API Example
 
+Note: v1.4.0 has improved the quality of embeddings API. The generated results are not compatible
+with previous versions. If you are using embeddings API to generate knowledge bases or similar, please regenerate.
+
 If you are using langchain, just use `OpenAIEmbeddings(openai_api_base="http://127.0.0.1:8000", openai_api_key="sk-")`
 
 ```python

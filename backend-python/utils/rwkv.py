@@ -69,7 +69,7 @@ class AbstractRWKV(ABC):
             self.model_state = None
             self.model_tokens = []
             _, token_len = self.run_rnn(self.fix_tokens(self.pipeline.encode(input)))
-            embedding = self.model_state[-5].tolist()
+            embedding = self.model_state[-11].tolist()
         embedding = (embedding / np.linalg.norm(embedding)).tolist()
         return embedding, token_len
 

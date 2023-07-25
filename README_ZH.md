@@ -89,6 +89,8 @@ body.json:
 
 ## Embeddings API 示例
 
+注意: 1.4.0 版本对embeddings API质量进行了改善，生成结果与之前的版本不兼容，如果你正在使用此API生成知识库等，请重新生成
+
 如果你在用langchain, 直接使用 `OpenAIEmbeddings(openai_api_base="http://127.0.0.1:8000", openai_api_key="sk-")`
 
 ```python
