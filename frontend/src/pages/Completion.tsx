@@ -48,9 +48,9 @@ export const defaultPresets: CompletionPreset[] = [{
     topP: 0.3,
     presencePenalty: 0,
     frequencyPenalty: 1,
-    stop: '\\nEnglish',
+    stop: '\\n\\n',
     injectStart: '\\nChinese: ',
-    injectEnd: '\\nEnglish: '
+    injectEnd: '\\n\\nEnglish: '
   }
 }, {
   name: 'Catgirl',
@@ -79,20 +79,19 @@ export const defaultPresets: CompletionPreset[] = [{
     injectEnd: '\\n\\nUser: '
   }
 }, {
-// }, {
-//   name: 'Explain Code',
-//   prompt: 'export async function startup() {\n  FileExists(\'cache.json\').then((exists) => {\n    if (exists)\n      downloadProgramFiles();\n    else {\n      deleteDynamicProgramFiles().then(downloadProgramFiles);\n    }\n  });\n  EventsOn(\'downloadList\', (data) => {\n    if (data)\n      commonStore.setDownloadList(data);\n  });\n\n  initCache().then(initRemoteText);\n\n  await initConfig();\n\n  if (commonStore.settings.autoUpdatesCheck) // depends on config settings\n    checkUpdate();\n\n  getStatus(1000).then(status => { // depends on config api port\n    if (status)\n      commonStore.setStatus(status);\n  });\n}\n\n\"\"\"\nHere\'s what the above code is doing, explained in a concise way:\n',
-//   params: {
-//     maxResponseToken: 500,
-//     temperature: 0.8,
-//     topP: 0.7,
-//     presencePenalty: 0.4,
-//     frequencyPenalty: 0.4,
-//     stop: '\\n\\n',
-//     injectStart: '',
-//     injectEnd: ''
-//   }
-// }, {
+  name: 'Code Generation',
+  prompt: 'def sum(',
+  params: {
+    maxResponseToken: 500,
+    temperature: 1,
+    topP: 0.3,
+    presencePenalty: 0,
+    frequencyPenalty: 1,
+    stop: '\\n\\n',
+    injectStart: '',
+    injectEnd: ''
+  }
+}, {
   name: 'Werewolf',
   prompt: 'There is currently a game of Werewolf with six players, including a Seer (who can check identities at night), two Werewolves (who can choose someone to kill at night), a Bodyguard (who can choose someone to protect at night), two Villagers (with no special abilities), and a game host. User will play as Player 1, Assistant will play as Players 2-6 and the game host, and they will begin playing together. Every night, the host will ask User for his action and simulate the actions of the other players. During the day, the host will oversee the voting process and ask User for his vote. \n\nAssistant: Next, I will act as the game host and assign everyone their roles, including randomly assigning yours. Then, I will simulate the actions of Players 2-6 and let you know what happens each day. Based on your assigned role, you can tell me your actions and I will let you know the corresponding results each day.\n\nUser: Okay, I understand. Let\'s begin. Please assign me a role. Am I the Seer, Werewolf, Villager, or Bodyguard?\n\nAssistant: You are the Seer. Now that night has fallen, please choose a player to check his identity.\n\nUser: Tonight, I want to check Player 2 and find out his role.',
   params: {

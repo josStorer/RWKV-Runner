@@ -332,7 +332,7 @@ export const defaultModelConfigs: ModelConfig[] = [
     modelParameters: {
       modelName: 'RWKV-4-World-0.1B-v1-20230520-ctx4096.pth',
       device: 'CUDA',
-      precision: 'fp32',
+      precision: 'fp32', // using fp16 will disable state cache (->)
       storedLayers: 41,
       maxStoredLayers: 41
     }
