@@ -48,6 +48,7 @@ class MidiToWavBody(BaseModel):
         }
 
 
+# install fluidsynth first, see more: https://github.com/FluidSynth/fluidsynth/wiki/Download#distributions
 @router.post("/midi-to-wav")
 def midi_to_wav(body: MidiToWavBody):
     if not body.wav_path.startswith("midi/"):
@@ -72,6 +73,7 @@ class TextToWavBody(BaseModel):
         }
 
 
+# install fluidsynth first, see more: https://github.com/FluidSynth/fluidsynth/wiki/Download#distributions
 @router.post("/text-to-wav")
 def text_to_wav(body: TextToWavBody):
     text = body.text.strip()

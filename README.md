@@ -135,6 +135,7 @@ for i in np.argsort(embeddings_cos_sim)[::-1]:
 - ChatRWKV: https://github.com/BlinkDL/ChatRWKV
 - RWKV-LM: https://github.com/BlinkDL/RWKV-LM
 - RWKV-LM-LoRA: https://github.com/Blealtan/RWKV-LM-LoRA
+- MIDI-LLM-tokenizer: https://github.com/briansemrau/MIDI-LLM-tokenizer
 
 ## Preview
 
