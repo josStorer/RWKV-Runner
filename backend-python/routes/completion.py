@@ -206,8 +206,8 @@ async def eval_rwkv(
                 }
 
 
-@router.post("/v1/chat/completions")
-@router.post("/chat/completions")
+@router.post("/v1/chat/completions", tags=["Completions"])
+@router.post("/chat/completions", tags=["Completions"])
 async def chat_completions(body: ChatCompletionBody, request: Request):
     model: TextRWKV = global_var.get(global_var.Model)
     if model is None:
@@ -299,8 +299,8 @@ The following is a coherent verbose detailed conversation between a girl named {
             return None
 
 
-@router.post("/v1/completions")
-@router.post("/completions")
+@router.post("/v1/completions", tags=["Completions"])
+@router.post("/completions", tags=["Completions"])
 async def completions(body: CompletionBody, request: Request):
     model: AbstractRWKV = global_var.get(global_var.Model)
     if model is None:
@@ -346,10 +346,10 @@ def embedding_base64(embedding: List[float]) -> str:
     return base64.b64encode(np.array(embedding).astype(np.float32)).decode("utf-8")
 
 
-@router.post("/v1/embeddings")
-@router.post("/embeddings")
-@router.post("/v1/engines/text-embedding-ada-002/embeddings")
-@router.post("/engines/text-embedding-ada-002/embeddings")
+@router.post("/v1/embeddings", tags=["Embeddings"])
+@router.post("/embeddings", tags=["Embeddings"])
+@router.post("/v1/engines/text-embedding-ada-002/embeddings", tags=["Embeddings"])
+@router.post("/engines/text-embedding-ada-002/embeddings", tags=["Embeddings"])
 async def embeddings(body: EmbeddingsBody, request: Request):
     model: AbstractRWKV = global_var.get(global_var.Model)
     if model is None:

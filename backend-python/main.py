@@ -42,12 +42,12 @@ def init():
         ngrok_connect()
 
 
-@app.get("/")
+@app.get("/", tags=["Root"])
 def read_root():
     return {"Hello": "World!"}
 
 
-@app.post("/exit")
+@app.post("/exit", tags=["Root"])
 def exit():
     parent_pid = os.getpid()
     parent = psutil.Process(parent_pid)

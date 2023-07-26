@@ -2,5 +2,8 @@
 - ^backend-python/wkv_cuda_utils/
 - ^backend-python/get-pip\.py
 - ^backend-python/convert_model\.py
+- ^backend-python/utils/midi\.py
 - ^build/
+- ^finetune/lora/
+- ^finetune/json2binidx_tool/
 - ^frontend/wailsjs/

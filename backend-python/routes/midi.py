@@ -1,9 +1,34 @@
+import io
 from fastapi import APIRouter, HTTPException, status
+from starlette.responses import StreamingResponse
 from pydantic import BaseModel
 from utils.midi import *
 from midi2audio import FluidSynth
 
 router = APIRouter()
+
+
+class TextToMidiBody(BaseModel):
+    text: str
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "text": "p:24:a p:2a:a p:31:a p:39:a p:3b:a p:45:a b:26:a g:3e:a g:3e:a g:42:a g:42:a g:45:a g:45:a pi:3e:a pi:42:a pi:45:a t14 p:24:0 p:2a:0 p:31:0 p:39:0 p:3b:0 p:45:0 t2 p:2a:a p:3b:a p:45:a t14 p:2a:0 p:3b:0 p:45:0 b:26:0 g:3e:0 g:3e:0 g:42:0 g:42:0 g:45:0 g:45:0 pi:3e:0 pi:42:0 pi:45:0 t2 p:2e:a p:3b:a p:45:a b:26:a g:3e:a g:3e:a g:42:a g:42:a g:45:a g:45:a pi:3e:a pi:42:a pi:45:a t14 p:2e:0 p:3b:0 p:45:0 g:3e:0 g:3e:0 g:42:0 g:42:0 g:45:0 g:45:0 pi:3e:0 pi:42:0 pi:45:0 t2 p:2e:a p:3b:a p:45:a g:3e:a g:3e:a g:42:a g:42:a g:45:a g:45:a pi:3e:a pi:42:a pi:45:a t14 p:2e:0 p:3b:0 p:45:0 b:26:0 g:3e:0 g:3e:0 g:42:0 g:42:0 g:45:0 g:45:0 pi:3e:0 pi:42:0 pi:45:0 t2 p:26:a p:2a:a p:3b:a p:45:a t14 p:26:0 p:2a:0 p:3b:0 p:45:0 t2 p:2a:a p:3b:a p:45:a b:26:a g:3e:a g:3e:a g:42:a g:42:a g:45:a g:45:a pi:3e:a pi:42:a pi:45:a t14 p:2a:0 p:3b:0 p:45:0 b:26:0 t2 p:24:a p:2a:a p:3b:a p:45:a b:2d:a t14 p:24:0 p:2a:0 p:3b:0 p:45:0 b:2d:0 g:3e:0 g:3e:0 g:42:0 g:42:0 g:45:0 g:45:0 pi:3e:0 pi:42:0 pi:45:0 t2 p:24:a p:2a:a p:3b:a p:45:a b:21:a g:39:a g:39:a g:3d:a g:3d:a g:40:a g:40:a pi:39:a pi:3d:a pi:40:a t14 p:24:0 p:2a:0 p:3b:0 p:45:0 t2 p:2a:a p:3b:a p:45:a t14 p:2a:0 p:3b:0 p:45:0 b:21:0 g:39:0 g:39:0 g:3d:0 g:3d:0 g:40:0 g:40:0 pi:39:0 pi:3d:0 pi:40:0 t2 p:24:a p:2e:a p:3b:a p:45:a b:21:a g:39:a g:39:a g:3d:a g:3d:a g:40:a g:40:a pi:39:a pi:3d:a pi:40:a t14 p:24:0 p:2e:0 p:3b:0 p:45:0 b:21:0 g:39:0 g:39:0 g:3d:0 g:3d:0 g:40:0 g:40:0 pi:39:0 pi:3d:0 pi:40:0 t2 p:24:a p:2a:a p:3b:a p:45:a b:21:a g:39:a g:39:a g:3d:a g:3d:a g:40:a g:40:a pi:39:a pi:3d:a pi:40:a t14 p:24:0 p:2a:0 p:3b:0 p:45:0 t2 p:2a:a p:3b:a p:45:a t14 p:2a:0 p:3b:0 p:45:0 b:21:0 g:39:0 g:39:0 g:3d:0 g:3d:0 g:40:0 g:40:0 pi:39:0 pi:3d:0 pi:40:0 t2 p:26:a p:2a:a p:3b:a p:45:a b:21:a g:39:a g:39:a g:3d:a g:3d:a g:40:a g:40:a pi:39:a pi:3d:a pi:40:a t14 p:26:0 p:2a:0 p:3b:0 p:45:0 t2 p:2a:a p:3b:a p:45:a t14 p:2a:0 p:3b:0 p:45:0 b:21:0 g:39:0 g:39:0 g:3d:0 g:3d:0 g:40:0 g:40:0 pi:39:0 pi:3d:0 pi:40:0 t2 p:26:a p:2e:a p:31:a p:39:a p:3b:a p:45:a b:21:a g:39:a g:39:a g:3d:a g:3d:a g:40:a g:40:a pi:39:a pi:3d:a pi:40:a t14 p:26:0 p:2e:0 p:31:0 p:39:0 p:3b:0 p:45:0 b:21:0 t2 p:26:a p:2e:a p:31:a p:39:a p:3b:a p:45:a b:21:a t14 p:26:0 p:2e:0 p:31:0 p:39:0 p:3b:0 p:45:0 b:21:0 g:39:0 g:39:0 g:3d:0 g:3d:0 g:40:0 g:40:0 pi:39:0 pi:3d:0 pi:40:0 t2 p:24:a p:2a:a p:31:a p:39:a p:3b:a p:45:a b:1f:a g:3b:a g:3b:a g:3e:a g:3e:a g:43:a g:43:a pi:3b:a pi:3e:a pi:43:a t14 p:24:0 p:2a:0 p:31:0 p:39:0 p:3b:0 p:45:0 t2 p:2a:a p:3b:a p:45:a t14 p:2a:0 p:3b:0 p:45:0 b:1f:0 g:3b:0 g:3b:0 g:3e:0 g:3e:0 g:43:0 g:43:0 pi:3b:0 pi:3e:0 pi:43:0 t2 p:2e:a p:3b:a p:45:a b:1f:a g:3b:a g:3b:a g:3e:a g:3e:a g:43:a g:43:a pi:3b:a pi:3e:a pi:43:a t14 p:2e:0 p:3b:0 p:45:0 g:3b:0 g:3b:0 g:3e:0 g:3e:0 g:43:0 g:43:0 pi:3b:0 pi:3e:0 pi:43:0 t2 p:2e:a p:3b:a p:45:a g:3b:a g:3b:a g:3e:a g:3e:a g:43:a g:43:a pi:3b:a pi:3e:a pi:43:a t14 p:2e:0 p:3b:0 p:45:0 b:1f:0 g:3b:0 g:3b:0 g:3e:0 g:3e:0 g:43:0 g:43:0 pi:3b:0 pi:3e:0 pi:43:0 t2 p:26:a p:2a:a p:3b:a p:45:a t14 p:26:0 p:2a:0 p:3b:0 p:45:0 t2 p:2a:a p:3b:a p:45:a b:1f:a g:3b:a g:3b:a g:3e:a g:3e:a g:43:a g:43:a pi:3b:a pi:3e:a pi:43:a t14 p:2a:0 p:3b:0 p:45:0 b:1f:0 t2 p:24:a p:2a:a p:3b:a p:45:a b:1f:a t14 p:24:0 p:2a:0 p:3b:0 p:45:0 b:1f:0 g:3b:0 g:3b:0 g:3e:0 g:3e:0 g:43:0 g:43:0 pi:3b:0 pi:3e:0 pi:43:0 t2 p:24:a p:2e:a p:3b:a p:45:a b:26:a g:39:a g:39:a g:3e:a g:3e:a g:42:a g:42:a pi:39:a pi:3e:a pi:42:a t14 p:24:0 p:2e:0 p:3b:0 p:45:0 t2 p:2a:a p:3b:a p:45:a t14 p:2a:0 p:3b:0",
+            }
+        }
+
+
+@router.post("/text-to-midi", tags=["MIDI"])
+def text_to_midi(body: TextToMidiBody):
+    vocab_config = "backend-python/utils/midi_vocab_config.json"
+    cfg = VocabConfig.from_json(vocab_config)
+    mid = convert_str_to_midi(cfg, body.text.strip())
+    mid_data = io.BytesIO()
+    mid.save(None, mid_data)
+    mid_data.seek(0)
+
+    return StreamingResponse(mid_data, media_type="audio/midi")
 
 
 class TxtToMidiBody(BaseModel):
@@ -19,7 +44,7 @@ class TxtToMidiBody(BaseModel):
         }
 
 
-@router.post("/txt-to-midi")
+@router.post("/txt-to-midi", tags=["MIDI"])
 def txt_to_midi(body: TxtToMidiBody):
     if not body.midi_path.startswith("midi/"):
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "bad output path")
@@ -31,6 +56,8 @@ def txt_to_midi(body: TxtToMidiBody):
     text = text.strip()
     mid = convert_str_to_midi(cfg, text)
     mid.save(body.midi_path)
+
+    return "success"
 
 
 class MidiToWavBody(BaseModel):
@@ -48,14 +75,19 @@ class MidiToWavBody(BaseModel):
         }
 
 
-# install fluidsynth first, see more: https://github.com/FluidSynth/fluidsynth/wiki/Download#distributions
-@router.post("/midi-to-wav")
+@router.post("/midi-to-wav", tags=["MIDI"])
 def midi_to_wav(body: MidiToWavBody):
+    """
+    Install fluidsynth first, see more: https://github.com/FluidSynth/fluidsynth/wiki/Download#distributions
+    """
+
     if not body.wav_path.startswith("midi/"):
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "bad output path")
 
     fs = FluidSynth(body.sound_font_path)
     fs.midi_to_audio(body.midi_path, body.wav_path)
+
+    return "success"
 
 
 class TextToWavBody(BaseModel):
@@ -73,9 +105,12 @@ class TextToWavBody(BaseModel):
         }
 
 
-# install fluidsynth first, see more: https://github.com/FluidSynth/fluidsynth/wiki/Download#distributions
-@router.post("/text-to-wav")
+@router.post("/text-to-wav", tags=["MIDI"])
 def text_to_wav(body: TextToWavBody):
+    """
+    Install fluidsynth first, see more: https://github.com/FluidSynth/fluidsynth/wiki/Download#distributions
+    """
+
     text = body.text.strip()
     if not text.startswith("<start>"):
         text = "<start> " + text
@@ -92,3 +127,5 @@ def text_to_wav(body: TextToWavBody):
             midi_path=midi_path, wav_path=wav_path, sound_font_path=body.sound_font_path
         )
     )
+
+    return "success"

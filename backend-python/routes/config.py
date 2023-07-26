@@ -42,7 +42,7 @@ class SwitchModelBody(BaseModel):
         }
 
 
-@router.post("/switch-model")
+@router.post("/switch-model", tags=["Configs"])
 def switch_model(body: SwitchModelBody, response: Response, request: Request):
     if global_var.get(global_var.Model_Status) is global_var.ModelStatus.Loading:
         response.status_code = Status.HTTP_304_NOT_MODIFIED
@@ -98,7 +98,7 @@ def switch_model(body: SwitchModelBody, response: Response, request: Request):
     return "success"
 
 
-@router.post("/update-config")
+@router.post("/update-config", tags=["Configs"])
 def update_config(body: ModelConfigBody):
     """
     Will not update the model config immediately, but set it when completion called to avoid modifications during generation
@@ -110,7 +110,7 @@ def update_config(body: ModelConfigBody):
     return "success"
 
 
-@router.get("/status")
+@router.get("/status", tags=["Configs"])
 def status():
     gpus = GPUtil.getGPUs()
     if len(gpus) == 0:

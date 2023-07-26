@@ -32,7 +32,7 @@ def init():
         print("cyac not found")
 
 
-@router.post("/disable-state-cache")
+@router.post("/disable-state-cache", tags=["State Cache"])
 def disable_state_cache():
     global trie, dtrie
 
@@ -43,7 +43,7 @@ def disable_state_cache():
     return "success"
 
 
-@router.post("/enable-state-cache")
+@router.post("/enable-state-cache", tags=["State Cache"])
 def enable_state_cache():
     global trie, dtrie
     try:
@@ -65,7 +65,7 @@ class AddStateBody(BaseModel):
     logits: Any
 
 
-@router.post("/add-state")
+@router.post("/add-state", tags=["State Cache"])
 def add_state(body: AddStateBody):
     global trie, dtrie, loop_del_trie_id
     if trie is None:
@@ -105,7 +105,7 @@ def add_state(body: AddStateBody):
         )
 
 
-@router.post("/reset-state")
+@router.post("/reset-state", tags=["State Cache"])
 def reset_state():
     global trie, dtrie
     if trie is None:
@@ -141,7 +141,7 @@ def _get_a_dtrie_buff_size(dtrie_v):
     return 54 * len(dtrie_v["tokens"]) + 491520 + 262144 + 28  # TODO
 
 
-@router.post("/longest-prefix-state")
+@router.post("/longest-prefix-state", tags=["State Cache"])
 def longest_prefix_state(body: LongestPrefixStateBody, request: Request):
     global trie
     if trie is None:
@@ -180,7 +180,7 @@ def longest_prefix_state(body: LongestPrefixStateBody, request: Request):
         }
 
 
-@router.post("/save-state")
+@router.post("/save-state", tags=["State Cache"])
 def save_state():
     global trie
     if trie is None:
