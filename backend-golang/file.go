@@ -122,6 +122,10 @@ func (a *App) CopyFile(src string, dst string) error {
 }
 
 func (a *App) OpenSaveFileDialog(filterPattern string, defaultFileName string, savedContent string) (string, error) {
+	return a.OpenSaveFileDialogBytes(filterPattern, defaultFileName, []byte(savedContent))
+}
+
+func (a *App) OpenSaveFileDialogBytes(filterPattern string, defaultFileName string, savedContent []byte) (string, error) {
 	path, err := wruntime.SaveFileDialog(a.ctx, wruntime.SaveDialogOptions{
 		DefaultFilename: defaultFileName,
 		Filters: []wruntime.FileFilter{{
@@ -135,7 +139,7 @@ func (a *App) OpenSaveFileDialog(filterPattern string, defaultFileName string, s
 	if path == "" {
 		return "", nil
 	}
-	if err := os.WriteFile(path, []byte(savedContent), 0644); err != nil {
+	if err := os.WriteFile(path, savedContent, 0644); err != nil {
 		return "", err
 	}
 	return path, nil

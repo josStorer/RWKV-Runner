@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ArrowReset20Regular } from '@fluentui/react-icons';
 import commonStore from '../stores/commonStore';
 
-import { defaultModelConfigs, defaultModelConfigsMac } from '../pages/defaultModelConfigs';
+import { defaultModelConfigs, defaultModelConfigsMac } from '../pages/defaultConfigs';
 
 export const ResetConfigsButton: FC<{ afterConfirm?: () => void }> = ({ afterConfirm }) => {
   const { t } = useTranslation();

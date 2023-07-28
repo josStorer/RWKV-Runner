@@ -66,6 +66,10 @@ export function OpenSaveFileDialog(arg1, arg2, arg3) {
   return window['go']['backend_golang']['App']['OpenSaveFileDialog'](arg1, arg2, arg3);
 }
 
+export function OpenSaveFileDialogBytes(arg1, arg2, arg3) {
+  return window['go']['backend_golang']['App']['OpenSaveFileDialogBytes'](arg1, arg2, arg3);
+}
+
 export function PauseDownload(arg1) {
   return window['go']['backend_golang']['App']['PauseDownload'](arg1);
 }

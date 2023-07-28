@@ -11,11 +11,12 @@ import { IntroductionContent } from '../pages/Home';
 import { AboutContent } from '../pages/About';
 import i18n from 'i18next';
 import { CompletionPreset } from '../pages/Completion';
-import { defaultModelConfigs, defaultModelConfigsMac } from '../pages/defaultModelConfigs';
+import { defaultCompositionPrompt, defaultModelConfigs, defaultModelConfigsMac } from '../pages/defaultConfigs';
 import commonStore from './commonStore';
 import { Preset } from '../pages/PresetsManager/PresetsButton';
 import { DataProcessParameters, LoraFinetuneParameters } from '../pages/Train';
 import { ChartData } from 'chart.js';
+import { CompositionParams } from '../pages/Composition';
 
 export enum ModelStatus {
   Offline,
@@ -57,6 +58,19 @@ class CommonStore {
   completionPreset: CompletionPreset | null = null;
   completionGenerating: boolean = false;
   completionSubmittedPrompt: string = '';
+  // composition
+  compositionParams: CompositionParams = {
+    prompt: defaultCompositionPrompt,
+    maxResponseToken: 200,
+    temperature: 1,
+    topP: 0.8,
+    autoPlay: true,
+    useLocalSoundFont: false,
+    midi: null,
+    ns: null
+  };
+  compositionGenerating: boolean = false;
+  compositionSubmittedPrompt: string = defaultCompositionPrompt;
   // configs
   currentModelConfigIndex: number = 0;
   modelConfigs: ModelConfig[] = [];
@@ -265,6 +279,18 @@ class CommonStore {
 
   setCompletionSubmittedPrompt(value: string) {
     this.completionSubmittedPrompt = value;
+  }
+
+  setCompositionParams(value: CompositionParams) {
+    this.compositionParams = value;
+  }
+
+  setCompositionGenerating(value: boolean) {
+    this.compositionGenerating = value;
+  }
+
+  setCompositionSubmittedPrompt(value: string) {
+    this.compositionSubmittedPrompt = value;
   }
 
   setWslStdout(value: string) {

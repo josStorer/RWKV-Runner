@@ -2,6 +2,9 @@ package main
 
 import (
 	"embed"
+	"fmt"
+	"net/http"
+	"os"
 	"runtime/debug"
 	"strings"
 
@@ -12,6 +15,27 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
 	"github.com/wailsapp/wails/v2/pkg/options/windows"
 )
+
+type FileLoader struct {
+	http.Handler
+}
+
+func NewFileLoader() *FileLoader {
+	return &FileLoader{}
+}
+
+func (h *FileLoader) ServeHTTP(res http.ResponseWriter, req *http.Request) {
+	var err error
+	requestedFilename := strings.TrimPrefix(req.URL.Path, "/")
+	println("Requesting file:", requestedFilename)
+	fileData, err := os.ReadFile(requestedFilename)
+	if err != nil {
+		res.WriteHeader(http.StatusBadRequest)
+		res.Write([]byte(fmt.Sprintf("Could not load file %s", requestedFilename)))
+	}
+
+	res.Write(fileData)
+}
 
 //go:embed all:frontend/dist
 var assets embed.FS
@@ -28,12 +52,20 @@ var py embed.FS
 //go:embed finetune
 var finetune embed.FS
 
+//go:embed midi
+var midi embed.FS
+
+//go:embed assets/sound-font
+var midiAssets embed.FS
+
 func main() {
 	if buildInfo, ok := debug.ReadBuildInfo(); !ok || strings.Contains(buildInfo.String(), "-ldflags") {
 		backend.CopyEmbed(cyac)
 		backend.CopyEmbed(cyacInfo)
 		backend.CopyEmbed(py)
 		backend.CopyEmbed(finetune)
+		backend.CopyEmbed(midi)
+		backend.CopyEmbed(midiAssets)
 	}
 
 	// Create an instance of the app structure
@@ -63,7 +95,8 @@ func main() {
 			IsZoomControlEnabled: true,
 		},
 		AssetServer: &assetserver.Options{
-			Assets: assets,
+			Assets:  assets,
+			Handler: NewFileLoader(),
 		},
 		OnStartup: app.OnStartup,
 		Bind: []any{

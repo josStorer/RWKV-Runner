@@ -8,6 +8,7 @@ import {
   DocumentSettings20Regular,
   Home20Regular,
   Info20Regular,
+  MusicNote220Regular,
   Settings20Regular,
   Storage20Regular
 } from '@fluentui/react-icons';
@@ -19,6 +20,7 @@ import { Settings } from './Settings';
 import { About } from './About';
 import { Downloads } from './Downloads';
 import { Completion } from './Completion';
+import { Composition } from './Composition';
 
 type NavigationItem = {
   label: string;
@@ -48,6 +50,13 @@ export const pages: NavigationItem[] = [
     path: '/completion',
     icon: <ClipboardEdit20Regular />,
     element: <Completion />,
+    top: true
+  },
+  {
+    label: 'Composition',
+    path: '/composition',
+    icon: <MusicNote220Regular />,
+    element: <Composition />,
     top: true
   },
   {

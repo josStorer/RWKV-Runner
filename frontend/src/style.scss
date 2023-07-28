@@ -28,6 +28,7 @@ body {
 /* Works on Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
   width: 9px;
+  height: 9px;
 }
 
 *::-webkit-scrollbar-thumb {
@@ -89,6 +90,25 @@ body {
 
     .hljs {
       padding: 0;
+    }
+  }
+}
+
+midi-player {
+  &::part(control-panel) {
+    background: none;
+  }
+}
+
+midi-visualizer {
+  $instrument-colors: #007bff, #20c997, #dc3545, #6610f2, #ffc107, #e83e8c, #17a2b8, #fd7e14, #28a745;
+
+  svg {
+    @for $i from 0 to 200 {
+      $color: nth($instrument-colors, ($i % length($instrument-colors)) + 1);
+      rect.note[data-instrument="#{$i}"] {
+        fill: $color;
+      }
     }
   }
 }

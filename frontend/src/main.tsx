@@ -6,6 +6,7 @@ import App from './App';
 import { HashRouter } from 'react-router-dom';
 import { startup } from './startup';
 import './_locales/i18n-react';
+import 'html-midi-player';
 import { WindowShow } from '../wailsjs/runtime';
 
 startup().then(() => {

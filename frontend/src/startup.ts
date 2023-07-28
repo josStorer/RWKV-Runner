@@ -4,7 +4,7 @@ import { Cache, checkUpdate, downloadProgramFiles, LocalConfig, refreshLocalMode
 import { getStatus } from './apis';
 import { EventsOn } from '../wailsjs/runtime';
 import manifest from '../../manifest.json';
-import { defaultModelConfigs, defaultModelConfigsMac } from './pages/defaultModelConfigs';
+import { defaultModelConfigs, defaultModelConfigsMac } from './pages/defaultConfigs';
 import { Preset } from './pages/PresetsManager/PresetsButton';
 import { wslHandler } from './pages/Train';
 
