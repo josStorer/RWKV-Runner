@@ -11,7 +11,7 @@ env:
 
 jobs:
   create-draft:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
       - uses: actions/checkout@v3
@@ -35,7 +35,7 @@ jobs:
           gh release create ${{github.ref_name}} -d -F CURRENT_CHANGE.md -t ${{github.ref_name}}
 
   windows:
-    runs-on: windows-latest
+    runs-on: windows-2022
     needs: create-draft
     steps:
       - uses: actions/checkout@v3
@@ -56,10 +56,10 @@ jobs:
           Expand-Archive ./python-3.10.11-embed-amd64.zip -DestinationPath ./py310
           $content=Get-Content "./py310/python310._pth"; $content | ForEach-Object {if ($_.ReadCount -eq 3) {"Lib\\site-packages"} else {$_}} | Set-Content ./py310/python310._pth
           ./py310/python ./backend-python/get-pip.py
-          ./py310/python -m pip install Cython
+          ./py310/python -m pip install Cython==0.29.36
           Copy-Item -Path "${{ steps.cp310.outputs.python-path }}/../include" -Destination "py310/include" -Recurse
           Copy-Item -Path "${{ steps.cp310.outputs.python-path }}/../libs" -Destination "py310/libs" -Recurse
-          ./py310/python -m pip install cyac
+          ./py310/python -m pip install cyac==1.7
           go install github.com/wailsapp/wails/v2/cmd/wails@latest
           make
           Rename-Item -Path "build/bin/RWKV-Runner.exe" -NewName "RWKV-Runner_windows_x64.exe"
@@ -116,7 +116,7 @@ jobs:
       - run: gh release upload ${{github.ref_name}} build/bin/RWKV-Runner_macos_universal.zip build/bin/RWKV-Runner_darwin_universal
 
   publish-release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: [ windows, linux, macos ]
     steps:
       - uses: actions/checkout@v3
