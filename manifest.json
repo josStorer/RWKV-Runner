@@ -305,6 +305,30 @@
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-CHNtuned-7B-v1-20230709-ctx4096.pth"
     },
     {
+      "name": "Readflow-RWKV-4-World-CHNtuned-7B-v1-20230709-ctx32k.pth",
+      "desc": {
+        "en": "Global Languages 7B v1 Enhanced Chinese Ctx32k Summary Ability",
+        "zh": "全球语言 7B v1 中文增强 32k上下文 总结能力"
+      },
+      "size": 15035391543,
+      "SHA256": "1bd1de8cdbd56b67e1374588fe5d202884049c71278ffcb12f5c4efbdb422ee1",
+      "lastUpdated": "2023-07-20T06:11:29",
+      "url": "https://huggingface.co/xiaol/readflow-rwkv-4-world-ctx32k/blob/main/Readflow-RWKV-4-World-CHNtuned-7B-v1-20230709-ctx32k.pth",
+      "downloadUrl": "https://huggingface.co/xiaol/readflow-rwkv-4-world-ctx32k/resolve/main/Readflow-RWKV-4-World-CHNtuned-7B-v1-20230709-ctx32k.pth"
+    },
+    {
+      "name": "RWKV-4-World-JPNtuned-7B-v1-20230718-ctx4096.pth",
+      "desc": {
+        "en": "Global Languages 7B v1 Enhanced Japanese",
+        "zh": "全球语言 7B v1 日文增强"
+      },
+      "size": 15035393458,
+      "SHA256": "3e4c7664ce893ac1f6bb59cd76664fb5c872cb076bb82dbd534db0555b6e9fa5",
+      "lastUpdated": "2023-07-18T20:01:12",
+      "url": "https://huggingface.co/BlinkDL/rwkv-4-world/blob/main/RWKV-4-World-JPNtuned-7B-v1-20230718-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-JPNtuned-7B-v1-20230718-ctx4096.pth"
+    },
+    {
       "name": "RWKV-4-Novel-7B-v1-ChnEng-ChnPro-20230410-ctx4096.pth",
       "desc": {
         "en": "Professional Writer 7B v1",
