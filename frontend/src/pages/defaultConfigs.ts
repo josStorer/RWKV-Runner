@@ -1108,6 +1108,24 @@ export const defaultModelConfigs: ModelConfig[] = [
     }
   },
   {
+    name: 'CPU-120M-Music',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-MIDI-120M-v1-20230714-ctx4096.pth',
+      device: 'CPU',
+      precision: 'fp32',
+      storedLayers: 41,
+      maxStoredLayers: 41
+    }
+  },
+  {
     name: 'CPU-6G-1B5-World',
     apiParameters: {
       apiPort: 8000,

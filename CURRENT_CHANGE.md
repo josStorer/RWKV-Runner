@@ -1,8 +1,17 @@
 ## Changes
 
-- fix always show `Convert Failed` when converting model
-- fix input with array type (#96, #107)
-- change chinese translation of `completion`
+- add Composition Page (RWKV-Music)
+- improve RunButton prompt
+- support for `stop` array api params
+- improve embeddings API results
+- improve python backend startup speed
+- add support for MIDI RWKV
+- add midi api
+- add CPU-120M-Music config
+- improve sse fetch
+- update manifest (a lot of new models)
+- update presets
+- remove LoraFinetunePrecision fp32
 
 ## Install
 
