@@ -91,7 +91,7 @@ export type DataProcessParameters = {
   vocabPath: string;
 }
 
-export type LoraFinetunePrecision = 'bf16' | 'fp16' | 'fp32' | 'tf32';
+export type LoraFinetunePrecision = 'bf16' | 'fp16' | 'tf32';
 
 export type LoraFinetuneParameters = {
   baseModel: string;
@@ -544,7 +544,6 @@ const LoraFinetune: FC = observer(() => {
                             >
                               <Option>bf16</Option>
                               <Option>fp16</Option>
-                              <Option>fp32</Option>
                               <Option>tf32</Option>
                             </Dropdown>
                             : <div />
