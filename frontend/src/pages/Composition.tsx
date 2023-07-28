@@ -72,7 +72,7 @@ const CompositionPanel: FC = observer(() => {
 
   const setSoundFont = async () => {
     let soundUrl: string;
-    if (params.useLocalSoundFont)
+    if (commonStore.compositionParams.useLocalSoundFont)
       soundUrl = 'assets/sound-font';
     else
       soundUrl = !commonStore.settings.giteeUpdatesSource ?
@@ -117,7 +117,7 @@ const CompositionPanel: FC = observer(() => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        'text': params.prompt.replaceAll(/<pad>|<start>|<end>/g, '').replaceAll('  ', '').trim()
+        'text': commonStore.compositionParams.prompt.replaceAll(/<pad>|<start>|<end>/g, '').replaceAll('  ', ' ').trim()
       })
     }).then(r => {
       r.arrayBuffer().then(midi => {
@@ -168,7 +168,7 @@ const CompositionPanel: FC = observer(() => {
           scrollToBottom();
           if (e.data.trim() === '[DONE]') {
             commonStore.setCompositionGenerating(false);
-            generateNs(params.autoPlay);
+            generateNs(commonStore.compositionParams.autoPlay);
             return;
           }
           let data;

@@ -3,7 +3,7 @@ import os
 import pathlib
 import copy
 import re
-from typing import Dict, Iterable, List, Tuple
+from typing import Dict, Iterable, List, Tuple, Union
 from utils.log import quick_log
 from fastapi import HTTPException
 from pydantic import BaseModel, Field
@@ -213,7 +213,7 @@ class AbstractRWKV(ABC):
                 return state[0].tolist(), token_len
 
     def generate(
-        self, prompt: str, stop: str | List[str] = None
+        self, prompt: str, stop: Union[str, List[str]] = None
     ) -> Iterable[Tuple[str, str, int, int]]:
         quick_log(None, None, "Generation Prompt:\n" + prompt)
         cache = None
