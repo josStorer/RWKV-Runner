@@ -12,6 +12,7 @@
 - update manifest (a lot of new models)
 - update presets
 - remove LoraFinetunePrecision fp32
+- chore
 
 ## Install
 
