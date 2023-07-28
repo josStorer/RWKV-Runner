@@ -149,9 +149,16 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
             }).then(async (r) => {
               if (r.ok) {
                 commonStore.setStatus({ status: ModelStatus.Working });
-                toastWithButton(t('Startup Completed'), t('Chat'), () => {
-                  navigate({ pathname: '/chat' });
-                }, { type: 'success', autoClose: 3000 });
+                let buttonNameMap = {
+                  'novel': 'Completion',
+                  'midi': 'Composition'
+                };
+                let buttonName = 'Chat';
+                buttonName = Object.entries(buttonNameMap).find(([key, value]) => modelName.toLowerCase().includes(key))?.[1] || buttonName;
+                const buttonFn = () => {
+                  navigate({ pathname: '/' + buttonName.toLowerCase() });
+                };
+                toastWithButton(t('Startup Completed'), t(buttonName), buttonFn, { type: 'success', autoClose: 3000 });
               } else if (r.status === 304) {
                 toast(t('Loading Model'), { type: 'info' });
               } else {
