@@ -155,6 +155,10 @@ for i in np.argsort(embeddings_cos_sim)[::-1]:
 
 ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/bf49de8e-3b89-4543-b1ef-7cd4b19a1836)
 
+### 作曲
+
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/e8ad908d-3fd2-4e92-bcdb-96815cb836ee)
+
 ### コンフィグ
 
 ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/48befdc6-e03c-4851-9bee-22f77ee2640e)
