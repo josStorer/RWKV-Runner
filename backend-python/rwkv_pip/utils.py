@@ -108,9 +108,14 @@ class PIPELINE:
         out_last = 0
         out_str = ""
         occurrence = {}
+        tokens_ctx = self.encode(ctx)
+
+        for token_in_ctx in tokens_ctx:
+            occurrence[token_in_ctx] = 1
+        
         for i in range(token_count):
             # forward & adjust prob.
-            tokens = self.encode(ctx) if i == 0 else [token]
+            tokens = tokens_ctx if i == 0 else [token]
             while len(tokens) > 0:
                 out, state = self.model.forward(tokens[: args.chunk_len], state)
                 tokens = tokens[args.chunk_len :]
