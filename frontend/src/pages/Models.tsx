@@ -27,7 +27,7 @@ export type ModelSourceItem = {
   name: string;
   size: number;
   lastUpdated: string;
-  desc?: { [lang: string]: string; };
+  desc?: { [lang: string]: string | undefined; };
   SHA256?: string;
   url?: string;
   downloadUrl?: string;
@@ -63,10 +63,10 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
       const lang: string = commonStore.settings.language;
 
       if (a.desc && b.desc) {
-        if (lang in a.desc && lang in b.desc)
-          return b.desc[lang].localeCompare(a.desc[lang]);
-        else if ('en' in a.desc && 'en' in b.desc)
-          return b.desc['en'].localeCompare(a.desc['en']);
+        if (lang in a.desc && lang in b.desc && a.desc[lang] && b.desc[lang])
+          return b.desc[lang]!.localeCompare(a.desc[lang]!);
+        else if ('en' in a.desc && 'en' in b.desc && a.desc['en'] && b.desc['en'])
+          return b.desc['en']!.localeCompare(a.desc['en']!);
       }
       return 0;
     },
