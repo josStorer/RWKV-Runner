@@ -268,12 +268,30 @@ export const defaultModelConfigsMac: ModelConfig[] = [
       apiPort: 8000,
       maxResponseToken: 4100,
       temperature: 1.0,
-      topP: 0.3,
+      topP: 0.8,
       presencePenalty: 0,
       frequencyPenalty: 1
     },
     modelParameters: {
       modelName: 'RWKV-4-MIDI-120M-v1-20230714-ctx4096.pth',
+      device: 'CPU',
+      precision: 'fp32',
+      storedLayers: 41,
+      maxStoredLayers: 41
+    }
+  },
+  {
+    name: 'CPU-560M-Music',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1.0,
+      topP: 0.8,
+      presencePenalty: 0,
+      frequencyPenalty: 1
+    },
+    modelParameters: {
+      modelName: 'RWKV-4-MIDI-560M-v1-20230717-ctx4096.pth',
       device: 'CPU',
       precision: 'fp32',
       storedLayers: 41,
