@@ -127,7 +127,7 @@ async def eval_rwkv(
                             "object": "chat.completion.chunk"
                             if chat_mode
                             else "text_completion",
-                            "response": response,
+                            # "response": response,
                             "model": model.name,
                             "choices": [
                                 {
@@ -165,7 +165,7 @@ async def eval_rwkv(
                         "object": "chat.completion.chunk"
                         if chat_mode
                         else "text_completion",
-                        "response": response,
+                        # "response": response,
                         "model": model.name,
                         "choices": [
                             {
@@ -186,7 +186,7 @@ async def eval_rwkv(
             else:
                 yield {
                     "object": "chat.completion" if chat_mode else "text_completion",
-                    "response": response,
+                    # "response": response,
                     "model": model.name,
                     "usage": {
                         "prompt_tokens": prompt_tokens,
