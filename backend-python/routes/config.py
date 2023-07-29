@@ -6,7 +6,6 @@ from pydantic import BaseModel
 from utils.rwkv import *
 from utils.torch import *
 import global_var
-import GPUtil
 
 router = APIRouter()
 
@@ -112,6 +111,8 @@ def update_config(body: ModelConfigBody):
 
 @router.get("/status", tags=["Configs"])
 def status():
+    import GPUtil
+
     gpus = GPUtil.getGPUs()
     if len(gpus) == 0:
         device_name = "CPU"
