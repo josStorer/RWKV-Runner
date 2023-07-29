@@ -25,7 +25,13 @@ class ChatCompletionBody(ModelConfigBody):
     messages: List[Message]
     model: str = "rwkv"
     stream: bool = False
-    stop: Union[str, List[str]] = None
+    stop: Union[str, List[str]] = [
+        "\n\nUser",
+        "\n\nQuestion",
+        "\n\nQ",
+        "\n\nHuman",
+        "\n\nBob",
+    ]
 
     class Config:
         schema_extra = {
@@ -77,7 +83,7 @@ async def eval_rwkv(
     body: ModelConfigBody,
     prompt: str,
     stream: bool,
-    stop: str,
+    stop: Union[str, List[str]],
     chat_mode: bool,
 ):
     global requests_num
@@ -285,15 +291,16 @@ The following is a coherent verbose detailed conversation between a girl named {
             )
     completion_text += f"{bot}{interface}"
 
-    stop = f"\n\n{user}" if body.stop is None else body.stop
     if body.stream:
         return EventSourceResponse(
-            eval_rwkv(model, request, body, completion_text, body.stream, stop, True)
+            eval_rwkv(
+                model, request, body, completion_text, body.stream, body.stop, True
+            )
         )
     else:
         try:
             return await eval_rwkv(
-                model, request, body, completion_text, body.stream, stop, True
+                model, request, body, completion_text, body.stream, body.stop, True
             ).__anext__()
         except StopAsyncIteration:
             return None
