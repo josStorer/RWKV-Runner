@@ -1,18 +1,17 @@
+## Breaking Changes
+
+Due to performance and bandwidth considerations, the `/chat/completions` and `/completions` API no longer return
+the `response` field. If necessary, you can
+still [uncomment it](https://github.com/josStorer/RWKV-Runner/commit/aecacde81927e26816558f1a629cdcf507b7cb5b) yourself.
+Please note that this is never part of the OpenAI API, it existed previously only for API development
+convenience. If you follow the OpenAI API specification, you will not be affected in any way.
+
 ## Changes
 
-- add Composition Page (RWKV-Music)
-- improve RunButton prompt
-- support for `stop` array api params
-- improve embeddings API results
+- improve `/chat/completions` and `/completions` API performance (remove `response` field)
+- improve default ChatCompletion `stop`
 - improve python backend startup speed
-- add support for MIDI RWKV
-- add midi api
-- add CPU-120M-Music config
-- improve sse fetch
-- update manifest (a lot of new models)
-- update presets
-- remove LoraFinetunePrecision fp32
-- chore
+- update defaultConfigs
 
 ## Install
 
