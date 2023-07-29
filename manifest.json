@@ -19,7 +19,8 @@
       "name": "RWKV-4-World-CHNtuned-0.1B-v1-20230617-ctx4096.pth",
       "desc": {
         "en": "Global Languages 0.1B v1 Enhanced Chinese",
-        "zh": "全球语言 0.1B v1 中文增强"
+        "zh": "全球语言 0.1B v1 中文增强",
+        "ja": "グローバル言語 0.1B v1 中国語強化"
       },
       "size": 385594610,
       "SHA256": "a3888f9958d378ee6d4976ae1c02edb698f4382e426086febafb4a69417b9080",
@@ -31,7 +32,8 @@
       "name": "RWKV-4-World-0.1B-v1-20230520-ctx4096.pth",
       "desc": {
         "en": "Global Languages 0.1B v1",
-        "zh": "全球语言 0.1B v1"
+        "zh": "全球语言 0.1B v1",
+        "ja": "グローバル言語 0.1B v1"
       },
       "size": 385594610,
       "SHA256": "a10ef99df2a8f8a6801edf4fc92a9c49bedd63dcb900d3e5667a2136b3d671e7",
@@ -43,7 +45,8 @@
       "name": "RWKV-4-World-CHNtuned-0.4B-v1-20230618-ctx4096.pth",
       "desc": {
         "en": "Global Languages 0.4B v1 Enhanced Chinese",
-        "zh": "全球语言 0.4B v1 中文增强"
+        "zh": "全球语言 0.4B v1 中文增强",
+        "ja": "グローバル言語 0.4B v1 中国語強化"
       },
       "size": 923362866,
       "SHA256": "dbd5302cbee596bbc900f97eb10b2af3001a7f2c7e4d8643bf8683b2cdbdd324",
@@ -55,7 +58,8 @@
       "name": "RWKV-4-World-0.4B-v1-20230529-ctx4096.pth",
       "desc": {
         "en": "Global Languages 0.4B v1",
-        "zh": "全球语言 0.4B v1"
+        "zh": "全球语言 0.4B v1",
+        "ja": "グローバル言語 0.4B v1"
       },
       "size": 923362866,
       "SHA256": "4b4a2733cf5e5dc97dd62106f391d99895d16b11c5ccd10c89f28c52067a4919",
@@ -67,7 +71,8 @@
       "name": "RWKV-4-World-CHNtuned-1.5B-v1-20230620-ctx4096.pth",
       "desc": {
         "en": "Global Languages 1.5B v1 Enhanced Chinese",
-        "zh": "全球语言 1.5B v1 中文增强"
+        "zh": "全球语言 1.5B v1 中文增强",
+        "ja": "グローバル言語 1.5B v1 中国語強化"
       },
       "size": 3155281586,
       "SHA256": "9f31f2ed5fe52dcf2d50208eb2efd764b9674dba2adb1baeff61997b4390a26b",
@@ -118,7 +123,8 @@
       "name": "RWKV-4-World-1.5B-v1-fixed-20230612-ctx4096.pth",
       "desc": {
         "en": "Global Languages 1.5B v1 fixed",
-        "zh": "全球语言 1.5B v1 修复"
+        "zh": "全球语言 1.5B v1 修复",
+        "ja": "グローバル言語 1.5B v1"
       },
       "size": 3155281586,
       "SHA256": "71f0c3229f9227cbcb8ae5fee6461197129a57e26366c4d23a49058417b046c9",
@@ -182,7 +188,8 @@
       "name": "RWKV-4-World-3B-v1-20230619-ctx4096.pth",
       "desc": {
         "en": "Global Languages 3B v1",
-        "zh": "全球语言 3B v1"
+        "zh": "全球语言 3B v1",
+        "ja": "グローバル言語 3B v1"
       },
       "size": 6125597618,
       "SHA256": "1b227af317fa25b6939ab3c7cd321226ca48b8fe4bbbd2df3db669f1482c54ba",
@@ -194,7 +201,8 @@
       "name": "RWKV-4-World-CHNtuned-3B-v1-20230625-ctx4096.pth",
       "desc": {
         "en": "Global Languages 3B v1 Enhanced Chinese",
-        "zh": "全球语言 3B v1 中文增强"
+        "zh": "全球语言 3B v1 中文增强",
+        "ja": "グローバル言語 3B v1 中国語強化"
       },
       "size": 6125597618,
       "SHA256": "7d3b5a4d0e9780a3e3d9ae7c2defbe8564d240bc9a238db4ba70cfb66dc33888",
@@ -284,7 +292,8 @@
       "name": "RWKV-4-World-7B-v1-20230626-ctx4096.pth",
       "desc": {
         "en": "Global Languages 7B v1",
-        "zh": "全球语言 7B v1"
+        "zh": "全球语言 7B v1",
+        "ja": "グローバル言語 7B v1"
       },
       "size": 15035393586,
       "SHA256": "db7b011247a0fe4389e1d76e3d6a904185f85d509c8a44ad18bf401094efc293",
@@ -296,7 +305,8 @@
       "name": "RWKV-4-World-CHNtuned-7B-v1-20230709-ctx4096.pth",
       "desc": {
         "en": "Global Languages 7B v1 Enhanced Chinese",
-        "zh": "全球语言 7B v1 中文增强"
+        "zh": "全球语言 7B v1 中文增强",
+        "ja": "グローバル言語 7B v1 中国語強化"
       },
       "size": 15035393458,
       "SHA256": "52d33e8352a40158d21425fee4f68df1515d6324056f788d2c78a366ef578ffa",
@@ -308,7 +318,8 @@
       "name": "Readflow-RWKV-4-World-CHNtuned-7B-v1-20230709-ctx32k.pth",
       "desc": {
         "en": "Global Languages 7B v1 Enhanced Chinese Ctx32k Summary Ability",
-        "zh": "全球语言 7B v1 中文增强 32k上下文 总结能力"
+        "zh": "全球语言 7B v1 中文增强 32k上下文 总结能力",
+        "ja": "グローバル言語 7B v1 中国語強化 32kコンテキスト まとめる能力"
       },
       "size": 15035391543,
       "SHA256": "1bd1de8cdbd56b67e1374588fe5d202884049c71278ffcb12f5c4efbdb422ee1",
@@ -320,7 +331,8 @@
       "name": "RWKV-4-World-JPNtuned-7B-v1-20230718-ctx4096.pth",
       "desc": {
         "en": "Global Languages 7B v1 Enhanced Japanese",
-        "zh": "全球语言 7B v1 日文增强"
+        "zh": "全球语言 7B v1 日文增强",
+        "ja": "グローバル言語 7B v1 日本語強化"
       },
       "size": 15035393458,
       "SHA256": "3e4c7664ce893ac1f6bb59cd76664fb5c872cb076bb82dbd534db0555b6e9fa5",
@@ -555,7 +567,8 @@
       "name": "RWKV-4-MIDI-120M-v1-20230714-ctx4096.pth",
       "desc": {
         "en": "Music 120M v1",
-        "zh": "作曲 120M v1"
+        "zh": "作曲 120M v1",
+        "ja": "作曲 120M v1"
       },
       "size": 239224753,
       "SHA256": "161d27dcf50d0958d230601ba1e0f8e7dd9c236105e92d2b833496412ace430c",
@@ -567,7 +580,8 @@
       "name": "RWKV-4-MIDI-560M-v1-20230717-ctx4096.pth",
       "desc": {
         "en": "Music 560M v1",
-        "zh": "作曲 560M v1"
+        "zh": "作曲 560M v1",
+        "ja": "作曲 560M v1"
       },
       "size": 1130577457,
       "SHA256": "62b21841b24af38ef176e9e9d895d9fff730cea8aa0623f53a1784d74ce828d6",
