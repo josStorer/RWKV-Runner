@@ -255,6 +255,11 @@ class AbstractRWKV(ABC):
 
         occurrence: Dict = {}
 
+        tokens_ctx = self.pipeline.encode(prompt)
+
+        for token_in_ctx in tokens_ctx:
+            occurrence[token_in_ctx] = 1
+
         completion_token_len = 0
         response = ""
         for i in range(self.max_tokens_per_generation):
