@@ -375,6 +375,16 @@ class TextRWKV(AbstractRWKV):
                 + occurrence[n] * self.penalty_alpha_frequency
             )
 
+        if i == 0:
+            for token in self.model_tokens:
+                token = int(token)
+                for xxx in occurrence:
+                    occurrence[xxx] *= 0.996
+                if token not in occurrence:
+                    occurrence[token] = 1
+                else:
+                    occurrence[token] += 1
+
     # Model only saw '\n\n' as [187, 187] before, but the tokenizer outputs [535] for it at the end
     def fix_tokens(self, tokens) -> List[int]:
         if "world" in self.name.lower():
