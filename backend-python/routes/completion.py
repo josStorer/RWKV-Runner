@@ -32,6 +32,8 @@ class ChatCompletionBody(ModelConfigBody):
         "\n\nHuman",
         "\n\nBob",
     ]
+    user_name: str = None
+    assistant_name: str = None
 
     class Config:
         schema_extra = {
@@ -40,6 +42,8 @@ class ChatCompletionBody(ModelConfigBody):
                 "model": "rwkv",
                 "stream": False,
                 "stop": None,
+                "user_name": None,
+                "assistant_name": None,
                 "max_tokens": 1000,
                 "temperature": 1.2,
                 "top_p": 0.5,
@@ -232,8 +236,10 @@ async def chat_completions(body: ChatCompletionBody, request: Request):
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "no question found")
 
     interface = model.interface
-    user = model.user
-    bot = model.bot
+    user = model.user if body.user_name is None else body.user_name
+    bot = model.bot if body.assistant_name is None else body.assistant_name
+
+    is_raven = model.rwkv_type == RWKVType.Raven
 
     completion_text = (
         f"""
@@ -243,7 +249,7 @@ The following is a coherent verbose detailed conversation between a girl named {
 {bot} likes to tell {user} a lot about herself and her opinions. \
 {bot} usually gives {user} kind, helpful and informative advices.\n
 """
-        if user == "Bob"
+        if is_raven
         else f"{user}{interface} hi\n\n{bot}{interface} Hi. "
         + "I am your assistant and I will provide expert full response in full details. Please feel free to ask any question and I will always answer it.\n\n"
     )
@@ -251,22 +257,22 @@ The following is a coherent verbose detailed conversation between a girl named {
         if message.role == "system":
             completion_text = (
                 f"The following is a coherent verbose detailed conversation between a girl named {bot} and her friend {user}. "
-                if user == "Bob"
+                if is_raven
                 else f"{user}{interface} hi\n\n{bot}{interface} Hi. "
                 + message.content.replace("\\n", "\n")
                 .replace("\r\n", "\n")
                 .replace("\n\n", "\n")
                 .replace("\n", " ")
                 .strip()
-                .replace("You are", f"{bot} is" if user == "Bob" else "I am")
-                .replace("you are", f"{bot} is" if user == "Bob" else "I am")
-                .replace("You're", f"{bot} is" if user == "Bob" else "I'm")
-                .replace("you're", f"{bot} is" if user == "Bob" else "I'm")
-                .replace("You", f"{bot}" if user == "Bob" else "I")
-                .replace("you", f"{bot}" if user == "Bob" else "I")
-                .replace("Your", f"{bot}'s" if user == "Bob" else "My")
-                .replace("your", f"{bot}'s" if user == "Bob" else "my")
-                .replace("你", f"{bot}" if user == "Bob" else "我")
+                .replace("You are", f"{bot} is" if is_raven else "I am")
+                .replace("you are", f"{bot} is" if is_raven else "I am")
+                .replace("You're", f"{bot} is" if is_raven else "I'm")
+                .replace("you're", f"{bot} is" if is_raven else "I'm")
+                .replace("You", f"{bot}" if is_raven else "I")
+                .replace("you", f"{bot}" if is_raven else "I")
+                .replace("Your", f"{bot}'s" if is_raven else "My")
+                .replace("your", f"{bot}'s" if is_raven else "my")
+                .replace("你", f"{bot}" if is_raven else "我")
                 + "\n\n"
             )
             break
@@ -290,6 +296,12 @@ The following is a coherent verbose detailed conversation between a girl named {
                 + "\n\n"
             )
     completion_text += f"{bot}{interface}"
+
+    if type(body.stop) == str:
+        body.stop = [body.stop, f"\n\n{user}", f"\n\n{bot}"]
+    else:
+        body.stop.append(f"\n\n{user}")
+        body.stop.append(f"\n\n{bot}")
 
     if body.stream:
         return EventSourceResponse(
