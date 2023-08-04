@@ -22,18 +22,18 @@ class Message(BaseModel):
 
 
 class ChatCompletionBody(ModelConfigBody):
-    messages: List[Message]
+    messages: Union[List[Message], None]
     model: str = "rwkv"
     stream: bool = False
-    stop: Union[str, List[str]] = [
+    stop: Union[str, List[str], None] = [
         "\n\nUser",
         "\n\nQuestion",
         "\n\nQ",
         "\n\nHuman",
         "\n\nBob",
     ]
-    user_name: str = None
-    assistant_name: str = None
+    user_name: Union[str, None] = None
+    assistant_name: Union[str, None] = None
 
     class Config:
         schema_extra = {
@@ -54,10 +54,10 @@ class ChatCompletionBody(ModelConfigBody):
 
 
 class CompletionBody(ModelConfigBody):
-    prompt: Union[str, List[str]]
+    prompt: Union[str, List[str], None]
     model: str = "rwkv"
     stream: bool = False
-    stop: Union[str, List[str]] = None
+    stop: Union[str, List[str], None] = None
 
     class Config:
         schema_extra = {
@@ -87,7 +87,7 @@ async def eval_rwkv(
     body: ModelConfigBody,
     prompt: str,
     stream: bool,
-    stop: Union[str, List[str]],
+    stop: Union[str, List[str], None],
     chat_mode: bool,
 ):
     global requests_num
@@ -345,7 +345,7 @@ async def completions(body: CompletionBody, request: Request):
 
 
 class EmbeddingsBody(BaseModel):
-    input: Union[str, List[str], List[List[int]]]
+    input: Union[str, List[str], List[List[int]], None]
     model: str = "rwkv"
     encoding_format: str = None
     fast_mode: bool = False
