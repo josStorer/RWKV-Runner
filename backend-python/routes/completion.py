@@ -2,11 +2,12 @@ import asyncio
 import json
 from threading import Lock
 from typing import List, Union
+from enum import Enum
 import base64
 
 from fastapi import APIRouter, Request, status, HTTPException
 from sse_starlette.sse import EventSourceResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 import numpy as np
 import tiktoken
 from utils.rwkv import *
@@ -16,9 +17,15 @@ import global_var
 router = APIRouter()
 
 
+class Role(Enum):
+    User = "user"
+    Assistant = "assistant"
+    System = "system"
+
+
 class Message(BaseModel):
-    role: str
-    content: str
+    role: Role
+    content: str = Field(min_length=1)
 
 
 class ChatCompletionBody(ModelConfigBody):
@@ -38,7 +45,7 @@ class ChatCompletionBody(ModelConfigBody):
     class Config:
         schema_extra = {
             "example": {
-                "messages": [{"role": "user", "content": "hello"}],
+                "messages": [{"role": Role.User.value, "content": "hello"}],
                 "model": "rwkv",
                 "stream": False,
                 "stop": None,
@@ -200,7 +207,7 @@ async def eval_rwkv(
                     "choices": [
                         {
                             "message": {
-                                "role": "assistant",
+                                "role": Role.Assistant.value,
                                 "content": response,
                             },
                             "index": 0,
@@ -223,17 +230,12 @@ async def chat_completions(body: ChatCompletionBody, request: Request):
     if model is None:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "model not loaded")
 
-    question = body.messages[-1]
-    if question.role == "user":
-        question = question.content
-    elif question.role == "system":
-        question = body.messages[-2]
-        if question.role == "user":
-            question = question.content
-        else:
-            raise HTTPException(status.HTTP_400_BAD_REQUEST, "no question found")
-    else:
-        raise HTTPException(status.HTTP_400_BAD_REQUEST, "no question found")
+    if body.messages is None or body.messages == []:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "messages not found")
+
+    basic_system: str = ""
+    if body.messages[0].role == Role.System:
+        basic_system = body.messages[0].content
 
     interface = model.interface
     user = model.user if body.user_name is None else body.user_name
@@ -241,60 +243,61 @@ async def chat_completions(body: ChatCompletionBody, request: Request):
 
     is_raven = model.rwkv_type == RWKVType.Raven
 
-    completion_text = (
-        f"""
+    completion_text: str = ""
+    if basic_system == "":
+        completion_text = (
+            f"""
 The following is a coherent verbose detailed conversation between a girl named {bot} and her friend {user}. \
 {bot} is very intelligent, creative and friendly. \
 {bot} is unlikely to disagree with {user}, and {bot} doesn't like to ask {user} questions. \
 {bot} likes to tell {user} a lot about herself and her opinions. \
 {bot} usually gives {user} kind, helpful and informative advices.\n
 """
-        if is_raven
-        else f"{user}{interface} hi\n\n{bot}{interface} Hi. "
-        + "I am your assistant and I will provide expert full response in full details. Please feel free to ask any question and I will always answer it.\n\n"
-    )
-    for message in body.messages:
-        if message.role == "system":
-            completion_text = (
+            if is_raven
+            else (
+                f"{user}{interface} hi\n\n{bot}{interface} Hi. "
+                + "I am your assistant and I will provide expert full response in full details. Please feel free to ask any question and I will always answer it.\n\n"
+            )
+        )
+    elif basic_system != "":
+        completion_text = (
+            (
                 f"The following is a coherent verbose detailed conversation between a girl named {bot} and her friend {user}. "
                 if is_raven
                 else f"{user}{interface} hi\n\n{bot}{interface} Hi. "
-                + message.content.replace("\\n", "\n")
-                .replace("\r\n", "\n")
-                .replace("\n\n", "\n")
-                .replace("\n", " ")
-                .strip()
-                .replace("You are", f"{bot} is" if is_raven else "I am")
-                .replace("you are", f"{bot} is" if is_raven else "I am")
-                .replace("You're", f"{bot} is" if is_raven else "I'm")
-                .replace("you're", f"{bot} is" if is_raven else "I'm")
-                .replace("You", f"{bot}" if is_raven else "I")
-                .replace("you", f"{bot}" if is_raven else "I")
-                .replace("Your", f"{bot}'s" if is_raven else "My")
-                .replace("your", f"{bot}'s" if is_raven else "my")
-                .replace("你", f"{bot}" if is_raven else "我")
-                + "\n\n"
             )
-            break
-    for message in body.messages:
-        if message.role == "user":
-            completion_text += (
-                f"{user}{interface} "
-                + message.content.replace("\\n", "\n")
-                .replace("\r\n", "\n")
-                .replace("\n\n", "\n")
-                .strip()
-                + "\n\n"
-            )
-        elif message.role == "assistant":
-            completion_text += (
-                f"{bot}{interface} "
-                + message.content.replace("\\n", "\n")
-                .replace("\r\n", "\n")
-                .replace("\n\n", "\n")
-                .strip()
-                + "\n\n"
-            )
+            + basic_system.replace("\r\n", "\n")
+            .replace("\r", "\n")
+            .replace("\n\n", "\n")
+            .replace("\n", " ")
+            .strip()
+            .replace("You are", f"{bot} is" if is_raven else "I am")
+            .replace("you are", f"{bot} is" if is_raven else "I am")
+            .replace("You're", f"{bot} is" if is_raven else "I'm")
+            .replace("you're", f"{bot} is" if is_raven else "I'm")
+            .replace("You", f"{bot}" if is_raven else "I")
+            .replace("you", f"{bot}" if is_raven else "I")
+            .replace("Your", f"{bot}'s" if is_raven else "My")
+            .replace("your", f"{bot}'s" if is_raven else "my")
+            .replace("你", f"{bot}" if is_raven else "我")
+            + "\n\n"
+        )
+
+    for message in body.messages[(0 if basic_system == "" else 1) :]:
+        append_message: str = ""
+        if message.role == Role.User:
+            append_message = f"{user}{interface} " + message.content
+        elif message.role == Role.Assistant:
+            append_message = f"{bot}{interface} " + message.content
+        elif message.role == Role.System:
+            append_message = message.content
+        completion_text += (
+            append_message.replace("\r\n", "\n")
+            .replace("\r", "\n")
+            .replace("\n\n", "\n")
+            .strip()
+            + "\n\n"
+        )
     completion_text += f"{bot}{interface}"
 
     if type(body.stop) == str:

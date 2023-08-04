@@ -2,6 +2,8 @@ import json
 import logging
 from typing import Any
 from fastapi import Request
+from pydantic import BaseModel
+from enum import Enum
 
 
 logger = logging.getLogger()
@@ -14,12 +16,21 @@ fh.setFormatter(formatter)
 logger.addHandler(fh)
 
 
+class ClsEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, BaseModel):
+            return obj.dict()
+        if isinstance(obj, Enum):
+            return obj.value
+        return super().default(obj)
+
+
 def quick_log(request: Request, body: Any, response: str):
     try:
         logger.info(
             f"Client: {request.client if request else ''}\nUrl: {request.url if request else ''}\n"
             + (
-                f"Body: {json.dumps(body.__dict__, default=vars, ensure_ascii=False)}\n"
+                f"Body: {json.dumps(body.__dict__, ensure_ascii=False, cls=ClsEncoder)}\n"
                 if body
                 else ""
             )
