@@ -1,4 +1,4 @@
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union
 from utils.log import quick_log
 from fastapi import APIRouter, HTTPException, Request, Response, status
 from pydantic import BaseModel
@@ -60,7 +60,7 @@ def enable_state_cache():
 
 class AddStateBody(BaseModel):
     prompt: str
-    tokens: List[str]
+    tokens: List[Union[str, int]]
     state: Any
     logits: Any
 
