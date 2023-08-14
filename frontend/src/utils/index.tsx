@@ -177,6 +177,7 @@ export const getStrategy = (modelConfig: ModelConfig | undefined = undefined) =>
       strategy += params.precision === 'int8' ? 'fp32i8' : 'fp32';
       break;
     case 'CUDA':
+    case 'CUDA-Beta':
       if (avoidOverflow)
         strategy = 'cuda fp32 *1 -> ';
       strategy += 'cuda ';

@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func (a *App) StartServer(python string, port int, host string) (string, error) {
+func (a *App) StartServer(python string, port int, host string, rwkvBeta bool) (string, error) {
 	var err error
 	if python == "" {
 		python, err = GetPython()
@@ -18,7 +18,12 @@ func (a *App) StartServer(python string, port int, host string) (string, error) 
 	if err != nil {
 		return "", err
 	}
-	return Cmd(python, "./backend-python/main.py", strconv.Itoa(port), host)
+	args := []string{python, "./backend-python/main.py"}
+	if rwkvBeta {
+		args = append(args, "--rwkv-beta")
+	}
+	args = append(args, "--port", strconv.Itoa(port), "--host", host)
+	return Cmd(args...)
 }
 
 func (a *App) ConvertModel(python string, modelPath string, strategy string, outPath string) (string, error) {

@@ -128,6 +128,7 @@
   "Chinese Kongfu": "情境冒险",
   "Allow external access to the API (service must be restarted)": "允许外部访问API (必须重启服务)",
   "Custom": "自定义",
+  "CUDA (Beta, Faster)": "CUDA (Beta, 更快)",
   "Reset All Configs": "重置所有配置",
   "Cancel": "取消",
   "Confirm": "确认",

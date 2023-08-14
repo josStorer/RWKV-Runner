@@ -1,5 +1,6 @@
 from enum import Enum, auto
 
+Args = "args"
 Model = "model"
 Model_Status = "model_status"
 Model_Config = "model_config"

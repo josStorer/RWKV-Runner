@@ -128,6 +128,7 @@
   "Chinese Kongfu": "中国武術",
   "Allow external access to the API (service must be restarted)": "APIへの外部アクセスを許可する (サービスを再起動する必要があります)",
   "Custom": "カスタム",
+  "CUDA (Beta, Faster)": "CUDA (ベータ、高速)",
   "Reset All Configs": "すべての設定をリセット",
   "Cancel": "キャンセル",
   "Confirm": "確認",

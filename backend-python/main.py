@@ -1,5 +1,11 @@
+import time
+
+start_time = time.time()
+
 import os
 import sys
+import argparse
+from typing import Sequence
 
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
@@ -34,6 +40,11 @@ app.include_router(state_cache.router)
 @app.on_event("startup")
 def init():
     global_var.init()
+    cmd_params = os.environ["RWKV_RUNNER_PARAMS"]
+    global_var.set(
+        global_var.Args, get_args(cmd_params.split(" ") if cmd_params else None)
+    )
+
     state_cache.init()
 
     set_torch()
@@ -56,9 +67,34 @@ def exit():
     parent.kill()
 
 
-if __name__ == "__main__":
-    uvicorn.run(
-        "main:app",
-        port=8000 if len(sys.argv) < 2 else int(sys.argv[1]),
-        host="127.0.0.1" if len(sys.argv) < 3 else sys.argv[2],
+def get_args(args: Union[Sequence[str], None] = None):
+    parser = argparse.ArgumentParser()
+    group = parser.add_argument_group(title="server arguments")
+    group.add_argument(
+        "--port",
+        type=int,
+        default=8000,
+        help="port to run the server on (default: 8000)",
     )
+    group.add_argument(
+        "--host",
+        type=str,
+        default="127.0.0.1",
+        help="host to run the server on (default: 127.0.0.1)",
+    )
+    group = parser.add_argument_group(title="mode arguments")
+    group.add_argument(
+        "--rwkv-beta",
+        action="store_true",
+        help="whether to use rwkv-beta (default: False)",
+    )
+    args = parser.parse_args(args)
+
+    return args
+
+
+if __name__ == "__main__":
+    args = get_args()
+    os.environ["RWKV_RUNNER_PARAMS"] = " ".join(sys.argv[1:])
+    print("--- %s seconds ---" % (time.time() - start_time))
+    uvicorn.run("main:app", port=args.port, host=args.host, workers=1)

@@ -85,7 +85,9 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
 
       await exit(1000).catch(() => {
       });
-      StartServer(commonStore.settings.customPythonPath, port, commonStore.settings.host !== '127.0.0.1' ? '0.0.0.0' : '127.0.0.1').catch((e) => {
+      StartServer(commonStore.settings.customPythonPath, port, commonStore.settings.host !== '127.0.0.1' ? '0.0.0.0' : '127.0.0.1',
+        modelConfig.modelParameters.device === 'CUDA-Beta'
+      ).catch((e) => {
         const errMsg = e.message || e;
         if (errMsg.includes('path contains space'))
           toast(`${t('Error')} - ${t('File Path Cannot Contain Space')}`, { type: 'error' });
@@ -118,7 +120,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
 
             const strategy = getStrategy(modelConfig);
             let customCudaFile = '';
-            if ((modelConfig.modelParameters.device === 'CUDA' || modelConfig.modelParameters.device === 'Custom')
+            if ((modelConfig.modelParameters.device.includes('CUDA') || modelConfig.modelParameters.device === 'Custom')
               && modelConfig.modelParameters.useCustomCuda && !strategy.includes('fp32')) {
               if (commonStore.platform === 'windows') {
                 customCudaFile = getSupportedCustomCudaFile();

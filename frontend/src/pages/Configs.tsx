@@ -30,7 +30,7 @@ export type ApiParameters = {
   frequencyPenalty: number;
 }
 
-export type Device = 'CPU' | 'CUDA' | 'MPS' | 'Custom';
+export type Device = 'CPU' | 'CUDA' | 'CUDA-Beta' | 'WebGPU' | 'MPS' | 'Custom';
 export type Precision = 'fp16' | 'int8' | 'fp32';
 
 export type ModelParameters = {
@@ -284,6 +284,8 @@ export const Configs: FC = observer(() => {
                     <Option value="CPU">CPU</Option>
                     {commonStore.platform === 'darwin' && <Option value="MPS">MPS</Option>}
                     <Option value="CUDA">CUDA</Option>
+                    <Option value="CUDA-Beta">{t('CUDA (Beta, Faster)')!}</Option>
+                    <Option value="WebGPU" disabled>WebGPU</Option>
                     <Option value="Custom">{t('Custom')!}</Option>
                   </Dropdown>
                 } />
@@ -308,12 +310,12 @@ export const Configs: FC = observer(() => {
                     } />
                 }
                 {
-                  selectedConfig.modelParameters.device == 'CUDA' &&
+                  selectedConfig.modelParameters.device.includes('CUDA') &&
                   <Labeled label={t('Current Strategy')}
                     content={<Text> {getStrategy(selectedConfig)} </Text>} />
                 }
                 {
-                  selectedConfig.modelParameters.device == 'CUDA' &&
+                  selectedConfig.modelParameters.device.includes('CUDA') &&
                   <Labeled label={t('Stored Layers')}
                     desc={t('Number of the neural network layers loaded into VRAM, the more you load, the faster the speed, but it consumes more VRAM. (If your VRAM is not enough, it will fail to load)')}
                     content={
@@ -327,7 +329,7 @@ export const Configs: FC = observer(() => {
                     } />
                 }
                 {
-                  selectedConfig.modelParameters.device == 'CUDA' && <div />
+                  selectedConfig.modelParameters.device.includes('CUDA') && <div />
                 }
                 {
                   displayStrategyImg &&
