@@ -18,7 +18,7 @@ from utils.rwkv import *
 from utils.torch import *
 from utils.ngrok import *
 from utils.log import log_middleware
-from routes import completion, config, state_cache, midi
+from routes import completion, config, state_cache, midi, misc
 import global_var
 
 app = FastAPI(dependencies=[Depends(log_middleware)])
@@ -34,6 +34,7 @@ app.add_middleware(
 app.include_router(completion.router)
 app.include_router(config.router)
 app.include_router(midi.router)
+app.include_router(misc.router)
 app.include_router(state_cache.router)
 
 
