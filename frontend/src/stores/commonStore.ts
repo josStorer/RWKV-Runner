@@ -167,7 +167,7 @@ class CommonStore {
   createModelConfig = (config: ModelConfig = defaultModelConfigs[0], saveConfig: boolean = true) => {
     if (config.name === defaultModelConfigs[0].name) {
       // deep copy
-      config = JSON.parse(JSON.stringify(commonStore.platform != 'darwin' ? defaultModelConfigs[0] : defaultModelConfigsMac[0]));
+      config = JSON.parse(JSON.stringify(commonStore.platform !== 'darwin' ? defaultModelConfigs[0] : defaultModelConfigsMac[0]));
       config.name = new Date().toLocaleString();
     }
     this.modelConfigs.push(config);

@@ -70,7 +70,7 @@ async function initConfig() {
       configData.currentModelConfigIndex >= 0 && configData.currentModelConfigIndex < configData.modelConfigs.length)
       commonStore.setCurrentConfigIndex(configData.currentModelConfigIndex, false);
   }).catch(() => {
-    commonStore.setModelConfigs(commonStore.platform != 'darwin' ? defaultModelConfigs : defaultModelConfigsMac, true);
+    commonStore.setModelConfigs(commonStore.platform !== 'darwin' ? defaultModelConfigs : defaultModelConfigsMac, true);
   });
 }
 

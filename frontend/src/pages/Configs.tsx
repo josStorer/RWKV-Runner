@@ -290,7 +290,7 @@ export const Configs: FC = observer(() => {
                   </Dropdown>
                 } />
                 {
-                  selectedConfig.modelParameters.device != 'Custom' && <Labeled label={t('Precision')}
+                  selectedConfig.modelParameters.device !== 'Custom' && <Labeled label={t('Precision')}
                     desc={t('int8 uses less VRAM, but has slightly lower quality. fp16 has higher quality, and fp32 has the best quality.')}
                     content={
                       <Dropdown style={{ minWidth: 0 }} className="grow"
@@ -328,9 +328,7 @@ export const Configs: FC = observer(() => {
                         }} />
                     } />
                 }
-                {
-                  selectedConfig.modelParameters.device.includes('CUDA') && <div />
-                }
+                {selectedConfig.modelParameters.device.includes('CUDA') && <div />}
                 {
                   displayStrategyImg &&
                   <img style={{ width: '80vh', height: 'auto', zIndex: 100 }}
@@ -344,7 +342,7 @@ export const Configs: FC = observer(() => {
                     onMouseLeave={() => setDisplayStrategyImg(false)}
                     content={
                       <Input className="grow"
-                        placeholder={commonStore.platform != 'darwin' ? 'cuda:0 fp16 *20 -> cuda:1 fp16' : 'mps fp32'}
+                        placeholder={commonStore.platform !== 'darwin' ? 'cuda:0 fp16 *20 -> cuda:1 fp16' : 'mps fp32'}
                         value={selectedConfig.modelParameters.customStrategy}
                         onChange={(e, data) => {
                           setSelectedConfigModelParams({
@@ -355,7 +353,7 @@ export const Configs: FC = observer(() => {
                 }
                 {selectedConfig.modelParameters.device === 'Custom' && <div />}
                 {
-                  selectedConfig.modelParameters.device != 'CPU' && selectedConfig.modelParameters.device != 'MPS' &&
+                  selectedConfig.modelParameters.device !== 'CPU' && selectedConfig.modelParameters.device !== 'MPS' &&
                   <Labeled label={t('Use Custom CUDA kernel to Accelerate')}
                     desc={t('Enabling this option can greatly improve inference speed and save some VRAM, but there may be compatibility issues. If it fails to start, please turn off this option.')}
                     content={

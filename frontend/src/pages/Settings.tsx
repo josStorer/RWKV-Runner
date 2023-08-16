@@ -126,7 +126,7 @@ export const Settings: FC = observer(() => {
           } />
         }
         {
-          commonStore.settings.language === 'zh' && commonStore.platform != 'linux' &&
+          commonStore.settings.language === 'zh' && commonStore.platform !== 'linux' &&
           <Labeled label={t('Use Tsinghua Pip Mirrors')} flex spaceBetween content={
             <Switch checked={commonStore.settings.cnMirror}
               onChange={(e, data) => {

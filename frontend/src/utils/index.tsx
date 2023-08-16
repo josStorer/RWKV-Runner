@@ -373,7 +373,7 @@ export const checkDependencies = async (navigate: NavigateFunction) => {
           });
         } else {
           toast(depErrorMsg, { type: 'info', position: 'bottom-left' });
-          if (commonStore.platform != 'linux')
+          if (commonStore.platform !== 'linux')
             toastWithButton(t('Python dependencies are incomplete, would you like to install them?'), t('Install'), () => {
               InstallPyDep(commonStore.settings.customPythonPath, commonStore.settings.cnMirror).catch((e) => {
                 const errMsg = e.message || e;
