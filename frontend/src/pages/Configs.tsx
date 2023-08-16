@@ -13,13 +13,14 @@ import { Page } from '../components/Page';
 import { useNavigate } from 'react-router';
 import { RunButton } from '../components/RunButton';
 import { updateConfig } from '../apis';
-import { ConvertModel, FileExists, GetPyError } from '../../wailsjs/go/backend_golang/App';
-import { getStrategy } from '../utils';
+import { ConvertModel, ConvertSafetensors, FileExists, GetPyError } from '../../wailsjs/go/backend_golang/App';
+import { checkDependencies, getStrategy } from '../utils';
 import { useTranslation } from 'react-i18next';
 import { WindowShow } from '../../wailsjs/runtime/runtime';
 import strategyImg from '../assets/images/strategy.jpg';
 import strategyZhImg from '../assets/images/strategy_zh.jpg';
 import { ResetConfigsButton } from '../components/ResetConfigsButton';
+import { useMediaQuery } from 'usehooks-ts';
 
 export type ApiParameters = {
   apiPort: number
@@ -56,6 +57,7 @@ export const Configs: FC = observer(() => {
   const [selectedIndex, setSelectedIndex] = React.useState(commonStore.currentModelConfigIndex);
   const [selectedConfig, setSelectedConfig] = React.useState(commonStore.modelConfigs[selectedIndex]);
   const [displayStrategyImg, setDisplayStrategyImg] = React.useState(false);
+  const mq = useMediaQuery('(min-width: 640px)');
   const navigate = useNavigate();
   const port = selectedConfig.apiParameters.apiPort;
 
@@ -128,7 +130,8 @@ export const Configs: FC = observer(() => {
             setSelectedIndex(0);
             setSelectedConfig(commonStore.modelConfigs[0]);
           }} />
-          <ToolTipButton desc={t('Save Config')} icon={<Save20Regular />} onClick={onClickSave} />
+          <ToolTipButton desc={mq ? '' : t('Save Config')} icon={<Save20Regular />} text={mq ? t('Save Config') : ''}
+            onClick={onClickSave} />
         </div>
         <div className="flex items-center gap-4">
           <Label>{t('Config Name')}</Label>
@@ -237,40 +240,84 @@ export const Configs: FC = observer(() => {
                     }} />
                   </div>
                 } />
-                <ToolTipButton text={t('Convert')}
-                  desc={t('Convert model with these configs. Using a converted model will greatly improve the loading speed, but model parameters of the converted model cannot be modified.')}
-                  onClick={async () => {
-                    if (commonStore.platform === 'darwin') {
-                      toast(t('MacOS is not yet supported for performing this operation, please do it manually.'), { type: 'info' });
-                      return;
-                    } else if (commonStore.platform === 'linux') {
-                      toast(t('Linux is not yet supported for performing this operation, please do it manually.'), { type: 'info' });
-                      return;
-                    }
-
-                    const modelPath = `${commonStore.settings.customModelsPath}/${selectedConfig.modelParameters.modelName}`;
-                    if (await FileExists(modelPath)) {
-                      const strategy = getStrategy(selectedConfig);
-                      const newModelPath = modelPath + '-' + strategy.replace(/[:> *+]/g, '-');
-                      toast(t('Start Converting'), { autoClose: 1000, type: 'info' });
-                      ConvertModel(commonStore.settings.customPythonPath, modelPath, strategy, newModelPath).then(async () => {
-                        if (!await FileExists(newModelPath + '.pth')) {
-                          toast(t('Convert Failed') + ' - ' + await GetPyError(), { type: 'error' });
-                        } else {
-                          toast(`${t('Convert Success')} - ${newModelPath}`, { type: 'success' });
+                {
+                  selectedConfig.modelParameters.device !== 'WebGPU' ?
+                    <ToolTipButton text={t('Convert')}
+                      desc={t('Convert model with these configs. Using a converted model will greatly improve the loading speed, but model parameters of the converted model cannot be modified.')}
+                      onClick={async () => {
+                        if (commonStore.platform === 'darwin') {
+                          toast(t('MacOS is not yet supported for performing this operation, please do it manually.') + ' (backend-python/convert_model.py)', { type: 'info' });
+                          return;
+                        } else if (commonStore.platform === 'linux') {
+                          toast(t('Linux is not yet supported for performing this operation, please do it manually.') + ' (backend-python/convert_model.py)', { type: 'info' });
+                          return;
                         }
-                      }).catch(e => {
-                        const errMsg = e.message || e;
-                        if (errMsg.includes('path contains space'))
-                          toast(`${t('Convert Failed')} - ${t('File Path Cannot Contain Space')}`, { type: 'error' });
-                        else
-                          toast(`${t('Convert Failed')} - ${e.message || e}`, { type: 'error' });
-                      });
-                      setTimeout(WindowShow, 1000);
-                    } else {
-                      toast(`${t('Model Not Found')} - ${modelPath}`, { type: 'error' });
-                    }
-                  }} />
+
+                        const ok = await checkDependencies(navigate);
+                        if (!ok)
+                          return;
+
+                        const modelPath = `${commonStore.settings.customModelsPath}/${selectedConfig.modelParameters.modelName}`;
+                        if (await FileExists(modelPath)) {
+                          const strategy = getStrategy(selectedConfig);
+                          const newModelPath = modelPath + '-' + strategy.replace(/[:> *+]/g, '-');
+                          toast(t('Start Converting'), { autoClose: 1000, type: 'info' });
+                          ConvertModel(commonStore.settings.customPythonPath, modelPath, strategy, newModelPath).then(async () => {
+                            if (!await FileExists(newModelPath + '.pth')) {
+                              toast(t('Convert Failed') + ' - ' + await GetPyError(), { type: 'error' });
+                            } else {
+                              toast(`${t('Convert Success')} - ${newModelPath}`, { type: 'success' });
+                            }
+                          }).catch(e => {
+                            const errMsg = e.message || e;
+                            if (errMsg.includes('path contains space'))
+                              toast(`${t('Convert Failed')} - ${t('File Path Cannot Contain Space')}`, { type: 'error' });
+                            else
+                              toast(`${t('Convert Failed')} - ${e.message || e}`, { type: 'error' });
+                          });
+                          setTimeout(WindowShow, 1000);
+                        } else {
+                          toast(`${t('Model Not Found')} - ${modelPath}`, { type: 'error' });
+                        }
+                      }} /> :
+                    <ToolTipButton text={t('Convert To Safe Tensors Format')}
+                      desc=""
+                      onClick={async () => {
+                        if (commonStore.platform === 'darwin') {
+                          toast(t('MacOS is not yet supported for performing this operation, please do it manually.') + ' (backend-python/convert_safetensors.py)', { type: 'info' });
+                          return;
+                        } else if (commonStore.platform === 'linux') {
+                          toast(t('Linux is not yet supported for performing this operation, please do it manually.') + ' (backend-python/convert_safetensors.py)', { type: 'info' });
+                          return;
+                        }
+
+                        const ok = await checkDependencies(navigate);
+                        if (!ok)
+                          return;
+
+                        const modelPath = `${commonStore.settings.customModelsPath}/${selectedConfig.modelParameters.modelName}`;
+                        if (await FileExists(modelPath)) {
+                          toast(t('Start Converting'), { autoClose: 1000, type: 'info' });
+                          const newModelPath = modelPath.replace(/\.pth$/, '.st');
+                          ConvertSafetensors(commonStore.settings.customPythonPath, modelPath, newModelPath).then(async () => {
+                            if (!await FileExists(newModelPath)) {
+                              toast(t('Convert Failed') + ' - ' + await GetPyError(), { type: 'error' });
+                            } else {
+                              toast(`${t('Convert Success')} - ${newModelPath}`, { type: 'success' });
+                            }
+                          }).catch(e => {
+                            const errMsg = e.message || e;
+                            if (errMsg.includes('path contains space'))
+                              toast(`${t('Convert Failed')} - ${t('File Path Cannot Contain Space')}`, { type: 'error' });
+                            else
+                              toast(`${t('Convert Failed')} - ${e.message || e}`, { type: 'error' });
+                          });
+                          setTimeout(WindowShow, 1000);
+                        } else {
+                          toast(`${t('Model Not Found')} - ${modelPath}`, { type: 'error' });
+                        }
+                      }} />
+                }
                 <Labeled label={t('Strategy')} content={
                   <Dropdown style={{ minWidth: 0 }} className="grow" value={t(selectedConfig.modelParameters.device)!}
                     selectedOptions={[selectedConfig.modelParameters.device]}
@@ -285,7 +332,7 @@ export const Configs: FC = observer(() => {
                     {commonStore.platform === 'darwin' && <Option value="MPS">MPS</Option>}
                     <Option value="CUDA">CUDA</Option>
                     <Option value="CUDA-Beta">{t('CUDA (Beta, Faster)')!}</Option>
-                    <Option value="WebGPU" disabled>WebGPU</Option>
+                    <Option value="WebGPU">WebGPU</Option>
                     <Option value="Custom">{t('Custom')!}</Option>
                   </Dropdown>
                 } />
@@ -305,7 +352,7 @@ export const Configs: FC = observer(() => {
                         }}>
                         <Option>fp16</Option>
                         <Option>int8</Option>
-                        <Option>fp32</Option>
+                        {selectedConfig.modelParameters.device !== 'WebGPU' && <Option>fp32</Option>}
                       </Dropdown>
                     } />
                 }
@@ -353,7 +400,7 @@ export const Configs: FC = observer(() => {
                 }
                 {selectedConfig.modelParameters.device === 'Custom' && <div />}
                 {
-                  selectedConfig.modelParameters.device !== 'CPU' && selectedConfig.modelParameters.device !== 'MPS' &&
+                  (selectedConfig.modelParameters.device.includes('CUDA') || selectedConfig.modelParameters.device === 'Custom') &&
                   <Labeled label={t('Use Custom CUDA kernel to Accelerate')}
                     desc={t('Enabling this option can greatly improve inference speed and save some VRAM, but there may be compatibility issues. If it fails to start, please turn off this option.')}
                     content={

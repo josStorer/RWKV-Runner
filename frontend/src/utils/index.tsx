@@ -57,6 +57,8 @@ export async function refreshBuiltInModels(readCache: boolean = false) {
   return cache;
 }
 
+const modelSuffix = ['.pth', '.st', '.safetensors'];
+
 export async function refreshLocalModels(cache: {
   models: ModelSourceItem[]
 }, filter: boolean = true, initUnfinishedModels: boolean = false) {
@@ -65,7 +67,7 @@ export async function refreshLocalModels(cache: {
 
   await ListDirFiles(commonStore.settings.customModelsPath).then((data) => {
     cache.models.push(...data.flatMap(d => {
-      if (!d.isDir && d.name.endsWith('.pth'))
+      if (!d.isDir && modelSuffix.some((ext => d.name.endsWith(ext))))
         return [{
           name: d.name,
           size: d.size,
@@ -146,7 +148,7 @@ export async function refreshRemoteModels(cache: { models: ModelSourceItem[] }) 
   .catch(() => {
   });
   cache.models = cache.models.filter((model, index, self) => {
-    return model.name.endsWith('.pth')
+    return modelSuffix.some((ext => model.name.endsWith(ext)))
       && index === self.findIndex(
         m => m.name === model.name || (m.SHA256 && m.SHA256 === model.SHA256 && m.size === model.size));
   });
@@ -175,6 +177,9 @@ export const getStrategy = (modelConfig: ModelConfig | undefined = undefined) =>
         strategy = 'cpu fp32 *1 -> ';
       strategy += 'cpu ';
       strategy += params.precision === 'int8' ? 'fp32i8' : 'fp32';
+      break;
+    case 'WebGPU':
+      strategy += params.precision === 'int8' ? 'fp16i8' : 'fp16';
       break;
     case 'CUDA':
     case 'CUDA-Beta':

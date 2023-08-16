@@ -241,5 +241,8 @@
   "Auto Play At The End": "结束时自动播放",
   "No File to save": "无文件可保存",
   "File Saved": "文件已保存",
-  "Failed to load local sound font, please check if the files exist - assets/sound-font": "加载本地音色资源失败，请检查文件是否存在 - assets/sound-font"
+  "Failed to load local sound font, please check if the files exist - assets/sound-font": "加载本地音色资源失败，请检查文件是否存在 - assets/sound-font",
+  "Please convert model to safe tensors format first": "请先将模型转换为Safetensors格式",
+  "Convert To Safe Tensors Format": "转换为Safetensors格式",
+  "Please change Strategy to WebGPU to use safetensors format": "请将Strategy改为WebGPU以使用safetensors格式"
 }

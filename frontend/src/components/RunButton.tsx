@@ -1,6 +1,12 @@
 import React, { FC, MouseEventHandler, ReactElement } from 'react';
 import commonStore, { ModelStatus } from '../stores/commonStore';
-import { AddToDownloadList, CopyFile, FileExists, StartServer } from '../../wailsjs/go/backend_golang/App';
+import {
+  AddToDownloadList,
+  CopyFile,
+  FileExists,
+  StartServer,
+  StartWebGPUServer
+} from '../../wailsjs/go/backend_golang/App';
 import { Button } from '@fluentui/react-components';
 import { observer } from 'mobx-react-lite';
 import { exit, getStatus, readRoot, switchModel, updateConfig } from '../apis';
@@ -39,6 +45,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
       commonStore.setStatus({ status: ModelStatus.Starting });
 
       const modelConfig = commonStore.getCurrentModelConfig();
+      const webgpu = modelConfig.modelParameters.device === 'WebGPU';
       let modelName = '';
       let modelPath = '';
       if (modelConfig && modelConfig.modelParameters) {
@@ -50,9 +57,32 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
         return;
       }
 
-      const ok = await checkDependencies(navigate);
-      if (!ok)
-        return;
+      if (webgpu) {
+        if (!['.st', '.safetensors'].some(ext => modelPath.endsWith(ext))) {
+          const stModelPath = modelPath.replace(/\.pth$/, '.st');
+          if (await FileExists(stModelPath)) {
+            modelPath = stModelPath;
+          } else {
+            toast(t('Please convert model to safe tensors format first'), { type: 'error' });
+            commonStore.setStatus({ status: ModelStatus.Offline });
+            return;
+          }
+        }
+      }
+
+      if (!webgpu) {
+        if (['.st', '.safetensors'].some(ext => modelPath.endsWith(ext))) {
+          toast(t('Please change Strategy to WebGPU to use safetensors format'), { type: 'error' });
+          commonStore.setStatus({ status: ModelStatus.Offline });
+          return;
+        }
+      }
+
+      if (!webgpu) {
+        const ok = await checkDependencies(navigate);
+        if (!ok)
+          return;
+      }
 
       const currentModelSource = commonStore.modelSourceList.find(item => item.name === modelName);
 
@@ -85,7 +115,12 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
 
       await exit(1000).catch(() => {
       });
-      StartServer(commonStore.settings.customPythonPath, port, commonStore.settings.host !== '127.0.0.1' ? '0.0.0.0' : '127.0.0.1',
+
+      const startServer = webgpu ?
+        (_: string, port: number, host: string) => StartWebGPUServer(port, host)
+        : StartServer;
+
+      startServer(commonStore.settings.customPythonPath, port, commonStore.settings.host !== '127.0.0.1' ? '0.0.0.0' : '127.0.0.1',
         modelConfig.modelParameters.device === 'CUDA-Beta'
       ).catch((e) => {
         const errMsg = e.message || e;
@@ -104,19 +139,23 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
           if (r.ok && !loading) {
             loading = true;
             clearInterval(intervalId);
-            await getStatus().then(status => {
-              if (status)
-                commonStore.setStatus(status);
-            });
+            if (!webgpu) {
+              await getStatus().then(status => {
+                if (status)
+                  commonStore.setStatus(status);
+              });
+            }
             commonStore.setStatus({ status: ModelStatus.Loading });
             toast(t('Loading Model'), { type: 'info' });
-            updateConfig({
-              max_tokens: modelConfig.apiParameters.maxResponseToken,
-              temperature: modelConfig.apiParameters.temperature,
-              top_p: modelConfig.apiParameters.topP,
-              presence_penalty: modelConfig.apiParameters.presencePenalty,
-              frequency_penalty: modelConfig.apiParameters.frequencyPenalty
-            });
+            if (!webgpu) {
+              updateConfig({
+                max_tokens: modelConfig.apiParameters.maxResponseToken,
+                temperature: modelConfig.apiParameters.temperature,
+                top_p: modelConfig.apiParameters.topP,
+                presence_penalty: modelConfig.apiParameters.presencePenalty,
+                frequency_penalty: modelConfig.apiParameters.frequencyPenalty
+              });
+            }
 
             const strategy = getStrategy(modelConfig);
             let customCudaFile = '';

@@ -5,6 +5,8 @@ __pycache__
 .idea
 .vs
 *.pth
+*.st
+*.safetensors
 *.bin
 /config.json
 /cache.json

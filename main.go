@@ -49,6 +49,9 @@ var cyacInfo embed.FS
 //go:embed backend-python
 var py embed.FS
 
+//go:embed backend-rust
+var webgpu embed.FS
+
 //go:embed finetune
 var finetune embed.FS
 
@@ -63,6 +66,7 @@ func main() {
 		backend.CopyEmbed(cyac)
 		backend.CopyEmbed(cyacInfo)
 		backend.CopyEmbed(py)
+		backend.CopyEmbed(webgpu)
 		backend.CopyEmbed(finetune)
 		backend.CopyEmbed(midi)
 		backend.CopyEmbed(midiAssets)

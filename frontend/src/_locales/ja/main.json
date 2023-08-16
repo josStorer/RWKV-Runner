@@ -241,5 +241,8 @@
   "Auto Play At The End": "最後に自動再生",
   "No File to save": "保存するファイルがありません",
   "File Saved": "ファイルが保存されました",
-  "Failed to load local sound font, please check if the files exist - assets/sound-font": "ローカルサウンドフォントの読み込みに失敗しました、ファイルが存在するか確認してください - assets/sound-font"
+  "Failed to load local sound font, please check if the files exist - assets/sound-font": "ローカルサウンドフォントの読み込みに失敗しました、ファイルが存在するか確認してください - assets/sound-font",
+  "Please convert model to safe tensors format first": "モデルを安全なテンソル形式に変換してください",
+  "Convert To Safe Tensors Format": "安全なテンソル形式に変換",
+  "Please change Strategy to WebGPU to use safetensors format": "StrategyをWebGPUに変更して、安全なテンソル形式を使用してください"
 }

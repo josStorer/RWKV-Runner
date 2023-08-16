@@ -26,6 +26,13 @@ func (a *App) StartServer(python string, port int, host string, rwkvBeta bool) (
 	return Cmd(args...)
 }
 
+func (a *App) StartWebGPUServer(port int, host string) (string, error) {
+	args := []string{"./backend-rust/webgpu_server"}
+	args = append(args, "-a", "0", "-t", "backend-rust/assets/rwkv_vocab_v20230424.json",
+		"--port", strconv.Itoa(port), "--ip", host)
+	return Cmd(args...)
+}
+
 func (a *App) ConvertModel(python string, modelPath string, strategy string, outPath string) (string, error) {
 	var err error
 	if python == "" {
@@ -35,6 +42,17 @@ func (a *App) ConvertModel(python string, modelPath string, strategy string, out
 		return "", err
 	}
 	return Cmd(python, "./backend-python/convert_model.py", "--in", modelPath, "--out", outPath, "--strategy", strategy)
+}
+
+func (a *App) ConvertSafetensors(python string, modelPath string, outPath string) (string, error) {
+	var err error
+	if python == "" {
+		python, err = GetPython()
+	}
+	if err != nil {
+		return "", err
+	}
+	return Cmd(python, "./backend-python/convert_safetensors.py", "--input", modelPath, "--output", outPath)
 }
 
 func (a *App) ConvertData(python string, input string, outputPrefix string, vocab string) (string, error) {

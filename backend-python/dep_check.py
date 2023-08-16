@@ -1,3 +1,4 @@
+import safetensors
 import midi2audio
 import mido
 import lm_dataformat
