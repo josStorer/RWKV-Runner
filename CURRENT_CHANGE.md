@@ -1,9 +1,10 @@
 ## Changes
 
-- japanese UI
-- global penalty
-- allow custom user_name and assistant_name (`/chat/completions` API)
-- update defaultConfigs
+- webgpu support (AMD, Intel, Nvidia, Apple)
+- add rwkv-cuda-beta support (faster)
+- add misc API (`/models` and `/dashboard/billing/credit_grants`)
+- allow multiple systems
+- allow completions input to be null
 
 ## Install
 
