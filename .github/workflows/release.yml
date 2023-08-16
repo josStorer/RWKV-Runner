@@ -48,6 +48,11 @@ jobs:
         id: cp310
         with:
           python-version: '3.10'
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+          target: wasm32-unknown-unknown
       - uses: crazy-max/ghaction-chocolatey@v2
         with:
           args: install upx
@@ -60,6 +65,11 @@ jobs:
           Copy-Item -Path "${{ steps.cp310.outputs.python-path }}/../include" -Destination "py310/include" -Recurse
           Copy-Item -Path "${{ steps.cp310.outputs.python-path }}/../libs" -Destination "py310/libs" -Recurse
           ./py310/python -m pip install cyac==1.7
+          git clone https://github.com/josStorer/ai00_rwkv_server --depth=1
+          cd ai00_rwkv_server
+          cargo build --release
+          mv ./target/release/ai00_server.exe ../backend-rust/webgpu_server.exe
+          cd ..
           go install github.com/wailsapp/wails/v2/cmd/wails@latest
           make
           Rename-Item -Path "build/bin/RWKV-Runner.exe" -NewName "RWKV-Runner_windows_x64.exe"
@@ -76,10 +86,23 @@ jobs:
       - uses: actions/setup-go@v4
         with:
           go-version: '1.20.5'
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+          target: wasm32-unknown-unknown
       - run: |
           sudo apt-get update
           sudo apt-get install upx
           sudo apt-get install build-essential libgtk-3-dev libwebkit2gtk-4.0-dev
+          git clone https://github.com/josStorer/ai00_rwkv_server --depth=1
+          cd ai00_rwkv_server
+          sudo apt-get install libudev-dev
+          sudo apt-get install libasound2-dev
+          rustup target add x86_64-unknown-linux-gnu
+          cargo build --release --target x86_64-unknown-linux-gnu
+          mv ./target/x86_64-unknown-linux-gnu/release/ai00_server ../backend-rust/webgpu_server
+          cd ..
           go install github.com/wailsapp/wails/v2/cmd/wails@latest
           rm -rf ./backend-python/wkv_cuda_utils
           rm ./backend-python/get-pip.py
@@ -101,7 +124,17 @@ jobs:
       - uses: actions/setup-go@v4
         with:
           go-version: '1.20.5'
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+          target: wasm32-unknown-unknown
       - run: |
+          git clone https://github.com/josStorer/ai00_rwkv_server --depth=1
+          cd ai00_rwkv_server
+          cargo build --release
+          mv ./target/release/ai00_server ../backend-rust/webgpu_server
+          cd ..
           go install github.com/wailsapp/wails/v2/cmd/wails@latest
           rm -rf ./backend-python/wkv_cuda_utils
           rm ./backend-python/get-pip.py
