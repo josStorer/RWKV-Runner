@@ -240,10 +240,10 @@ export const Configs: FC = observer(() => {
                 <ToolTipButton text={t('Convert')}
                   desc={t('Convert model with these configs. Using a converted model will greatly improve the loading speed, but model parameters of the converted model cannot be modified.')}
                   onClick={async () => {
-                    if (commonStore.platform == 'darwin') {
+                    if (commonStore.platform === 'darwin') {
                       toast(t('MacOS is not yet supported for performing this operation, please do it manually.'), { type: 'info' });
                       return;
-                    } else if (commonStore.platform == 'linux') {
+                    } else if (commonStore.platform === 'linux') {
                       toast(t('Linux is not yet supported for performing this operation, please do it manually.'), { type: 'info' });
                       return;
                     }
@@ -338,7 +338,7 @@ export const Configs: FC = observer(() => {
                     src={commonStore.settings.language === 'zh' ? strategyZhImg : strategyImg} />
                 }
                 {
-                  selectedConfig.modelParameters.device == 'Custom' &&
+                  selectedConfig.modelParameters.device === 'Custom' &&
                   <Labeled label="Strategy"
                     onMouseEnter={() => setDisplayStrategyImg(true)}
                     onMouseLeave={() => setDisplayStrategyImg(false)}
@@ -353,7 +353,7 @@ export const Configs: FC = observer(() => {
                         }} />
                     } />
                 }
-                {selectedConfig.modelParameters.device == 'Custom' && <div />}
+                {selectedConfig.modelParameters.device === 'Custom' && <div />}
                 {
                   selectedConfig.modelParameters.device != 'CPU' && selectedConfig.modelParameters.device != 'MPS' &&
                   <Labeled label={t('Use Custom CUDA kernel to Accelerate')}

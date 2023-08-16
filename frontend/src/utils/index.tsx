@@ -240,7 +240,7 @@ export function downloadProgramFiles() {
   manifest.programFiles.forEach(({ url, path }) => {
     if (path)
       ReadFileInfo(path).then(info => {
-        if (info.size == 0 && url)
+        if (info.size === 0 && url)
           AddToDownloadList(path, url.replace('@master', '@v' + manifest.version));
       }).catch(() => {
         if (url)
