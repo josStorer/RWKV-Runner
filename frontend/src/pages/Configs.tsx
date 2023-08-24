@@ -130,7 +130,7 @@ export const Configs: FC = observer(() => {
             setSelectedIndex(0);
             setSelectedConfig(commonStore.modelConfigs[0]);
           }} />
-          <ToolTipButton desc={mq ? '' : t('Save Config')} icon={<Save20Regular />} text={mq ? t('Save Config') : ''}
+          <ToolTipButton desc={mq ? '' : t('Save Config')} icon={<Save20Regular />} text={mq ? t('Save Config') : null}
             onClick={onClickSave} />
         </div>
         <div className="flex items-center gap-4">

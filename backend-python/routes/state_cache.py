@@ -96,7 +96,7 @@ def add_state(body: AddStateBody):
         quick_log(
             None,
             None,
-            f"New Trie Id: {id}\nTrie Len: {len(trie)}\nTrie Buff Size: {trie.buff_size()}\nDtrie Buff Size Of Id: {_get_a_dtrie_buff_size(dtrie[id])}",
+            f"New Trie Id: {id}\nTrie Len: {len(trie)}\nTrie Buff Size: {trie.buff_size()}\nDtrie Buff Size Of Id: {__get_a_dtrie_buff_size(dtrie[id])}",
         )
         return "success"
     except Exception as e:
@@ -124,7 +124,7 @@ class LongestPrefixStateBody(BaseModel):
     prompt: str
 
 
-def _get_a_dtrie_buff_size(dtrie_v):
+def __get_a_dtrie_buff_size(dtrie_v):
     # print(sys.getsizeof(dtrie_v["tokens"][0]))  # str
     # print(sys.getsizeof(dtrie_v["tokens"][0]) * len(dtrie_v["tokens"]))
     # print(dtrie_v["state"][0][0].element_size())

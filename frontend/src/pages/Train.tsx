@@ -219,7 +219,7 @@ const Terminal: FC = observer(() => {
       WslStart().then(() => {
         addWslMessage('WSL> ' + input);
         setInput('');
-        WslCommand(input).catch(showError);
+        WslCommand(input).then(WindowShow).catch(showError);
       }).catch(showError);
     }
   };
