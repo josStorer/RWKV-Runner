@@ -178,7 +178,7 @@
   "Failed to import. Please copy a preset to the clipboard.": "导入失败。请复制一个预设到剪贴板",
   "Clipboard is empty.": "剪贴板没有内容",
   "Successfully copied to clipboard.": "成功复制到剪贴板",
-  "Edit Messages": "编辑对话",
+  "Edit Character Settings": "编辑人设",
   "Go Back": "返回",
   "Description": "描述",
   "Avatar Url": "头像图片地址",
@@ -244,5 +244,6 @@
   "Failed to load local sound font, please check if the files exist - assets/sound-font": "加载本地音色资源失败，请检查文件是否存在 - assets/sound-font",
   "Please convert model to safe tensors format first": "请先将模型转换为Safetensors格式",
   "Convert To Safe Tensors Format": "转换为Safetensors格式",
-  "Please change Strategy to WebGPU to use safetensors format": "请将Strategy改为WebGPU以使用safetensors格式"
+  "Please change Strategy to WebGPU to use safetensors format": "请将Strategy改为WebGPU以使用safetensors格式",
+  "Preview Only": "仅预览"
 }

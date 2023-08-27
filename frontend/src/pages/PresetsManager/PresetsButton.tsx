@@ -250,14 +250,14 @@ export const ChatPresetEditor: FC<{
                 }} />
                 <Button onClick={() => {
                   setEditingMessages(!editingMessages);
-                }}>{!editingMessages ? t('Edit Messages') : t('Go Back')}</Button>
+                }}>{!editingMessages ? t('Edit Character Settings') : t('Go Back')}</Button>
               </div>
             } />
           {
             editingMessages ?
               <MessagesEditor /> :
               <div className="flex flex-col gap-1 p-2 overflow-x-hidden overflow-y-auto">
-                <Labeled flex breakline label={t('Description')}
+                <Labeled flex breakline label={`${t('Description')} (${t("Preview Only")})`}
                   content={
                     <Input value={editingPreset.desc} onChange={(e, data) => {
                       setEditingPreset({

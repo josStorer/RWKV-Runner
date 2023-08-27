@@ -178,7 +178,7 @@
   "Failed to import. Please copy a preset to the clipboard.": "インポートに失敗しました。プリセットをクリップボードにコピーしてください。",
   "Clipboard is empty.": "クリップボードが空です。",
   "Successfully copied to clipboard.": "クリップボードにコピーしました。",
-  "Edit Messages": "メッセージの編集",
+  "Edit Character Settings": "キャラクター設定を編集",
   "Go Back": "戻る",
   "Description": "説明",
   "Avatar Url": "アバターURL",
@@ -244,5 +244,6 @@
   "Failed to load local sound font, please check if the files exist - assets/sound-font": "ローカルサウンドフォントの読み込みに失敗しました、ファイルが存在するか確認してください - assets/sound-font",
   "Please convert model to safe tensors format first": "モデルを安全なテンソル形式に変換してください",
   "Convert To Safe Tensors Format": "安全なテンソル形式に変換",
-  "Please change Strategy to WebGPU to use safetensors format": "StrategyをWebGPUに変更して、安全なテンソル形式を使用してください"
+  "Please change Strategy to WebGPU to use safetensors format": "StrategyをWebGPUに変更して、安全なテンソル形式を使用してください",
+  "Preview Only": "プレビューのみ"
 }
