@@ -155,7 +155,6 @@ func (a *App) InstallPyDep(python string, cnMirror bool) (string, error) {
 			"exit"
 		if !cnMirror {
 			installScript = strings.Replace(installScript, " -i https://pypi.tuna.tsinghua.edu.cn/simple", "", -1)
-			installScript = strings.Replace(installScript, "requirements.txt", "requirements_versions.txt", -1)
 		}
 		err = os.WriteFile("./install-py-dep.bat", []byte(installScript), 0644)
 		if err != nil {
