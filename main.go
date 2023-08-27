@@ -71,6 +71,7 @@ func main() {
 		backend.CopyEmbed(midi)
 		backend.CopyEmbed(midiAssets)
 	}
+	os.Chmod("./backend-rust/webgpu_server", 0777)
 
 	// Create an instance of the app structure
 	app := backend.NewApp()
