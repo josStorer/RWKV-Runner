@@ -26,31 +26,43 @@ class Role(Enum):
 class Message(BaseModel):
     role: Role
     content: str = Field(min_length=0)
+    raw: bool = Field(False, description="Whether to treat content as raw text")
+
+
+default_stop = [
+    "\n\nUser",
+    "\n\nQuestion",
+    "\n\nQ",
+    "\n\nHuman",
+    "\n\nBob",
+]
 
 
 class ChatCompletionBody(ModelConfigBody):
     messages: Union[List[Message], None]
     model: str = "rwkv"
     stream: bool = False
-    stop: Union[str, List[str], None] = [
-        "\n\nUser",
-        "\n\nQuestion",
-        "\n\nQ",
-        "\n\nHuman",
-        "\n\nBob",
-    ]
-    user_name: Union[str, None] = None
-    assistant_name: Union[str, None] = None
+    stop: Union[str, List[str], None] = default_stop
+    user_name: Union[str, None] = Field(None, description="Internal user name")
+    assistant_name: Union[str, None] = Field(
+        None, description="Internal assistant name"
+    )
+    presystem: bool = Field(
+        True, description="Whether to insert default system prompt at the beginning"
+    )
 
     class Config:
         schema_extra = {
             "example": {
-                "messages": [{"role": Role.User.value, "content": "hello"}],
+                "messages": [
+                    {"role": Role.User.value, "content": "hello", "raw": False}
+                ],
                 "model": "rwkv",
                 "stream": False,
                 "stop": None,
                 "user_name": None,
                 "assistant_name": None,
+                "presystem": True,
                 "max_tokens": 1000,
                 "temperature": 1.2,
                 "top_p": 0.5,
@@ -233,10 +245,6 @@ async def chat_completions(body: ChatCompletionBody, request: Request):
     if body.messages is None or body.messages == []:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "messages not found")
 
-    basic_system: str = ""
-    if body.messages[0].role == Role.System:
-        basic_system = body.messages[0].content
-
     interface = model.interface
     user = model.user if body.user_name is None else body.user_name
     bot = model.bot if body.assistant_name is None else body.assistant_name
@@ -244,46 +252,54 @@ async def chat_completions(body: ChatCompletionBody, request: Request):
     is_raven = model.rwkv_type == RWKVType.Raven
 
     completion_text: str = ""
-    if basic_system == "":
-        completion_text = (
-            f"""
+    basic_system: Union[str, None] = None
+    if body.presystem:
+        if body.messages[0].role == Role.System:
+            basic_system = body.messages[0].content
+
+        if basic_system is None:
+            completion_text = (
+                f"""
 The following is a coherent verbose detailed conversation between a girl named {bot} and her friend {user}. \
 {bot} is very intelligent, creative and friendly. \
 {bot} is unlikely to disagree with {user}, and {bot} doesn't like to ask {user} questions. \
 {bot} likes to tell {user} a lot about herself and her opinions. \
 {bot} usually gives {user} kind, helpful and informative advices.\n
 """
-            if is_raven
-            else (
-                f"{user}{interface} hi\n\n{bot}{interface} Hi. "
-                + "I am your assistant and I will provide expert full response in full details. Please feel free to ask any question and I will always answer it.\n\n"
-            )
-        )
-    elif basic_system != "":
-        completion_text = (
-            (
-                f"The following is a coherent verbose detailed conversation between a girl named {bot} and her friend {user}. "
                 if is_raven
-                else f"{user}{interface} hi\n\n{bot}{interface} Hi. "
+                else (
+                    f"{user}{interface} hi\n\n{bot}{interface} Hi. "
+                    + "I am your assistant and I will provide expert full response in full details. Please feel free to ask any question and I will always answer it.\n\n"
+                )
             )
-            + basic_system.replace("\r\n", "\n")
-            .replace("\r", "\n")
-            .replace("\n\n", "\n")
-            .replace("\n", " ")
-            .strip()
-            .replace("You are", f"{bot} is" if is_raven else "I am")
-            .replace("you are", f"{bot} is" if is_raven else "I am")
-            .replace("You're", f"{bot} is" if is_raven else "I'm")
-            .replace("you're", f"{bot} is" if is_raven else "I'm")
-            .replace("You", f"{bot}" if is_raven else "I")
-            .replace("you", f"{bot}" if is_raven else "I")
-            .replace("Your", f"{bot}'s" if is_raven else "My")
-            .replace("your", f"{bot}'s" if is_raven else "my")
-            .replace("你", f"{bot}" if is_raven else "我")
-            + "\n\n"
-        )
+        else:
+            if not body.messages[0].raw:
+                basic_system = (
+                    basic_system.replace("\r\n", "\n")
+                    .replace("\r", "\n")
+                    .replace("\n\n", "\n")
+                    .replace("\n", " ")
+                    .strip()
+                )
+            completion_text = (
+                (
+                    f"The following is a coherent verbose detailed conversation between a girl named {bot} and her friend {user}. "
+                    if is_raven
+                    else f"{user}{interface} hi\n\n{bot}{interface} Hi. "
+                )
+                + basic_system.replace("You are", f"{bot} is" if is_raven else "I am")
+                .replace("you are", f"{bot} is" if is_raven else "I am")
+                .replace("You're", f"{bot} is" if is_raven else "I'm")
+                .replace("you're", f"{bot} is" if is_raven else "I'm")
+                .replace("You", f"{bot}" if is_raven else "I")
+                .replace("you", f"{bot}" if is_raven else "I")
+                .replace("Your", f"{bot}'s" if is_raven else "My")
+                .replace("your", f"{bot}'s" if is_raven else "my")
+                .replace("你", f"{bot}" if is_raven else "我")
+                + "\n\n"
+            )
 
-    for message in body.messages[(0 if basic_system == "" else 1) :]:
+    for message in body.messages[(0 if basic_system is None else 1) :]:
         append_message: str = ""
         if message.role == Role.User:
             append_message = f"{user}{interface} " + message.content
@@ -291,20 +307,23 @@ The following is a coherent verbose detailed conversation between a girl named {
             append_message = f"{bot}{interface} " + message.content
         elif message.role == Role.System:
             append_message = message.content
-        completion_text += (
-            append_message.replace("\r\n", "\n")
-            .replace("\r", "\n")
-            .replace("\n\n", "\n")
-            .strip()
-            + "\n\n"
-        )
+        if not message.raw:
+            append_message = (
+                append_message.replace("\r\n", "\n")
+                .replace("\r", "\n")
+                .replace("\n\n", "\n")
+                .strip()
+            )
+        completion_text += append_message + "\n\n"
     completion_text += f"{bot}{interface}"
 
     if type(body.stop) == str:
         body.stop = [body.stop, f"\n\n{user}", f"\n\n{bot}"]
-    else:
+    elif type(body.stop) == list:
         body.stop.append(f"\n\n{user}")
         body.stop.append(f"\n\n{bot}")
+    elif body.stop is None:
+        body.stop = default_stop
 
     if body.stream:
         return EventSourceResponse(
