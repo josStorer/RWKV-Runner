@@ -113,7 +113,8 @@ func (a *App) monitorHardware() {
 		}
 	}()
 
-	monitor.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+	monitor.SysProcAttr = &syscall.SysProcAttr{}
+	//go:custom_build windows monitor.SysProcAttr.HideWindow = true
 	monitor.Start()
 }
 

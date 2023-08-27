@@ -73,6 +73,7 @@ jobs:
           mv ./target/release/ai00_server.exe ../backend-rust/webgpu_server.exe
           cd ..
           go install github.com/wailsapp/wails/v2/cmd/wails@latest
+          (Get-Content -Path ./backend-golang/app.go) -replace "//go:custom_build windows ", "" | Set-Content -Path ./backend-golang/app.go
           make
           Rename-Item -Path "build/bin/RWKV-Runner.exe" -NewName "RWKV-Runner_windows_x64.exe"
 
