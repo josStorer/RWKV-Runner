@@ -25,7 +25,7 @@ class Role(Enum):
 
 class Message(BaseModel):
     role: Role
-    content: str = Field(min_length=1)
+    content: str = Field(min_length=0)
 
 
 class ChatCompletionBody(ModelConfigBody):
