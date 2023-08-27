@@ -302,6 +302,58 @@
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-7B-v1-20230626-ctx4096.pth"
     },
     {
+      "name": "RWKV-claude-4-World-7B-20230805-ctx65k.pth",
+      "desc": {
+        "en": "Global Languages 7B v1 Ctx65k Claude Like",
+        "zh": "全球语言 7B v1 65k上下文 Claude功能",
+        "ja": "グローバル言語 7B v1 65kコンテキスト Claude機能"
+      },
+      "size": 15035391533,
+      "SHA256": "8cd25f8a1ab58965993cc47b3b2f99585836eed008a2e44526c258189ea751a6",
+      "lastUpdated": "2023-08-05T08:52:20",
+      "url": "https://huggingface.co/xiaol/RWKV-claude-4-World-7B-65k/blob/main/RWKV-claude-4-World-7B-20230805-ctx65k.pth",
+      "downloadUrl": "https://huggingface.co/xiaol/RWKV-claude-4-World-7B-65k/resolve/main/RWKV-claude-4-World-7B-20230805-ctx65k.pth"
+    },
+    {
+      "name": "RWKV-toolformer-translation-japanese-chinese-english-7B-World-20230815-ctx128k.pth",
+      "desc": {
+        "en": "Global Languages 7B v1 Ctx128k Toolformer",
+        "zh": "全球语言 7B v1 128k上下文 Toolformer",
+        "ja": "グローバル言語 7B v1 128kコンテキスト Toolformer"
+      },
+      "size": 15035391533,
+      "SHA256": "648a3b21055bdab77021ce278da80fbada8dcaae0b3d41d1eca9aa194c1fd25f",
+      "lastUpdated": "2023-08-15T07:18:23",
+      "url": "https://huggingface.co/xiaol/RWKV-toolformer-translation-japanese-chinese-english-7B-World-128k/blob/main/RWKV-toolformer-translation-japanese-chinese-english-7B-World-20230815-ctx128k.pth",
+      "downloadUrl": "https://huggingface.co/xiaol/RWKV-toolformer-translation-japanese-chinese-english-7B-World-128k/resolve/main/RWKV-toolformer-translation-japanese-chinese-english-7B-World-20230815-ctx128k.pth"
+    },
+    {
+      "name": "RWKV-code-4-World-7B-20230820-ctx32k.pth",
+      "desc": {
+        "en": "Global Languages 7B v1 Ctx32k Code Ability",
+        "zh": "全球语言 7B v1 32k上下文 代码能力",
+        "ja": "グローバル言語 7B v1 32kコンテキスト コード能力"
+      },
+      "size": 15035391533,
+      "SHA256": "19666620437ae3a5fb06e16a52729d67e449fca155fab3d5861ffe9ecf247404",
+      "lastUpdated": "2023-08-20T05:00:17",
+      "url": "https://huggingface.co/xiaol/RWKV-Code-7B-world-32k/blob/main/RWKV-code-4-World-7B-20230820-ctx32k.pth",
+      "downloadUrl": "https://huggingface.co/xiaol/RWKV-Code-7B-world-32k/resolve/main/RWKV-code-4-World-7B-20230820-ctx32k.pth"
+    },
+    {
+      "name": "wizard-rwkv-4-world-ctx32k.pth",
+      "desc": {
+        "en": "Global Languages 7B v1 Ctx32k Wikipedia",
+        "zh": "全球语言 7B v1 32k上下文 维基百科",
+        "ja": "グローバル言語 7B v1 32kコンテキスト ウィキペディア"
+      },
+      "size": 15035391538,
+      "SHA256": "c5d991f315a1676d4bed93dd91f803b1376096e7a4af5bf72b339d055f53bac7",
+      "lastUpdated": "2023-07-29T03:21:47",
+      "url": "https://huggingface.co/xiaol/wizard-rwkv-world-7B-ctx32k/blob/main/wizard-rwkv-4-world-ctx32k.pth",
+      "downloadUrl": "https://huggingface.co/xiaol/wizard-rwkv-world-7B-ctx32k/resolve/main/wizard-rwkv-4-world-ctx32k.pth"
+    },
+    {
       "name": "RWKV-4-World-CHNtuned-7B-v1-20230709-ctx4096.pth",
       "desc": {
         "en": "Global Languages 7B v1 Enhanced Chinese",
@@ -328,6 +380,45 @@
       "downloadUrl": "https://huggingface.co/xiaol/readflow-rwkv-4-world-ctx32k/resolve/main/Readflow-RWKV-4-World-CHNtuned-7B-v1-20230709-ctx32k.pth"
     },
     {
+      "name": "novel-RWKV-4-World-CHNtuned-7B-v1-20230709-ctx32k.pth",
+      "desc": {
+        "en": "Global Languages 7B v1 Enhanced Chinese Ctx32k Novel Outline Ability",
+        "zh": "全球语言 7B v1 中文增强 32k上下文 小说大纲扩写",
+        "ja": "グローバル言語 7B v1 中国語強化 32kコンテキスト 小説のあらすじを書く"
+      },
+      "size": 15035391538,
+      "SHA256": "0fe2415ce61af52a8c38c071b475c01b4c9f8a4f2b4aaed6181f0334f3faf7f4",
+      "lastUpdated": "2023-07-28T13:30:59",
+      "url": "https://huggingface.co/xiaol/ruotangwx-rwkv-7b-novel-32k/blob/main/novel-RWKV-4-World-CHNtuned-7B-v1-20230709-ctx32k.pth",
+      "downloadUrl": "https://huggingface.co/xiaol/ruotangwx-rwkv-7b-novel-32k/resolve/main/novel-RWKV-4-World-CHNtuned-7B-v1-20230709-ctx32k.pth"
+    },
+    {
+      "name": "chatgal-RWKV-4-World-CHNtuned-7B-v1-20230709-ctx32k-1000.pth",
+      "desc": {
+        "en": "Global Languages 7B v1 Enhanced Chinese Ctx32k GalGame 1000",
+        "zh": "全球语言 7B v1 中文增强 32k上下文 GalGame 1000",
+        "ja": "グローバル言語 7B v1 中国語強化 32kコンテキスト GalGame 1000"
+      },
+      "size": 15035391543,
+      "SHA256": "aaed29cfd1bddee47c48f564aa800eb001f62fd03290d772647d5678e40d66e8",
+      "lastUpdated": "2023-07-21T08:59:18",
+      "url": "https://huggingface.co/xiaol/chatgal-rwkv-7b-world-32k/blob/main/chatgal-RWKV-4-World-CHNtuned-7B-v1-20230709-ctx32k-1000.pth",
+      "downloadUrl": "https://huggingface.co/xiaol/chatgal-rwkv-7b-world-32k/resolve/main/chatgal-RWKV-4-World-CHNtuned-7B-v1-20230709-ctx32k-1000.pth"
+    },
+    {
+      "name": "chatgal-RWKV-4-World-CHNtuned-7B-v1-20230709-ctx32k-500.pth",
+      "desc": {
+        "en": "Global Languages 7B v1 Enhanced Chinese Ctx32k GalGame 500",
+        "zh": "全球语言 7B v1 中文增强 32k上下文 GalGame 500",
+        "ja": "グローバル言語 7B v1 中国語強化 32kコンテキスト GalGame 500"
+      },
+      "size": 15035391538,
+      "SHA256": "b5d347d5dedb4f398ec31489ab87b75b1dee772ae7d0a34c26635cf5d95c8794",
+      "lastUpdated": "2023-07-21T07:31:05",
+      "url": "https://huggingface.co/xiaol/chatgal-rwkv-7b-world-32k/blob/main/chatgal-RWKV-4-World-CHNtuned-7B-v1-20230709-ctx32k-500.pth",
+      "downloadUrl": "https://huggingface.co/xiaol/chatgal-rwkv-7b-world-32k/resolve/main/chatgal-RWKV-4-World-CHNtuned-7B-v1-20230709-ctx32k-500.pth"
+    },
+    {
       "name": "RWKV-4-World-JPNtuned-7B-v1-20230718-ctx4096.pth",
       "desc": {
         "en": "Global Languages 7B v1 Enhanced Japanese",
@@ -339,6 +430,19 @@
       "lastUpdated": "2023-07-18T20:01:12",
       "url": "https://huggingface.co/BlinkDL/rwkv-4-world/blob/main/RWKV-4-World-JPNtuned-7B-v1-20230718-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-JPNtuned-7B-v1-20230718-ctx4096.pth"
+    },
+    {
+      "name": "RWKV-novel-4-World-7B-20230810-ctx128k.pth",
+      "desc": {
+        "en": "Global Languages Writer 7B v1 Ctx128k",
+        "zh": "全球语言写作 7B v1 128k上下文",
+        "ja": "グローバル言語ライター 7B v1 128kコンテキスト"
+      },
+      "size": 15035391533,
+      "SHA256": "5e429c49e4cab2f29a93f87a80635422c8710d70e5b1d962c078e47d957389c8",
+      "lastUpdated": "2023-08-10T06:30:32",
+      "url": "https://huggingface.co/xiaol/rwkv-7B-world-novel-128k/blob/main/RWKV-novel-4-World-7B-20230810-ctx128k.pth",
+      "downloadUrl": "https://huggingface.co/xiaol/rwkv-7B-world-novel-128k/resolve/main/RWKV-novel-4-World-7B-20230810-ctx128k.pth"
     },
     {
       "name": "RWKV-4-Novel-7B-v1-ChnEng-ChnPro-20230410-ctx4096.pth",
