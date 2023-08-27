@@ -1,10 +1,14 @@
 ## Changes
 
-- webgpu support (AMD, Intel, Nvidia, Apple)
-- add rwkv-cuda-beta support (faster)
-- add misc API (`/models` and `/dashboard/billing/credit_grants`)
-- allow multiple systems
-- allow completions input to be null
+- frontend: update manifest (a lot of new models)
+- frontend: correct Preset UI description
+- frontend: add HardwareMonitor (Windows Only)
+- lora finetune: fix max_epochs (#170)
+- python-backend: allow message content to be empty
+- python-backend: extra ChatCompletionBody params (`raw`, `presystem`)
+- python-backend: add default_stop when stop is null
+- webgpu: fix webgpu_server file permissions of linux and macos
+- chore
 
 ## Install
 
