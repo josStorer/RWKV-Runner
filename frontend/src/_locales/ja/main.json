@@ -245,5 +245,8 @@
   "Please convert model to safe tensors format first": "モデルを安全なテンソル形式に変換してください",
   "Convert To Safe Tensors Format": "安全なテンソル形式に変換",
   "Please change Strategy to WebGPU to use safetensors format": "StrategyをWebGPUに変更して、安全なテンソル形式を使用してください",
-  "Preview Only": "プレビューのみ"
+  "Preview Only": "プレビューのみ",
+  "RAM": "RAM",
+  "VRAM": "VRAM",
+  "GPU Usage": "GPU使用率"
 }

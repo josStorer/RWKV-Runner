@@ -2,11 +2,12 @@ import commonStore, { Platform } from './stores/commonStore';
 import { GetPlatform, ListDirFiles, ReadJson } from '../wailsjs/go/backend_golang/App';
 import { Cache, checkUpdate, downloadProgramFiles, LocalConfig, refreshLocalModels, refreshModels } from './utils';
 import { getStatus } from './apis';
-import { EventsOn } from '../wailsjs/runtime';
+import { EventsOn, WindowSetTitle } from '../wailsjs/runtime';
 import manifest from '../../manifest.json';
 import { defaultModelConfigs, defaultModelConfigsMac } from './pages/defaultConfigs';
 import { Preset } from './pages/PresetsManager/PresetsButton';
 import { wslHandler } from './pages/Train';
+import { t } from 'i18next';
 
 export async function startup() {
   downloadProgramFiles();
@@ -22,6 +23,8 @@ export async function startup() {
   initLoraModels();
 
   initPresets();
+
+  initHardwareMonitor();
 
   await GetPlatform().then(p => commonStore.setPlatform(p as Platform));
   await initConfig();
@@ -115,5 +118,22 @@ async function initLocalModelsNotify() {
   EventsOn('fsnotify', (data: string) => {
     if (data.includes('models') && !data.includes('lora-models'))
       refreshLocalModels({ models: commonStore.modelSourceList }, false); //TODO fix bug that only add models
+  });
+}
+
+type monitorData = {
+  usedMemory: number;
+  totalMemory: number;
+  gpuUsage: number;
+  gpuPower: number;
+  usedVram: number;
+  totalVram: number;
+}
+
+async function initHardwareMonitor() {
+  EventsOn('monitor', (data: string) => {
+    const results: monitorData = JSON.parse(data);
+    if (results)
+      WindowSetTitle(`RWKV-Runner (${t('RAM')}: ${results.usedMemory.toFixed(1)}/${results.totalMemory.toFixed(1)} GB, ${t('VRAM')}: ${(results.usedVram / 1024).toFixed(1)}/${(results.totalVram / 1024).toFixed(1)} GB, ${t('GPU Usage')}: ${results.gpuUsage}%)`);
   });
 }

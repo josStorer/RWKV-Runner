@@ -245,5 +245,8 @@
   "Please convert model to safe tensors format first": "请先将模型转换为Safetensors格式",
   "Convert To Safe Tensors Format": "转换为Safetensors格式",
   "Please change Strategy to WebGPU to use safetensors format": "请将Strategy改为WebGPU以使用safetensors格式",
-  "Preview Only": "仅预览"
+  "Preview Only": "仅预览",
+  "RAM": "内存",
+  "VRAM": "显存",
+  "GPU Usage": "GPU占用"
 }

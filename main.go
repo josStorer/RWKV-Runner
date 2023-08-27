@@ -61,6 +61,9 @@ var midi embed.FS
 //go:embed assets/sound-font
 var midiAssets embed.FS
 
+//go:embed components
+var components embed.FS
+
 func main() {
 	if buildInfo, ok := debug.ReadBuildInfo(); !ok || strings.Contains(buildInfo.String(), "-ldflags") {
 		backend.CopyEmbed(cyac)
@@ -70,8 +73,8 @@ func main() {
 		backend.CopyEmbed(finetune)
 		backend.CopyEmbed(midi)
 		backend.CopyEmbed(midiAssets)
+		backend.CopyEmbed(components)
 	}
-	os.Chmod("./backend-rust/webgpu_server", 0777)
 
 	// Create an instance of the app structure
 	app := backend.NewApp()
@@ -103,7 +106,8 @@ func main() {
 			Assets:  assets,
 			Handler: NewFileLoader(),
 		},
-		OnStartup: app.OnStartup,
+		OnStartup:     app.OnStartup,
+		OnBeforeClose: app.OnBeforeClose,
 		Bind: []any{
 			app,
 		},

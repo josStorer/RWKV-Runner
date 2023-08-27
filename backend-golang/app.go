@@ -1,6 +1,7 @@
 package backend_golang
 
 import (
+	"bufio"
 	"context"
 	"errors"
 	"net/http"
@@ -8,6 +9,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"syscall"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/minio/selfupdate"
@@ -41,6 +43,7 @@ func (a *App) OnStartup(ctx context.Context) {
 		a.cmdPrefix = "cd " + a.exDir + " && "
 	}
 
+	os.Chmod("./backend-rust/webgpu_server", 0777)
 	os.Mkdir(a.exDir+"models", os.ModePerm)
 	os.Mkdir(a.exDir+"lora-models", os.ModePerm)
 	os.Mkdir(a.exDir+"finetune/json2binidx_tool/data", os.ModePerm)
@@ -50,7 +53,18 @@ func (a *App) OnStartup(ctx context.Context) {
 	}
 
 	a.downloadLoop()
+	a.watchFs()
+	a.monitorHardware()
+}
 
+func (a *App) OnBeforeClose(ctx context.Context) bool {
+	if monitor != nil {
+		monitor.Process.Kill()
+	}
+	return false
+}
+
+func (a *App) watchFs() {
 	watcher, err := fsnotify.NewWatcher()
 	if err == nil {
 		watcher.Add("./lora-models")
@@ -62,7 +76,7 @@ func (a *App) OnStartup(ctx context.Context) {
 					if !ok {
 						return
 					}
-					wruntime.EventsEmit(ctx, "fsnotify", event.Name)
+					wruntime.EventsEmit(a.ctx, "fsnotify", event.Name)
 				case _, ok := <-watcher.Errors:
 					if !ok {
 						return
@@ -71,6 +85,36 @@ func (a *App) OnStartup(ctx context.Context) {
 			}
 		}()
 	}
+}
+
+var monitor *exec.Cmd
+
+func (a *App) monitorHardware() {
+	if runtime.GOOS != "windows" {
+		return
+	}
+
+	monitor = exec.Command("./components/LibreHardwareMonitor.Console/LibreHardwareMonitor.Console.exe")
+	stdout, err := monitor.StdoutPipe()
+	if err != nil {
+		monitor = nil
+		return
+	}
+
+	go func() {
+		reader := bufio.NewReader(stdout)
+		for {
+			line, _, err := reader.ReadLine()
+			if err != nil {
+				wruntime.EventsEmit(a.ctx, "monitorerr", err.Error())
+				break
+			}
+			wruntime.EventsEmit(a.ctx, "monitor", string(line))
+		}
+	}()
+
+	monitor.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+	monitor.Start()
 }
 
 func (a *App) UpdateApp(url string) (broken bool, err error) {
