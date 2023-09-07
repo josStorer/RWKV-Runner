@@ -91,8 +91,8 @@ body.json:
 
 ## 埋め込み API の例
 
-Note: v1.4.0 has improved the quality of embeddings API. The generated results are not compatible
-with previous versions. If you are using embeddings API to generate knowledge bases or similar, please regenerate.
+注意: v1.4.0 では、埋め込み API の品質が向上しました。生成される結果は、以前のバージョンとは互換性がありません。
+もし、embeddings API を使って知識ベースなどを生成している場合は、再生成してください。
 
 LangChain を使用している場合は、`OpenAIEmbeddings(openai_api_base="http://127.0.0.1:8000", openai_api_key="sk-")`
 を使用してください
