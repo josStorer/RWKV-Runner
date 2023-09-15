@@ -154,7 +154,7 @@ const showError = (e: any) => {
 };
 
 const errorsMap = Object.entries({
-  'python3 ./finetune/lora/train.py': 'Memory is not enough, try to increase the virtual memory or use a smaller base model.',
+  'python3 ./finetune/lora/train.py': 'Memory is not enough, try to increase the virtual memory (Swap of WSL) or use a smaller base model.',
   'cuda out of memory': 'VRAM is not enough',
   'valueerror: high <= 0': 'Training data is not enough, reduce context length or add more data for training',
   '+= \'+ptx\'': 'You are using WSL 1 for training, please upgrade to WSL 2. e.g. Run "wsl --set-version Ubuntu-22.04 2"',

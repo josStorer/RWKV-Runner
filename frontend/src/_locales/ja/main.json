@@ -226,7 +226,7 @@
   "Please select a LoRA model": "LoRAモデルを選択してください",
   "You are using sample data for training. For formal training, please make sure to create your own jsonl file.": "トレーニングにはサンプルデータを使用しています。正式なトレーニングのためには、自身でjsonlファイルを作成してください。",
   "WSL is not running, please retry. If it keeps happening, it means you may be using an outdated version of WSL, run \"wsl --update\" to update.": "WSLが実行されていません、もう一度試してください。これが続く場合、古いバージョンのWSLを使用している可能性があります。\"wsl --update\"を実行して更新してください。",
-  "Memory is not enough, try to increase the virtual memory or use a smaller base model.": "メモリが不足しています、仮想メモリを増やすか小さなベースモデルを使用してみてください。",
+  "Memory is not enough, try to increase the virtual memory (Swap of WSL) or use a smaller base model.": "メモリが不足しています、仮想メモリ (WSL Swap) を増やすか小さなベースモデルを使用してみてください。",
   "VRAM is not enough": "ビデオRAMが不足しています",
   "Training data is not enough, reduce context length or add more data for training": "トレーニングデータが不足しています、コンテキストの長さを減らすか、トレーニング用のデータをさらに追加してください",
   "You are using WSL 1 for training, please upgrade to WSL 2. e.g. Run \"wsl --set-version Ubuntu-22.04 2\"": "トレーニングにWSL 1を使用しています、WSL 2にアップグレードしてください。例:\"wsl --set-version Ubuntu-22.04 2\"を実行する",
