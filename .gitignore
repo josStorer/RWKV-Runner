@@ -26,3 +26,4 @@ __pycache__
 train_log.txt
 finetune/json2binidx_tool/data
 /wsl.state
+/components

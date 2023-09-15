@@ -40,7 +40,7 @@ default_stop = [
 
 class ChatCompletionBody(ModelConfigBody):
     messages: Union[List[Message], None]
-    model: str = "rwkv"
+    model: Union[str, None] = "rwkv"
     stream: bool = False
     stop: Union[str, List[str], None] = default_stop
     user_name: Union[str, None] = Field(None, description="Internal user name")
@@ -74,7 +74,7 @@ class ChatCompletionBody(ModelConfigBody):
 
 class CompletionBody(ModelConfigBody):
     prompt: Union[str, List[str], None]
-    model: str = "rwkv"
+    model: Union[str, None] = "rwkv"
     stream: bool = False
     stop: Union[str, List[str], None] = None
 
@@ -368,7 +368,7 @@ async def completions(body: CompletionBody, request: Request):
 
 class EmbeddingsBody(BaseModel):
     input: Union[str, List[str], List[List[int]], None]
-    model: str = "rwkv"
+    model: Union[str, None] = "rwkv"
     encoding_format: str = None
     fast_mode: bool = False
 
