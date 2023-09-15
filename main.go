@@ -98,6 +98,7 @@ func main() {
 		Height:    680,
 		MinWidth:  375,
 		MinHeight: 640,
+		EnableDefaultContextMenu: true,
 		Windows: &windows.Options{
 			ZoomFactor:           zoomFactor,
 			IsZoomControlEnabled: true,
