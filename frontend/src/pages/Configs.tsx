@@ -1,6 +1,19 @@
-import { Dropdown, Input, Label, Option, Select, Switch, Text } from '@fluentui/react-components';
+import {
+  Accordion,
+  AccordionHeader,
+  AccordionItem,
+  AccordionPanel,
+  Checkbox,
+  Dropdown,
+  Input,
+  Label,
+  Option,
+  Select,
+  Switch,
+  Text
+} from '@fluentui/react-components';
 import { AddCircle20Regular, DataUsageSettings20Regular, Delete20Regular, Save20Regular } from '@fluentui/react-icons';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import { Section } from '../components/Section';
 import { Labeled } from '../components/Labeled';
 import { ToolTipButton } from '../components/ToolTipButton';
@@ -43,6 +56,8 @@ export type ModelParameters = {
   maxStoredLayers: number;
   useCustomCuda?: boolean;
   customStrategy?: string;
+  useCustomTokenizer?: boolean;
+  customTokenizer?: string;
 }
 
 export type ModelConfig = {
@@ -57,9 +72,15 @@ export const Configs: FC = observer(() => {
   const [selectedIndex, setSelectedIndex] = React.useState(commonStore.currentModelConfigIndex);
   const [selectedConfig, setSelectedConfig] = React.useState(commonStore.modelConfigs[selectedIndex]);
   const [displayStrategyImg, setDisplayStrategyImg] = React.useState(false);
+  const advancedHeaderRef = useRef<HTMLDivElement>(null);
   const mq = useMediaQuery('(min-width: 640px)');
   const navigate = useNavigate();
   const port = selectedConfig.apiParameters.apiPort;
+
+  useEffect(() => {
+    if (advancedHeaderRef.current)
+      (advancedHeaderRef.current.firstElementChild as HTMLElement).style.padding = '0';
+  }, []);
 
   const updateSelectedIndex = (newIndex: number) => {
     setSelectedIndex(newIndex);
@@ -411,6 +432,39 @@ export const Configs: FC = observer(() => {
                           });
                         }} />
                     } />
+                }
+                {selectedConfig.modelParameters.device !== 'WebGPU' &&
+                  <Accordion className="sm:col-span-2" collapsible
+                    openItems={!commonStore.modelParamsCollapsed && 'advanced'}
+                    onToggle={(e, data) => {
+                      if (data.value === 'advanced')
+                        commonStore.setModelParamsCollapsed(!commonStore.modelParamsCollapsed);
+                    }}>
+                    <AccordionItem value="advanced">
+                      <AccordionHeader ref={advancedHeaderRef} size="small">{t('Advanced')}</AccordionHeader>
+                      <AccordionPanel>
+                        <div className="flex flex-col">
+                          <div className="flex grow">
+                            <Checkbox className="select-none"
+                              size="large" label={t('Use Custom Tokenizer')}
+                              checked={selectedConfig.modelParameters.useCustomTokenizer}
+                              onChange={(_, data) => {
+                                setSelectedConfigModelParams({
+                                  useCustomTokenizer: data.checked as boolean
+                                });
+                              }} />
+                            <Input className="grow" placeholder={t('Tokenizer Path')!}
+                              value={selectedConfig.modelParameters.customTokenizer}
+                              onChange={(e, data) => {
+                                setSelectedConfigModelParams({
+                                  customTokenizer: data.value
+                                });
+                              }} />
+                          </div>
+                        </div>
+                      </AccordionPanel>
+                    </AccordionItem>
+                  </Accordion>
                 }
               </div>
             }

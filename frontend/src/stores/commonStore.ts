@@ -74,6 +74,7 @@ class CommonStore {
   // configs
   currentModelConfigIndex: number = 0;
   modelConfigs: ModelConfig[] = [];
+  modelParamsCollapsed: boolean = true;
   // models
   modelSourceManifestList: string = 'https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/manifest.json;';
   modelSourceList: ModelSourceItem[] = [];
@@ -257,6 +258,10 @@ class CommonStore {
 
   setAdvancedCollapsed(value: boolean) {
     this.advancedCollapsed = value;
+  }
+
+  setModelParamsCollapsed(value: boolean) {
+    this.modelParamsCollapsed = value;
   }
 
   setLastUnfinishedModelDownloads(value: DownloadStatus[]) {

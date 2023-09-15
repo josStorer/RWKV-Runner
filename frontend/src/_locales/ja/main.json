@@ -248,5 +248,7 @@
   "Preview Only": "プレビューのみ",
   "RAM": "RAM",
   "VRAM": "VRAM",
-  "GPU Usage": "GPU使用率"
+  "GPU Usage": "GPU使用率",
+  "Use Custom Tokenizer": "カスタムトークナイザーを使用する",
+  "Tokenizer Path": "トークナイザーパス"
 }

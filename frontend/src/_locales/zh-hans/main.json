@@ -248,5 +248,7 @@
   "Preview Only": "仅预览",
   "RAM": "内存",
   "VRAM": "显存",
-  "GPU Usage": "GPU占用"
+  "GPU Usage": "GPU占用",
+  "Use Custom Tokenizer": "使用自定义Tokenizer",
+  "Tokenizer Path": "Tokenizer路径"
 }

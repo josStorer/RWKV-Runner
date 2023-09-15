@@ -186,6 +186,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
             switchModel({
               model: modelPath,
               strategy: strategy,
+              tokenizer: modelConfig.modelParameters.useCustomTokenizer ? modelConfig.modelParameters.customTokenizer : undefined,
               customCuda: customCudaFile !== ''
             }).then(async (r) => {
               if (r.ok) {
