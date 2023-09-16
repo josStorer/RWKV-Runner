@@ -56,6 +56,9 @@ export type Preset = {
   stop: string,
   injectStart: string,
   injectEnd: string,
+  presystem?: boolean,
+  userName?: string,
+  assistantName?: string
 }
 
 export const defaultPreset: Preset = {
@@ -255,9 +258,36 @@ export const ChatPresetEditor: FC<{
             } />
           {
             editingMessages ?
-              <MessagesEditor /> :
+              <div className="flex flex-col gap-1">
+                <Labeled flex spaceBetween label={t('Insert default system prompt at the beginning')}
+                  content={
+                    <Switch checked={editingPreset.presystem === undefined ? true : editingPreset.presystem}
+                      onChange={(e, data) => {
+                        setEditingPreset({
+                          presystem: data.checked
+                        });
+                      }} />
+                  } />
+                <Labeled flex breakline label={t('User Name')}
+                  content={
+                    <Input placeholder="User" value={editingPreset.userName} onChange={(e, data) => {
+                      setEditingPreset({
+                        userName: data.value
+                      });
+                    }} />
+                  } />
+                <Labeled flex breakline label={t('Assistant Name')}
+                  content={
+                    <Input placeholder="Assistant" value={editingPreset.assistantName} onChange={(e, data) => {
+                      setEditingPreset({
+                        assistantName: data.value
+                      });
+                    }} />
+                  } />
+                <MessagesEditor />
+              </div> :
               <div className="flex flex-col gap-1 p-2 overflow-x-hidden overflow-y-auto">
-                <Labeled flex breakline label={`${t('Description')} (${t("Preview Only")})`}
+                <Labeled flex breakline label={`${t('Description')} (${t('Preview Only')})`}
                   content={
                     <Input value={editingPreset.desc} onChange={(e, data) => {
                       setEditingPreset({

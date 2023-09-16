@@ -250,5 +250,8 @@
   "VRAM": "显存",
   "GPU Usage": "GPU占用",
   "Use Custom Tokenizer": "使用自定义Tokenizer",
-  "Tokenizer Path (e.g. backend-python/rwkv_pip/20B_tokenizer.json)": "Tokenizer路径 (例如: backend-python/rwkv_pip/20B_tokenizer.json)"
+  "Tokenizer Path (e.g. backend-python/rwkv_pip/20B_tokenizer.json)": "Tokenizer路径 (例如: backend-python/rwkv_pip/20B_tokenizer.json)",
+  "User Name": "用户名称",
+  "Assistant Name": "AI名称",
+  "Insert default system prompt at the beginning": "在开头自动插入默认系统提示"
 }

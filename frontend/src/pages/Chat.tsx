@@ -312,7 +312,10 @@ const ChatPanel: FC = observer(() => {
           stream: true,
           model: commonStore.settings.apiChatModelName, // 'gpt-3.5-turbo'
           temperature: apiParams.temperature,
-          top_p: apiParams.topP
+          top_p: apiParams.topP,
+          user_name: commonStore.activePreset?.userName,
+          assistant_name: commonStore.activePreset?.assistantName,
+          presystem: commonStore.activePreset?.presystem
         }),
         signal: chatSseController?.signal,
         onmessage(e) {
