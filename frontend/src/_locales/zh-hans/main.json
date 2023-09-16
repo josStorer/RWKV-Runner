@@ -250,5 +250,5 @@
   "VRAM": "显存",
   "GPU Usage": "GPU占用",
   "Use Custom Tokenizer": "使用自定义Tokenizer",
-  "Tokenizer Path": "Tokenizer路径"
+  "Tokenizer Path (e.g. backend-python/rwkv_pip/20B_tokenizer.json)": "Tokenizer路径 (例如: backend-python/rwkv_pip/20B_tokenizer.json)"
 }

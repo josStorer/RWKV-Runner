@@ -453,7 +453,8 @@ export const Configs: FC = observer(() => {
                                   useCustomTokenizer: data.checked as boolean
                                 });
                               }} />
-                            <Input className="grow" placeholder={t('Tokenizer Path')!}
+                            <Input className="grow"
+                              placeholder={t('Tokenizer Path (e.g. backend-python/rwkv_pip/20B_tokenizer.json)')!}
                               value={selectedConfig.modelParameters.customTokenizer}
                               onChange={(e, data) => {
                                 setSelectedConfigModelParams({

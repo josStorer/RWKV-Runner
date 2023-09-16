@@ -250,5 +250,5 @@
   "VRAM": "VRAM",
   "GPU Usage": "GPU使用率",
   "Use Custom Tokenizer": "カスタムトークナイザーを使用する",
-  "Tokenizer Path": "トークナイザーパス"
+  "Tokenizer Path (e.g. backend-python/rwkv_pip/20B_tokenizer.json)": "トークナイザーパス (例: backend-python/rwkv_pip/20B_tokenizer.json)"
 }
