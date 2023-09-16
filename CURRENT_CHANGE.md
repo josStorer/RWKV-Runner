@@ -1,13 +1,11 @@
 ## Changes
 
-- frontend: update manifest (a lot of new models)
-- frontend: correct Preset UI description
-- frontend: add HardwareMonitor (Windows Only)
-- lora finetune: fix max_epochs (#170)
-- python-backend: allow message content to be empty
-- python-backend: extra ChatCompletionBody params (`raw`, `presystem`)
-- python-backend: add default_stop when stop is null
-- webgpu: fix webgpu_server file permissions of linux and macos
+- frontend adaptation for api params (user_name, assistant_name, presystem)
+- custom tokenizer (#77)
+- enable right-click context menu
+- upgrade cuda-beta
+- revert(2d5456): refresh local models when download complete (for macOS)
+- improve ui desc
 - chore
 
 ## Install
