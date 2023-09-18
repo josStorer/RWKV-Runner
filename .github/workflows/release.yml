@@ -108,6 +108,7 @@ jobs:
           cd ..
           go install github.com/wailsapp/wails/v2/cmd/wails@latest
           rm -rf ./backend-python/wkv_cuda_utils
+          rm ./backend-python/rwkv_pip/beta/wkv_cuda.pyd
           rm ./backend-python/get-pip.py
           sed -i '1,2d' ./backend-golang/wsl_not_windows.go
           rm ./backend-golang/wsl.go
@@ -140,6 +141,7 @@ jobs:
           cd ..
           go install github.com/wailsapp/wails/v2/cmd/wails@latest
           rm -rf ./backend-python/wkv_cuda_utils
+          rm ./backend-python/rwkv_pip/beta/wkv_cuda.pyd
           rm ./backend-python/get-pip.py
           sed -i '' '1,2d' ./backend-golang/wsl_not_windows.go
           rm ./backend-golang/wsl.go

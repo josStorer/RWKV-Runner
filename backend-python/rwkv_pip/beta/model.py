@@ -94,6 +94,7 @@ if os.environ.get("RWKV_CUDA_ON") == "1":
                 f"{current_path}/cuda/att_one_v5.cu",
             ],
             verbose=True,
+            extra_ldflags=["cublas.lib"],
             extra_cuda_cflags=[
                 "-t 4",
                 "-std=c++17",
