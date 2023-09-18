@@ -1,12 +1,8 @@
 ## Changes
 
-- frontend adaptation for api params (user_name, assistant_name, presystem)
-- custom tokenizer (#77)
-- enable right-click context menu
-- upgrade cuda-beta
-- revert(2d5456): refresh local models when download complete (for macOS)
-- improve ui desc
-- chore
+- custom tokenizer .txt support
+- add pre-compiled beta cuda kernel (rwkv-beta==0.8.5, 40%+ faster for fp16) (thanks to #180, pre-compiled kernel of RTX
+  40 Series will be included later)
 
 ## Install
 
