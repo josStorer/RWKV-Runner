@@ -1,12 +1,6 @@
 import React, { FC, MouseEventHandler, ReactElement } from 'react';
 import commonStore, { ModelStatus } from '../stores/commonStore';
-import {
-  AddToDownloadList,
-  CopyFile,
-  FileExists,
-  StartServer,
-  StartWebGPUServer
-} from '../../wailsjs/go/backend_golang/App';
+import { AddToDownloadList, FileExists, StartServer, StartWebGPUServer } from '../../wailsjs/go/backend_golang/App';
 import { Button } from '@fluentui/react-components';
 import { observer } from 'mobx-react-lite';
 import { exit, getStatus, readRoot, switchModel, updateConfig } from '../apis';
@@ -217,7 +211,8 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
                   'invalid header or archive is corrupted': 'The model file is corrupted, please download again.',
                   'no NVIDIA driver': 'Found no NVIDIA driver, please install the latest driver.',
                   'CUDA out of memory': 'VRAM is not enough, please reduce stored layers or use a lower precision in Configs page.',
-                  'Ninja is required to load C++ extensions': 'Failed to enable custom CUDA kernel, ninja is required to load C++ extensions. You may be using the CPU version of PyTorch, please reinstall PyTorch with CUDA. Or if you are using a custom Python interpreter, you must compile the CUDA kernel by yourself or disable Custom CUDA kernel acceleration.'
+                  'Ninja is required to load C++ extensions': 'Failed to enable custom CUDA kernel, ninja is required to load C++ extensions. You may be using the CPU version of PyTorch, please reinstall PyTorch with CUDA. Or if you are using a custom Python interpreter, you must compile the CUDA kernel by yourself or disable Custom CUDA kernel acceleration.',
+                  'Please Enable Custom CUDA Kernel': 'Please Enable Custom CUDA Kernel. Latest RWKV-5 requires os.environ[\'RWKV_CUDA_ON\'] == \'1\' (will fix soon).'
                 };
                 const matchedError = Object.entries(errorsMap).find(([key, _]) => error.includes(key));
                 const message = matchedError ? t(matchedError[1]) : error;

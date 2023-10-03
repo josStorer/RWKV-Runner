@@ -253,5 +253,6 @@
   "Tokenizer Path (e.g. backend-python/rwkv_pip/20B_tokenizer.json)": "トークナイザーパス (例: backend-python/rwkv_pip/20B_tokenizer.json)",
   "User Name": "ユーザー名",
   "Assistant Name": "アシスタント名",
-  "Insert default system prompt at the beginning": "最初にデフォルトのシステムプロンプトを挿入"
+  "Insert default system prompt at the beginning": "最初にデフォルトのシステムプロンプトを挿入",
+  "Please Enable Custom CUDA Kernel. Latest RWKV-5 requires os.environ['RWKV_CUDA_ON'] == '1' (will fix soon).": "カスタムCUDAカーネルを有効にしてください。最新のRWKV-5ではos.environ['RWKV_CUDA_ON'] == '1'が必要です（近日中に修正します）。"
 }
