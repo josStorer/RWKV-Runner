@@ -107,7 +107,8 @@ jobs:
           mv ./target/x86_64-unknown-linux-gnu/release/ai00_server ../backend-rust/webgpu_server
           cd ..
           go install github.com/wailsapp/wails/v2/cmd/wails@latest
-          rm -rf ./backend-python/wkv_cuda_utils
+          rm ./backend-python/rwkv_pip/wkv_cuda.pyd
+          rm ./backend-python/rwkv_pip/rwkv5.pyd
           rm ./backend-python/rwkv_pip/beta/wkv_cuda.pyd
           rm ./backend-python/get-pip.py
           sed -i '1,2d' ./backend-golang/wsl_not_windows.go
@@ -140,7 +141,8 @@ jobs:
           mv ./target/release/ai00_server ../backend-rust/webgpu_server
           cd ..
           go install github.com/wailsapp/wails/v2/cmd/wails@latest
-          rm -rf ./backend-python/wkv_cuda_utils
+          rm ./backend-python/rwkv_pip/wkv_cuda.pyd
+          rm ./backend-python/rwkv_pip/rwkv5.pyd
           rm ./backend-python/rwkv_pip/beta/wkv_cuda.pyd
           rm ./backend-python/get-pip.py
           sed -i '' '1,2d' ./backend-golang/wsl_not_windows.go
