@@ -1,8 +1,8 @@
 ## Changes
 
-- custom tokenizer .txt support
-- add pre-compiled beta cuda kernel (rwkv-beta==0.8.5, 40%+ faster for fp16) (thanks to #180, pre-compiled kernel of RTX
-  40 Series will be included later)
+- latest rwkv-5.2 is now supported (with pre-compiled kernel for windows)
+- completion page: add format content button
+- chore
 
 ## Install
 
