@@ -183,7 +183,7 @@ export const getStrategy = (modelConfig: ModelConfig | undefined = undefined) =>
     case 'CUDA':
     case 'CUDA-Beta':
       if (avoidOverflow)
-        strategy = 'cuda fp32 *1 -> ';
+        strategy = params.useCustomCuda ? 'cuda fp16 *1 -> ' : 'cuda fp32 *1 -> ';
       strategy += 'cuda ';
       strategy += params.precision === 'fp16' ? 'fp16' : params.precision === 'int8' ? 'fp16i8' : 'fp32';
       if (params.storedLayers < params.maxStoredLayers)
