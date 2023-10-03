@@ -254,5 +254,6 @@
   "User Name": "ユーザー名",
   "Assistant Name": "アシスタント名",
   "Insert default system prompt at the beginning": "最初にデフォルトのシステムプロンプトを挿入",
-  "Please Enable Custom CUDA Kernel. Latest RWKV-5 requires os.environ['RWKV_CUDA_ON'] == '1' (will fix soon).": "カスタムCUDAカーネルを有効にしてください。最新のRWKV-5ではos.environ['RWKV_CUDA_ON'] == '1'が必要です（近日中に修正します）。"
+  "Please Enable Custom CUDA Kernel. Latest RWKV-5 requires os.environ['RWKV_CUDA_ON'] == '1' (will fix soon).": "カスタムCUDAカーネルを有効にしてください。最新のRWKV-5ではos.environ['RWKV_CUDA_ON'] == '1'が必要です（近日中に修正します）。",
+  "Format Content": "内容フォーマットの規格化"
 }

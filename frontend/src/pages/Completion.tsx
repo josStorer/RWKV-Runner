@@ -270,6 +270,13 @@ const CompletionPanel: FC = observer(() => {
         </div>
         <div className="grow" />
         <div className="flex justify-between gap-2">
+          <Button className="grow" onClick={() => {
+            const newPrompt = prompt.replace(/\n+\ /g, '\n').split('\n').map((line) => line.trim()).join('\n');
+            setPrompt(newPrompt);
+            commonStore.setCompletionSubmittedPrompt(newPrompt);
+          }}>{t('Format Content')}</Button>
+        </div>
+        <div className="flex justify-between gap-2">
           <ToolTipButton desc={t('Regenerate')} icon={<ArrowSync20Regular />} onClick={() => {
             completionSseController?.abort();
             commonStore.setCompletionGenerating(true);
