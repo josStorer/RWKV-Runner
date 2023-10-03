@@ -36,7 +36,7 @@ class AbstractRWKV(ABC):
                 RWKV as Model,
             )
         else:
-            from rwkv.model import (
+            from rwkv_pip.model import (
                 RWKV as Model,
             )
         from rwkv_pip.utils import PIPELINE
