@@ -1,6 +1,5 @@
 import {
   AddToDownloadList,
-  CopyFile,
   DeleteFile,
   DepCheck,
   InstallPyDep,
@@ -402,8 +401,6 @@ export const checkDependencies = async (navigate: NavigateFunction) => {
       return false;
     }
     commonStore.setDepComplete(true);
-    if (commonStore.platform === 'windows')
-      CopyFile('./backend-python/wkv_cuda_utils/wkv_cuda_model.py', './py310/Lib/site-packages/rwkv/model.py');
   }
   return true;
 };
@@ -428,12 +425,16 @@ export function toastWithButton(text: string, buttonText: string, onClickButton:
   return id;
 }
 
-export function getSupportedCustomCudaFile() {
+export function getSupportedCustomCudaFile(isBeta: boolean) {
   if ([' 10', ' 16', ' 20', ' 30', 'MX', 'Tesla P', 'Quadro P', 'NVIDIA P', 'TITAN X', 'TITAN RTX', 'RTX A',
     'Quadro RTX 4000', 'Quadro RTX 5000', 'Tesla T4', 'NVIDIA A10', 'NVIDIA A40'].some(v => commonStore.status.device_name.includes(v)))
-    return './backend-python/wkv_cuda_utils/wkv_cuda10_30.pyd';
+    return isBeta ?
+      './backend-python/wkv_cuda_utils/beta/wkv_cuda10_30.pyd' :
+      './backend-python/wkv_cuda_utils/wkv_cuda10_30.pyd';
   else if ([' 40', 'RTX 5000 Ada', 'RTX 6000 Ada', 'RTX TITAN Ada', 'NVIDIA L40'].some(v => commonStore.status.device_name.includes(v)))
-    return './backend-python/wkv_cuda_utils/wkv_cuda40.pyd';
+    return isBeta ?
+      './backend-python/wkv_cuda_utils/beta/wkv_cuda40.pyd' :
+      './backend-python/wkv_cuda_utils/wkv_cuda40.pyd';
   else
     return '';
 }

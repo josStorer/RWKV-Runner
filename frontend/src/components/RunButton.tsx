@@ -11,7 +11,7 @@ import { Button } from '@fluentui/react-components';
 import { observer } from 'mobx-react-lite';
 import { exit, getStatus, readRoot, switchModel, updateConfig } from '../apis';
 import { toast } from 'react-toastify';
-import { checkDependencies, getStrategy, getSupportedCustomCudaFile, toastWithButton } from '../utils';
+import { checkDependencies, getStrategy, toastWithButton } from '../utils';
 import { useTranslation } from 'react-i18next';
 import { ToolTipButton } from './ToolTipButton';
 import { Play16Regular, Stop16Regular } from '@fluentui/react-icons';
@@ -119,9 +119,10 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
       const startServer = webgpu ?
         (_: string, port: number, host: string) => StartWebGPUServer(port, host)
         : StartServer;
+      const isUsingCudaBeta = modelConfig.modelParameters.device === 'CUDA-Beta';
 
       startServer(commonStore.settings.customPythonPath, port, commonStore.settings.host !== '127.0.0.1' ? '0.0.0.0' : '127.0.0.1',
-        modelConfig.modelParameters.device === 'CUDA-Beta'
+        isUsingCudaBeta
       ).catch((e) => {
         const errMsg = e.message || e;
         if (errMsg.includes('path contains space'))
@@ -162,22 +163,26 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
             if ((modelConfig.modelParameters.device.includes('CUDA') || modelConfig.modelParameters.device === 'Custom')
               && modelConfig.modelParameters.useCustomCuda && !strategy.includes('fp32')) {
               if (commonStore.platform === 'windows') {
-                customCudaFile = getSupportedCustomCudaFile();
-                if (customCudaFile) {
-                  FileExists('./py310/Lib/site-packages/rwkv/model.py').then((exist) => {
-                    // defensive measure. As Python has already been launched, will only take effect the next time it runs.
-                    if (!exist) CopyFile('./backend-python/wkv_cuda_utils/wkv_cuda_model.py', './py310/Lib/site-packages/rwkv/model.py');
-                  });
-                  await CopyFile(customCudaFile, './py310/Lib/site-packages/rwkv/wkv_cuda.pyd').catch(() => {
-                    FileExists('./py310/Lib/site-packages/rwkv/wkv_cuda.pyd').then((exist) => {
-                      if (!exist) {
-                        customCudaFile = '';
-                        toast(t('Failed to copy custom cuda file'), { type: 'error' });
-                      }
-                    });
-                  });
-                } else
-                  toast(t('Supported custom cuda file not found'), { type: 'warning' });
+                // this part is currently unused because there's no longer a need to use different kernels for different GPUs, but it might still be needed in the future
+                //
+                // customCudaFile = getSupportedCustomCudaFile(isUsingCudaBeta);
+                // if (customCudaFile) {
+                //   let kernelTargetPath: string;
+                //   if (isUsingCudaBeta)
+                //     kernelTargetPath = './backend-python/rwkv_pip/beta/wkv_cuda.pyd';
+                //   else
+                //     kernelTargetPath = './backend-python/rwkv_pip/wkv_cuda.pyd';
+                //   await CopyFile(customCudaFile, kernelTargetPath).catch(() => {
+                //     FileExists(kernelTargetPath).then((exist) => {
+                //       if (!exist) {
+                //         customCudaFile = '';
+                //         toast(t('Failed to copy custom cuda file'), { type: 'error' });
+                //       }
+                //     });
+                //   });
+                // } else
+                //   toast(t('Supported custom cuda file not found'), { type: 'warning' });
+                customCudaFile = 'any';
               } else {
                 customCudaFile = 'any';
               }
