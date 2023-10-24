@@ -47,7 +47,9 @@ English | [简体中文](README_ZH.md) | [日本語](README_JA.md)
 
 </div>
 
-#### Default configs has enabled custom CUDA kernel acceleration, which is much faster and consumes much less VRAM. If you encounter possible compatibility issues, go to the Configs page and turn off `Use Custom CUDA kernel to Accelerate`.
+#### Tip: You can deploy [backend-python](./backend-python/) on a server and use this program as a client only. Fill in your server address in the Settings `API URL`.
+
+#### Default configs has enabled custom CUDA kernel acceleration, which is much faster and consumes much less VRAM. If you encounter possible compatibility issues (output garbled), go to the Configs page and turn off `Use Custom CUDA kernel to Accelerate`, or try to upgrade your gpu driver.
 
 #### If Windows Defender claims this is a virus, you can try downloading [v1.3.7_win.zip](https://github.com/josStorer/RWKV-Runner/releases/download/v1.3.7/RWKV-Runner_win.zip) and letting it update automatically to the latest version, or add it to the trusted list (`Windows Security` -> `Virus & threat protection` -> `Manage settings` -> `Exclusions` -> `Add or remove exclusions` -> `Add an exclusion` -> `Folder` -> `RWKV-Runner`).
 

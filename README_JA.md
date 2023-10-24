@@ -47,7 +47,9 @@
 
 </div>
 
-#### デフォルトの設定はカスタム CUDA カーネルアクセラレーションを有効にしています。互換性の問題が発生する可能性がある場合は、コンフィグページに移動し、`Use Custom CUDA kernel to Accelerate` をオフにしてください。
+#### ヒント：サーバーに[backend-python](./backend-python/)をデプロイし、このプログラムをクライアントとして使用することができます。設定された`API URL`にサーバーアドレスを入力してください。
+
+#### デフォルトの設定はカスタム CUDA カーネルアクセラレーションを有効にしています。互換性の問題 (文字化けを出力する) が発生する可能性がある場合は、コンフィグページに移動し、`Use Custom CUDA kernel to Accelerate` をオフにしてください、あるいは、GPUドライバーをアップグレードしてみてください。
 
 #### Windows Defender がこれをウイルスだと主張する場合は、[v1.3.7_win.zip](https://github.com/josStorer/RWKV-Runner/releases/download/v1.3.7/RWKV-Runner_win.zip) をダウンロードして最新版に自動更新させるか、信頼済みリストに追加してみてください (`Windows Security` -> `Virus & threat protection` -> `Manage settings` -> `Exclusions` -> `Add or remove exclusions` -> `Add an exclusion` -> `Folder` -> `RWKV-Runner`)。
 
