@@ -423,7 +423,7 @@ export const Configs: FC = observer(() => {
                 {
                   (selectedConfig.modelParameters.device.includes('CUDA') || selectedConfig.modelParameters.device === 'Custom') &&
                   <Labeled label={t('Use Custom CUDA kernel to Accelerate')}
-                    desc={t('Enabling this option can greatly improve inference speed and save some VRAM, but there may be compatibility issues. If it fails to start, please turn off this option.')}
+                    desc={t('Enabling this option can greatly improve inference speed and save some VRAM, but there may be compatibility issues (output garbled). If it fails to start, please turn off this option, or try to upgrade your gpu driver.')}
                     content={
                       <Switch checked={selectedConfig.modelParameters.useCustomCuda}
                         onChange={(e, data) => {

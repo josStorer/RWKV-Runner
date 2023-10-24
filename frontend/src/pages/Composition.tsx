@@ -319,7 +319,7 @@ const CompositionPanel: FC = observer(() => {
                     toastWithButton(t('File Saved'), t('Open'), () => {
                       OpenFileFolder(path, false);
                     });
-                }).catch((e: any) => {
+                }).catch((e) => {
                   toast(t('Error') + ' - ' + (e.message || e), { type: 'error', autoClose: 2500 });
                 });
               } else {

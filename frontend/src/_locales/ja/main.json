@@ -100,7 +100,7 @@
   "Model Config Exception": "モデル設定例外",
   "Use Gitee Updates Source": "Gitee更新ソースを使用",
   "Use Custom CUDA kernel to Accelerate": "カスタムCUDAカーネルを使用して加速",
-  "Enabling this option can greatly improve inference speed and save some VRAM, but there may be compatibility issues. If it fails to start, please turn off this option.": "このオプションを有効にすると、推論速度が大幅に向上し、一部のVRAMを節約できますが、互換性の問題が生じる可能性があります。起動に失敗した場合は、このオプションをオフにしてください。",
+  "Enabling this option can greatly improve inference speed and save some VRAM, but there may be compatibility issues (output garbled). If it fails to start, please turn off this option, or try to upgrade your gpu driver.": "このオプションを有効にすると、推論速度が大幅に向上し、一部のVRAMを節約できますが、互換性の問題 (文字化けを出力する) が生じる可能性があります。起動に失敗した場合は、このオプションを無効にするか、GPUドライバーをアップグレードしてみてください。",
   "Supported custom cuda file not found": "対応しているカスタムCUDAファイルが見つかりません",
   "Failed to copy custom cuda file": "カスタムCUDAファイルのコピーに失敗しました",
   "Downloading update, please wait. If it is not completed, please manually download the program from GitHub and replace the original program.": "更新をダウンロード中です、お待ちください。完了しない場合は、GitHubから手動でプログラムをダウンロードし、元のプログラムを置き換えてください。",
