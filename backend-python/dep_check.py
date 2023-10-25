@@ -11,6 +11,7 @@ import GPUtil
 
 import torch
 import rwkv
+import langchain
 import numpy
 import tokenizers
 import fastapi

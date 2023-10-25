@@ -149,7 +149,7 @@ func (a *App) InstallPyDep(python string, cnMirror bool) (string, error) {
 
 	if runtime.GOOS == "windows" {
 		ChangeFileLine("./py310/python310._pth", 3, "Lib\\site-packages")
-		installScript := python + " ./backend-python/get-pip.py -i https://pypi.tuna.tsinghua.edu.cn/simple\n" +
+		installScript := python + " ./backend-python/get-pip.py -i https://pypi.tuna.tsinghua.edu.cn/simple --no-warn-script-location\n" +
 			python + " -m pip install torch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 --index-url https://download.pytorch.org/whl/cu117 --no-warn-script-location\n" +
 			python + " -m pip install -r ./backend-python/requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple --no-warn-script-location\n" +
 			"exit"
