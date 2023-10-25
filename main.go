@@ -43,7 +43,7 @@ var assets embed.FS
 //go:embed all:py310/Lib/site-packages/cyac
 var cyac embed.FS
 
-//go:embed all:py310/Lib/site-packages/cyac-1.7.dist-info
+//go:embed all:py310/Lib/site-packages/cyac-1.9.dist-info
 var cyacInfo embed.FS
 
 //go:embed backend-python
@@ -66,6 +66,7 @@ var components embed.FS
 
 func main() {
 	if buildInfo, ok := debug.ReadBuildInfo(); !ok || strings.Contains(buildInfo.String(), "-ldflags") {
+		os.RemoveAll("./py310/Lib/site-packages/cyac-1.7.dist-info")
 		backend.CopyEmbed(cyac)
 		backend.CopyEmbed(cyacInfo)
 		backend.CopyEmbed(py)
@@ -93,11 +94,11 @@ func main() {
 
 	// Create application with options
 	err = wails.Run(&options.App{
-		Title:     "RWKV-Runner",
-		Width:     1024,
-		Height:    680,
-		MinWidth:  375,
-		MinHeight: 640,
+		Title:                    "RWKV-Runner",
+		Width:                    1024,
+		Height:                   680,
+		MinWidth:                 375,
+		MinHeight:                640,
 		EnableDefaultContextMenu: true,
 		Windows: &windows.Options{
 			ZoomFactor:           zoomFactor,
