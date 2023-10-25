@@ -111,9 +111,6 @@ jobs:
           rm ./backend-python/rwkv_pip/rwkv5.pyd
           rm ./backend-python/rwkv_pip/beta/wkv_cuda.pyd
           rm ./backend-python/get-pip.py
-          sed -i '1,2d' ./backend-golang/wsl_not_windows.go
-          rm ./backend-golang/wsl.go
-          mv ./backend-golang/wsl_not_windows.go ./backend-golang/wsl.go
           make
           mv build/bin/RWKV-Runner build/bin/RWKV-Runner_linux_x64
 
@@ -145,9 +142,6 @@ jobs:
           rm ./backend-python/rwkv_pip/rwkv5.pyd
           rm ./backend-python/rwkv_pip/beta/wkv_cuda.pyd
           rm ./backend-python/get-pip.py
-          sed -i '' '1,2d' ./backend-golang/wsl_not_windows.go
-          rm ./backend-golang/wsl.go
-          mv ./backend-golang/wsl_not_windows.go ./backend-golang/wsl.go
           make
           cp build/darwin/Readme_Install.txt build/bin/Readme_Install.txt
           cp build/bin/RWKV-Runner.app/Contents/MacOS/RWKV-Runner build/bin/RWKV-Runner_darwin_universal
