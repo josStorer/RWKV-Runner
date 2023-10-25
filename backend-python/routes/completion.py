@@ -52,7 +52,7 @@ class ChatCompletionBody(ModelConfigBody):
     )
 
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "messages": [
                     {"role": Role.User.value, "content": "hello", "raw": False}
@@ -79,7 +79,7 @@ class CompletionBody(ModelConfigBody):
     stop: Union[str, List[str], None] = None
 
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "prompt": "The following is an epic science fiction masterpiece that is immortalized, "
                 + "with delicate descriptions and grand depictions of interstellar civilization wars.\nChapter 1.\n",
@@ -373,7 +373,7 @@ class EmbeddingsBody(BaseModel):
     fast_mode: bool = False
 
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "input": "a big apple",
                 "model": "rwkv",

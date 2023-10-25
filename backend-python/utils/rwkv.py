@@ -518,7 +518,7 @@ class ModelConfigBody(BaseModel):
     frequency_penalty: float = Field(default=None, ge=-2, le=2)
 
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "max_tokens": 1000,
                 "temperature": 1.2,

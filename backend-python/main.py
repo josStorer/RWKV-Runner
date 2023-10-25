@@ -2,10 +2,12 @@ import time
 
 start_time = time.time()
 
+import setuptools # avoid warnings
 import os
 import sys
 import argparse
 from typing import Sequence
+from contextlib import asynccontextmanager
 
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
@@ -21,7 +23,14 @@ from utils.log import log_middleware
 from routes import completion, config, state_cache, midi, misc
 import global_var
 
-app = FastAPI(dependencies=[Depends(log_middleware)])
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    init()
+    yield
+
+
+app = FastAPI(lifespan=lifespan, dependencies=[Depends(log_middleware)])
 
 app.add_middleware(
     CORSMiddleware,
@@ -38,7 +47,6 @@ app.include_router(misc.router)
 app.include_router(state_cache.router)
 
 
-@app.on_event("startup")
 def init():
     global_var.init()
     cmd_params = os.environ["RWKV_RUNNER_PARAMS"]
