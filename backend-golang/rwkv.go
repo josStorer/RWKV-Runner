@@ -28,8 +28,7 @@ func (a *App) StartServer(python string, port int, host string, rwkvBeta bool) (
 
 func (a *App) StartWebGPUServer(port int, host string) (string, error) {
 	args := []string{"./backend-rust/webgpu_server"}
-	args = append(args, "-a", "0", "-t", "backend-rust/assets/rwkv_vocab_v20230424.json",
-		"--port", strconv.Itoa(port), "--ip", host)
+	args = append(args, "--port", strconv.Itoa(port), "--ip", host)
 	return Cmd(args...)
 }
 
