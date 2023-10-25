@@ -254,6 +254,5 @@
   "User Name": "用户名称",
   "Assistant Name": "AI名称",
   "Insert default system prompt at the beginning": "在开头自动插入默认系统提示",
-  "Please Enable Custom CUDA Kernel. Latest RWKV-5 requires os.environ['RWKV_CUDA_ON'] == '1' (will fix soon).": "请启用自定义CUDA算子。最新的RWKV-5需要os.environ['RWKV_CUDA_ON'] == '1' (未来会修复)",
   "Format Content": "规范格式"
 }
