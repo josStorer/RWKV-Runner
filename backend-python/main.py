@@ -2,7 +2,7 @@ import time
 
 start_time = time.time()
 
-import setuptools # avoid warnings
+import setuptools  # avoid warnings
 import os
 import sys
 import argparse
@@ -20,7 +20,7 @@ from utils.rwkv import *
 from utils.torch import *
 from utils.ngrok import *
 from utils.log import log_middleware
-from routes import completion, config, state_cache, midi, misc
+from routes import completion, config, state_cache, midi, misc, file_process
 import global_var
 
 
@@ -43,6 +43,7 @@ app.add_middleware(
 app.include_router(completion.router)
 app.include_router(config.router)
 app.include_router(midi.router)
+app.include_router(file_process.router)
 app.include_router(misc.router)
 app.include_router(state_cache.router)
 
