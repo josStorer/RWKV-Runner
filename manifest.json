@@ -507,8 +507,8 @@
     {
       "name": "RWKV-4-Raven-1B5-v11-Eng99%-Other1%-20230425-ctx4096.pth",
       "desc": {
-        "en": "English 1.5B v11",
-        "zh": "英文 1.5B v11"
+        "en": "English 1.5B v11 (Old Model)",
+        "zh": "英文 1.5B v11 (旧模型)"
       },
       "size": 3030279730,
       "SHA256": "4ac715aecc5b1c90e8e37eebb8163392699066ec23b18144416e91cb4e78675a",
@@ -520,8 +520,8 @@
     {
       "name": "RWKV-4-Raven-1B5-v12-Eng98%-Other2%-20230520-ctx4096.pth",
       "desc": {
-        "en": "English 1B5 v12",
-        "zh": "英文 1B5 v12"
+        "en": "English 1B5 v12 (Old Model)",
+        "zh": "英文 1B5 v12 (旧模型)"
       },
       "size": 3030279730,
       "SHA256": "6bbbffb3ee2372dfa9ef49c599e9a2bc0a01b94b6a264ba9bf5bd524fc38f723",
@@ -532,8 +532,8 @@
     {
       "name": "RWKV-4-Raven-3B-v11-Eng99%-Other1%-20230425-ctx4096.pth",
       "desc": {
-        "en": "English 3B v11",
-        "zh": "英文 3B v11"
+        "en": "English 3B v11 (Old Model)",
+        "zh": "英文 3B v11 (旧模型)"
       },
       "size": 5969345074,
       "SHA256": "982ad3d794efe58992db23c6d694c57a9e62d54718264ec6d6acfae5eb0eea12",
@@ -545,8 +545,8 @@
     {
       "name": "RWKV-4-Raven-3B-v12-Eng98%-Other2%-20230520-ctx4096.pth",
       "desc": {
-        "en": "English 3B v12",
-        "zh": "英文 3B v12"
+        "en": "English 3B v12 (Old Model)",
+        "zh": "英文 3B v12 (旧模型)"
       },
       "size": 5969345074,
       "SHA256": "1eea1845acfe9729dfdaec66a8d1aeb91a1287d94bebbca5529c13c050540b33",
@@ -557,8 +557,8 @@
     {
       "name": "RWKV-4-Raven-3B-v11-Eng49%-Chn49%-Jpn1%-Other1%-20230429-ctx4096.pth",
       "desc": {
-        "en": "Chinese 3B v11",
-        "zh": "中文 3B v11"
+        "en": "Chinese 3B v11 (Old Model)",
+        "zh": "中文 3B v11 (旧模型)"
       },
       "size": 5969345074,
       "SHA256": "af12300d9875e0e166c23d6e9b20928db435073060bf1d36f874060de92ada98",
@@ -570,8 +570,8 @@
     {
       "name": "RWKV-4-Raven-3B-v12-Eng49%-Chn49%-Jpn1%-Other1%-20230527-ctx4096.pth",
       "desc": {
-        "en": "Chinese 3B v12",
-        "zh": "中文 3B v12"
+        "en": "Chinese 3B v12 (Old Model)",
+        "zh": "中文 3B v12 (旧模型)"
       },
       "size": 5969345330,
       "SHA256": "c0abb4b745ba3523b9d8b3e1293110867ee55b1ef3dc8c122212f78396755721",
@@ -582,8 +582,8 @@
     {
       "name": "RWKV-4-Raven-7B-v11x-Eng99%-Other1%-20230429-ctx8192.pth",
       "desc": {
-        "en": "English 7B v11x",
-        "zh": "英文 7B v11x"
+        "en": "English 7B v11x (Old Model)",
+        "zh": "英文 7B v11x (旧模型)"
       },
       "size": 14785389874,
       "SHA256": "f00d5c75b453f2b20ad875fb5a324564c34024eea25a015f5eb441e4f364c3fe",
@@ -595,8 +595,8 @@
     {
       "name": "RWKV-4-Raven-7B-v12-Eng98%-Other2%-20230521-ctx8192.pth",
       "desc": {
-        "en": "English 7B v12",
-        "zh": "英文 7B v12"
+        "en": "English 7B v12 (Old Model)",
+        "zh": "英文 7B v12 (旧模型)"
       },
       "size": 14785389618,
       "SHA256": "5a725eaeb9e09b724de6c97e6845dd0283097c7920acd05b46852ab7afa9ec32",
@@ -607,8 +607,8 @@
     {
       "name": "RWKV-4-Raven-7B-v10x-Eng49%-Chn50%-Other1%-20230423-ctx4096.pth",
       "desc": {
-        "en": "Chinese 7B v10x",
-        "zh": "中文 7B v10x"
+        "en": "Chinese 7B v10x (Old Model)",
+        "zh": "中文 7B v10x (旧模型)"
       },
       "size": 14785389874,
       "SHA256": "7aaf40bb3d440a949db3a146b0a5bbb3e925942b496775b51f5630a582fc236d",
@@ -620,8 +620,8 @@
     {
       "name": "RWKV-4-Raven-7B-v11-Eng49%-Chn49%-Jpn1%-Other1%-20230430-ctx8192.pth",
       "desc": {
-        "en": "Chinese 7B v11",
-        "zh": "中文 7B v11"
+        "en": "Chinese 7B v11 (Old Model)",
+        "zh": "中文 7B v11 (旧模型)"
       },
       "size": 14785389874,
       "SHA256": "9e67a74964abcb4463711e447ddf47735561d7b40592d2d02b29d2e796a4fd14",
@@ -633,8 +633,8 @@
     {
       "name": "RWKV-4-Raven-7B-v12-Eng49%-Chn49%-Jpn1%-Other1%-20230530-ctx8192.pth",
       "desc": {
-        "en": "Chinese 7B v12",
-        "zh": "中文 7B v12"
+        "en": "Chinese 7B v12 (Old Model)",
+        "zh": "中文 7B v12 (旧模型)"
       },
       "size": 14785389874,
       "SHA256": "6d4a089ff36d5d9d96b669d425fc5e4e3959cab426535b52e2364df08f58b407",
@@ -645,8 +645,8 @@
     {
       "name": "RWKV-4-Raven-14B-v11x-Eng99%-Other1%-20230501-ctx8192.pth",
       "desc": {
-        "en": "English 14B v11x",
-        "zh": "英文 14B v11x"
+        "en": "English 14B v11x (Old Model)",
+        "zh": "英文 14B v11x (旧模型)"
       },
       "size": 28297309490,
       "SHA256": "c4bc72406c3c62613e8e2592e8d07ac045f8a88381c728f8eb60af890e299f4d",
@@ -658,8 +658,8 @@
     {
       "name": "RWKV-4-Raven-14B-v12-Eng98%-Other2%-20230523-ctx8192.pth",
       "desc": {
-        "en": "English 14B v12",
-        "zh": "英文 14B v12"
+        "en": "English 14B v12 (Old Model)",
+        "zh": "英文 14B v12 (旧模型)"
       },
       "size": 28297309490,
       "SHA256": "1193b5a9ceab572e4dbb9ed1d798eab7bf4793d18904d08bd4bf183579338ae7",
