@@ -417,8 +417,8 @@ const ChatPanel: FC = observer(() => {
           onClick={() => {
             let savedContent: string = '';
             const isWorldModel = commonStore.getCurrentModelConfig().modelParameters.modelName.toLowerCase().includes('world');
-            const user = isWorldModel ? 'Question' : 'Bob';
-            const bot = isWorldModel ? 'Answer' : 'Alice';
+            const user = isWorldModel ? 'User' : 'Bob';
+            const bot = isWorldModel ? 'Assistant' : 'Alice';
             commonStore.conversationOrder.forEach((uuid) => {
               if (uuid === welcomeUuid)
                 return;

@@ -356,8 +356,8 @@ class TextRWKV(AbstractRWKV):
             self.END_OF_LINE = 187
         else:
             self.rwkv_type = RWKVType.World
-            self.user = "Question"
-            self.bot = "Answer"
+            self.user = "User"
+            self.bot = "Assistant"
             self.END_OF_LINE = 11
 
         self.AVOID_REPEAT_TOKENS = []
