@@ -414,7 +414,7 @@ const LoraFinetune: FC = observer(() => {
                   contentText={t('The data path should be a directory or a file in jsonl format (more formats will be supported in the future).\n\n' +
                     'When you provide a directory path, all the txt files within that directory will be automatically converted into training data. ' +
                     'This is commonly used for large-scale training in writing, code generation, or knowledge bases.\n\n' +
-                    'The jsonl format file can be referenced at https://github.com/Abel2076/json2binidx_tool/blob/main/sample.jsonl.\n' +
+                    'The jsonl format file can be referenced at https://github.com/josStorer/RWKV-Runner/blob/master/finetune/data/sample.jsonl.\n' +
                     'You can also write it similar to OpenAI\'s playground format, as shown in https://platform.openai.com/playground/p/default-chat.\n' +
                     'Even for multi-turn conversations, they must be written in a single line using `\\n` to indicate line breaks. ' +
                     'If they are different dialogues or topics, they should be written in separate lines.')} />
