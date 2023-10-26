@@ -16,6 +16,19 @@
   ],
   "models": [
     {
+      "name": "RWKV-5-World-1B5-v2-20231025-ctx4096.pth",
+      "desc": {
+        "en": "RWKV-5 Global Languages 1.5B v2",
+        "zh": "RWKV-5 全球语言 1.5B v2",
+        "ja": "RWKV-5 グローバル言語 1.5B v2"
+      },
+      "size": 3155590194,
+      "SHA256": "5a89f56be7f82ab9dd0835af9a6838f788477471616c02f7b041e3aea0c57435",
+      "lastUpdated": "2023-10-26T05:49:30",
+      "url": "https://huggingface.co/BlinkDL/temp/blob/main/RWKV-5-World-1B5-v2-20231025-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/temp/resolve/main/RWKV-5-World-1B5-v2-20231025-ctx4096.pth"
+    },
+    {
       "name": "RWKV-4-World-CHNtuned-0.1B-v1-20230617-ctx4096.pth",
       "desc": {
         "en": "Global Languages 0.1B v1 Enhanced Chinese",
@@ -692,6 +705,32 @@
       "lastUpdated": "2023-07-17T15:02:08",
       "url": "https://huggingface.co/BlinkDL/rwkv-4-music/blob/main/RWKV-4-MIDI-560M-v1-20230717-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-music/resolve/main/RWKV-4-MIDI-560M-v1-20230717-ctx4096.pth"
+    },
+    {
+      "name": "RWKV-5-MIDI-120M-v1-20230728-ctx4096.pth",
+      "desc": {
+        "en": "RWKV-5 Music 120M v1",
+        "zh": "RWKV-5 作曲 120M v1",
+        "ja": "RWKV-5 作曲 120M v1"
+      },
+      "size": 245070513,
+      "SHA256": "c43d4a2ee7a71a331d05d6cd818dd75f7c48c716e4b98c58e4d27231614b0144",
+      "lastUpdated": "2023-07-29T02:17:27",
+      "url": "https://huggingface.co/BlinkDL/rwkv-5-music/blob/main/RWKV-5-MIDI-120M-v1-20230728-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-music/resolve/main/RWKV-5-MIDI-120M-v1-20230728-ctx4096.pth"
+    },
+    {
+      "name": "RWKV-5-MIDI-560M-v1-20230902-ctx4096.pth",
+      "desc": {
+        "en": "RWKV-5 Music 560M v1",
+        "zh": "RWKV-5 作曲 560M v1",
+        "ja": "RWKV-5 作曲 560M v1"
+      },
+      "size": 1179631346,
+      "SHA256": "cb4f2fd8956ca8496d6b2e33bff290c2047759b6fe74884903dbf9c73a11cc77",
+      "lastUpdated": "2023-09-03T04:48:41",
+      "url": "https://huggingface.co/BlinkDL/rwkv-5-music/blob/main/RWKV-5-MIDI-560M-v1-20230902-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-music/resolve/main/RWKV-5-MIDI-560M-v1-20230902-ctx4096.pth"
     }
   ]
 }
