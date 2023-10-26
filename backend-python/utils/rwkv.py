@@ -4,7 +4,7 @@ import os
 import pathlib
 import copy
 import re
-from typing import Dict, Iterable, List, Tuple, Union
+from typing import Dict, Iterable, List, Tuple, Union, Type
 from utils.log import quick_log
 from fastapi import HTTPException
 from pydantic import BaseModel, Field
@@ -21,33 +21,21 @@ os.environ["TORCH_EXTENSIONS_DIR"] = f"{pathlib.Path(__file__).parent.parent.res
 
 
 class RWKVType(Enum):
+    NoneType = auto()
     Raven = auto()
     World = auto()
     Music = auto()
 
 
 class AbstractRWKV(ABC):
-    def __init__(self, model: str, strategy: str, tokens_path: str):
-        rwkv_beta = global_var.get(global_var.Args).rwkv_beta
-
-        # dynamic import to make RWKV_CUDA_ON work
-        if rwkv_beta:
-            from rwkv_pip.beta.model import (
-                RWKV as Model,
-            )
-        else:
-            from rwkv_pip.model import (
-                RWKV as Model,
-            )
-        from rwkv_pip.utils import PIPELINE
-
-        filename, _ = os.path.splitext(os.path.basename(model))
-        self.name = filename
-        self.model = Model(model, strategy)
-        self.pipeline = PIPELINE(self.model, tokens_path)
+    def __init__(self, model, pipeline):
+        self.name = "rwkv"
+        self.model = model
+        self.pipeline = pipeline
         self.model_state = None
         self.model_tokens = []
-        self.rwkv_type: RWKVType = None
+        self.rwkv_type: RWKVType = RWKVType.NoneType
+        self.tokenizer_len = len(model.w["emb.weight"])
 
         self.max_tokens_per_generation = 500
         self.temperature = 1
@@ -348,8 +336,8 @@ class AbstractRWKV(ABC):
 
 
 class TextRWKV(AbstractRWKV):
-    def __init__(self, model: str, strategy: str, tokens_path: str) -> None:
-        super().__init__(model, strategy, tokens_path)
+    def __init__(self, model, pipeline) -> None:
+        super().__init__(model, pipeline)
 
         self.CHUNK_LEN = 256
 
@@ -361,16 +349,16 @@ class TextRWKV(AbstractRWKV):
         self.penalty_alpha_frequency = 1
 
         self.interface = ":"
-        if "world" in self.name.lower():
-            self.rwkv_type = RWKVType.World
-            self.user = "Question"
-            self.bot = "Answer"
-            self.END_OF_LINE = 11
-        else:
+        if self.tokenizer_len < 65536:
             self.rwkv_type = RWKVType.Raven
             self.user = "Bob"
             self.bot = "Alice"
             self.END_OF_LINE = 187
+        else:
+            self.rwkv_type = RWKVType.World
+            self.user = "Question"
+            self.bot = "Answer"
+            self.END_OF_LINE = 11
 
         self.AVOID_REPEAT_TOKENS = []
         AVOID_REPEAT = "，：？！"
@@ -469,8 +457,8 @@ The following is a coherent verbose detailed conversation between a girl named {
 
 
 class MusicRWKV(AbstractRWKV):
-    def __init__(self, model: str, strategy: str, tokens_path: str):
-        super().__init__(model, strategy, tokens_path)
+    def __init__(self, model, pipeline):
+        super().__init__(model, pipeline)
 
         self.max_tokens_per_generation = 500
         self.temperature = 1
@@ -508,6 +496,52 @@ class MusicRWKV(AbstractRWKV):
 
     def delta_postprocess(self, delta: str) -> str:
         return " " + delta
+
+
+def get_tokenizer(tokenizer_len: int):
+    tokenizer_dir = f"{pathlib.Path(__file__).parent.parent.resolve()}/rwkv_pip/"
+    if tokenizer_len < 50277:
+        return tokenizer_dir + "tokenizer-midi.json"
+    elif tokenizer_len < 65536:
+        return tokenizer_dir + "20B_tokenizer.json"
+    else:
+        return "rwkv_vocab_v20230424"
+
+
+def RWKV(model: str, strategy: str, tokenizer: Union[str, None]) -> AbstractRWKV:
+    rwkv_beta = global_var.get(global_var.Args).rwkv_beta
+
+    # dynamic import to make RWKV_CUDA_ON work
+    if rwkv_beta:
+        from rwkv_pip.beta.model import (
+            RWKV as Model,
+        )
+    else:
+        from rwkv_pip.model import (
+            RWKV as Model,
+        )
+    from rwkv_pip.utils import PIPELINE
+
+    filename, _ = os.path.splitext(os.path.basename(model))
+    model = Model(model, strategy)
+    if not tokenizer:
+        tokenizer = get_tokenizer(len(model.w["emb.weight"]))
+    pipeline = PIPELINE(model, tokenizer)
+
+    rwkv_map: dict[str, Type[AbstractRWKV]] = {
+        "20B_tokenizer": TextRWKV,
+        "rwkv_vocab_v20230424": TextRWKV,
+        "tokenizer-midi": MusicRWKV,
+    }
+    tokenizer_name = os.path.splitext(os.path.basename(tokenizer))[0]
+    rwkv: AbstractRWKV
+    if tokenizer_name in rwkv_map:
+        rwkv = rwkv_map[tokenizer_name](model, pipeline)
+    else:
+        rwkv = TextRWKV(model, pipeline)
+    rwkv.name = filename
+
+    return rwkv
 
 
 class ModelConfigBody(BaseModel):
