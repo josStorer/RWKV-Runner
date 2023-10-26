@@ -25,8 +25,8 @@
       "size": 3155590194,
       "SHA256": "5a89f56be7f82ab9dd0835af9a6838f788477471616c02f7b041e3aea0c57435",
       "lastUpdated": "2023-10-26T05:49:30",
-      "url": "https://huggingface.co/BlinkDL/temp/blob/main/RWKV-5-World-1B5-v2-20231025-ctx4096.pth",
-      "downloadUrl": "https://huggingface.co/BlinkDL/temp/resolve/main/RWKV-5-World-1B5-v2-20231025-ctx4096.pth"
+      "url": "https://huggingface.co/BlinkDL/rwkv-5-world/blob/main/RWKV-5-World-1B5-v2-20231025-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-world/resolve/main/RWKV-5-World-1B5-v2-20231025-ctx4096.pth"
     },
     {
       "name": "RWKV-4-World-CHNtuned-0.1B-v1-20230617-ctx4096.pth",
