@@ -43,9 +43,11 @@ class ChatCompletionBody(ModelConfigBody):
     model: Union[str, None] = "rwkv"
     stream: bool = False
     stop: Union[str, List[str], None] = default_stop
-    user_name: Union[str, None] = Field(None, description="Internal user name")
+    user_name: Union[str, None] = Field(
+        None, description="Internal user name", min_length=1
+    )
     assistant_name: Union[str, None] = Field(
-        None, description="Internal assistant name"
+        None, description="Internal assistant name", min_length=1
     )
     presystem: bool = Field(
         True, description="Whether to insert default system prompt at the beginning"
@@ -317,11 +319,13 @@ The following is a coherent verbose detailed conversation between a girl named {
         completion_text += append_message + "\n\n"
     completion_text += f"{bot}{interface}"
 
+    user_code = model.pipeline.decode([model.pipeline.encode(user)[0]])
+    bot_code = model.pipeline.decode([model.pipeline.encode(bot)[0]])
     if type(body.stop) == str:
-        body.stop = [body.stop, f"\n\n{user}", f"\n\n{bot}"]
+        body.stop = [body.stop, f"\n\n{user_code}", f"\n\n{bot_code}"]
     elif type(body.stop) == list:
-        body.stop.append(f"\n\n{user}")
-        body.stop.append(f"\n\n{bot}")
+        body.stop.append(f"\n\n{user_code}")
+        body.stop.append(f"\n\n{bot_code}")
     elif body.stop is None:
         body.stop = default_stop
 
