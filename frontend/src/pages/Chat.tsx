@@ -164,6 +164,10 @@ const ChatMessageItem: FC<{
           value={messageItem.content}
           onChange={(e) => {
             messageItem.content = e.target.value;
+            commonStore.conversation[uuid].type = MessageType.Normal;
+            commonStore.conversation[uuid].done = true;
+            commonStore.setConversation(commonStore.conversation);
+            commonStore.setConversationOrder([...commonStore.conversationOrder]);
           }}
           onBlur={() => {
             setEditingInner(false);
