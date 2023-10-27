@@ -36,6 +36,7 @@ import { ClipboardGetText, ClipboardSetText } from '../../../wailsjs/runtime';
 import { toast } from 'react-toastify';
 import { CustomToastContainer } from '../../components/CustomToastContainer';
 import { v4 as uuid } from 'uuid';
+import { absPathAsset } from '../../utils';
 
 export type PresetType = 'chat' | 'completion' | 'chatInCompletion'
 
@@ -124,7 +125,7 @@ export const PresetCard: FC<{
   const { t } = useTranslation();
 
   return <PresetCardFrame onClick={onClick}>
-    <img src={avatarImg} className="rounded-xl select-none ml-auto mr-auto h-28" />
+    <img src={absPathAsset(avatarImg)} className="rounded-xl select-none ml-auto mr-auto h-28" />
     <Text size={400}>{name}</Text>
     <Text size={200} style={{
       overflow: 'hidden', textOverflow: 'ellipsis',
@@ -242,7 +243,7 @@ export const ChatPresetEditor: FC<{
               <Button appearance="subtle" icon={<Dismiss20Regular />} />
             </DialogTrigger>
           </div>
-          <img src={editingPreset.avatarImg} className="rounded-xl select-none ml-auto mr-auto h-28" />
+          <img src={absPathAsset(editingPreset.avatarImg)} className="rounded-xl select-none ml-auto mr-auto h-28" />
           <Labeled flex breakline label={t('Name')}
             content={
               <div className="flex gap-2">

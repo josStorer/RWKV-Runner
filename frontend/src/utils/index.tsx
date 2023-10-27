@@ -289,6 +289,14 @@ export function bytesToReadable(size: number) {
   else return bytesToGb(size) + ' GB';
 }
 
+export function absPathAsset(path: string) {
+  if ((path.length > 0 && path[0] === '/') ||
+    (path.length > 1 && path[1] === ':')) {
+    return '=>' + path;
+  }
+  return path;
+}
+
 export async function checkUpdate(notifyEvenLatest: boolean = false) {
   fetch(!commonStore.settings.giteeUpdatesSource ?
     'https://api.github.com/repos/josstorer/RWKV-Runner/releases/latest' :

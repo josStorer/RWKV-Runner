@@ -25,7 +25,7 @@ import { toast } from 'react-toastify';
 import { WorkHeader } from '../components/WorkHeader';
 import { DialogButton } from '../components/DialogButton';
 import { OpenFileFolder, OpenOpenFileDialog, OpenSaveFileDialog } from '../../wailsjs/go/backend_golang/App';
-import { bytesToReadable, toastWithButton } from '../utils';
+import { absPathAsset, bytesToReadable, toastWithButton } from '../utils';
 import { PresetsButton } from './PresetsManager/PresetsButton';
 import { useMediaQuery } from 'usehooks-ts';
 
@@ -122,6 +122,13 @@ const ChatMessageItem: FC<{
     }
   };
 
+  let avatarImg: string | undefined;
+  if (commonStore.activePreset && messageItem.sender === botName) {
+    avatarImg = absPathAsset(commonStore.activePreset.avatarImg);
+  } else if (messageItem.avatarImg) {
+    avatarImg = messageItem.avatarImg;
+  }
+
   return <div
     className={classnames(
       'flex gap-2 mb-2 overflow-hidden',
@@ -139,7 +146,7 @@ const ChatMessageItem: FC<{
     <Avatar
       color={messageItem.color}
       name={messageItem.sender}
-      image={(commonStore.activePreset && messageItem.sender === botName) ? { src: commonStore.activePreset.avatarImg } : messageItem.avatarImg ? { src: messageItem.avatarImg } : undefined}
+      image={avatarImg ? { src: avatarImg } : undefined}
     />
     <div
       className={classnames(
@@ -444,7 +451,7 @@ const ChatPanel: FC = observer(() => {
 
                     // Both are slow. Communication between frontend and backend is slow. Use AssetServer Handler to read the file.
                     // const blob = new Blob([atob(info.content as unknown as string)]); // await fetch(`data:application/octet-stream;base64,${info.content}`).then(r => r.blob());
-                    const blob = await fetch(`=>${filePath}`).then(r => r.blob());
+                    const blob = await fetch(absPathAsset(filePath)).then(r => r.blob());
                     const attachmentName = filePath.split(/[\\/]/).pop();
                     const urlPath = `/file-to-text?file_name=${attachmentName}`;
                     const bodyForm = new FormData();
