@@ -65,7 +65,7 @@ export type ConversationMessage = {
   content: string;
 }
 
-let chatSseController: AbortController | null = null;
+let chatSseControllers: { [id: string]: AbortController } = {};
 
 const MoreUtilsButton: FC<{ uuid: string, setEditing: (editing: boolean) => void }> = observer(({
   uuid,
@@ -174,6 +174,10 @@ const ChatMessageItem: FC<{
           messageItem.sender === botName && uuid !== welcomeUuid &&
           <ToolTipButton desc={t('Retry')} size="small" appearance="subtle"
             icon={<SyncIcon />} onClick={() => {
+            if (uuid in chatSseControllers) {
+              chatSseControllers[uuid].abort();
+              delete chatSseControllers[uuid];
+            }
             onSubmit(null, uuid, null, uuid, false);
           }} />
         }
@@ -195,15 +199,7 @@ const ChatPanel: FC = observer(() => {
   const currentConfig = commonStore.getCurrentModelConfig();
   const apiParams = currentConfig.apiParameters;
   const port = apiParams.apiPort;
-
-  let lastMessageId: string;
-  let generating: boolean = false;
-  if (commonStore.conversationOrder.length > 0) {
-    lastMessageId = commonStore.conversationOrder[commonStore.conversationOrder.length - 1];
-    const lastMessage = commonStore.conversation[lastMessageId];
-    if (lastMessage.sender === botName)
-      generating = !lastMessage.done;
-  }
+  const generating: boolean = Object.keys(chatSseControllers).length > 0;
 
   useEffect(() => {
     if (inputRef.current)
@@ -314,7 +310,8 @@ const ChatPanel: FC = observer(() => {
     commonStore.setConversationOrder(commonStore.conversationOrder);
     setTimeout(scrollToBottom);
     let answer = '';
-    chatSseController = new AbortController();
+    const chatSseController = new AbortController();
+    chatSseControllers[answerId] = chatSseController;
     fetchEventSource( // https://api.openai.com/v1/chat/completions || http://127.0.0.1:${port}/chat/completions
       commonStore.settings.apiUrl ?
         commonStore.settings.apiUrl + '/v1/chat/completions' :
@@ -368,6 +365,8 @@ const ChatPanel: FC = observer(() => {
           }
         },
         onclose() {
+          if (answerId! in chatSseControllers)
+            delete chatSseControllers[answerId!];
           console.log('Connection closed');
         },
         onerror(err) {
@@ -398,8 +397,12 @@ const ChatPanel: FC = observer(() => {
           size={mq ? 'large' : 'small'} shape="circular" appearance="subtle" title={t('Clear')}
           contentText={t('Are you sure you want to clear the conversation? It cannot be undone.')}
           onConfirm={() => {
-            if (generating)
-              chatSseController?.abort();
+            if (generating) {
+              for (const id in chatSseControllers) {
+                chatSseControllers[id].abort();
+              }
+              chatSseControllers = {};
+            }
             commonStore.setConversation({});
             commonStore.setConversationOrder([]);
           }} />
@@ -503,13 +506,14 @@ const ChatPanel: FC = observer(() => {
           size={mq ? 'large' : 'small'} shape="circular" appearance="subtle"
           onClick={(e) => {
             if (generating) {
-              chatSseController?.abort();
-              if (lastMessageId) {
-                commonStore.conversation[lastMessageId].type = MessageType.Error;
-                commonStore.conversation[lastMessageId].done = true;
-                commonStore.setConversation(commonStore.conversation);
-                commonStore.setConversationOrder([...commonStore.conversationOrder]);
+              for (const id in chatSseControllers) {
+                chatSseControllers[id].abort();
+                commonStore.conversation[id].type = MessageType.Error;
+                commonStore.conversation[id].done = true;
               }
+              chatSseControllers = {};
+              commonStore.setConversation(commonStore.conversation);
+              commonStore.setConversationOrder([...commonStore.conversationOrder]);
             } else {
               handleKeyDownOrClick(e);
             }
