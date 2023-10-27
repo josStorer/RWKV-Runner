@@ -168,8 +168,14 @@ export const ChatPresetEditor: FC<{
   const importPreset = () => {
     ClipboardGetText().then((text) => {
       try {
+        if (!text.trim().startsWith('{'))
+          text = new TextDecoder().decode(
+            new Uint8Array(atob(text)
+            .split('')
+            .map((c) => c.charCodeAt(0))));
         const preset = JSON.parse(text);
         setEditingPreset(preset);
+        setEditingMessages(false);
         toast(t('Imported successfully'), {
           type: 'success',
           autoClose: 1000
