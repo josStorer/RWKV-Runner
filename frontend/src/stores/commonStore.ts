@@ -54,6 +54,10 @@ class CommonStore {
   conversation: Conversation = {};
   conversationOrder: string[] = [];
   activePreset: Preset | null = null;
+  attachmentUploading: boolean = false;
+  attachmentName: string = '';
+  attachmentSize: number = 0;
+  attachmentContent: string = '';
   // completion
   completionPreset: CompletionPreset | null = null;
   completionGenerating: boolean = false;
@@ -324,6 +328,22 @@ class CommonStore {
 
   setLoraModels(value: string[]) {
     this.loraModels = value;
+  }
+
+  setAttachmentUploading(value: boolean) {
+    this.attachmentUploading = value;
+  }
+
+  setAttachmentName(value: string) {
+    this.attachmentName = value;
+  }
+
+  setAttachmentSize(value: number) {
+    this.attachmentSize = value;
+  }
+
+  setAttachmentContent(value: string) {
+    this.attachmentContent = value;
   }
 }
 

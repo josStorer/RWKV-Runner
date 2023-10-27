@@ -34,6 +34,8 @@ export function MergeLora(arg1:string,arg2:boolean,arg3:number,arg4:string,arg5:
 
 export function OpenFileFolder(arg1:string,arg2:boolean):Promise<void>;
 
+export function OpenOpenFileDialog(arg1:string):Promise<string>;
+
 export function OpenSaveFileDialog(arg1:string,arg2:string,arg3:string):Promise<string>;
 
 export function OpenSaveFileDialogBytes(arg1:string,arg2:string,arg3:Array<number>):Promise<string>;

@@ -282,6 +282,13 @@ export function bytesToKb(size: number) {
   return (size / 1024).toFixed(2);
 }
 
+export function bytesToReadable(size: number) {
+  if (size < 1024) return size + ' B';
+  else if (size < 1024 * 1024) return bytesToKb(size) + ' KB';
+  else if (size < 1024 * 1024 * 1024) return bytesToMb(size) + ' MB';
+  else return bytesToGb(size) + ' GB';
+}
+
 export async function checkUpdate(notifyEvenLatest: boolean = false) {
   fetch(!commonStore.settings.giteeUpdatesSource ?
     'https://api.github.com/repos/josstorer/RWKV-Runner/releases/latest' :

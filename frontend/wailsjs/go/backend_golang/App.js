@@ -66,6 +66,10 @@ export function OpenFileFolder(arg1, arg2) {
   return window['go']['backend_golang']['App']['OpenFileFolder'](arg1, arg2);
 }
 
+export function OpenOpenFileDialog(arg1) {
+  return window['go']['backend_golang']['App']['OpenOpenFileDialog'](arg1);
+}
+
 export function OpenSaveFileDialog(arg1, arg2, arg3) {
   return window['go']['backend_golang']['App']['OpenSaveFileDialog'](arg1, arg2, arg3);
 }

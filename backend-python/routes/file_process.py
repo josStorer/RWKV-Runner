@@ -58,17 +58,22 @@ async def file_to_text(
 
     file_parsers = {".txt": parse_text, ".pdf": parse_pdf}
 
-    file_ext = os.path.splitext(params.file_name)[-1]
+    file_name = file_data.filename or params.file_name
+    file_ext = os.path.splitext(file_name)[-1]
 
     if file_ext not in file_parsers:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "file type not supported")
 
-    pages: Iterator[Document] = file_parsers[file_ext](
-        Blob.from_data(
-            await file_data.read(),
-            encoding=params.file_encoding,
-            path=params.file_name,
+    try:
+        pages: Iterator[Document] = file_parsers[file_ext](
+            Blob.from_data(
+                await file_data.read(),
+                encoding=params.file_encoding,
+                path=file_name,
+            )
         )
-    )
+        pages = list(pages)
+    except Exception as e:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, f"{e}")
 
     return {"pages": pages}

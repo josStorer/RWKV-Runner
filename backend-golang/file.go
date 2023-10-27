@@ -53,12 +53,12 @@ type FileInfo struct {
 	ModTime string `json:"modTime"`
 }
 
-func (a *App) ReadFileInfo(fileName string) (FileInfo, error) {
+func (a *App) ReadFileInfo(fileName string) (*FileInfo, error) {
 	info, err := os.Stat(a.exDir + fileName)
 	if err != nil {
-		return FileInfo{}, err
+		return nil, err
 	}
-	return FileInfo{
+	return &FileInfo{
 		Name:    info.Name(),
 		Size:    info.Size(),
 		IsDir:   info.IsDir(),
@@ -141,6 +141,20 @@ func (a *App) OpenSaveFileDialogBytes(filterPattern string, defaultFileName stri
 	}
 	if err := os.WriteFile(path, savedContent, 0644); err != nil {
 		return "", err
+	}
+	return path, nil
+}
+
+// Only return the path of the selected file, because communication between frontend and backend is slow. Use AssetServer Handler to read the file.
+func (a *App) OpenOpenFileDialog(filterPattern string) (string, error) {
+	path, err := wruntime.OpenFileDialog(a.ctx, wruntime.OpenDialogOptions{
+		Filters: []wruntime.FileFilter{{Pattern: filterPattern}},
+	})
+	if err != nil {
+		return "", err
+	}
+	if path == "" {
+		return "", nil
 	}
 	return path, nil
 }

@@ -10,14 +10,22 @@ import { KebabHorizontalIcon, PencilIcon, SyncIcon, TrashIcon } from '@primer/oc
 import logo from '../assets/images/logo.png';
 import MarkdownRender from '../components/MarkdownRender';
 import { ToolTipButton } from '../components/ToolTipButton';
-import { ArrowCircleUp28Regular, Delete28Regular, RecordStop28Regular, Save28Regular } from '@fluentui/react-icons';
+import {
+  ArrowCircleUp28Regular,
+  ArrowClockwise16Regular,
+  Attach16Regular,
+  Delete28Regular,
+  Dismiss16Regular,
+  RecordStop28Regular,
+  Save28Regular
+} from '@fluentui/react-icons';
 import { CopyButton } from '../components/CopyButton';
 import { ReadButton } from '../components/ReadButton';
 import { toast } from 'react-toastify';
 import { WorkHeader } from '../components/WorkHeader';
 import { DialogButton } from '../components/DialogButton';
-import { OpenFileFolder, OpenSaveFileDialog } from '../../wailsjs/go/backend_golang/App';
-import { toastWithButton } from '../utils';
+import { OpenFileFolder, OpenOpenFileDialog, OpenSaveFileDialog } from '../../wailsjs/go/backend_golang/App';
+import { bytesToReadable, toastWithButton } from '../utils';
 import { PresetsButton } from './PresetsManager/PresetsButton';
 import { useMediaQuery } from 'usehooks-ts';
 
@@ -267,6 +275,16 @@ const ChatPanel: FC = observer(() => {
     let targetRange = commonStore.conversationOrder.slice(startIndex, endIndex);
 
     const messages: ConversationMessage[] = [];
+    if (commonStore.attachmentContent) {
+      messages.push({
+        role: 'user',
+        content: t('The content of file') + ` "${commonStore.attachmentName}" `
+          + t('is as follows. When replying to me, consider the file content and respond accordingly:')
+          + '\n\n' + commonStore.attachmentContent
+      });
+      messages.push({ role: 'user', content: t('What\'s the file name') });
+      messages.push({ role: 'assistant', content: t('The file name is: ') + commonStore.attachmentName });
+    }
     targetRange.forEach((uuid, index) => {
       if (uuid === welcomeUuid)
         return;
@@ -385,16 +403,101 @@ const ChatPanel: FC = observer(() => {
             commonStore.setConversation({});
             commonStore.setConversationOrder([]);
           }} />
-        <Textarea
-          ref={inputRef}
-          style={{ minWidth: 0 }}
-          className="grow"
-          resize="vertical"
-          placeholder={t('Type your message here')!}
-          value={commonStore.currentInput}
-          onChange={(e) => commonStore.setCurrentInput(e.target.value)}
-          onKeyDown={handleKeyDownOrClick}
-        />
+        <div className="relative flex grow">
+          <Textarea
+            ref={inputRef}
+            style={{ minWidth: 0 }}
+            className="grow"
+            resize="vertical"
+            placeholder={t('Type your message here')!}
+            value={commonStore.currentInput}
+            onChange={(e) => commonStore.setCurrentInput(e.target.value)}
+            onKeyDown={handleKeyDownOrClick}
+          />
+          <div className="absolute right-2 bottom-2">
+            {!commonStore.attachmentContent ?
+              <ToolTipButton
+                desc={commonStore.attachmentUploading ?
+                  t('Uploading Attachment') :
+                  t('Add An Attachment (Accepts pdf, txt)')}
+                icon={commonStore.attachmentUploading ?
+                  <ArrowClockwise16Regular className="animate-spin" />
+                  : <Attach16Regular />}
+                size="small" shape="circular" appearance="secondary"
+                onClick={() => {
+                  if (commonStore.status.status === ModelStatus.Offline && !commonStore.settings.apiUrl) {
+                    toast(t('Please click the button in the top right corner to start the model'), { type: 'warning' });
+                    return;
+                  }
+
+                  if (commonStore.attachmentUploading)
+                    return;
+
+                  OpenOpenFileDialog('*.txt;*.pdf').then(async filePath => {
+                    if (!filePath)
+                      return;
+
+                    commonStore.setAttachmentUploading(true);
+
+                    // Both are slow. Communication between frontend and backend is slow. Use AssetServer Handler to read the file.
+                    // const blob = new Blob([atob(info.content as unknown as string)]); // await fetch(`data:application/octet-stream;base64,${info.content}`).then(r => r.blob());
+                    const blob = await fetch(`=>${filePath}`).then(r => r.blob());
+                    const attachmentName = filePath.split(/[\\/]/).pop();
+                    const urlPath = `/file-to-text?file_name=${attachmentName}`;
+                    const bodyForm = new FormData();
+                    bodyForm.append('file_data', blob, attachmentName);
+                    fetch(commonStore.settings.apiUrl ?
+                      commonStore.settings.apiUrl + urlPath :
+                      `http://127.0.0.1:${port}${urlPath}`, {
+                      method: 'POST',
+                      body: bodyForm
+                    }).then(async r => {
+                        if (r.status === 200) {
+                          const pages = (await r.json()).pages as any[];
+                          let attachmentContent: string;
+                          if (pages.length === 1)
+                            attachmentContent = pages[0].page_content;
+                          else
+                            attachmentContent = pages.map((p, i) => `Page ${i + 1}:\n${p.page_content}`).join('\n\n');
+                          commonStore.setAttachmentName(attachmentName!);
+                          commonStore.setAttachmentSize(blob.size);
+                          commonStore.setAttachmentContent(attachmentContent);
+                        } else {
+                          toast(r.statusText + '\n' + (await r.text()), {
+                            type: 'error'
+                          });
+                        }
+                        commonStore.setAttachmentUploading(false);
+                      }
+                    ).catch(e => {
+                      commonStore.setAttachmentUploading(false);
+                      toast(t('Error') + ' - ' + (e.message || e), { type: 'error', autoClose: 2500 });
+                    });
+                  }).catch(e => {
+                    toast(t('Error') + ' - ' + (e.message || e), { type: 'error', autoClose: 2500 });
+                  });
+                }}
+              /> :
+              <div>
+                <ToolTipButton
+                  text={
+                    commonStore.attachmentName.replace(
+                      new RegExp('(^[^\\.]{5})[^\\.]+'), '$1...')
+                  }
+                  desc={`${commonStore.attachmentName} (${bytesToReadable(commonStore.attachmentSize)})`}
+                  size="small" shape="circular" appearance="secondary" />
+                <ToolTipButton desc={t('Remove Attachment')}
+                  icon={<Dismiss16Regular />}
+                  size="small" shape="circular" appearance="subtle"
+                  onClick={() => {
+                    commonStore.setAttachmentName('');
+                    commonStore.setAttachmentSize(0);
+                    commonStore.setAttachmentContent('');
+                  }} />
+              </div>
+            }
+          </div>
+        </div>
         <ToolTipButton desc={generating ? t('Stop') : t('Send')}
           icon={generating ? <RecordStop28Regular /> : <ArrowCircleUp28Regular />}
           size={mq ? 'large' : 'small'} shape="circular" appearance="subtle"
