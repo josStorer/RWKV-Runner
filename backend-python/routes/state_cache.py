@@ -9,7 +9,7 @@ router = APIRouter()
 
 trie = None
 dtrie: Dict = {}
-max_trie_len = 3000
+max_trie_len = 300
 loop_start_id = 1  # to prevent preloaded prompts from being deleted
 loop_del_trie_id = loop_start_id
 
