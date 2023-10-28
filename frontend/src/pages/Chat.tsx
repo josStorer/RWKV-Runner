@@ -339,9 +339,9 @@ const ChatPanel: FC = observer(() => {
           model: commonStore.settings.apiChatModelName, // 'gpt-3.5-turbo'
           temperature: apiParams.temperature,
           top_p: apiParams.topP,
-          user_name: commonStore.activePreset?.userName,
-          assistant_name: commonStore.activePreset?.assistantName,
-          presystem: commonStore.activePreset?.presystem
+          user_name: commonStore.activePreset?.userName || undefined,
+          assistant_name: commonStore.activePreset?.assistantName || undefined,
+          presystem: commonStore.activePreset?.presystem && undefined
         }),
         signal: chatSseController?.signal,
         onmessage(e) {
