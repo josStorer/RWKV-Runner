@@ -347,6 +347,8 @@ const ChatPanel: FC = observer(() => {
         onmessage(e) {
           scrollToBottom();
           if (e.data.trim() === '[DONE]') {
+            if (answerId! in chatSseControllers)
+              delete chatSseControllers[answerId!];
             commonStore.conversation[answerId!].done = true;
             commonStore.conversation[answerId!].content = commonStore.conversation[answerId!].content.trim();
             commonStore.setConversation(commonStore.conversation);
@@ -381,6 +383,8 @@ const ChatPanel: FC = observer(() => {
           console.log('Connection closed');
         },
         onerror(err) {
+          if (answerId! in chatSseControllers)
+            delete chatSseControllers[answerId!];
           commonStore.conversation[answerId!].type = MessageType.Error;
           commonStore.conversation[answerId!].done = true;
           err = err.message || err;
