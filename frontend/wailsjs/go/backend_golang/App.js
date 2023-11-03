@@ -54,6 +54,10 @@ export function InstallPyDep(arg1, arg2) {
   return window['go']['backend_golang']['App']['InstallPyDep'](arg1, arg2);
 }
 
+export function IsPortAvailable(arg1) {
+  return window['go']['backend_golang']['App']['IsPortAvailable'](arg1);
+}
+
 export function ListDirFiles(arg1) {
   return window['go']['backend_golang']['App']['ListDirFiles'](arg1);
 }

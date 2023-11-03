@@ -28,6 +28,8 @@ export function GetPyError():Promise<string>;
 
 export function InstallPyDep(arg1:string,arg2:boolean):Promise<string>;
 
+export function IsPortAvailable(arg1:number):Promise<boolean>;
+
 export function ListDirFiles(arg1:string):Promise<Array<backend_golang.FileInfo>>;
 
 export function MergeLora(arg1:string,arg2:boolean,arg3:number,arg4:string,arg5:string,arg6:string):Promise<string>;
