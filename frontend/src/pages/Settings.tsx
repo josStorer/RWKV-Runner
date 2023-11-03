@@ -42,7 +42,7 @@ export type SettingsType = {
 }
 
 export const Settings: FC = observer(() => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const advancedHeaderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

@@ -33,8 +33,6 @@ export type Status = {
 
 export type Platform = 'windows' | 'darwin' | 'linux';
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
 class CommonStore {
   // global
   status: Status = {
