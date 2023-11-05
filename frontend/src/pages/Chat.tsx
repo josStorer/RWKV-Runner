@@ -91,6 +91,7 @@ const MoreUtilsButton: FC<{ uuid: string, setEditing: (editing: boolean) => void
         onClick={() => {
           commonStore.conversationOrder.splice(commonStore.conversationOrder.indexOf(uuid), 1);
           delete commonStore.conversation[uuid];
+          commonStore.setAttachment(uuid, null);
         }} />
     </MenuPopover>
   </Menu>;
@@ -157,7 +158,21 @@ const ChatMessageItem: FC<{
       )}
     >
       {!editing ?
-        <MarkdownRender>{messageItem.content}</MarkdownRender> :
+        <div className="flex flex-col">
+          <MarkdownRender>{messageItem.content}</MarkdownRender>
+          {uuid in commonStore.attachments &&
+            <div className="flex grow">
+              <div className="grow" />
+              <ToolTipButton className="whitespace-nowrap"
+                text={
+                  commonStore.attachments[uuid][0].name.replace(
+                    new RegExp('(^[^\\.]{5})[^\\.]+'), '$1...')
+                }
+                desc={`${commonStore.attachments[uuid][0].name} (${bytesToReadable(commonStore.attachments[uuid][0].size)})`}
+                size="small" shape="circular" appearance="secondary" />
+            </div>
+          }
+        </div> :
         <Textarea ref={textareaRef}
           className="grow"
           style={{ minWidth: 0 }}
@@ -275,6 +290,11 @@ const ChatPanel: FC = observer(() => {
       commonStore.setConversation(commonStore.conversation);
       commonStore.conversationOrder.push(newId);
       commonStore.setConversationOrder(commonStore.conversationOrder);
+
+      if (commonStore.currentTempAttachment) {
+        commonStore.setAttachment(newId, [commonStore.currentTempAttachment]);
+        commonStore.setCurrentTempAttachment(null);
+      }
     }
 
     let startIndex = startUuid ? commonStore.conversationOrder.indexOf(startUuid) : 0;
@@ -282,20 +302,21 @@ const ChatPanel: FC = observer(() => {
     let targetRange = commonStore.conversationOrder.slice(startIndex, endIndex);
 
     const messages: ConversationMessage[] = [];
-    if (commonStore.attachmentContent) {
-      messages.push({
-        role: 'user',
-        content: t('The content of file') + ` "${commonStore.attachmentName}" `
-          + t('is as follows. When replying to me, consider the file content and respond accordingly:')
-          + '\n\n' + commonStore.attachmentContent
-      });
-      messages.push({ role: 'user', content: t('What\'s the file name') });
-      messages.push({ role: 'assistant', content: t('The file name is: ') + commonStore.attachmentName });
-    }
     targetRange.forEach((uuid, index) => {
       if (uuid === welcomeUuid)
         return;
       const messageItem = commonStore.conversation[uuid];
+      if (uuid in commonStore.attachments) {
+        const attachment = commonStore.attachments[uuid][0];
+        messages.push({
+          role: 'user',
+          content: t('The content of file') + ` "${attachment.name}" `
+            + t('is as follows. When replying to me, consider the file content and respond accordingly:')
+            + '\n\n' + attachment.content
+        });
+        messages.push({ role: 'user', content: t('What\'s the file name') });
+        messages.push({ role: 'assistant', content: t('The file name is: ') + attachment.name });
+      }
       if (messageItem.done && messageItem.type === MessageType.Normal && messageItem.sender === userName) {
         messages.push({ role: 'user', content: messageItem.content });
       } else if (messageItem.done && messageItem.type === MessageType.Normal && messageItem.sender === botName) {
@@ -433,7 +454,7 @@ const ChatPanel: FC = observer(() => {
             onKeyDown={handleKeyDownOrClick}
           />
           <div className="absolute right-2 bottom-2">
-            {!commonStore.attachmentContent ?
+            {!commonStore.currentTempAttachment ?
               <ToolTipButton
                 desc={commonStore.attachmentUploading ?
                   t('Uploading Attachment') :
@@ -477,9 +498,12 @@ const ChatPanel: FC = observer(() => {
                             attachmentContent = pages[0].page_content;
                           else
                             attachmentContent = pages.map((p, i) => `Page ${i + 1}:\n${p.page_content}`).join('\n\n');
-                          commonStore.setAttachmentName(attachmentName!);
-                          commonStore.setAttachmentSize(blob.size);
-                          commonStore.setAttachmentContent(attachmentContent);
+                          commonStore.setCurrentTempAttachment(
+                            {
+                              name: attachmentName!,
+                              size: blob.size,
+                              content: attachmentContent
+                            });
                         } else {
                           toast(r.statusText + '\n' + (await r.text()), {
                             type: 'error'
@@ -499,18 +523,16 @@ const ChatPanel: FC = observer(() => {
               <div>
                 <ToolTipButton
                   text={
-                    commonStore.attachmentName.replace(
+                    commonStore.currentTempAttachment.name.replace(
                       new RegExp('(^[^\\.]{5})[^\\.]+'), '$1...')
                   }
-                  desc={`${commonStore.attachmentName} (${bytesToReadable(commonStore.attachmentSize)})`}
+                  desc={`${commonStore.currentTempAttachment.name} (${bytesToReadable(commonStore.currentTempAttachment.size)})`}
                   size="small" shape="circular" appearance="secondary" />
                 <ToolTipButton desc={t('Remove Attachment')}
                   icon={<Dismiss16Regular />}
                   size="small" shape="circular" appearance="subtle"
                   onClick={() => {
-                    commonStore.setAttachmentName('');
-                    commonStore.setAttachmentSize(0);
-                    commonStore.setAttachmentContent('');
+                    commonStore.setCurrentTempAttachment(null);
                   }} />
               </div>
             }

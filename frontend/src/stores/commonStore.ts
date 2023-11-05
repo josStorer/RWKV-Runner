@@ -31,6 +31,12 @@ export type Status = {
   device_name: string;
 }
 
+export type Attachment = {
+  name: string;
+  size: number;
+  content: string;
+}
+
 export type Platform = 'windows' | 'darwin' | 'linux';
 
 class CommonStore {
@@ -53,9 +59,8 @@ class CommonStore {
   conversationOrder: string[] = [];
   activePreset: Preset | null = null;
   attachmentUploading: boolean = false;
-  attachmentName: string = '';
-  attachmentSize: number = 0;
-  attachmentContent: string = '';
+  attachments: { [uuid: string]: Attachment[] } = {};
+  currentTempAttachment: Attachment | null = null;
   // completion
   completionPreset: CompletionPreset | null = null;
   completionGenerating: boolean = false;
@@ -332,16 +337,19 @@ class CommonStore {
     this.attachmentUploading = value;
   }
 
-  setAttachmentName(value: string) {
-    this.attachmentName = value;
+  setAttachments(value: { [uuid: string]: Attachment[] }) {
+    this.attachments = value;
   }
 
-  setAttachmentSize(value: number) {
-    this.attachmentSize = value;
+  setAttachment(uuid: string, value: Attachment[] | null) {
+    if (value === null)
+      delete this.attachments[uuid];
+    else
+      this.attachments[uuid] = value;
   }
 
-  setAttachmentContent(value: string) {
-    this.attachmentContent = value;
+  setCurrentTempAttachment(value: Attachment | null) {
+    this.currentTempAttachment = value;
   }
 }
 
