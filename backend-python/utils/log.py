@@ -10,7 +10,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter("%(asctime)s - %(levelname)s\n%(message)s")
 fh = logging.handlers.RotatingFileHandler(
-    "api.log", mode="a", maxBytes=3 * 1024 * 1024, backupCount=3
+    "api.log", mode="a", maxBytes=3 * 1024 * 1024, backupCount=3, encoding="utf-8"
 )
 fh.setFormatter(formatter)
 logger.addHandler(fh)
