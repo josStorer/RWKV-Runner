@@ -23,6 +23,11 @@ def get_args(args: Union[Sequence[str], None] = None):
     )
     group = parser.add_argument_group(title="mode arguments")
     group.add_argument(
+        "--webui",
+        action="store_true",
+        help="whether to enable WebUI (default: False)",
+    )
+    group.add_argument(
         "--rwkv-beta",
         action="store_true",
         help="whether to use rwkv-beta (default: False)",
@@ -79,6 +84,32 @@ app.include_router(misc.router)
 app.include_router(state_cache.router)
 
 
+@app.post("/exit", tags=["Root"])
+def exit():
+    parent_pid = os.getpid()
+    parent = psutil.Process(parent_pid)
+    for child in parent.children(recursive=True):
+        child.kill()
+    parent.kill()
+
+
+try:
+    if (
+        "RWKV_RUNNER_PARAMS" in os.environ
+        and "--webui" in os.environ["RWKV_RUNNER_PARAMS"].split(" ")
+    ) or args.webui:
+        from webui_server import webui_server
+
+        app.mount("/", webui_server)
+except NameError:
+    pass
+
+
+@app.get("/", tags=["Root"])
+def read_root():
+    return {"Hello": "World!"}
+
+
 def init():
     global_var.init()
     cmd_params = os.environ["RWKV_RUNNER_PARAMS"]
@@ -92,20 +123,6 @@ def init():
 
     if os.environ.get("ngrok_token") is not None:
         ngrok_connect()
-
-
-@app.get("/", tags=["Root"])
-def read_root():
-    return {"Hello": "World!"}
-
-
-@app.post("/exit", tags=["Root"])
-def exit():
-    parent_pid = os.getpid()
-    parent = psutil.Process(parent_pid)
-    for child in parent.children(recursive=True):
-        child.kill()
-    parent.kill()
 
 
 if __name__ == "__main__":
