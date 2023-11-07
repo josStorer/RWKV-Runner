@@ -16,8 +16,8 @@ class SwitchModelBody(BaseModel):
     tokenizer: Union[str, None] = None
     customCuda: bool = False
 
-    class Config:
-        json_schema_extra = {
+    model_config = {
+        "json_schema_extra": {
             "example": {
                 "model": "models/RWKV-4-World-3B-v1-20230619-ctx4096.pth",
                 "strategy": "cuda fp16",
@@ -25,6 +25,7 @@ class SwitchModelBody(BaseModel):
                 "customCuda": False,
             }
         }
+    }
 
 
 @router.post("/switch-model", tags=["Configs"])

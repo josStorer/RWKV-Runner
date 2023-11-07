@@ -53,8 +53,8 @@ class ChatCompletionBody(ModelConfigBody):
         True, description="Whether to insert default system prompt at the beginning"
     )
 
-    class Config:
-        json_schema_extra = {
+    model_config = {
+        "json_schema_extra": {
             "example": {
                 "messages": [
                     {"role": Role.User.value, "content": "hello", "raw": False}
@@ -72,6 +72,7 @@ class ChatCompletionBody(ModelConfigBody):
                 "frequency_penalty": 0.4,
             }
         }
+    }
 
 
 class CompletionBody(ModelConfigBody):
@@ -80,8 +81,8 @@ class CompletionBody(ModelConfigBody):
     stream: bool = False
     stop: Union[str, List[str], None] = None
 
-    class Config:
-        json_schema_extra = {
+    model_config = {
+        "json_schema_extra": {
             "example": {
                 "prompt": "The following is an epic science fiction masterpiece that is immortalized, "
                 + "with delicate descriptions and grand depictions of interstellar civilization wars.\nChapter 1.\n",
@@ -95,6 +96,7 @@ class CompletionBody(ModelConfigBody):
                 "frequency_penalty": 0.4,
             }
         }
+    }
 
 
 completion_lock = Lock()
@@ -376,8 +378,8 @@ class EmbeddingsBody(BaseModel):
     encoding_format: str = None
     fast_mode: bool = False
 
-    class Config:
-        json_schema_extra = {
+    model_config = {
+        "json_schema_extra": {
             "example": {
                 "input": "a big apple",
                 "model": "rwkv",
@@ -385,6 +387,7 @@ class EmbeddingsBody(BaseModel):
                 "fast_mode": False,
             }
         }
+    }
 
 
 def embedding_base64(embedding: List[float]) -> str:

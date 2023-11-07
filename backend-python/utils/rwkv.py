@@ -551,8 +551,8 @@ class ModelConfigBody(BaseModel):
     presence_penalty: float = Field(default=None, ge=-2, le=2)
     frequency_penalty: float = Field(default=None, ge=-2, le=2)
 
-    class Config:
-        json_schema_extra = {
+    model_config = {
+        "json_schema_extra": {
             "example": {
                 "max_tokens": 1000,
                 "temperature": 1.2,
@@ -561,6 +561,7 @@ class ModelConfigBody(BaseModel):
                 "frequency_penalty": 0.4,
             }
         }
+    }
 
 
 def set_rwkv_config(model: AbstractRWKV, body: ModelConfigBody):
