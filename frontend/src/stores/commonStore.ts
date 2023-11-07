@@ -4,7 +4,6 @@ import { WindowSetDarkTheme, WindowSetLightTheme } from '../../wailsjs/runtime';
 import manifest from '../../../manifest.json';
 import i18n from 'i18next';
 import { defaultCompositionPrompt, defaultModelConfigs, defaultModelConfigsMac } from '../pages/defaultConfigs';
-import commonStore from './commonStore';
 import { ChartData } from 'chart.js';
 import { Preset } from '../types/presets';
 import { AboutContent } from '../types/about';
@@ -175,7 +174,7 @@ class CommonStore {
   createModelConfig = (config: ModelConfig = defaultModelConfigs[0], saveConfig: boolean = true) => {
     if (config.name === defaultModelConfigs[0].name) {
       // deep copy
-      config = JSON.parse(JSON.stringify(commonStore.platform !== 'darwin' ? defaultModelConfigs[0] : defaultModelConfigsMac[0]));
+      config = JSON.parse(JSON.stringify(this.platform !== 'darwin' ? defaultModelConfigs[0] : defaultModelConfigsMac[0]));
       config.name = new Date().toLocaleString();
     }
     this.modelConfigs.push(config);
