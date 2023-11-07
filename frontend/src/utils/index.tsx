@@ -289,6 +289,14 @@ export function bytesToReadable(size: number) {
   else return bytesToGb(size) + ' GB';
 }
 
+export function getServerRoot(defaultLocalPort: number) {
+  if (commonStore.settings.apiUrl)
+    return commonStore.settings.apiUrl;
+  if (commonStore.platform === 'web')
+    return '';
+  return `http://127.0.0.1:${defaultLocalPort}`;
+}
+
 export function absPathAsset(path: string) {
   if (commonStore.platform === 'web')
     return path;

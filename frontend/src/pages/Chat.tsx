@@ -25,7 +25,7 @@ import { toast } from 'react-toastify';
 import { WorkHeader } from '../components/WorkHeader';
 import { DialogButton } from '../components/DialogButton';
 import { OpenFileFolder, OpenOpenFileDialog, OpenSaveFileDialog } from '../../wailsjs/go/backend_golang/App';
-import { absPathAsset, bytesToReadable, toastWithButton } from '../utils';
+import { absPathAsset, bytesToReadable, getServerRoot, toastWithButton } from '../utils';
 import { PresetsButton } from './PresetsManager/PresetsButton';
 import { useMediaQuery } from 'usehooks-ts';
 import { botName, ConversationMessage, MessageType, userName, welcomeUuid } from '../types/chat';
@@ -315,10 +315,8 @@ const ChatPanel: FC = observer(() => {
     let answer = '';
     const chatSseController = new AbortController();
     chatSseControllers[answerId] = chatSseController;
-    fetchEventSource( // https://api.openai.com/v1/chat/completions || http://127.0.0.1:${port}/chat/completions
-      commonStore.settings.apiUrl ?
-        commonStore.settings.apiUrl + '/v1/chat/completions' :
-        `http://127.0.0.1:${port}/chat/completions`,
+    fetchEventSource( // https://api.openai.com/v1/chat/completions || http://127.0.0.1:${port}/v1/chat/completions
+      getServerRoot(port) + '/v1/chat/completions',
       {
         method: 'POST',
         headers: {
@@ -475,9 +473,7 @@ const ChatPanel: FC = observer(() => {
                       const urlPath = `/file-to-text?file_name=${attachmentName}`;
                       const bodyForm = new FormData();
                       bodyForm.append('file_data', blob, attachmentName);
-                      fetch(commonStore.settings.apiUrl ?
-                        commonStore.settings.apiUrl + urlPath :
-                        `http://127.0.0.1:${port}${urlPath}`, {
+                      fetch(getServerRoot(port) + urlPath, {
                         method: 'POST',
                         body: bodyForm
                       }).then(async r => {

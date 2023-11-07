@@ -40,6 +40,8 @@ export const ReadButton: FC<{
       voice = voices.find((v) => v.name.toLowerCase().includes('microsoft aria'));
     else if (lang === 'zh')
       voice = voices.find((v) => v.name.toLowerCase().includes('xiaoyi'));
+    else if (lang === 'ja')
+      voice = voices.find((v) => v.name.toLowerCase().includes('nanami'));
     if (!voice) voice = voices.find((v) => v.lang.substring(0, 2) === lang);
     if (!voice) voice = voices.find((v) => v.lang === navigator.language);
 

@@ -14,6 +14,7 @@ import { ToolTipButton } from '../components/ToolTipButton';
 import { ArrowSync20Regular } from '@fluentui/react-icons';
 import { defaultPresets } from './defaultConfigs';
 import { CompletionParams, CompletionPreset } from '../types/completion';
+import { getServerRoot } from '../utils';
 
 let completionSseController: AbortController | null = null;
 
@@ -78,10 +79,8 @@ const CompletionPanel: FC = observer(() => {
 
     let answer = '';
     completionSseController = new AbortController();
-    fetchEventSource( // https://api.openai.com/v1/completions || http://127.0.0.1:${port}/completions
-      commonStore.settings.apiUrl ?
-        commonStore.settings.apiUrl + '/v1/completions' :
-        `http://127.0.0.1:${port}/completions`,
+    fetchEventSource( // https://api.openai.com/v1/completions || http://127.0.0.1:${port}/v1/completions
+      getServerRoot(port) + '/v1/completions',
       {
         method: 'POST',
         headers: {

@@ -17,7 +17,7 @@ import * as mm from '@magenta/music/esm/core.js';
 import { NoteSequence } from '@magenta/music/esm/protobuf.js';
 import { defaultCompositionPrompt } from './defaultConfigs';
 import { FileExists, OpenFileFolder, OpenSaveFileDialogBytes } from '../../wailsjs/go/backend_golang/App';
-import { toastWithButton } from '../utils';
+import { getServerRoot, toastWithButton } from '../utils';
 import { CompositionParams } from '../types/composition';
 
 let compositionSseController: AbortController | null = null;
@@ -100,9 +100,7 @@ const CompositionPanel: FC = observer(() => {
   }, []);
 
   const generateNs = (autoPlay: boolean) => {
-    fetch(commonStore.settings.apiUrl ?
-      commonStore.settings.apiUrl + '/text-to-midi' :
-      `http://127.0.0.1:${port}/text-to-midi`, {
+    fetch(getServerRoot(port) + '/text-to-midi', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -136,10 +134,8 @@ const CompositionPanel: FC = observer(() => {
 
     let answer = '';
     compositionSseController = new AbortController();
-    fetchEventSource( // https://api.openai.com/v1/completions || http://127.0.0.1:${port}/completions
-      commonStore.settings.apiUrl ?
-        commonStore.settings.apiUrl + '/v1/completions' :
-        `http://127.0.0.1:${port}/completions`,
+    fetchEventSource( // https://api.openai.com/v1/completions || http://127.0.0.1:${port}/v1/completions
+      getServerRoot(port) + '/v1/completions',
       {
         method: 'POST',
         headers: {
