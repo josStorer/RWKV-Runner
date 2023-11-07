@@ -22,21 +22,7 @@ import { Page } from '../components/Page';
 import { bytesToGb, refreshModels, saveConfigs, toastWithButton } from '../utils';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
-
-export type ModelSourceItem = {
-  name: string;
-  size: number;
-  lastUpdated: string;
-  desc?: { [lang: string]: string | undefined; };
-  SHA256?: string;
-  url?: string;
-  downloadUrl?: string;
-  isComplete?: boolean;
-  isLocal?: boolean;
-  localSize?: number;
-  lastUpdatedMs?: number;
-  hide?: boolean;
-};
+import { ModelSourceItem } from '../types/models';
 
 const columns: TableColumnDefinition<ModelSourceItem>[] = [
   createTableColumn<ModelSourceItem>({
@@ -165,7 +151,7 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
   })
 ];
 
-export const Models: FC = observer(() => {
+const Models: FC = observer(() => {
   const { t } = useTranslation();
 
   return (
@@ -220,3 +206,5 @@ export const Models: FC = observer(() => {
     } />
   );
 });
+
+export default Models;

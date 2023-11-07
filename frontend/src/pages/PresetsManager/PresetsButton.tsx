@@ -1,6 +1,6 @@
 // TODO refactor
 
-import React, { FC, PropsWithChildren, ReactElement, useState } from 'react';
+import React, { FC, lazy, PropsWithChildren, ReactElement, useState } from 'react';
 import {
   Button,
   Dialog,
@@ -25,44 +25,21 @@ import {
 } from '@fluentui/react-icons';
 import { ToolTipButton } from '../../components/ToolTipButton';
 import { useTranslation } from 'react-i18next';
-import { botName, Conversation, ConversationMessage, MessageType, userName } from '../Chat';
 import { SelectTabEventHandler } from '@fluentui/react-tabs';
 import { Labeled } from '../../components/Labeled';
 import commonStore from '../../stores/commonStore';
 import logo from '../../assets/images/logo.png';
 import { observer } from 'mobx-react-lite';
-import { MessagesEditor } from './MessagesEditor';
 import { ClipboardGetText, ClipboardSetText } from '../../../wailsjs/runtime';
 import { toast } from 'react-toastify';
 import { CustomToastContainer } from '../../components/CustomToastContainer';
 import { v4 as uuid } from 'uuid';
 import { absPathAsset } from '../../utils';
+import { Preset, PresetsNavigationItem } from '../../types/presets';
+import { botName, Conversation, MessageType, userName } from '../../types/chat';
+import { LazyImportComponent } from '../../components/LazyImportComponent';
 
-export type PresetType = 'chat' | 'completion' | 'chatInCompletion'
-
-export type Preset = {
-  name: string,
-  tag: string,
-  // if name and sourceUrl are same, it will be overridden when importing
-  sourceUrl: string,
-  desc: string,
-  avatarImg: string,
-  type: PresetType,
-  // chat
-  welcomeMessage: string,
-  messages: ConversationMessage[],
-  displayPresetMessages: boolean,
-  // completion
-  prompt: string,
-  stop: string,
-  injectStart: string,
-  injectEnd: string,
-  presystem?: boolean,
-  userName?: string,
-  assistantName?: string
-}
-
-export const defaultPreset: Preset = {
+const defaultPreset: Preset = {
   name: 'RWKV',
   tag: 'default',
   sourceUrl: '',
@@ -77,6 +54,8 @@ export const defaultPreset: Preset = {
   injectStart: '',
   injectEnd: ''
 };
+
+const MessagesEditor = lazy(() => import('./MessagesEditor'));
 
 const setActivePreset = (preset: Preset) => {
   commonStore.setActivePreset(preset);
@@ -101,7 +80,7 @@ const setActivePreset = (preset: Preset) => {
   //}
 };
 
-export const PresetCardFrame: FC<PropsWithChildren & { onClick?: () => void }> = (props) => {
+const PresetCardFrame: FC<PropsWithChildren & { onClick?: () => void }> = (props) => {
   return <Button
     className="flex flex-col gap-1 w-32 h-56 break-all"
     style={{ minWidth: 0, borderRadius: '0.75rem', justifyContent: 'unset' }}
@@ -111,7 +90,7 @@ export const PresetCardFrame: FC<PropsWithChildren & { onClick?: () => void }> =
   </Button>;
 };
 
-export const PresetCard: FC<{
+const PresetCard: FC<{
   avatarImg: string,
   name: string,
   desc: string,
@@ -147,7 +126,7 @@ export const PresetCard: FC<{
   </PresetCardFrame>;
 });
 
-export const ChatPresetEditor: FC<{
+const ChatPresetEditor: FC<{
   triggerButton: ReactElement,
   presetIndex: number
 }> = observer(({ triggerButton, presetIndex }) => {
@@ -291,7 +270,7 @@ export const ChatPresetEditor: FC<{
                       });
                     }} />
                   } />
-                <MessagesEditor />
+                <LazyImportComponent lazyChildren={MessagesEditor} />
               </div> :
               <div className="flex flex-col gap-1 p-2 overflow-x-hidden overflow-y-auto">
                 <Labeled flex breakline label={`${t('Description')} (${t('Preview Only')})`}
@@ -356,7 +335,7 @@ export const ChatPresetEditor: FC<{
   </Dialog>;
 });
 
-export const ChatPresets: FC = observer(() => {
+const ChatPresets: FC = observer(() => {
   const { t } = useTranslation();
 
   return <div className="flex flex-wrap gap-2">
@@ -392,11 +371,6 @@ export const ChatPresets: FC = observer(() => {
   </div>;
 });
 
-type PresetsNavigationItem = {
-  icon: ReactElement;
-  element: ReactElement;
-};
-
 const pages: { [label: string]: PresetsNavigationItem } = {
   Chat: {
     icon: <Chat20Regular />,
@@ -412,7 +386,7 @@ const pages: { [label: string]: PresetsNavigationItem } = {
   }
 };
 
-export const PresetsManager: FC<{ initTab: string }> = ({ initTab }) => {
+const PresetsManager: FC<{ initTab: string }> = ({ initTab }) => {
   const { t } = useTranslation();
   const [tab, setTab] = useState(initTab);
 

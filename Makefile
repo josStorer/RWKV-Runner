@@ -18,6 +18,16 @@ build-linux:
 	@echo ---- build for linux
 	wails build -upx -ldflags "-s -w" -platform linux/amd64
 
+build-web:
+	@echo ---- build for web
+	cd frontend && npm run build
+
 dev:
 	wails dev
+
+dev-web:
+	cd frontend && npm run dev
+
+preview:
+	cd frontend && npm run preview
 

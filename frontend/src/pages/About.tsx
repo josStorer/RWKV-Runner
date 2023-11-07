@@ -5,9 +5,7 @@ import MarkdownRender from '../components/MarkdownRender';
 import { observer } from 'mobx-react-lite';
 import commonStore from '../stores/commonStore';
 
-export type AboutContent = { [lang: string]: string }
-
-export const About: FC = observer(() => {
+const About: FC = observer(() => {
   const { t } = useTranslation();
   const lang: string = commonStore.settings.language;
 
@@ -21,3 +19,5 @@ export const About: FC = observer(() => {
     } />
   );
 });
+
+export default About;

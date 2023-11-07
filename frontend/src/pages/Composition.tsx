@@ -1,3 +1,4 @@
+import 'html-midi-player';
 import React, { FC, useEffect, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import { WorkHeader } from '../components/WorkHeader';
@@ -17,17 +18,7 @@ import { NoteSequence } from '@magenta/music/esm/protobuf.js';
 import { defaultCompositionPrompt } from './defaultConfigs';
 import { FileExists, OpenFileFolder, OpenSaveFileDialogBytes } from '../../wailsjs/go/backend_golang/App';
 import { toastWithButton } from '../utils';
-
-export type CompositionParams = {
-  prompt: string,
-  maxResponseToken: number,
-  temperature: number,
-  topP: number,
-  autoPlay: boolean,
-  useLocalSoundFont: boolean,
-  midi: ArrayBuffer | null,
-  ns: NoteSequence | null
-}
+import { CompositionParams } from '../types/composition';
 
 let compositionSseController: AbortController | null = null;
 
@@ -137,7 +128,7 @@ const CompositionPanel: FC = observer(() => {
   const onSubmit = (prompt: string) => {
     commonStore.setCompositionSubmittedPrompt(prompt);
 
-    if (commonStore.status.status === ModelStatus.Offline && !commonStore.settings.apiUrl) {
+    if (commonStore.status.status === ModelStatus.Offline && !commonStore.settings.apiUrl && commonStore.platform !== 'web') {
       toast(t('Please click the button in the top right corner to start the model'), { type: 'warning' });
       commonStore.setCompositionGenerating(false);
       return;
@@ -335,7 +326,7 @@ const CompositionPanel: FC = observer(() => {
   );
 });
 
-export const Composition: FC = observer(() => {
+const Composition: FC = observer(() => {
   return (
     <div className="flex flex-col gap-1 p-2 h-full overflow-hidden">
       <WorkHeader />
@@ -343,3 +334,5 @@ export const Composition: FC = observer(() => {
     </div>
   );
 });
+
+export default Composition;

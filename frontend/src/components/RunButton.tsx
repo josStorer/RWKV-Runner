@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { ToolTipButton } from './ToolTipButton';
 import { Play16Regular, Stop16Regular } from '@fluentui/react-icons';
 import { useNavigate } from 'react-router';
-import { WindowShow } from '../../wailsjs/runtime/runtime';
+import { WindowShow } from '../../wailsjs/runtime';
 
 const mainButtonText = {
   [ModelStatus.Offline]: 'Run',

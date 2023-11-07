@@ -28,46 +28,16 @@ import { OpenFileFolder, OpenOpenFileDialog, OpenSaveFileDialog } from '../../wa
 import { absPathAsset, bytesToReadable, toastWithButton } from '../utils';
 import { PresetsButton } from './PresetsManager/PresetsButton';
 import { useMediaQuery } from 'usehooks-ts';
+import { botName, ConversationMessage, MessageType, userName, welcomeUuid } from '../types/chat';
 
-export const userName = 'M E';
-export const botName = 'A I';
+let chatSseControllers: {
+  [id: string]: AbortController
+} = {};
 
-export const welcomeUuid = 'welcome';
-
-export enum MessageType {
-  Normal,
-  Error
-}
-
-export type Side = 'left' | 'right'
-
-export type Color = 'neutral' | 'brand' | 'colorful'
-
-export type MessageItem = {
-  sender: string,
-  type: MessageType,
-  color: Color,
-  avatarImg?: string,
-  time: string,
-  content: string,
-  side: Side,
-  done: boolean
-}
-
-export type Conversation = {
-  [uuid: string]: MessageItem
-}
-
-export type Role = 'assistant' | 'user' | 'system';
-
-export type ConversationMessage = {
-  role: Role;
-  content: string;
-}
-
-let chatSseControllers: { [id: string]: AbortController } = {};
-
-const MoreUtilsButton: FC<{ uuid: string, setEditing: (editing: boolean) => void }> = observer(({
+const MoreUtilsButton: FC<{
+  uuid: string,
+  setEditing: (editing: boolean) => void
+}> = observer(({
   uuid,
   setEditing
 }) => {
@@ -98,7 +68,8 @@ const MoreUtilsButton: FC<{ uuid: string, setEditing: (editing: boolean) => void
 });
 
 const ChatMessageItem: FC<{
-  uuid: string, onSubmit: (message: string | null, answerId: string | null,
+  uuid: string,
+  onSubmit: (message: string | null, answerId: string | null,
     startUuid: string | null, endUuid: string | null, includeEndUuid: boolean) => void
 }> = observer(({ uuid, onSubmit }) => {
   const { t } = useTranslation();
@@ -243,7 +214,7 @@ const ChatPanel: FC = observer(() => {
           color: 'colorful',
           avatarImg: logo,
           time: new Date().toISOString(),
-          content: t('Hello! I\'m RWKV, an open-source and commercially usable large language model.'),
+          content: commonStore.platform === 'web' ? t('Hello, what can I do for you?') : t('Hello! I\'m RWKV, an open-source and commercially usable large language model.'),
           side: 'left',
           done: true
         }
@@ -260,7 +231,7 @@ const ChatPanel: FC = observer(() => {
     e.stopPropagation();
     if (e.type === 'click' || (e.keyCode === 13 && !e.shiftKey)) {
       e.preventDefault();
-      if (commonStore.status.status === ModelStatus.Offline && !commonStore.settings.apiUrl) {
+      if (commonStore.status.status === ModelStatus.Offline && !commonStore.settings.apiUrl && commonStore.platform !== 'web') {
         toast(t('Please click the button in the top right corner to start the model'), { type: 'warning' });
         return;
       }
@@ -464,7 +435,7 @@ const ChatPanel: FC = observer(() => {
                   : <Attach16Regular />}
                 size="small" shape="circular" appearance="secondary"
                 onClick={() => {
-                  if (commonStore.status.status === ModelStatus.Offline && !commonStore.settings.apiUrl) {
+                  if (commonStore.status.status === ModelStatus.Offline && !commonStore.settings.apiUrl && commonStore.platform !== 'web') {
                     toast(t('Please click the button in the top right corner to start the model'), { type: 'warning' });
                     return;
                   }
@@ -478,43 +449,62 @@ const ChatPanel: FC = observer(() => {
 
                     commonStore.setAttachmentUploading(true);
 
-                    // Both are slow. Communication between frontend and backend is slow. Use AssetServer Handler to read the file.
-                    // const blob = new Blob([atob(info.content as unknown as string)]); // await fetch(`data:application/octet-stream;base64,${info.content}`).then(r => r.blob());
-                    const blob = await fetch(absPathAsset(filePath)).then(r => r.blob());
-                    const attachmentName = filePath.split(/[\\/]/).pop();
-                    const urlPath = `/file-to-text?file_name=${attachmentName}`;
-                    const bodyForm = new FormData();
-                    bodyForm.append('file_data', blob, attachmentName);
-                    fetch(commonStore.settings.apiUrl ?
-                      commonStore.settings.apiUrl + urlPath :
-                      `http://127.0.0.1:${port}${urlPath}`, {
-                      method: 'POST',
-                      body: bodyForm
-                    }).then(async r => {
-                        if (r.status === 200) {
-                          const pages = (await r.json()).pages as any[];
-                          let attachmentContent: string;
-                          if (pages.length === 1)
-                            attachmentContent = pages[0].page_content;
-                          else
-                            attachmentContent = pages.map((p, i) => `Page ${i + 1}:\n${p.page_content}`).join('\n\n');
-                          commonStore.setCurrentTempAttachment(
-                            {
-                              name: attachmentName!,
-                              size: blob.size,
-                              content: attachmentContent
-                            });
-                        } else {
-                          toast(r.statusText + '\n' + (await r.text()), {
-                            type: 'error'
-                          });
-                        }
-                        commonStore.setAttachmentUploading(false);
-                      }
-                    ).catch(e => {
+                    let blob: Blob;
+                    let attachmentName: string | undefined;
+                    let attachmentContent: string | undefined;
+                    if (commonStore.platform === 'web') {
+                      const webReturn = filePath as any;
+                      blob = webReturn.blob;
+                      attachmentName = blob.name;
+                      attachmentContent = webReturn.content;
+                    } else {
+                      // Both are slow. Communication between frontend and backend is slow. Use AssetServer Handler to read the file.
+                      // const blob = new Blob([atob(info.content as unknown as string)]); // await fetch(`data:application/octet-stream;base64,${info.content}`).then(r => r.blob());
+                      blob = await fetch(absPathAsset(filePath)).then(r => r.blob());
+                      attachmentName = filePath.split(/[\\/]/).pop();
+                    }
+                    if (attachmentContent) {
+                      commonStore.setCurrentTempAttachment(
+                        {
+                          name: attachmentName!,
+                          size: blob.size,
+                          content: attachmentContent
+                        });
                       commonStore.setAttachmentUploading(false);
-                      toast(t('Error') + ' - ' + (e.message || e), { type: 'error', autoClose: 2500 });
-                    });
+                    } else {
+                      const urlPath = `/file-to-text?file_name=${attachmentName}`;
+                      const bodyForm = new FormData();
+                      bodyForm.append('file_data', blob, attachmentName);
+                      fetch(commonStore.settings.apiUrl ?
+                        commonStore.settings.apiUrl + urlPath :
+                        `http://127.0.0.1:${port}${urlPath}`, {
+                        method: 'POST',
+                        body: bodyForm
+                      }).then(async r => {
+                          if (r.status === 200) {
+                            const pages = (await r.json()).pages as any[];
+                            if (pages.length === 1)
+                              attachmentContent = pages[0].page_content;
+                            else
+                              attachmentContent = pages.map((p, i) => `Page ${i + 1}:\n${p.page_content}`).join('\n\n');
+                            commonStore.setCurrentTempAttachment(
+                              {
+                                name: attachmentName!,
+                                size: blob.size,
+                                content: attachmentContent!
+                              });
+                          } else {
+                            toast(r.statusText + '\n' + (await r.text()), {
+                              type: 'error'
+                            });
+                          }
+                          commonStore.setAttachmentUploading(false);
+                        }
+                      ).catch(e => {
+                        commonStore.setAttachmentUploading(false);
+                        toast(t('Error') + ' - ' + (e.message || e), { type: 'error', autoClose: 2500 });
+                      });
+                    }
                   }).catch(e => {
                     toast(t('Error') + ' - ' + (e.message || e), { type: 'error', autoClose: 2500 });
                   });
@@ -586,7 +576,7 @@ const ChatPanel: FC = observer(() => {
   );
 });
 
-export const Chat: FC = observer(() => {
+const Chat: FC = observer(() => {
   return (
     <div className="flex flex-col gap-1 p-2 h-full overflow-hidden">
       <WorkHeader />
@@ -594,3 +584,5 @@ export const Chat: FC = observer(() => {
     </div>
   );
 });
+
+export default Chat;

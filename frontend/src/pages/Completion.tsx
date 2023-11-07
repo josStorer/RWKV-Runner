@@ -5,7 +5,6 @@ import { Button, Dropdown, Input, Option, Textarea } from '@fluentui/react-compo
 import { Labeled } from '../components/Labeled';
 import { ValuedSlider } from '../components/ValuedSlider';
 import { useTranslation } from 'react-i18next';
-import { ApiParameters } from './Configs';
 import commonStore, { ModelStatus } from '../stores/commonStore';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { toast } from 'react-toastify';
@@ -14,18 +13,7 @@ import { PresetsButton } from './PresetsManager/PresetsButton';
 import { ToolTipButton } from '../components/ToolTipButton';
 import { ArrowSync20Regular } from '@fluentui/react-icons';
 import { defaultPresets } from './defaultConfigs';
-
-export type CompletionParams = Omit<ApiParameters, 'apiPort'> & {
-  stop: string,
-  injectStart: string,
-  injectEnd: string
-};
-
-export type CompletionPreset = {
-  name: string,
-  prompt: string,
-  params: CompletionParams
-}
+import { CompletionParams, CompletionPreset } from '../types/completion';
 
 let completionSseController: AbortController | null = null;
 
@@ -80,7 +68,7 @@ const CompletionPanel: FC = observer(() => {
   const onSubmit = (prompt: string) => {
     commonStore.setCompletionSubmittedPrompt(prompt);
 
-    if (commonStore.status.status === ModelStatus.Offline && !commonStore.settings.apiUrl) {
+    if (commonStore.status.status === ModelStatus.Offline && !commonStore.settings.apiUrl && commonStore.platform !== 'web') {
       toast(t('Please click the button in the top right corner to start the model'), { type: 'warning' });
       commonStore.setCompletionGenerating(false);
       return;
@@ -269,7 +257,7 @@ const CompletionPanel: FC = observer(() => {
             } />
         </div>
         <div className="grow" />
-        <div className="flex justify-between gap-2">
+        <div className="hidden justify-between gap-2 sm:flex">
           <Button className="grow" onClick={() => {
             const newPrompt = prompt.replace(/\n+\ /g, '\n').split('\n').map((line) => line.trim()).join('\n');
             setPrompt(newPrompt);
@@ -303,7 +291,7 @@ const CompletionPanel: FC = observer(() => {
   );
 });
 
-export const Completion: FC = observer(() => {
+const Completion: FC = observer(() => {
   return (
     <div className="flex flex-col gap-1 p-2 h-full overflow-hidden">
       <WorkHeader />
@@ -311,3 +299,5 @@ export const Completion: FC = observer(() => {
     </div>
   );
 });
+
+export default Completion;

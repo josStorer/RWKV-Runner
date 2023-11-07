@@ -15,13 +15,13 @@ import { toast } from 'react-toastify';
 import { t } from 'i18next';
 import { ToastOptions } from 'react-toastify/dist/types';
 import { Button } from '@fluentui/react-components';
-import { Language, Languages, SettingsType } from '../pages/Settings';
-import { ModelSourceItem } from '../pages/Models';
-import { ModelConfig, ModelParameters } from '../pages/Configs';
-import { DownloadStatus } from '../pages/Downloads';
-import { DataProcessParameters, LoraFinetuneParameters } from '../pages/Train';
 import { BrowserOpenURL, WindowShow } from '../../wailsjs/runtime';
 import { NavigateFunction } from 'react-router';
+import { ModelConfig, ModelParameters } from '../types/configs';
+import { DownloadStatus } from '../types/downloads';
+import { ModelSourceItem } from '../types/models';
+import { Language, Languages, SettingsType } from '../types/settings';
+import { DataProcessParameters, LoraFinetuneParameters } from '../types/train';
 
 export type Cache = {
   version: string
@@ -290,6 +290,8 @@ export function bytesToReadable(size: number) {
 }
 
 export function absPathAsset(path: string) {
+  if (commonStore.platform === 'web')
+    return path;
   if ((path.length > 0 && path[0] === '/') ||
     (path.length > 1 && path[1] === ':')) {
     return '=>' + path;

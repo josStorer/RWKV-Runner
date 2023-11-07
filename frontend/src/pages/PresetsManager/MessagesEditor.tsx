@@ -1,14 +1,14 @@
 import React, { FC, useState } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import commonStore from '../../stores/commonStore';
-import { Preset } from './PresetsButton';
 import { observer } from 'mobx-react-lite';
 import { v4 as uuid } from 'uuid';
 import { Button, Card, Dropdown, Option, Textarea } from '@fluentui/react-components';
 import { useTranslation } from 'react-i18next';
 import { ToolTipButton } from '../../components/ToolTipButton';
 import { Delete20Regular, ReOrderDotsVertical20Regular } from '@fluentui/react-icons';
-import { ConversationMessage, Role } from '../Chat';
+import { Preset } from '../../types/presets';
+import { ConversationMessage, Role } from '../../types/chat';
 
 type Item = {
   id: string;
@@ -31,7 +31,7 @@ const reorder = (list: Item[], startIndex: number, endIndex: number) => {
   return result;
 };
 
-export const MessagesEditor: FC = observer(() => {
+const MessagesEditor: FC = observer(() => {
   const { t } = useTranslation();
 
   const editingPreset = commonStore.editingPreset!;
@@ -152,3 +152,5 @@ export const MessagesEditor: FC = observer(() => {
     </div>
   );
 });
+
+export default MessagesEditor;

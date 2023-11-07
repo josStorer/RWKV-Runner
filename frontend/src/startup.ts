@@ -5,39 +5,42 @@ import { getStatus } from './apis';
 import { EventsOn, WindowSetTitle } from '../wailsjs/runtime';
 import manifest from '../../manifest.json';
 import { defaultModelConfigs, defaultModelConfigsMac } from './pages/defaultConfigs';
-import { Preset } from './pages/PresetsManager/PresetsButton';
-import { wslHandler } from './pages/Train';
 import { t } from 'i18next';
+import { Preset } from './types/presets';
 
 export async function startup() {
-  downloadProgramFiles();
-  EventsOn('downloadList', (data) => {
-    if (data)
-      commonStore.setDownloadList(data);
-  });
-  EventsOn('wsl', wslHandler);
-  EventsOn('wslerr', (e) => {
-    console.log(e);
-  });
-  initLocalModelsNotify();
-  initLoraModels();
-
   initPresets();
 
-  initHardwareMonitor();
-
   await GetPlatform().then(p => commonStore.setPlatform(p as Platform));
+
+  if (commonStore.platform !== 'web') {
+    downloadProgramFiles();
+    EventsOn('downloadList', (data) => {
+      if (data)
+        commonStore.setDownloadList(data);
+    });
+    EventsOn('wsl', (await import('./pages/Train')).wslHandler);
+    EventsOn('wslerr', (e) => {
+      console.log(e);
+    });
+    initLocalModelsNotify();
+    initLoraModels();
+    initHardwareMonitor();
+  }
+
   await initConfig();
 
-  initCache(true).then(initRemoteText); // depends on config customModelsPath
+  if (commonStore.platform !== 'web') {
+    initCache(true).then(initRemoteText); // depends on config customModelsPath
 
-  if (commonStore.settings.autoUpdatesCheck) // depends on config settings
-    checkUpdate();
+    if (commonStore.settings.autoUpdatesCheck) // depends on config settings
+      checkUpdate();
 
-  getStatus(1000).then(status => { // depends on config api port
-    if (status)
-      commonStore.setStatus(status);
-  });
+    getStatus(1000).then(status => { // depends on config api port
+      if (status)
+        commonStore.setStatus(status);
+    });
+  }
 }
 
 async function initRemoteText() {
@@ -88,7 +91,8 @@ async function initCache(initUnfinishedModels: boolean) {
 
 async function initPresets() {
   await ReadJson('presets.json').then((presets: Preset[]) => {
-    commonStore.setPresets(presets, false);
+    if (Array.isArray(presets))
+      commonStore.setPresets(presets, false);
   }).catch(() => {
   });
 }

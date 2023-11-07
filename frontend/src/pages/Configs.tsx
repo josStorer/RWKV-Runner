@@ -29,45 +29,14 @@ import { updateConfig } from '../apis';
 import { ConvertModel, ConvertSafetensors, FileExists, GetPyError } from '../../wailsjs/go/backend_golang/App';
 import { checkDependencies, getStrategy } from '../utils';
 import { useTranslation } from 'react-i18next';
-import { WindowShow } from '../../wailsjs/runtime/runtime';
+import { WindowShow } from '../../wailsjs/runtime';
 import strategyImg from '../assets/images/strategy.jpg';
 import strategyZhImg from '../assets/images/strategy_zh.jpg';
 import { ResetConfigsButton } from '../components/ResetConfigsButton';
 import { useMediaQuery } from 'usehooks-ts';
+import { ApiParameters, Device, ModelParameters, Precision } from '../types/configs';
 
-export type ApiParameters = {
-  apiPort: number
-  maxResponseToken: number;
-  temperature: number;
-  topP: number;
-  presencePenalty: number;
-  frequencyPenalty: number;
-}
-
-export type Device = 'CPU' | 'CUDA' | 'CUDA-Beta' | 'WebGPU' | 'MPS' | 'Custom';
-export type Precision = 'fp16' | 'int8' | 'fp32';
-
-export type ModelParameters = {
-  // different models can not have the same name
-  modelName: string;
-  device: Device;
-  precision: Precision;
-  storedLayers: number;
-  maxStoredLayers: number;
-  useCustomCuda?: boolean;
-  customStrategy?: string;
-  useCustomTokenizer?: boolean;
-  customTokenizer?: string;
-}
-
-export type ModelConfig = {
-  // different configs can have the same name
-  name: string;
-  apiParameters: ApiParameters
-  modelParameters: ModelParameters
-}
-
-export const Configs: FC = observer(() => {
+const Configs: FC = observer(() => {
   const { t } = useTranslation();
   const [selectedIndex, setSelectedIndex] = React.useState(commonStore.currentModelConfigIndex);
   const [selectedConfig, setSelectedConfig] = React.useState(commonStore.modelConfigs[selectedIndex]);
@@ -478,3 +447,5 @@ export const Configs: FC = observer(() => {
     } />
   );
 });
+
+export default Configs;

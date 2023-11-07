@@ -16,6 +16,7 @@
     "@primer/octicons-react": "^19.1.0",
     "chart.js": "^4.3.0",
     "classnames": "^2.3.2",
+    "file-saver": "^2.0.5",
     "github-markdown-css": "^5.2.0",
     "html-midi-player": "^1.5.0",
     "i18next": "^22.4.15",
@@ -38,6 +39,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.7",
     "@types/react": "^18.2.6",
     "@types/react-beautiful-dnd": "^13.1.4",
     "@types/react-dom": "^18.2.4",

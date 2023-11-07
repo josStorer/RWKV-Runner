@@ -2,21 +2,21 @@ import { makeAutoObservable } from 'mobx';
 import { getUserLanguage, isSystemLightMode, saveCache, saveConfigs, savePresets } from '../utils';
 import { WindowSetDarkTheme, WindowSetLightTheme } from '../../wailsjs/runtime';
 import manifest from '../../../manifest.json';
-import { ModelConfig } from '../pages/Configs';
-import { Conversation } from '../pages/Chat';
-import { ModelSourceItem } from '../pages/Models';
-import { DownloadStatus } from '../pages/Downloads';
-import { SettingsType } from '../pages/Settings';
-import { IntroductionContent } from '../pages/Home';
-import { AboutContent } from '../pages/About';
 import i18n from 'i18next';
-import { CompletionPreset } from '../pages/Completion';
 import { defaultCompositionPrompt, defaultModelConfigs, defaultModelConfigsMac } from '../pages/defaultConfigs';
 import commonStore from './commonStore';
-import { Preset } from '../pages/PresetsManager/PresetsButton';
-import { DataProcessParameters, LoraFinetuneParameters } from '../pages/Train';
 import { ChartData } from 'chart.js';
-import { CompositionParams } from '../pages/Composition';
+import { Preset } from '../types/presets';
+import { AboutContent } from '../types/about';
+import { Conversation } from '../types/chat';
+import { CompletionPreset } from '../types/completion';
+import { CompositionParams } from '../types/composition';
+import { ModelConfig } from '../types/configs';
+import { DownloadStatus } from '../types/downloads';
+import { IntroductionContent } from '../types/home';
+import { ModelSourceItem } from '../types/models';
+import { SettingsType } from '../types/settings';
+import { DataProcessParameters, LoraFinetuneParameters } from '../types/train';
 
 export enum ModelStatus {
   Offline,
@@ -37,7 +37,7 @@ export type Attachment = {
   content: string;
 }
 
-export type Platform = 'windows' | 'darwin' | 'linux';
+export type Platform = 'windows' | 'darwin' | 'linux' | 'web';
 
 class CommonStore {
   // global
@@ -135,7 +135,7 @@ class CommonStore {
     customModelsPath: './models',
     customPythonPath: '',
     apiUrl: '',
-    apiKey: 'sk-',
+    apiKey: '',
     apiChatModelName: 'rwkv',
     apiCompletionModelName: 'rwkv'
   };

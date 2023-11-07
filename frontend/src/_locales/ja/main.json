@@ -262,5 +262,7 @@
   "is as follows. When replying to me, consider the file content and respond accordingly:": "の内容は以下の通りです。私に返信する際は、ファイルの内容を考慮して適切に返信してください:",
   "What's the file name": "ファイル名は何ですか",
   "The file name is: ": "ファイル名は次のとおりです: ",
-  "Port is occupied. Change it in Configs page or close the program that occupies the port.": "ポートが占有されています。設定ページで変更するか、ポートを占有しているプログラムを終了してください。"
+  "Port is occupied. Change it in Configs page or close the program that occupies the port.": "ポートが占有されています。設定ページで変更するか、ポートを占有しているプログラムを終了してください。",
+  "Loading...": "読み込み中...",
+  "Hello, what can I do for you?": "こんにちは、何かお手伝いできますか？"
 }

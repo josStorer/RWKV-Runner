@@ -262,5 +262,7 @@
   "is as follows. When replying to me, consider the file content and respond accordingly:": "内容如下。回复时考虑文件内容并做出相应回复:",
   "What's the file name": "文件名是什么",
   "The file name is: ": "文件名是：",
-  "Port is occupied. Change it in Configs page or close the program that occupies the port.": "端口被占用。请在配置页面更改端口，或关闭占用端口的程序"
+  "Port is occupied. Change it in Configs page or close the program that occupies the port.": "端口被占用。请在配置页面更改端口，或关闭占用端口的程序",
+  "Loading...": "加载中...",
+  "Hello, what can I do for you?": "你好，有什么要我帮忙的吗？"
 }

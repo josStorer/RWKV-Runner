@@ -26,18 +26,22 @@
 import { FluentProvider, Tab, TabList, webDarkTheme, webLightTheme } from '@fluentui/react-components';
 import { FC, useEffect, useState } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router';
-import { pages } from './pages';
+import { pages as clientPages } from './pages';
 import { useMediaQuery } from 'usehooks-ts';
 import commonStore from './stores/commonStore';
 import { observer } from 'mobx-react-lite';
 import { useTranslation } from 'react-i18next';
 import { CustomToastContainer } from './components/CustomToastContainer';
+import { LazyImportComponent } from './components/LazyImportComponent';
 
 const App: FC = observer(() => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const mq = useMediaQuery('(min-width: 640px)');
+  const pages = commonStore.platform === 'web' ? clientPages.filter(page =>
+    !['/configs', '/models', '/downloads', '/train', '/about'].some(path => page.path === path)
+  ) : clientPages;
 
   const [path, setPath] = useState<string>(pages[0].path);
 
@@ -82,7 +86,7 @@ const App: FC = observer(() => {
         <div className="h-full w-full p-2 box-border overflow-y-hidden">
           <Routes>
             {pages.map(({ path, element }, index) => (
-              <Route key={`${path}-${index}`} path={path} element={element} />
+              <Route key={`${path}-${index}`} path={path} element={<LazyImportComponent lazyChildren={element} />} />
             ))}
           </Routes>
         </div>

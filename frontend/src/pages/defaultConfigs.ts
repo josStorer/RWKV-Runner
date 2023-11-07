@@ -1,5 +1,5 @@
-import { ModelConfig } from './Configs';
-import { CompletionPreset } from './Completion';
+import { CompletionPreset } from '../types/completion';
+import { ModelConfig } from '../types/configs';
 
 export const defaultCompositionPrompt = '<pad>';
 

@@ -9,19 +9,7 @@ import { ToolTipButton } from '../components/ToolTipButton';
 import { Folder20Regular, Pause20Regular, Play20Regular } from '@fluentui/react-icons';
 import { AddToDownloadList, OpenFileFolder, PauseDownload } from '../../wailsjs/go/backend_golang/App';
 
-export type DownloadStatus = {
-  name: string;
-  path: string;
-  url: string;
-  transferred: number;
-  size: number;
-  speed: number;
-  progress: number;
-  downloading: boolean;
-  done: boolean;
-}
-
-export const Downloads: FC = observer(() => {
+const Downloads: FC = observer(() => {
   const { t } = useTranslation();
   const finishedModelsLen = commonStore.downloadList.filter((status) => status.done && status.name.endsWith('.pth')).length;
   useEffect(() => {
@@ -91,3 +79,5 @@ export const Downloads: FC = observer(() => {
     } />
   );
 });
+
+export default Downloads;

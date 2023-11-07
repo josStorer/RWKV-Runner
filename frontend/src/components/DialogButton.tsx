@@ -1,4 +1,4 @@
-import { FC, ReactElement } from 'react';
+import React, { FC, ReactElement } from 'react';
 import {
   Button,
   Dialog,
@@ -11,7 +11,9 @@ import {
 } from '@fluentui/react-components';
 import { ToolTipButton } from './ToolTipButton';
 import { useTranslation } from 'react-i18next';
-import MarkdownRender from './MarkdownRender';
+import { LazyImportComponent } from './LazyImportComponent';
+
+const MarkdownRender = React.lazy(() => import('./MarkdownRender'));
 
 export const DialogButton: FC<{
   text?: string | null
@@ -45,7 +47,9 @@ export const DialogButton: FC<{
         <DialogContent>
           {
             markdown ?
-              <MarkdownRender>{contentText}</MarkdownRender> :
+              <LazyImportComponent lazyChildren={MarkdownRender}>
+                {contentText}
+              </LazyImportComponent> :
               contentText
           }
         </DialogContent>

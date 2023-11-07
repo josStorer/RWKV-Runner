@@ -21,7 +21,7 @@ const Hyperlink: FC<any> = ({ href, children }) => {
   );
 };
 
-export const MarkdownRender: FC<ReactMarkdownOptions> = (props) => {
+const MarkdownRender: FC<ReactMarkdownOptions> = (props) => {
   return (
     <div dir="auto" className="markdown-body">
       <ReactMarkdown

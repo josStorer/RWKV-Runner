@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Dropdown, Input, Option, Select, Switch, Tab, TabList } from '@fluentui/react-components';
 import {
@@ -24,7 +24,6 @@ import { Labeled } from '../components/Labeled';
 import { ToolTipButton } from '../components/ToolTipButton';
 import { DataUsageSettings20Regular, Folder20Regular } from '@fluentui/react-icons';
 import { useNavigate } from 'react-router';
-import { Precision } from './Configs';
 import {
   CategoryScale,
   Chart as ChartJS,
@@ -40,6 +39,12 @@ import { ChartJSOrUndefined } from 'react-chartjs-2/dist/types';
 import { WindowShow } from '../../wailsjs/runtime';
 import { t } from 'i18next';
 import { DialogButton } from '../components/DialogButton';
+import {
+  DataProcessParameters,
+  LoraFinetuneParameters,
+  LoraFinetunePrecision,
+  TrainNavigationItem
+} from '../types/train';
 
 ChartJS.register(
   CategoryScale,
@@ -85,39 +90,6 @@ const addLossDataToChart = (epoch: number, loss: number) => {
   }
   commonStore.setChartData(commonStore.chartData);
 };
-
-export type DataProcessParameters = {
-  dataPath: string;
-  vocabPath: string;
-}
-
-export type LoraFinetunePrecision = 'bf16' | 'fp16' | 'tf32';
-
-export type LoraFinetuneParameters = {
-  baseModel: string;
-  ctxLen: number;
-  epochSteps: number;
-  epochCount: number;
-  epochBegin: number;
-  epochSave: number;
-  microBsz: number;
-  accumGradBatches: number;
-  preFfn: boolean;
-  headQk: boolean;
-  lrInit: string;
-  lrFinal: string;
-  warmupSteps: number;
-  beta1: number;
-  beta2: number;
-  adamEps: string;
-  devices: number;
-  precision: LoraFinetunePrecision;
-  gradCp: boolean;
-  loraR: number;
-  loraAlpha: number;
-  loraDropout: number;
-  loraLoad: string
-}
 
 const loraFinetuneParametersOptions: Array<[key: keyof LoraFinetuneParameters, type: string, name: string]> = [
   ['devices', 'number', 'Devices'],
@@ -568,10 +540,6 @@ const LoraFinetune: FC = observer(() => {
   );
 });
 
-type TrainNavigationItem = {
-  element: ReactElement;
-};
-
 const pages: { [label: string]: TrainNavigationItem } = {
   'LoRA Finetune': {
     element: <LoraFinetune />
@@ -582,7 +550,7 @@ const pages: { [label: string]: TrainNavigationItem } = {
 };
 
 
-export const Train: FC = () => {
+const Train: FC = () => {
   const { t } = useTranslation();
   const [tab, setTab] = useState('LoRA Finetune');
 
@@ -607,3 +575,5 @@ export const Train: FC = () => {
     </div>
   </div>;
 };
+
+export default Train;

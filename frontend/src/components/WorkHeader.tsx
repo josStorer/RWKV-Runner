@@ -25,7 +25,8 @@ export const WorkHeader: FC = observer(() => {
   const { t } = useTranslation();
   const port = commonStore.getCurrentModelConfig().apiParameters.apiPort;
 
-  return (
+  return commonStore.platform === 'web' ?
+    <div /> :
     <div className="flex flex-col gap-1">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
@@ -42,5 +43,5 @@ export const WorkHeader: FC = observer(() => {
       </Text>
       <Divider style={{ flexGrow: 0 }} />
     </div>
-  );
+    ;
 });
