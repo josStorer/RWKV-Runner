@@ -129,7 +129,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
       const isUsingCudaBeta = modelConfig.modelParameters.device === 'CUDA-Beta';
 
       startServer(commonStore.settings.customPythonPath, port, commonStore.settings.host !== '127.0.0.1' ? '0.0.0.0' : '127.0.0.1',
-        isUsingCudaBeta
+        !!modelConfig.enableWebUI, isUsingCudaBeta
       ).catch((e) => {
         const errMsg = e.message || e;
         if (errMsg.includes('path contains space'))

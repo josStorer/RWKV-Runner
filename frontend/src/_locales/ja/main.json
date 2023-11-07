@@ -264,5 +264,6 @@
   "The file name is: ": "ファイル名は次のとおりです: ",
   "Port is occupied. Change it in Configs page or close the program that occupies the port.": "ポートが占有されています。設定ページで変更するか、ポートを占有しているプログラムを終了してください。",
   "Loading...": "読み込み中...",
-  "Hello, what can I do for you?": "こんにちは、何かお手伝いできますか？"
+  "Hello, what can I do for you?": "こんにちは、何かお手伝いできますか？",
+  "Enable WebUI": "WebUIを有効化"
 }

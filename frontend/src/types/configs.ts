@@ -23,6 +23,7 @@ export type ModelParameters = {
 export type ModelConfig = {
   // different configs can have the same name
   name: string;
-  apiParameters: ApiParameters
-  modelParameters: ModelParameters
+  apiParameters: ApiParameters;
+  modelParameters: ModelParameters;
+  enableWebUI?: boolean;
 }

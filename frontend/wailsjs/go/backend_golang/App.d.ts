@@ -52,7 +52,7 @@ export function RestartApp():Promise<void>;
 
 export function SaveJson(arg1:string,arg2:any):Promise<void>;
 
-export function StartServer(arg1:string,arg2:number,arg3:string,arg4:boolean):Promise<string>;
+export function StartServer(arg1:string,arg2:number,arg3:string,arg4:boolean,arg5:boolean):Promise<string>;
 
 export function StartWebGPUServer(arg1:number,arg2:string):Promise<string>;
 

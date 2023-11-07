@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func (a *App) StartServer(python string, port int, host string, rwkvBeta bool) (string, error) {
+func (a *App) StartServer(python string, port int, host string, webui bool, rwkvBeta bool) (string, error) {
 	var err error
 	if python == "" {
 		python, err = GetPython()
@@ -19,6 +19,9 @@ func (a *App) StartServer(python string, port int, host string, rwkvBeta bool) (
 		return "", err
 	}
 	args := []string{python, "./backend-python/main.py"}
+	if webui {
+		args = append(args, "--webui")
+	}
 	if rwkvBeta {
 		args = append(args, "--rwkv-beta")
 	}

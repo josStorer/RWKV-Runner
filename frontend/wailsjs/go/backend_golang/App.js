@@ -102,8 +102,8 @@ export function SaveJson(arg1, arg2) {
   return window['go']['backend_golang']['App']['SaveJson'](arg1, arg2);
 }
 
-export function StartServer(arg1, arg2, arg3, arg4) {
-  return window['go']['backend_golang']['App']['StartServer'](arg1, arg2, arg3, arg4);
+export function StartServer(arg1, arg2, arg3, arg4, arg5) {
+  return window['go']['backend_golang']['App']['StartServer'](arg1, arg2, arg3, arg4, arg5);
 }
 
 export function StartWebGPUServer(arg1, arg2) {

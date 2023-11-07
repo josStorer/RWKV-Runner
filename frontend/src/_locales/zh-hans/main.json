@@ -264,5 +264,6 @@
   "The file name is: ": "文件名是：",
   "Port is occupied. Change it in Configs page or close the program that occupies the port.": "端口被占用。请在配置页面更改端口，或关闭占用端口的程序",
   "Loading...": "加载中...",
-  "Hello, what can I do for you?": "你好，有什么要我帮忙的吗？"
+  "Hello, what can I do for you?": "你好，有什么要我帮忙的吗？",
+  "Enable WebUI": "启用WebUI"
 }
