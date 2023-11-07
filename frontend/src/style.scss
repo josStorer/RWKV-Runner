@@ -1,12 +1,10 @@
 [data-theme='dark'] {
   @import 'highlight.js/scss/github-dark.scss';
-  @import 'github-markdown-css/github-markdown-dark.css';
   --color-neutral-muted: rgba(110, 118, 129, 0.4);
 }
 
 [data-theme='light'] {
   @import 'highlight.js/scss/github.scss';
-  @import 'github-markdown-css/github-markdown-light.css';
   --color-neutral-muted: rgba(150, 160, 170, 0.3);
 }
 
