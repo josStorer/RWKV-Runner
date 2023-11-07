@@ -67,6 +67,7 @@ var components embed.FS
 
 func main() {
 	if buildInfo, ok := debug.ReadBuildInfo(); !ok || strings.Contains(buildInfo.String(), "-ldflags") {
+		backend.CopyEmbed(assets)
 		os.RemoveAll("./py310/Lib/site-packages/cyac-1.7.dist-info")
 		backend.CopyEmbed(cyac)
 		backend.CopyEmbed(cyacInfo)
