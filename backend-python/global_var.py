@@ -4,6 +4,7 @@ Args = "args"
 Model = "model"
 Model_Status = "model_status"
 Model_Config = "model_config"
+Deploy_Mode = "deploy_mode"
 
 
 class ModelStatus(Enum):
@@ -16,6 +17,7 @@ def init():
     global GLOBALS
     GLOBALS = {}
     set(Model_Status, ModelStatus.Offline)
+    set(Deploy_Mode, False)
 
 
 def set(key, value):

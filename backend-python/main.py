@@ -48,7 +48,7 @@ sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
 import psutil
 from contextlib import asynccontextmanager
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
@@ -86,6 +86,9 @@ app.include_router(state_cache.router)
 
 @app.post("/exit", tags=["Root"])
 def exit():
+    if global_var.get(global_var.Deploy_Mode) is True:
+        raise HTTPException(status.HTTP_403_FORBIDDEN)
+
     parent_pid = os.getpid()
     parent = psutil.Process(parent_pid)
     for child in parent.children(recursive=True):

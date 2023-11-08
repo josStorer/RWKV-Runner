@@ -1,4 +1,5 @@
 import io
+import global_var
 from fastapi import APIRouter, HTTPException, status
 from starlette.responses import StreamingResponse
 from pydantic import BaseModel
@@ -48,6 +49,9 @@ class TxtToMidiBody(BaseModel):
 
 @router.post("/txt-to-midi", tags=["MIDI"])
 def txt_to_midi(body: TxtToMidiBody):
+    if global_var.get(global_var.Deploy_Mode) is True:
+        raise HTTPException(status.HTTP_403_FORBIDDEN)
+
     if not body.midi_path.startswith("midi/"):
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "bad output path")
 
@@ -84,6 +88,9 @@ def midi_to_wav(body: MidiToWavBody):
     Install fluidsynth first, see more: https://github.com/FluidSynth/fluidsynth/wiki/Download#distributions
     """
 
+    if global_var.get(global_var.Deploy_Mode) is True:
+        raise HTTPException(status.HTTP_403_FORBIDDEN)
+
     if not body.wav_path.startswith("midi/"):
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "bad output path")
 
@@ -114,6 +121,9 @@ def text_to_wav(body: TextToWavBody):
     """
     Install fluidsynth first, see more: https://github.com/FluidSynth/fluidsynth/wiki/Download#distributions
     """
+
+    if global_var.get(global_var.Deploy_Mode) is True:
+        raise HTTPException(status.HTTP_403_FORBIDDEN)
 
     text = body.text.strip()
     if not text.startswith("<start>"):
