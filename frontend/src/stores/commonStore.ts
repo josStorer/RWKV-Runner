@@ -102,7 +102,7 @@ class CommonStore {
     epochSteps: 200,
     epochCount: 20,
     epochBegin: 0,
-    epochSave: 2,
+    epochSave: 1,
     microBsz: 1,
     accumGradBatches: 8,
     preFfn: false,

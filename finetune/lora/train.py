@@ -264,7 +264,7 @@ if __name__ == "__main__":
 #
 # Data = {args.data_file} ({args.data_type}), ProjDir = {args.proj_dir}
 #
-# Epoch = {args.epoch_begin} to {args.epoch_begin + args.epoch_count - 1} (will continue afterwards), save every {args.epoch_save} epoch
+# Epoch = {args.epoch_begin} to {args.epoch_begin + args.epoch_count - 1}, save every {args.epoch_save} epoch
 #
 # Each "epoch" = {args.epoch_steps} steps, {samples_per_epoch} samples, {tokens_per_epoch} tokens
 #
