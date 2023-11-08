@@ -199,7 +199,8 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
               model: modelPath,
               strategy: strategy,
               tokenizer: modelConfig.modelParameters.useCustomTokenizer ? modelConfig.modelParameters.customTokenizer : undefined,
-              customCuda: customCudaFile !== ''
+              customCuda: customCudaFile !== '',
+              deploy: modelConfig.enableWebUI
             }).then(async (r) => {
               if (r.ok) {
                 commonStore.setStatus({ status: ModelStatus.Working });
@@ -246,7 +247,13 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
       }, 1000);
     } else {
       commonStore.setStatus({ status: ModelStatus.Offline });
-      exit();
+      exit().then(r => {
+        if (r.status === 403)
+          if (commonStore.platform !== 'linux')
+            toast(t('Server is working on deployment mode, please close the terminal window manually'), { type: 'info' });
+          else
+            toast(t('Server is working on deployment mode, please exit the program manually to stop the server'), { type: 'info' });
+      });
     }
   };
 

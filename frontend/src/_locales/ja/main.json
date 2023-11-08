@@ -265,5 +265,7 @@
   "Port is occupied. Change it in Configs page or close the program that occupies the port.": "ポートが占有されています。設定ページで変更するか、ポートを占有しているプログラムを終了してください。",
   "Loading...": "読み込み中...",
   "Hello, what can I do for you?": "こんにちは、何かお手伝いできますか？",
-  "Enable WebUI": "WebUIを有効化"
+  "Enable WebUI": "WebUIを有効化",
+  "Server is working on deployment mode, please close the terminal window manually": "サーバーはデプロイモードで動作しています、ターミナルウィンドウを手動で閉じてください",
+  "Server is working on deployment mode, please exit the program manually to stop the server": "サーバーはデプロイモードで動作しています、サーバーを停止するにはプログラムを手動で終了してください"
 }

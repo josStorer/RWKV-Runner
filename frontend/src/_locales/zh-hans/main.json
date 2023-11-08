@@ -265,5 +265,7 @@
   "Port is occupied. Change it in Configs page or close the program that occupies the port.": "端口被占用。请在配置页面更改端口，或关闭占用端口的程序",
   "Loading...": "加载中...",
   "Hello, what can I do for you?": "你好，有什么要我帮忙的吗？",
-  "Enable WebUI": "启用WebUI"
+  "Enable WebUI": "启用WebUI",
+  "Server is working on deployment mode, please close the terminal window manually": "服务器正在部署模式下运行，请手动关闭终端窗口",
+  "Server is working on deployment mode, please exit the program manually to stop the server": "服务器正在部署模式下运行，请手动退出程序以停止服务器"
 }
