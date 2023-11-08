@@ -290,8 +290,9 @@ export function bytesToReadable(size: number) {
 }
 
 export function getServerRoot(defaultLocalPort: number) {
-  if (commonStore.settings.apiUrl)
-    return commonStore.settings.apiUrl;
+  const customApiUrl = commonStore.settings.apiUrl.trim().replace(/\/$/, '');
+  if (customApiUrl)
+    return customApiUrl;
   if (commonStore.platform === 'web')
     return '';
   return `http://127.0.0.1:${defaultLocalPort}`;
