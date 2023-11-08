@@ -64,5 +64,6 @@ try:
 
         torch.save(output_w, output)
 except Exception as e:
+    print(e)
     with open("error.txt", "w") as f:
         f.write(str(e))

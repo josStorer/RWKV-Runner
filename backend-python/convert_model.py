@@ -231,5 +231,6 @@ try:
         convert_and_save_and_exit=args.out,
     )
 except Exception as e:
+    print(e)
     with open("error.txt", "w") as f:
         f.write(str(e))

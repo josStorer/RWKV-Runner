@@ -246,5 +246,6 @@ if __name__ == "__main__":
     try:
         main()
     except Exception as e:
+        print(e)
         with open("error.txt", "w") as f:
             f.write(str(e))

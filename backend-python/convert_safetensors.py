@@ -65,5 +65,6 @@ if __name__ == "__main__":
         )
         print(f"Saved to {args.output}")
     except Exception as e:
+        print(e)
         with open("error.txt", "w") as f:
             f.write(str(e))
