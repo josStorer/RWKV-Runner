@@ -2,28 +2,21 @@
 
 ### Features
 
-- chat attachment is now related to single message (Experimental)
-- port occupied detection
-
-### Upgrades
-
-- upgrade to rwkv 0.8.20
-
-### Improvements
-
-- improve the compatibility between frontend presets and chatgpt api
-- improve memory usage of state cache
+- add webUI for easier service sharing (enable it in Configs page or --webui command line parameter, compile it
+  with `make
+  build-web`)
+- add deployment mode. If `/switch-model` with `deploy: true`, will disable /switch-model, /exit and other dangerous
+  APIs (state cache APIs, part of midi APIs)
 
 ### Chores
 
-- update ngrok_connect
-- python38 compatibility
-- adjust startup process
+- print error.txt to console when script fails
+- api url getter
 
 ### Fixes
 
-- fix log encoding error
-- fix stop button status of Chat page
+- set deepspeed to 0.11.2 to avoid finetune error
+- fix `/docs` default api params (Pydantic v2)
 
 ## Install
 
