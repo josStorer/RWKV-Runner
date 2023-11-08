@@ -442,15 +442,16 @@ const Configs: FC = observer(() => {
         </div>
         <div className="flex flex-row-reverse sm:fixed bottom-2 right-2">
           <div className="flex gap-2">
-            <Checkbox className="select-none"
-              size="large" label={t('Enable WebUI')}
-              checked={selectedConfig.enableWebUI}
-              onChange={(_, data) => {
-                setSelectedConfig({
-                  ...selectedConfig,
-                  enableWebUI: data.checked as boolean
-                });
-              }} />
+            {selectedConfig.modelParameters.device !== 'WebGPU'
+              && <Checkbox className="select-none"
+                size="large" label={t('Enable WebUI')}
+                checked={selectedConfig.enableWebUI}
+                onChange={(_, data) => {
+                  setSelectedConfig({
+                    ...selectedConfig,
+                    enableWebUI: data.checked as boolean
+                  });
+                }} />}
             <RunButton onClickRun={onClickSave} />
           </div>
         </div>
