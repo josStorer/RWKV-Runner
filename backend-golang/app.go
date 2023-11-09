@@ -4,12 +4,14 @@ import (
 	"bufio"
 	"context"
 	"errors"
+	"io"
 	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
 	"syscall"
+	"time"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/minio/selfupdate"
@@ -118,13 +120,50 @@ func (a *App) monitorHardware() {
 	monitor.Start()
 }
 
+type ProgressReader struct {
+	reader io.Reader
+	total  int64
+	err    error
+}
+
+func (pr *ProgressReader) Read(p []byte) (n int, err error) {
+	n, err = pr.reader.Read(p)
+	pr.err = err
+	pr.total += int64(n)
+	return
+}
+
 func (a *App) UpdateApp(url string) (broken bool, err error) {
 	resp, err := http.Get(url)
 	if err != nil {
 		return false, err
 	}
 	defer resp.Body.Close()
-	err = selfupdate.Apply(resp.Body, selfupdate.Options{})
+	pr := &ProgressReader{reader: resp.Body}
+
+	ticker := time.NewTicker(250 * time.Millisecond)
+	defer ticker.Stop()
+
+	go func() {
+		for {
+			<-ticker.C
+			wruntime.EventsEmit(a.ctx, "updateApp", &DownloadStatus{
+				Name:        filepath.Base(url),
+				Path:        "",
+				Url:         url,
+				Transferred: pr.total,
+				Size:        resp.ContentLength,
+				Speed:       0,
+				Progress:    100 * (float64(pr.total) / float64(resp.ContentLength)),
+				Downloading: pr.err == nil && pr.total < resp.ContentLength,
+				Done:        pr.total == resp.ContentLength,
+			})
+			if pr.err != nil || pr.total == resp.ContentLength {
+				break
+			}
+		}
+	}()
+	err = selfupdate.Apply(pr, selfupdate.Options{})
 	if err != nil {
 		if rerr := selfupdate.RollbackError(err); rerr != nil {
 			return true, rerr

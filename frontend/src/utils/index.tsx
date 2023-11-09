@@ -15,7 +15,7 @@ import { toast } from 'react-toastify';
 import { t } from 'i18next';
 import { ToastOptions } from 'react-toastify/dist/types';
 import { Button } from '@fluentui/react-components';
-import { BrowserOpenURL, WindowShow } from '../../wailsjs/runtime';
+import { BrowserOpenURL, EventsOff, EventsOn, WindowShow } from '../../wailsjs/runtime';
 import { NavigateFunction } from 'react-router';
 import { ModelConfig, ModelParameters } from '../types/configs';
 import { DownloadStatus } from '../types/downloads';
@@ -333,27 +333,47 @@ export async function checkUpdate(notifyEvenLatest: boolean = false) {
                           `https://gitee.com/josc146/RWKV-Runner/releases/download/${versionTag}/${asset.name}`;
                         toastWithButton(t('New Version Available') + ': ' + versionTag, t('Update'), () => {
                           DeleteFile('cache.json');
-                          toast(t('Downloading update, please wait. If it is not completed, please manually download the program from GitHub and replace the original program.'), {
-                            type: 'info',
-                            position: 'bottom-left',
-                            autoClose: false
-                          });
-                          setTimeout(() => {
-                            UpdateApp(updateUrl).then(() => {
-                              toast(t('Update completed, please restart the program.'), {
-                                  type: 'success',
-                                  position: 'bottom-left',
-                                  autoClose: false
-                                }
-                              );
-                            }).catch((e) => {
-                              toast(t('Update Error') + ' - ' + (e.message || e), {
-                                type: 'error',
+                          const progressId = 'update_app';
+                          const progressEvent = 'updateApp';
+                          const updateProgress = (ds: DownloadStatus | null) => {
+                            const content =
+                              t('Downloading update, please wait. If it is not completed, please manually download the program from GitHub and replace the original program.')
+                              + (ds ? ` (${ds.progress.toFixed(2)}%  ${bytesToReadable(ds.transferred)}/${bytesToReadable(ds.size)})` : '');
+                            const options: ToastOptions = {
+                              type: 'info',
+                              position: 'bottom-left',
+                              autoClose: false,
+                              toastId: progressId,
+                              hideProgressBar: false,
+                              progress: ds ? ds.progress / 100 : 0
+                            };
+                            if (toast.isActive(progressId))
+                              toast.update(progressId, {
+                                render: content,
+                                ...options
+                              });
+                            else
+                              toast(content, options);
+                          };
+                          updateProgress(null);
+                          EventsOn(progressEvent, updateProgress);
+                          UpdateApp(updateUrl).then(() => {
+                            toast(t('Update completed, please restart the program.'), {
+                                type: 'success',
                                 position: 'bottom-left',
                                 autoClose: false
-                              });
+                              }
+                            );
+                          }).catch((e) => {
+                            toast(t('Update Error') + ' - ' + (e.message || e), {
+                              type: 'error',
+                              position: 'bottom-left',
+                              autoClose: false
                             });
-                          }, 500);
+                          }).finally(() => {
+                            toast.dismiss(progressId);
+                            EventsOff(progressEvent);
+                          });
                         }, {
                           autoClose: false,
                           position: 'bottom-left'
