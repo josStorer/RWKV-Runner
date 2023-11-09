@@ -7,7 +7,7 @@ import { defaultCompositionPrompt, defaultModelConfigs, defaultModelConfigsMac }
 import { ChartData } from 'chart.js';
 import { Preset } from '../types/presets';
 import { AboutContent } from '../types/about';
-import { Conversation } from '../types/chat';
+import { Attachment, Conversation } from '../types/chat';
 import { CompletionPreset } from '../types/completion';
 import { CompositionParams } from '../types/composition';
 import { ModelConfig } from '../types/configs';
@@ -30,10 +30,13 @@ export type Status = {
   device_name: string;
 }
 
-export type Attachment = {
-  name: string;
-  size: number;
-  content: string;
+export type MonitorData = {
+  usedMemory: number;
+  totalMemory: number;
+  gpuUsage: number;
+  gpuPower: number;
+  usedVram: number;
+  totalVram: number;
 }
 
 export type Platform = 'windows' | 'darwin' | 'linux' | 'web';
@@ -45,6 +48,7 @@ class CommonStore {
     pid: 0,
     device_name: 'CPU'
   };
+  monitorData: MonitorData | null = null;
   depComplete: boolean = false;
   platform: Platform = 'windows';
   // presets manager
@@ -252,6 +256,10 @@ class CommonStore {
 
   setCompletionGenerating(value: boolean) {
     this.completionGenerating = value;
+  }
+
+  setMonitorData(value: MonitorData) {
+    this.monitorData = value;
   }
 
   setPlatform(value: Platform) {

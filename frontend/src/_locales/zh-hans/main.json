@@ -267,5 +267,6 @@
   "Hello, what can I do for you?": "你好，有什么要我帮忙的吗？",
   "Enable WebUI": "启用WebUI",
   "Server is working on deployment mode, please close the terminal window manually": "服务器正在部署模式下运行，请手动关闭终端窗口",
-  "Server is working on deployment mode, please exit the program manually to stop the server": "服务器正在部署模式下运行，请手动退出程序以停止服务器"
+  "Server is working on deployment mode, please exit the program manually to stop the server": "服务器正在部署模式下运行，请手动退出程序以停止服务器",
+  "You can increase the number of stored layers in Configs page to improve performance": "你可以在配置页面增加载入显存层数以提升性能"
 }

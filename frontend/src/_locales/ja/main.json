@@ -13,7 +13,7 @@
   "Working": "動作中",
   "Stop": "停止",
   "Enable High Precision For Last Layer": "最後の層で高精度を有効にする",
-  "Stored Layers": "メモリ層読み込み",
+  "Stored Layers": "保存されるレイヤー",
   "Precision": "精度",
   "Device": "デバイス",
   "Convert model with these configs. Using a converted model will greatly improve the loading speed, but model parameters of the converted model cannot be modified.": "これらの設定でモデルを変換します。変換されたモデルを使用すると、読み込み速度が大幅に向上しますが、変換したモデルのパラメータを変更することはできません。",
@@ -267,5 +267,6 @@
   "Hello, what can I do for you?": "こんにちは、何かお手伝いできますか？",
   "Enable WebUI": "WebUIを有効化",
   "Server is working on deployment mode, please close the terminal window manually": "サーバーはデプロイモードで動作しています、ターミナルウィンドウを手動で閉じてください",
-  "Server is working on deployment mode, please exit the program manually to stop the server": "サーバーはデプロイモードで動作しています、サーバーを停止するにはプログラムを手動で終了してください"
+  "Server is working on deployment mode, please exit the program manually to stop the server": "サーバーはデプロイモードで動作しています、サーバーを停止するにはプログラムを手動で終了してください",
+  "You can increase the number of stored layers in Configs page to improve performance": "パフォーマンスを向上させるために、保存されるレイヤーの数を設定ページで増やすことができます"
 }

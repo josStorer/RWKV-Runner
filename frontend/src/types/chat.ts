@@ -27,3 +27,8 @@ export type ConversationMessage = {
   role: Role;
   content: string;
 }
+export type Attachment = {
+  name: string;
+  size: number;
+  content: string;
+}

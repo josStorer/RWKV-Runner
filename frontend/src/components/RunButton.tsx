@@ -213,6 +213,12 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
                 const buttonFn = () => {
                   navigate({ pathname: '/' + buttonName.toLowerCase() });
                 };
+
+                if ((modelConfig.modelParameters.device === 'CUDA' || modelConfig.modelParameters.device === 'CUDA-Beta') &&
+                  modelConfig.modelParameters.storedLayers < modelConfig.modelParameters.maxStoredLayers &&
+                  commonStore.monitorData && commonStore.monitorData.totalVram !== 0 &&
+                  (commonStore.monitorData.usedVram / commonStore.monitorData.totalVram) < 0.85)
+                  toast(t('You can increase the number of stored layers in Configs page to improve performance'), { type: 'info' });
                 toastWithButton(t('Startup Completed'), t(buttonName), buttonFn, { type: 'success', autoClose: 3000 });
               } else if (r.status === 304) {
                 toast(t('Loading Model'), { type: 'info' });

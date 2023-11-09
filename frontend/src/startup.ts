@@ -1,4 +1,4 @@
-import commonStore, { Platform } from './stores/commonStore';
+import commonStore, { MonitorData, Platform } from './stores/commonStore';
 import { GetPlatform, ListDirFiles, ReadJson } from '../wailsjs/go/backend_golang/App';
 import { Cache, checkUpdate, downloadProgramFiles, LocalConfig, refreshLocalModels, refreshModels } from './utils';
 import { getStatus } from './apis';
@@ -125,19 +125,12 @@ async function initLocalModelsNotify() {
   });
 }
 
-type monitorData = {
-  usedMemory: number;
-  totalMemory: number;
-  gpuUsage: number;
-  gpuPower: number;
-  usedVram: number;
-  totalVram: number;
-}
-
 async function initHardwareMonitor() {
   EventsOn('monitor', (data: string) => {
-    const results: monitorData = JSON.parse(data);
-    if (results)
+    const results: MonitorData = JSON.parse(data);
+    if (results) {
+      commonStore.setMonitorData(results);
       WindowSetTitle(`RWKV-Runner (${t('RAM')}: ${results.usedMemory.toFixed(1)}/${results.totalMemory.toFixed(1)} GB, ${t('VRAM')}: ${(results.usedVram / 1024).toFixed(1)}/${(results.totalVram / 1024).toFixed(1)} GB, ${t('GPU Usage')}: ${results.gpuUsage}%)`);
+    }
   });
 }
