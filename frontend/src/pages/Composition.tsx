@@ -19,11 +19,13 @@ import { defaultCompositionPrompt } from './defaultConfigs';
 import { FileExists, OpenFileFolder, OpenSaveFileDialogBytes } from '../../wailsjs/go/backend_golang/App';
 import { getServerRoot, toastWithButton } from '../utils';
 import { CompositionParams } from '../types/composition';
+import { useMediaQuery } from 'usehooks-ts';
 
 let compositionSseController: AbortController | null = null;
 
 const CompositionPanel: FC = observer(() => {
   const { t } = useTranslation();
+  const mq = useMediaQuery('(min-width: 640px)');
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const port = commonStore.getCurrentModelConfig().apiParameters.apiPort;
   const visualizerRef = useRef<VisualizerElement>(null);
@@ -204,62 +206,64 @@ const CompositionPanel: FC = observer(() => {
             setPrompt(e.target.value);
           }}
         />
-        <div className="flex flex-col gap-1 max-h-48 sm:max-w-sm sm:max-h-full overflow-x-hidden overflow-y-auto p-1">
-          <Labeled flex breakline label={t('Max Response Token')}
-            desc={t('By default, the maximum number of tokens that can be answered in a single response, it can be changed by the user by specifying API parameters.')}
-            content={
-              <ValuedSlider value={params.maxResponseToken} min={100} max={4100}
-                step={100}
-                input
-                onChange={(e, data) => {
-                  setParams({
-                    maxResponseToken: data.value
-                  });
-                }} />
-            } />
-          <Labeled flex breakline label={t('Temperature')}
-            desc={t('Sampling temperature, it\'s like giving alcohol to a model, the higher the stronger the randomness and creativity, while the lower, the more focused and deterministic it will be.')}
-            content={
-              <ValuedSlider value={params.temperature} min={0} max={2} step={0.1}
-                input
-                onChange={(e, data) => {
-                  setParams({
-                    temperature: data.value
-                  });
-                }} />
-            } />
-          <Labeled flex breakline label={t('Top_P')}
-            desc={t('Just like feeding sedatives to the model. Consider the results of the top n% probability mass, 0.1 considers the top 10%, with higher quality but more conservative, 1 considers all results, with lower quality but more diverse.')}
-            content={
-              <ValuedSlider value={params.topP} min={0} max={1} step={0.1} input
-                onChange={(e, data) => {
-                  setParams({
-                    topP: data.value
-                  });
-                }} />
-            } />
-          <div className="grow" />
-          <Checkbox className="select-none"
-            size="large" label={t('Use Local Sound Font')} checked={params.useLocalSoundFont}
-            onChange={async (_, data) => {
-              if (data.checked) {
-                if (!await FileExists('assets/sound-font/accordion/instrument.json')) {
-                  toast(t('Failed to load local sound font, please check if the files exist - assets/sound-font'),
-                    { type: 'warning' });
-                  return;
+        <div className="flex flex-col gap-1 max-h-48 sm:max-w-sm sm:max-h-full">
+          <div className="flex flex-col gap-1 grow overflow-x-hidden overflow-y-auto p-1">
+            <Labeled flex breakline label={t('Max Response Token')}
+              desc={t('By default, the maximum number of tokens that can be answered in a single response, it can be changed by the user by specifying API parameters.')}
+              content={
+                <ValuedSlider value={params.maxResponseToken} min={100} max={4100}
+                  step={100}
+                  input
+                  onChange={(e, data) => {
+                    setParams({
+                      maxResponseToken: data.value
+                    });
+                  }} />
+              } />
+            <Labeled flex breakline label={t('Temperature')}
+              desc={t('Sampling temperature, it\'s like giving alcohol to a model, the higher the stronger the randomness and creativity, while the lower, the more focused and deterministic it will be.')}
+              content={
+                <ValuedSlider value={params.temperature} min={0} max={2} step={0.1}
+                  input
+                  onChange={(e, data) => {
+                    setParams({
+                      temperature: data.value
+                    });
+                  }} />
+              } />
+            <Labeled flex breakline label={t('Top_P')}
+              desc={t('Just like feeding sedatives to the model. Consider the results of the top n% probability mass, 0.1 considers the top 10%, with higher quality but more conservative, 1 considers all results, with lower quality but more diverse.')}
+              content={
+                <ValuedSlider value={params.topP} min={0} max={1} step={0.1} input
+                  onChange={(e, data) => {
+                    setParams({
+                      topP: data.value
+                    });
+                  }} />
+              } />
+            <div className="grow" />
+            <Checkbox className="select-none"
+              size="large" label={t('Use Local Sound Font')} checked={params.useLocalSoundFont}
+              onChange={async (_, data) => {
+                if (data.checked) {
+                  if (!await FileExists('assets/sound-font/accordion/instrument.json')) {
+                    toast(t('Failed to load local sound font, please check if the files exist - assets/sound-font'),
+                      { type: 'warning' });
+                    return;
+                  }
                 }
-              }
+                setParams({
+                  useLocalSoundFont: data.checked as boolean
+                });
+                setSoundFont();
+              }} />
+            <Checkbox className="select-none"
+              size="large" label={t('Auto Play At The End')} checked={params.autoPlay} onChange={(_, data) => {
               setParams({
-                useLocalSoundFont: data.checked as boolean
+                autoPlay: data.checked as boolean
               });
-              setSoundFont();
             }} />
-          <Checkbox className="select-none"
-            size="large" label={t('Auto Play At The End')} checked={params.autoPlay} onChange={(_, data) => {
-            setParams({
-              autoPlay: data.checked as boolean
-            });
-          }} />
+          </div>
           <div className="flex justify-between gap-2">
             <ToolTipButton desc={t('Regenerate')} icon={<ArrowSync20Regular />} onClick={() => {
               compositionSseController?.abort();
@@ -298,7 +302,7 @@ const CompositionPanel: FC = observer(() => {
             ref={playerRef}
             style={{ width: '100%' }}
           />
-          <Button icon={<Save28Regular />}
+          <Button icon={<Save28Regular />} size={mq ? 'large' : 'medium'} appearance={mq ? 'secondary' : 'subtle'}
             onClick={() => {
               if (params.midi) {
                 OpenSaveFileDialogBytes('*.mid', 'music.mid', Array.from(new Uint8Array(params.midi))).then((path) => {
@@ -314,7 +318,7 @@ const CompositionPanel: FC = observer(() => {
               }
             }}
           >
-            {t('Save')}
+            {mq ? t('Save') : ''}
           </Button>
         </div>
       </div>

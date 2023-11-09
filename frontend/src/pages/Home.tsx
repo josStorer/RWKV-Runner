@@ -89,7 +89,7 @@ const Home: FC = observer(() => {
 
   return commonStore.platform === 'web' ?
     (
-      <div className="flex flex-col gap-2 h-full">
+      <div className="flex flex-col gap-2 h-full overflow-x-hidden overflow-y-auto">
         <img className="rounded-xl select-none object-cover grow"
           style={{ maxHeight: '40%' }} src={banner} />
         <div className="grow"></div>

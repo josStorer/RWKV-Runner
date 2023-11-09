@@ -51,10 +51,10 @@ const App: FC = observer(() => {
   useEffect(() => setPath(location.pathname), [location]);
 
   return (
-    <FluentProvider className="h-screen"
+    <FluentProvider
       theme={commonStore.settings.darkMode ? webDarkTheme : webLightTheme}
       data-theme={commonStore.settings.darkMode ? 'dark' : 'light'}>
-      <div className="flex h-full">
+      <div className="flex h-screen">
         <div className="flex flex-col w-16 sm:w-48 p-2 justify-between">
           <TabList
             size="large"
