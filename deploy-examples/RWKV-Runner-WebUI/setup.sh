@@ -11,7 +11,7 @@ npm ci
 npm run build
 cd ..
 
-python3 ./backend-python/main.py --webui > log.txt &
+python3 ./backend-python/main.py --webui > log.txt & # this is only an example, you should use screen or other tools to run it in background
 
 if [ ! -d models ]; then
     mkdir models
