@@ -133,7 +133,8 @@ const errorsMap = Object.entries({
   'size mismatch for blocks': 'Size mismatch for blocks. You are attempting to continue training from the LoRA model, but it does not match the base model. Please set LoRA model to None.',
   'cuda_home environment variable is not set': 'Matched CUDA is not installed',
   'unsupported gpu architecture': 'Matched CUDA is not installed',
-  'error building extension \'fused_adam\'': 'Matched CUDA is not installed'
+  'error building extension \'fused_adam\'': 'Matched CUDA is not installed',
+  'modelinfo is invalid': 'Failed to load model, try to increase the virtual memory (Swap of WSL) or use a smaller base model.'
 });
 
 export const wslHandler = (data: string) => {

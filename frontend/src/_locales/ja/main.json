@@ -268,5 +268,6 @@
   "Enable WebUI": "WebUIを有効化",
   "Server is working on deployment mode, please close the terminal window manually": "サーバーはデプロイモードで動作しています、ターミナルウィンドウを手動で閉じてください",
   "Server is working on deployment mode, please exit the program manually to stop the server": "サーバーはデプロイモードで動作しています、サーバーを停止するにはプログラムを手動で終了してください",
-  "You can increase the number of stored layers in Configs page to improve performance": "パフォーマンスを向上させるために、保存されるレイヤーの数を設定ページで増やすことができます"
+  "You can increase the number of stored layers in Configs page to improve performance": "パフォーマンスを向上させるために、保存されるレイヤーの数を設定ページで増やすことができます",
+  "Failed to load model, try to increase the virtual memory (Swap of WSL) or use a smaller base model.": "モデルの読み込みに失敗しました、仮想メモリ (WSL Swap) を増やすか小さなベースモデルを使用してみてください。"
 }

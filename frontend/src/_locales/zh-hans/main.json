@@ -268,5 +268,6 @@
   "Enable WebUI": "启用WebUI",
   "Server is working on deployment mode, please close the terminal window manually": "服务器正在部署模式下运行，请手动关闭终端窗口",
   "Server is working on deployment mode, please exit the program manually to stop the server": "服务器正在部署模式下运行，请手动退出程序以停止服务器",
-  "You can increase the number of stored layers in Configs page to improve performance": "你可以在配置页面增加载入显存层数以提升性能"
+  "You can increase the number of stored layers in Configs page to improve performance": "你可以在配置页面增加载入显存层数以提升性能",
+  "Failed to load model, try to increase the virtual memory (Swap of WSL) or use a smaller base model.": "模型载入失败，尝试增加虚拟内存(WSL Swap)，或使用一个更小规模的基底模型"
 }
