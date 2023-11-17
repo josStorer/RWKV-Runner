@@ -290,12 +290,15 @@ export function bytesToReadable(size: number) {
 }
 
 export function getServerRoot(defaultLocalPort: number) {
+  const defaultRoot = `http://127.0.0.1:${defaultLocalPort}`;
+  if (commonStore.status.status !== ModelStatus.Offline)
+    return defaultRoot;
   const customApiUrl = commonStore.settings.apiUrl.trim().replace(/\/$/, '');
   if (customApiUrl)
     return customApiUrl;
   if (commonStore.platform === 'web')
     return '';
-  return `http://127.0.0.1:${defaultLocalPort}`;
+  return defaultRoot;
 }
 
 export function absPathAsset(path: string) {
