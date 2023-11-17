@@ -9,6 +9,7 @@ call npm ci
 call npm run build
 cd ..
 
+: optional: set ngrok_token=YOUR_NGROK_TOKEN
 start python ./backend-python/main.py --webui
 start "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" "http://127.0.0.1:8000"
 
