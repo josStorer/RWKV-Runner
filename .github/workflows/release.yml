@@ -134,8 +134,8 @@ jobs:
       - run: |
           git clone https://github.com/josStorer/ai00_rwkv_server --depth=1
           cd ai00_rwkv_server
-          cargo build --release
-          mv ./target/release/ai00_server ../backend-rust/webgpu_server
+          cargo build --release --target aarch64-apple-darwin
+          mv ./target/aarch64-apple-darwin/release/ai00_server ../backend-rust/webgpu_server
           cd ..
           go install github.com/wailsapp/wails/v2/cmd/wails@latest
           rm ./backend-python/rwkv_pip/wkv_cuda.pyd
