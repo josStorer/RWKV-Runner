@@ -35,6 +35,11 @@ default_stop = [
     "\n\nQ",
     "\n\nHuman",
     "\n\nBob",
+    "\n\nAssistant",
+    "\n\nAnswer",
+    "\n\nA",
+    "\n\nBot",
+    "\n\nAlice",
 ]
 
 
