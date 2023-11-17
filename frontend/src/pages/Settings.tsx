@@ -102,11 +102,21 @@ export const AdvancedGeneralSettings: FC = observer(() => {
                   });
                 if (commonStore.settings.apiCompletionModelName === 'rwkv')
                   commonStore.setSettings({
-                    apiCompletionModelName: 'text-davinci-003'
+                    apiCompletionModelName: 'gpt-3.5-turbo-instruct'
+                  });
+              } else if (data.optionText === 'RWKV') {
+                if (commonStore.settings.apiChatModelName === 'gpt-3.5-turbo')
+                  commonStore.setSettings({
+                    apiChatModelName: 'rwkv'
+                  });
+                if (commonStore.settings.apiCompletionModelName === 'gpt-3.5-turbo-instruct')
+                  commonStore.setSettings({
+                    apiCompletionModelName: 'rwkv'
                   });
               }
             }}>
             <Option value="">{t('Localhost')!}</Option>
+            <Option value="https://rwkv.ai-creator.net/chntuned">RWKV</Option>
             <Option value="https://api.openai.com">OpenAI</Option>
           </Dropdown>
         </div>
@@ -140,7 +150,7 @@ export const AdvancedGeneralSettings: FC = observer(() => {
               }
             }}>
             {
-              ['rwkv', 'gpt-4', 'gpt-4-0613', 'gpt-4-32k', 'gpt-4-32k-0613', 'gpt-3.5-turbo', 'gpt-3.5-turbo-0613', 'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-16k-0613']
+              ['rwkv', 'gpt-4-1106-preview', 'gpt-4', 'gpt-4-32k', 'gpt-4-0613', 'gpt-4-32k-0613', 'gpt-3.5-turbo-1106', 'gpt-3.5-turbo', 'gpt-3.5-turbo-16k']
               .map((v, i) =>
                 <Option key={i} value={v}>{v}</Option>
               )
@@ -168,7 +178,7 @@ export const AdvancedGeneralSettings: FC = observer(() => {
               }
             }}>
             {
-              ['rwkv', 'text-davinci-003', 'text-davinci-002', 'text-curie-001', 'text-babbage-001', 'text-ada-001']
+              ['rwkv', 'gpt-3.5-turbo-instruct', 'text-davinci-003', 'text-davinci-002', 'code-davinci-002', 'text-curie-001', 'text-babbage-001', 'text-ada-001']
               .map((v, i) =>
                 <Option key={i} value={v}>{v}</Option>
               )
