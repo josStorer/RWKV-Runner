@@ -73,12 +73,12 @@ class AddStateBody(BaseModel):
     logits: Any
 
 
-@router.post("/add-state", tags=["State Cache"])
+# @router.post("/add-state", tags=["State Cache"])
 def add_state(body: AddStateBody):
     global trie, dtrie, loop_del_trie_id
 
-    if global_var.get(global_var.Deploy_Mode) is True:
-        raise HTTPException(status.HTTP_403_FORBIDDEN)
+    # if global_var.get(global_var.Deploy_Mode) is True:
+    #     raise HTTPException(status.HTTP_403_FORBIDDEN)
 
     if trie is None:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "trie not loaded")
@@ -157,12 +157,12 @@ def __get_a_dtrie_buff_size(dtrie_v):
     return 54 * len(dtrie_v["tokens"]) + 491520 + 262144 + 28  # TODO
 
 
-@router.post("/longest-prefix-state", tags=["State Cache"])
+# @router.post("/longest-prefix-state", tags=["State Cache"])
 def longest_prefix_state(body: LongestPrefixStateBody, request: Request):
     global trie
 
-    if global_var.get(global_var.Deploy_Mode) is True:
-        raise HTTPException(status.HTTP_403_FORBIDDEN)
+    # if global_var.get(global_var.Deploy_Mode) is True:
+    #     raise HTTPException(status.HTTP_403_FORBIDDEN)
 
     if trie is None:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "trie not loaded")
@@ -200,12 +200,12 @@ def longest_prefix_state(body: LongestPrefixStateBody, request: Request):
         }
 
 
-@router.post("/save-state", tags=["State Cache"])
+# @router.post("/save-state", tags=["State Cache"])
 def save_state():
     global trie
 
-    if global_var.get(global_var.Deploy_Mode) is True:
-        raise HTTPException(status.HTTP_403_FORBIDDEN)
+    # if global_var.get(global_var.Deploy_Mode) is True:
+    #     raise HTTPException(status.HTTP_403_FORBIDDEN)
 
     if trie is None:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "trie not loaded")
