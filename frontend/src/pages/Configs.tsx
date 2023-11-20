@@ -340,8 +340,10 @@ const Configs: FC = observer(() => {
                             });
                           }
                         }}>
-                        <Option>fp16</Option>
+                        {selectedConfig.modelParameters.device !== 'CPU' && selectedConfig.modelParameters.device !== 'MPS' &&
+                          <Option>fp16</Option>}
                         <Option>int8</Option>
+                        {selectedConfig.modelParameters.device === 'WebGPU' && <Option>nf4</Option>}
                         {selectedConfig.modelParameters.device !== 'WebGPU' && <Option>fp32</Option>}
                       </Dropdown>
                     } />

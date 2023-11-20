@@ -178,14 +178,14 @@ export const getStrategy = (modelConfig: ModelConfig | undefined = undefined) =>
       strategy += params.precision === 'int8' ? 'fp32i8' : 'fp32';
       break;
     case 'WebGPU':
-      strategy += params.precision === 'int8' ? 'fp16i8' : 'fp16';
+      strategy += params.precision === 'nf4' ? 'fp16i4' : params.precision === 'int8' ? 'fp16i8' : 'fp16';
       break;
     case 'CUDA':
     case 'CUDA-Beta':
       if (avoidOverflow)
         strategy = params.useCustomCuda ? 'cuda fp16 *1 -> ' : 'cuda fp32 *1 -> ';
       strategy += 'cuda ';
-      strategy += params.precision === 'fp16' ? 'fp16' : params.precision === 'int8' ? 'fp16i8' : 'fp32';
+      strategy += params.precision === 'int8' ? 'fp16i8' : params.precision === 'fp32' ? 'fp32' : 'fp16';
       if (params.storedLayers < params.maxStoredLayers)
         strategy += ` *${params.storedLayers}+`;
       break;
@@ -193,7 +193,7 @@ export const getStrategy = (modelConfig: ModelConfig | undefined = undefined) =>
       if (avoidOverflow)
         strategy = 'mps fp32 *1 -> ';
       strategy += 'mps ';
-      strategy += params.precision === 'fp16' ? 'fp16' : params.precision === 'int8' ? 'fp16i8' : 'fp32';
+      strategy += params.precision === 'int8' ? 'fp32i8' : 'fp32';
       break;
     case 'Custom':
       strategy = params.customStrategy || '';
