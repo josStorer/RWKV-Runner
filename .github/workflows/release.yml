@@ -134,6 +134,7 @@ jobs:
       - run: |
           git clone https://github.com/josStorer/ai00_rwkv_server --depth=1
           cd ai00_rwkv_server
+          rustup target add aarch64-apple-darwin
           cargo build --release --target aarch64-apple-darwin
           mv ./target/aarch64-apple-darwin/release/ai00_server ../backend-rust/webgpu_server
           cd ..

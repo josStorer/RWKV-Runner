@@ -109,7 +109,7 @@ export const AdvancedGeneralSettings: FC = observer(() => {
                   commonStore.setSettings({
                     apiChatModelName: 'rwkv'
                   });
-                if (commonStore.settings.apiCompletionModelName === 'gpt-3.5-turbo-instruct')
+                if (commonStore.settings.apiCompletionModelName === 'gpt-3.5-turbo-instruct' || commonStore.settings.apiCompletionModelName === 'text-davinci-003')
                   commonStore.setSettings({
                     apiCompletionModelName: 'rwkv'
                   });
