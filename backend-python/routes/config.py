@@ -25,7 +25,7 @@ class SwitchModelBody(BaseModel):
             "example": {
                 "model": "models/RWKV-4-World-3B-v1-20230619-ctx4096.pth",
                 "strategy": "cuda fp16",
-                "tokenizer": None,
+                "tokenizer": "",
                 "customCuda": False,
                 "deploy": False,
             }
