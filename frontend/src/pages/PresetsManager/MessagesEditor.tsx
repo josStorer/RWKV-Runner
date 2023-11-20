@@ -108,7 +108,8 @@ const MessagesEditor: FC = observer(() => {
                             style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}>
                             <ReOrderDotsVertical20Regular />
                           </Card>
-                          <Dropdown style={{ minWidth: 0, borderRadius: 0 }} listbox={{ style: { minWidth: 0 } }}
+                          <Dropdown style={{ minWidth: 0, borderRadius: 0 }}
+                            listbox={{ style: { minWidth: 'fit-content' } }}
                             value={t(item.role)!}
                             selectedOptions={[item.role]}
                             onOptionSelect={(_, data) => {

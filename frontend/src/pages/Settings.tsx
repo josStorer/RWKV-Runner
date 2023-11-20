@@ -23,7 +23,7 @@ export const GeneralSettings: FC = observer(() => {
 
   return <div className="flex flex-col gap-2">
     <Labeled label={t('Language')} flex spaceBetween content={
-      <Dropdown style={{ minWidth: 0 }} listbox={{ style: { minWidth: 0 } }}
+      <Dropdown style={{ minWidth: 0 }} listbox={{ style: { minWidth: 'fit-content' } }}
         value={Languages[commonStore.settings.language]}
         selectedOptions={[commonStore.settings.language]}
         onOptionSelect={(_, data) => {
@@ -43,7 +43,7 @@ export const GeneralSettings: FC = observer(() => {
     {
       commonStore.platform === 'windows' &&
       <Labeled label={t('DPI Scaling')} flex spaceBetween content={
-        <Dropdown style={{ minWidth: 0 }} listbox={{ style: { minWidth: 0 } }}
+        <Dropdown style={{ minWidth: 0 }} listbox={{ style: { minWidth: 'fit-content' } }}
           value={commonStore.settings.dpiScaling + '%'}
           selectedOptions={[commonStore.settings.dpiScaling.toString()]}
           onOptionSelect={(_, data) => {
@@ -89,7 +89,7 @@ export const AdvancedGeneralSettings: FC = observer(() => {
                 apiUrl: data.value
               });
             }} />
-          <Dropdown style={{ minWidth: '33px' }} listbox={{ style: { minWidth: 0 } }}
+          <Dropdown style={{ minWidth: '33px' }} listbox={{ style: { minWidth: 'fit-content' } }}
             value="..." selectedOptions={[]} expandIcon={null}
             onOptionSelect={(_, data) => {
               commonStore.setSettings({
@@ -140,7 +140,7 @@ export const AdvancedGeneralSettings: FC = observer(() => {
                 apiChatModelName: data.value
               });
             }} />
-          <Dropdown style={{ minWidth: '33px' }} listbox={{ style: { minWidth: 0 } }}
+          <Dropdown style={{ minWidth: '33px' }} listbox={{ style: { minWidth: 'fit-content' } }}
             value="..." selectedOptions={[]} expandIcon={null}
             onOptionSelect={(_, data) => {
               if (data.optionValue) {
@@ -168,7 +168,7 @@ export const AdvancedGeneralSettings: FC = observer(() => {
                 apiCompletionModelName: data.value
               });
             }} />
-          <Dropdown style={{ minWidth: '33px' }} listbox={{ style: { minWidth: 0 } }}
+          <Dropdown style={{ minWidth: '33px' }} listbox={{ style: { minWidth: 'fit-content', minHeight: 0 } }}
             value="..." selectedOptions={[]} expandIcon={null}
             onOptionSelect={(_, data) => {
               if (data.optionValue) {

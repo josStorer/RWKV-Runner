@@ -29,8 +29,10 @@ const CompletionPanel: FC = observer(() => {
   };
 
   useEffect(() => {
-    if (inputRef.current)
+    if (inputRef.current) {
       inputRef.current.style.height = '100%';
+      inputRef.current.style.maxHeight = '100%';
+    }
     scrollToBottom();
   }, []);
 

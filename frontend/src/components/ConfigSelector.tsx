@@ -4,7 +4,7 @@ import { Dropdown, Option } from '@fluentui/react-components';
 import commonStore from '../stores/commonStore';
 
 export const ConfigSelector: FC<{ size?: 'small' | 'medium' | 'large' }> = observer(({ size }) => {
-  return <Dropdown size={size} style={{ minWidth: 0 }} listbox={{ style: { minWidth: 0 } }}
+  return <Dropdown size={size} style={{ minWidth: 0 }} listbox={{ style: { minWidth: 'fit-content' } }}
     value={commonStore.getCurrentModelConfig().name}
     selectedOptions={[commonStore.currentModelConfigIndex.toString()]}
     onOptionSelect={(_, data) => {
