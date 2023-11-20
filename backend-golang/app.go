@@ -45,7 +45,7 @@ func (a *App) OnStartup(ctx context.Context) {
 		a.cmdPrefix = "cd " + a.exDir + " && "
 	}
 
-	os.Chmod("./backend-rust/webgpu_server", 0777)
+	os.Chmod(a.exDir+"backend-rust/webgpu_server", 0777)
 	os.Mkdir(a.exDir+"models", os.ModePerm)
 	os.Mkdir(a.exDir+"lora-models", os.ModePerm)
 	os.Mkdir(a.exDir+"finetune/json2binidx_tool/data", os.ModePerm)
