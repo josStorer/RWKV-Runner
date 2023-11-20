@@ -352,6 +352,8 @@ const ChatPanel: FC = observer(() => {
             console.debug('json error', error);
             return;
           }
+          if (data.model)
+            commonStore.setLastModelName(data.model);
           if (data.choices && Array.isArray(data.choices) && data.choices.length > 0) {
             answer += data.choices[0]?.delta?.content || '';
             commonStore.conversation[answerId!].content = answer;

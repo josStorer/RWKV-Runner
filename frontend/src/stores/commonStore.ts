@@ -51,6 +51,7 @@ class CommonStore {
   monitorData: MonitorData | null = null;
   depComplete: boolean = false;
   platform: Platform = 'windows';
+  lastModelName: string = '';
   // presets manager
   editingPreset: Preset | null = null;
   presets: Preset[] = [];
@@ -231,6 +232,10 @@ class CommonStore {
   setAbout = (value: AboutContent) => {
     this.about = value;
   };
+
+  setLastModelName(value: string) {
+    this.lastModelName = value;
+  }
 
   setDepComplete = (value: boolean, inSaveCache: boolean = true) => {
     this.depComplete = value;
