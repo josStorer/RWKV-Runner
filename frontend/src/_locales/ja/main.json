@@ -229,7 +229,7 @@
   "Memory is not enough, try to increase the virtual memory (Swap of WSL) or use a smaller base model.": "メモリが不足しています、仮想メモリ (WSL Swap) を増やすか小さなベースモデルを使用してみてください。",
   "VRAM is not enough": "ビデオRAMが不足しています",
   "Training data is not enough, reduce context length or add more data for training": "トレーニングデータが不足しています、コンテキストの長さを減らすか、トレーニング用のデータをさらに追加してください",
-  "You are using WSL 1 for training, please upgrade to WSL 2. e.g. Run \"wsl --set-version Ubuntu-22.04 2\"": "トレーニングにWSL 1を使用しています、WSL 2にアップグレードしてください。例:\"wsl --set-version Ubuntu-22.04 2\"を実行する",
+  "Can not find an Nvidia GPU. Perhaps the gpu driver of windows is too old, or you are using WSL 1 for training, please upgrade to WSL 2. e.g. Run \"wsl --set-version Ubuntu-22.04 2\"": "Nvidia GPUが見つかりません。WindowsのGPUドライバが古すぎるか、トレーニングにWSL 1を使用している可能性があります。WSL 2にアップグレードしてください。例：\"wsl --set-version Ubuntu-22.04 2\"を実行してください",
   "Matched CUDA is not installed": "対応するCUDAがインストールされていません",
   "Failed to convert data": "データの変換に失敗しました",
   "Failed to merge model": "モデルのマージに失敗しました",

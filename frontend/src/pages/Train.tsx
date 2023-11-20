@@ -129,7 +129,7 @@ const errorsMap = Object.entries({
   'python3 ./finetune/lora/train.py': 'Memory is not enough, try to increase the virtual memory (Swap of WSL) or use a smaller base model.',
   'cuda out of memory': 'VRAM is not enough',
   'valueerror: high <= 0': 'Training data is not enough, reduce context length or add more data for training',
-  '+= \'+ptx\'': 'You are using WSL 1 for training, please upgrade to WSL 2. e.g. Run "wsl --set-version Ubuntu-22.04 2"',
+  '+= \'+ptx\'': 'Can not find an Nvidia GPU. Perhaps the gpu driver of windows is too old, or you are using WSL 1 for training, please upgrade to WSL 2. e.g. Run "wsl --set-version Ubuntu-22.04 2"',
   'size mismatch for blocks': 'Size mismatch for blocks. You are attempting to continue training from the LoRA model, but it does not match the base model. Please set LoRA model to None.',
   'cuda_home environment variable is not set': 'Matched CUDA is not installed',
   'unsupported gpu architecture': 'Matched CUDA is not installed',
