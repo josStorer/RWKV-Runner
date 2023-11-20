@@ -175,7 +175,7 @@ const CompletionPanel: FC = observer(() => {
             desc={t('By default, the maximum number of tokens that can be answered in a single response, it can be changed by the user by specifying API parameters.')}
             content={
               <ValuedSlider value={params.maxResponseToken} min={100} max={8100}
-                step={400}
+                step={100}
                 input
                 onChange={(e, data) => {
                   setParams({
