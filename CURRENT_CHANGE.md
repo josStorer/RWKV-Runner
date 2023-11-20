@@ -1,10 +1,19 @@
 ## Changes
 
-### Improvements
+### Changes
 
-- improve mobile webview
-- add client upgrade progress
-- improve user guide
+- add webgpu nf4
+- add sidePanel for Chat page
+- add hf-mirror for cn users
+- use local API when it's working, even if a custom API URL is provided
+- add rwkv API URL Option
+- macos: change default webgpu backend to aarch64-apple-darwin and fix the permission issue
+- strict default_stop
+- fix state_cache of deploy mode
+- fix a finetune bug
+- improve lazy loading ui
+- display lastModelName at the top (WorkHeader)
+- chores
 
 ## Install
 
