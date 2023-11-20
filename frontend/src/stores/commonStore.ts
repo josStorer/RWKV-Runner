@@ -142,6 +142,7 @@ class CommonStore {
     autoUpdatesCheck: true,
     giteeUpdatesSource: getUserLanguage() === 'zh',
     cnMirror: getUserLanguage() === 'zh',
+    useHfMirror: false,
     host: '127.0.0.1',
     dpiScaling: 100,
     customModelsPath: './models',

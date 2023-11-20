@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import {
+  Checkbox,
   createTableColumn,
   DataGrid,
   DataGridBody,
@@ -19,7 +20,7 @@ import commonStore from '../stores/commonStore';
 import { BrowserOpenURL } from '../../wailsjs/runtime';
 import { AddToDownloadList, OpenFileFolder } from '../../wailsjs/go/backend_golang/App';
 import { Page } from '../components/Page';
-import { bytesToGb, refreshModels, saveConfigs, toastWithButton } from '../utils';
+import { bytesToGb, getHfDownloadUrl, refreshModels, saveConfigs, toastWithButton } from '../utils';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import { ModelSourceItem } from '../types/models';
@@ -139,7 +140,7 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
                     navigate({ pathname: '/downloads' });
                   },
                   { autoClose: 3000 });
-                AddToDownloadList(`${commonStore.settings.customModelsPath}/${item.name}`, item.downloadUrl!);
+                AddToDownloadList(`${commonStore.settings.customModelsPath}/${item.name}`, getHfDownloadUrl(item.downloadUrl!));
               }} />}
             {item.url && <ToolTipButton desc={t('Open Url')} icon={<Open20Regular />} onClick={() => {
               BrowserOpenURL(item.url!);
@@ -160,10 +161,21 @@ const Models: FC = observer(() => {
         <div className="flex flex-col gap-1">
           <div className="flex justify-between items-center">
             <Text weight="medium">{t('Model Source Manifest List')}</Text>
-            <ToolTipButton desc={t('Refresh')} icon={<ArrowClockwise20Regular />} onClick={() => {
-              refreshModels(false);
-              saveConfigs();
-            }} />
+            <div className="flex">
+              {commonStore.settings.language === 'zh' &&
+                <Checkbox className="select-none"
+                  size="large" label={t('Use Hugging Face Mirror')}
+                  checked={commonStore.settings.useHfMirror}
+                  onChange={(_, data) => {
+                    commonStore.setSettings({
+                      useHfMirror: data.checked as boolean
+                    });
+                  }} />}
+              <ToolTipButton desc={t('Refresh')} icon={<ArrowClockwise20Regular />} onClick={() => {
+                refreshModels(false);
+                saveConfigs();
+              }} />
+            </div>
           </div>
           <Text size={100}>
             {t('Provide JSON file URLs for the models manifest. Separate URLs with semicolons. The "models" field in JSON files will be parsed into the following table.')}

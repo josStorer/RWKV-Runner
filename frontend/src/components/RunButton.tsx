@@ -11,7 +11,7 @@ import { Button } from '@fluentui/react-components';
 import { observer } from 'mobx-react-lite';
 import { exit, getStatus, readRoot, switchModel, updateConfig } from '../apis';
 import { toast } from 'react-toastify';
-import { checkDependencies, getStrategy, toastWithButton } from '../utils';
+import { checkDependencies, getHfDownloadUrl, getStrategy, toastWithButton } from '../utils';
 import { useTranslation } from 'react-i18next';
 import { ToolTipButton } from './ToolTipButton';
 import { Play16Regular, Stop16Regular } from '@fluentui/react-icons';
@@ -94,7 +94,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
                 navigate({ pathname: '/downloads' });
               },
               { autoClose: 3000 });
-            AddToDownloadList(modelPath, downloadUrl);
+            AddToDownloadList(modelPath, getHfDownloadUrl(downloadUrl));
           } else {
             toast(t('Can not find download url'), { type: 'error' });
           }

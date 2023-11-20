@@ -10,6 +10,7 @@ export type SettingsType = {
   autoUpdatesCheck: boolean
   giteeUpdatesSource: boolean
   cnMirror: boolean
+  useHfMirror: boolean
   host: string
   dpiScaling: number
   customModelsPath: string

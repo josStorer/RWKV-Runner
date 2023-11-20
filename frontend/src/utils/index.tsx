@@ -474,6 +474,12 @@ export function toastWithButton(text: string, buttonText: string, onClickButton:
   return id;
 }
 
+export function getHfDownloadUrl(url: string) {
+  if (commonStore.settings.useHfMirror && url.includes('huggingface.co') && url.includes('resolve'))
+    return url.replace('huggingface.co', 'hf-mirror.com');
+  return url;
+}
+
 export function getSupportedCustomCudaFile(isBeta: boolean) {
   if ([' 10', ' 16', ' 20', ' 30', 'MX', 'Tesla P', 'Quadro P', 'NVIDIA P', 'TITAN X', 'TITAN RTX', 'RTX A',
     'Quadro RTX 4000', 'Quadro RTX 5000', 'Tesla T4', 'NVIDIA A10', 'NVIDIA A40'].some(v => commonStore.status.device_name.includes(v)))
