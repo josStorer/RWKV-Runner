@@ -328,7 +328,7 @@ const Configs: FC = observer(() => {
                 } />
                 {
                   selectedConfig.modelParameters.device !== 'Custom' && <Labeled label={t('Precision')}
-                    desc={t('int8 uses less VRAM, but has slightly lower quality. fp16 has higher quality, and fp32 has the best quality.')}
+                    desc={t('int8 uses less VRAM, but has slightly lower quality. fp16 has higher quality.')}
                     content={
                       <Dropdown style={{ minWidth: 0 }} className="grow"
                         value={selectedConfig.modelParameters.precision}

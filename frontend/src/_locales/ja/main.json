@@ -82,7 +82,7 @@
   "Just like feeding sedatives to the model. Consider the results of the top n% probability mass, 0.1 considers the top 10%, with higher quality but more conservative, 1 considers all results, with lower quality but more diverse.": "モデルに鎮静剤を与えるようなもの。上位n％の確率質量の結果を考えてみてください。0.1は上位10％を考えており、質が高いが保守的で、1は全ての結果を考慮しており、質は低いが多様性があります。",
   "Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.": "ポジティヴ値は、新しいトークンが今までのテキストに出現していたかどうかに基づいてこれらをペナルティとし、新しいトピックについて話す可能性を増加させます。",
   "Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.": "ポジティブ値は、新しいトークンが既存のテキストでどれだけ頻繁に使われているかに基づいてペナルティを与え、モデルが同じ行を完全に繰り返す可能性を減らします。",
-  "int8 uses less VRAM, but has slightly lower quality. fp16 has higher quality, and fp32 has the best quality.": "int8はVRAMの使用量が少ないですが、質が若干低いです。fp16は高品質、fp32は最高品質です。",
+  "int8 uses less VRAM, but has slightly lower quality. fp16 has higher quality.": "int8はVRAMの使用量が少ないですが、質が若干低いです。fp16は高品質。",
   "Number of the neural network layers loaded into VRAM, the more you load, the faster the speed, but it consumes more VRAM. (If your VRAM is not enough, it will fail to load)": "VRAMにロードされるニューラルネットワークの層の数。ロードする量が多いほど速度は速くなりますが、VRAMを多く消費します。(VRAMが不足している場合、ロードに失敗します)",
   "Whether to use CPU to calculate the last output layer of the neural network with FP32 precision to obtain better quality.": "ネットワークの最終出力層をFP32精度で計算するためにCPUを使用するかどうか。",
   "Downloads": "ダウンロード",

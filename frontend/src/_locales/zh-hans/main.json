@@ -82,7 +82,7 @@
   "Just like feeding sedatives to the model. Consider the results of the top n% probability mass, 0.1 considers the top 10%, with higher quality but more conservative, 1 considers all results, with lower quality but more diverse.": "就像给模型喂镇静剂. 考虑前 n% 概率质量的结果, 0.1 考虑前 10%, 质量更高, 但更保守, 1 考虑所有质量结果, 质量降低, 但更多样",
   "Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.": "存在惩罚. 正值根据新token在至今的文本中是否出现过, 来对其进行惩罚, 从而增加了模型涉及新话题的可能性",
   "Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.": "频率惩罚. 正值根据新token在至今的文本中出现的频率/次数, 来对其进行惩罚, 从而减少模型原封不动地重复相同句子的可能性",
-  "int8 uses less VRAM, but has slightly lower quality. fp16 has higher quality, and fp32 has the best quality.": "int8占用显存更低, 但质量略微下降. fp16质量更好, fp32质量最好",
+  "int8 uses less VRAM, but has slightly lower quality. fp16 has higher quality.": "int8占用显存更低, 但质量略微下降. fp16质量更好",
   "Number of the neural network layers loaded into VRAM, the more you load, the faster the speed, but it consumes more VRAM. (If your VRAM is not enough, it will fail to load)": "载入显存的神经网络层数, 载入越多, 速度越快, 但显存消耗越大 (如果你的显存不够, 会载入失败)",
   "Whether to use CPU to calculate the last output layer of the neural network with FP32 precision to obtain better quality.": "是否使用cpu以fp32精度计算神经网络的最后一层输出层, 以获得更好的质量",
   "Downloads": "下载",
