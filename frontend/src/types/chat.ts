@@ -1,3 +1,5 @@
+import { ApiParameters } from './configs';
+
 export const userName = 'M E';
 export const botName = 'A I';
 export const welcomeUuid = 'welcome';
@@ -32,3 +34,4 @@ export type Attachment = {
   size: number;
   content: string;
 }
+export type ChatParams = Omit<ApiParameters, 'apiPort'>

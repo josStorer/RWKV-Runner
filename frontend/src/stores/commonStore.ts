@@ -7,7 +7,7 @@ import { defaultCompositionPrompt, defaultModelConfigs, defaultModelConfigsMac }
 import { ChartData } from 'chart.js';
 import { Preset } from '../types/presets';
 import { AboutContent } from '../types/about';
-import { Attachment, Conversation } from '../types/chat';
+import { Attachment, ChatParams, Conversation } from '../types/chat';
 import { CompletionPreset } from '../types/completion';
 import { CompositionParams } from '../types/composition';
 import { ModelConfig } from '../types/configs';
@@ -65,6 +65,14 @@ class CommonStore {
   attachmentUploading: boolean = false;
   attachments: { [uuid: string]: Attachment[] } = {};
   currentTempAttachment: Attachment | null = null;
+  chatParams: ChatParams = {
+    maxResponseToken: 1000,
+    temperature: 1,
+    topP: 0.3,
+    presencePenalty: 0,
+    frequencyPenalty: 1
+  };
+  sidePanelCollapsed: boolean | 'auto' = 'auto';
   // completion
   completionPreset: CompletionPreset | null = null;
   completionGenerating: boolean = false;
@@ -362,6 +370,14 @@ class CommonStore {
 
   setCurrentTempAttachment(value: Attachment | null) {
     this.currentTempAttachment = value;
+  }
+
+  setChatParams(value: Partial<ChatParams>) {
+    this.chatParams = { ...this.chatParams, ...value };
+  }
+
+  setSidePanelCollapsed(value: boolean | 'auto') {
+    this.sidePanelCollapsed = value;
   }
 }
 

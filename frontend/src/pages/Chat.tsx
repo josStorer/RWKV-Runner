@@ -16,8 +16,11 @@ import {
   Attach16Regular,
   Delete28Regular,
   Dismiss16Regular,
+  Dismiss24Regular,
   RecordStop28Regular,
-  Save28Regular
+  SaveRegular,
+  TextAlignJustify24Regular,
+  TextAlignJustifyRotate9024Regular
 } from '@fluentui/react-icons';
 import { CopyButton } from '../components/CopyButton';
 import { ReadButton } from '../components/ReadButton';
@@ -26,9 +29,11 @@ import { WorkHeader } from '../components/WorkHeader';
 import { DialogButton } from '../components/DialogButton';
 import { OpenFileFolder, OpenOpenFileDialog, OpenSaveFileDialog } from '../../wailsjs/go/backend_golang/App';
 import { absPathAsset, bytesToReadable, getServerRoot, toastWithButton } from '../utils';
-import { PresetsButton } from './PresetsManager/PresetsButton';
 import { useMediaQuery } from 'usehooks-ts';
 import { botName, ConversationMessage, MessageType, userName, welcomeUuid } from '../types/chat';
+import { Labeled } from '../components/Labeled';
+import { ValuedSlider } from '../components/ValuedSlider';
+import { PresetsButton } from './PresetsManager/PresetsButton';
 
 let chatSseControllers: {
   [id: string]: AbortController
@@ -188,11 +193,125 @@ const ChatMessageItem: FC<{
   </div>;
 });
 
+const SidePanel: FC = observer(() => {
+  const [t] = useTranslation();
+  const mq = useMediaQuery('(min-width: 640px)');
+  const params = commonStore.chatParams;
+
+  return <div
+    className={classnames(
+      'flex flex-col gap-1 h-full flex-shrink-0 transition-width duration-300 ease-in-out',
+      commonStore.sidePanelCollapsed ? 'w-0' : (mq ? 'w-64' : 'w-full'),
+      !commonStore.sidePanelCollapsed && 'ml-1')
+    }>
+    <div className="flex m-1">
+      <div className="grow" />
+      <PresetsButton tab="Chat" size="medium" shape="circular" appearance="subtle" />
+      <Button size="medium" shape="circular" appearance="subtle" icon={<Dismiss24Regular />}
+        onClick={() => commonStore.setSidePanelCollapsed(true)}
+      />
+    </div>
+    <div className="flex flex-col gap-1 overflow-x-hidden overflow-y-auto p-1">
+      <Labeled flex breakline label={t('Max Response Token')}
+        desc={t('By default, the maximum number of tokens that can be answered in a single response, it can be changed by the user by specifying API parameters.')}
+        content={
+          <ValuedSlider value={params.maxResponseToken} min={100} max={8100}
+            step={100}
+            input
+            onChange={(e, data) => {
+              commonStore.setChatParams({
+                maxResponseToken: data.value
+              });
+            }} />
+        } />
+      <Labeled flex breakline label={t('Temperature')}
+        desc={t('Sampling temperature, it\'s like giving alcohol to a model, the higher the stronger the randomness and creativity, while the lower, the more focused and deterministic it will be.')}
+        content={
+          <ValuedSlider value={params.temperature} min={0} max={2} step={0.1}
+            input
+            onChange={(e, data) => {
+              commonStore.setChatParams({
+                temperature: data.value
+              });
+            }} />
+        } />
+      <Labeled flex breakline label={t('Top_P')}
+        desc={t('Just like feeding sedatives to the model. Consider the results of the top n% probability mass, 0.1 considers the top 10%, with higher quality but more conservative, 1 considers all results, with lower quality but more diverse.')}
+        content={
+          <ValuedSlider value={params.topP} min={0} max={1} step={0.1} input
+            onChange={(e, data) => {
+              commonStore.setChatParams({
+                topP: data.value
+              });
+            }} />
+        } />
+      <Labeled flex breakline label={t('Presence Penalty')}
+        desc={t('Positive values penalize new tokens based on whether they appear in the text so far, increasing the model\'s likelihood to talk about new topics.')}
+        content={
+          <ValuedSlider value={params.presencePenalty} min={0} max={2}
+            step={0.1} input
+            onChange={(e, data) => {
+              commonStore.setChatParams({
+                presencePenalty: data.value
+              });
+            }} />
+        } />
+      <Labeled flex breakline label={t('Frequency Penalty')}
+        desc={t('Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model\'s likelihood to repeat the same line verbatim.')}
+        content={
+          <ValuedSlider value={params.frequencyPenalty} min={0} max={2}
+            step={0.1} input
+            onChange={(e, data) => {
+              commonStore.setChatParams({
+                frequencyPenalty: data.value
+              });
+            }} />
+        } />
+    </div>
+    <div className="grow" />
+    {/*<Button*/}
+    {/*  icon={<FolderOpenVerticalRegular />}*/}
+    {/*  onClick={() => {*/}
+    {/*  }}>*/}
+    {/*  {t('Load Conversation')}*/}
+    {/*</Button>*/}
+    <Button
+      icon={<SaveRegular />}
+      onClick={() => {
+        let savedContent: string = '';
+        const isWorldModel = commonStore.getCurrentModelConfig().modelParameters.modelName.toLowerCase().includes('world');
+        const user = isWorldModel ? 'User' : 'Bob';
+        const bot = isWorldModel ? 'Assistant' : 'Alice';
+        commonStore.conversationOrder.forEach((uuid) => {
+          if (uuid === welcomeUuid)
+            return;
+          const messageItem = commonStore.conversation[uuid];
+          if (messageItem.type !== MessageType.Error) {
+            savedContent += `${messageItem.sender === userName ? user : bot}: ${messageItem.content}\n\n`;
+          }
+        });
+
+        OpenSaveFileDialog('*.txt', 'conversation.txt', savedContent).then((path) => {
+          if (path)
+            toastWithButton(t('Conversation Saved'), t('Open'), () => {
+              OpenFileFolder(path, false);
+            });
+        }).catch(e => {
+          toast(t('Error') + ' - ' + (e.message || e), { type: 'error', autoClose: 2500 });
+        });
+      }}>
+      {t('Save Conversation')}
+    </Button>
+  </div>;
+});
+
 const ChatPanel: FC = observer(() => {
   const { t } = useTranslation();
   const bodyRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const mq = useMediaQuery('(min-width: 640px)');
+  if (commonStore.sidePanelCollapsed === 'auto')
+    commonStore.setSidePanelCollapsed(!mq);
   const currentConfig = commonStore.getCurrentModelConfig();
   const apiParams = currentConfig.apiParameters;
   const port = apiParams.apiPort;
@@ -327,8 +446,10 @@ const ChatPanel: FC = observer(() => {
           messages,
           stream: true,
           model: commonStore.settings.apiChatModelName, // 'gpt-3.5-turbo'
-          temperature: apiParams.temperature,
-          top_p: apiParams.topP,
+          temperature: commonStore.chatParams.temperature,
+          top_p: commonStore.chatParams.topP,
+          presence_penalty: commonStore.chatParams.presencePenalty,
+          frequency_penalty: commonStore.chatParams.frequencyPenalty,
           user_name: commonStore.activePreset?.userName || undefined,
           assistant_name: commonStore.activePreset?.assistantName || undefined,
           presystem: commonStore.activePreset?.presystem && undefined
@@ -391,185 +512,164 @@ const ChatPanel: FC = observer(() => {
   }, []);
 
   return (
-    <div className="flex flex-col w-full grow gap-4 pt-4 overflow-hidden">
-      <div ref={bodyRef} className="grow overflow-y-scroll overflow-x-hidden pr-2">
-        {commonStore.conversationOrder.map(uuid =>
-          <ChatMessageItem key={uuid} uuid={uuid} onSubmit={onSubmit} />
-        )}
-      </div>
-      <div className={classnames('flex items-end', mq ? 'gap-2' : '')}>
-        <PresetsButton tab="Chat" size={mq ? 'large' : 'small'} shape="circular" appearance="subtle" />
-        <DialogButton tooltip={t('Clear')}
-          icon={<Delete28Regular />}
-          size={mq ? 'large' : 'small'} shape="circular" appearance="subtle" title={t('Clear')}
-          contentText={t('Are you sure you want to clear the conversation? It cannot be undone.')}
-          onConfirm={() => {
-            if (generating) {
-              for (const id in chatSseControllers) {
-                chatSseControllers[id].abort();
+    <div className="flex h-full grow pt-4 overflow-hidden">
+      <div className="relative flex flex-col w-full grow gap-4 overflow-hidden">
+        <Button className="absolute top-1 right-1" size="medium" shape="circular" appearance="subtle"
+          icon={commonStore.sidePanelCollapsed ? <TextAlignJustify24Regular /> : <TextAlignJustifyRotate9024Regular />}
+          onClick={() => commonStore.setSidePanelCollapsed(!commonStore.sidePanelCollapsed)} />
+        <div ref={bodyRef} className="grow overflow-y-scroll overflow-x-hidden pr-2">
+          {commonStore.conversationOrder.map(uuid =>
+            <ChatMessageItem key={uuid} uuid={uuid} onSubmit={onSubmit} />
+          )}
+        </div>
+        <div className={classnames('flex items-end', mq ? 'gap-2' : '')}>
+          <DialogButton tooltip={t('Clear')}
+            icon={<Delete28Regular />}
+            size={mq ? 'large' : 'small'} shape="circular" appearance="subtle" title={t('Clear')}
+            contentText={t('Are you sure you want to clear the conversation? It cannot be undone.')}
+            onConfirm={() => {
+              if (generating) {
+                for (const id in chatSseControllers) {
+                  chatSseControllers[id].abort();
+                }
+                chatSseControllers = {};
               }
-              chatSseControllers = {};
-            }
-            commonStore.setConversation({});
-            commonStore.setConversationOrder([]);
-          }} />
-        <div className="relative flex grow">
-          <Textarea
-            ref={inputRef}
-            style={{ minWidth: 0 }}
-            className="grow"
-            resize="vertical"
-            placeholder={t('Type your message here')!}
-            value={commonStore.currentInput}
-            onChange={(e) => commonStore.setCurrentInput(e.target.value)}
-            onKeyDown={handleKeyDownOrClick}
-          />
-          <div className="absolute right-2 bottom-2">
-            {!commonStore.currentTempAttachment ?
-              <ToolTipButton
-                desc={commonStore.attachmentUploading ?
-                  t('Uploading Attachment') :
-                  t('Add An Attachment (Accepts pdf, txt)')}
-                icon={commonStore.attachmentUploading ?
-                  <ArrowClockwise16Regular className="animate-spin" />
-                  : <Attach16Regular />}
-                size="small" shape="circular" appearance="secondary"
-                onClick={() => {
-                  if (commonStore.status.status === ModelStatus.Offline && !commonStore.settings.apiUrl && commonStore.platform !== 'web') {
-                    toast(t('Please click the button in the top right corner to start the model'), { type: 'warning' });
-                    return;
-                  }
+              commonStore.setConversation({});
+              commonStore.setConversationOrder([]);
+            }} />
+          <div className="relative flex grow">
+            <Textarea
+              ref={inputRef}
+              style={{ minWidth: 0 }}
+              className="grow"
+              resize="vertical"
+              placeholder={t('Type your message here')!}
+              value={commonStore.currentInput}
+              onChange={(e) => commonStore.setCurrentInput(e.target.value)}
+              onKeyDown={handleKeyDownOrClick}
+            />
+            <div className="absolute right-2 bottom-2">
+              {!commonStore.currentTempAttachment ?
+                <ToolTipButton
+                  desc={commonStore.attachmentUploading ?
+                    t('Uploading Attachment') :
+                    t('Add An Attachment (Accepts pdf, txt)')}
+                  icon={commonStore.attachmentUploading ?
+                    <ArrowClockwise16Regular className="animate-spin" />
+                    : <Attach16Regular />}
+                  size="small" shape="circular" appearance="secondary"
+                  onClick={() => {
+                    if (commonStore.status.status === ModelStatus.Offline && !commonStore.settings.apiUrl && commonStore.platform !== 'web') {
+                      toast(t('Please click the button in the top right corner to start the model'), { type: 'warning' });
+                      return;
+                    }
 
-                  if (commonStore.attachmentUploading)
-                    return;
-
-                  OpenOpenFileDialog('*.txt;*.pdf').then(async filePath => {
-                    if (!filePath)
+                    if (commonStore.attachmentUploading)
                       return;
 
-                    commonStore.setAttachmentUploading(true);
+                    OpenOpenFileDialog('*.txt;*.pdf').then(async filePath => {
+                      if (!filePath)
+                        return;
 
-                    let blob: Blob;
-                    let attachmentName: string | undefined;
-                    let attachmentContent: string | undefined;
-                    if (commonStore.platform === 'web') {
-                      const webReturn = filePath as any;
-                      blob = webReturn.blob;
-                      attachmentName = blob.name;
-                      attachmentContent = webReturn.content;
-                    } else {
-                      // Both are slow. Communication between frontend and backend is slow. Use AssetServer Handler to read the file.
-                      // const blob = new Blob([atob(info.content as unknown as string)]); // await fetch(`data:application/octet-stream;base64,${info.content}`).then(r => r.blob());
-                      blob = await fetch(absPathAsset(filePath)).then(r => r.blob());
-                      attachmentName = filePath.split(/[\\/]/).pop();
-                    }
-                    if (attachmentContent) {
-                      commonStore.setCurrentTempAttachment(
-                        {
-                          name: attachmentName!,
-                          size: blob.size,
-                          content: attachmentContent
-                        });
-                      commonStore.setAttachmentUploading(false);
-                    } else {
-                      const urlPath = `/file-to-text?file_name=${attachmentName}`;
-                      const bodyForm = new FormData();
-                      bodyForm.append('file_data', blob, attachmentName);
-                      fetch(getServerRoot(port) + urlPath, {
-                        method: 'POST',
-                        body: bodyForm
-                      }).then(async r => {
-                          if (r.status === 200) {
-                            const pages = (await r.json()).pages as any[];
-                            if (pages.length === 1)
-                              attachmentContent = pages[0].page_content;
-                            else
-                              attachmentContent = pages.map((p, i) => `Page ${i + 1}:\n${p.page_content}`).join('\n\n');
-                            commonStore.setCurrentTempAttachment(
-                              {
-                                name: attachmentName!,
-                                size: blob.size,
-                                content: attachmentContent!
-                              });
-                          } else {
-                            toast(r.statusText + '\n' + (await r.text()), {
-                              type: 'error'
-                            });
-                          }
-                          commonStore.setAttachmentUploading(false);
-                        }
-                      ).catch(e => {
+                      commonStore.setAttachmentUploading(true);
+
+                      let blob: Blob;
+                      let attachmentName: string | undefined;
+                      let attachmentContent: string | undefined;
+                      if (commonStore.platform === 'web') {
+                        const webReturn = filePath as any;
+                        blob = webReturn.blob;
+                        attachmentName = blob.name;
+                        attachmentContent = webReturn.content;
+                      } else {
+                        // Both are slow. Communication between frontend and backend is slow. Use AssetServer Handler to read the file.
+                        // const blob = new Blob([atob(info.content as unknown as string)]); // await fetch(`data:application/octet-stream;base64,${info.content}`).then(r => r.blob());
+                        blob = await fetch(absPathAsset(filePath)).then(r => r.blob());
+                        attachmentName = filePath.split(/[\\/]/).pop();
+                      }
+                      if (attachmentContent) {
+                        commonStore.setCurrentTempAttachment(
+                          {
+                            name: attachmentName!,
+                            size: blob.size,
+                            content: attachmentContent
+                          });
                         commonStore.setAttachmentUploading(false);
-                        toast(t('Error') + ' - ' + (e.message || e), { type: 'error', autoClose: 2500 });
-                      });
+                      } else {
+                        const urlPath = `/file-to-text?file_name=${attachmentName}`;
+                        const bodyForm = new FormData();
+                        bodyForm.append('file_data', blob, attachmentName);
+                        fetch(getServerRoot(port) + urlPath, {
+                          method: 'POST',
+                          body: bodyForm
+                        }).then(async r => {
+                            if (r.status === 200) {
+                              const pages = (await r.json()).pages as any[];
+                              if (pages.length === 1)
+                                attachmentContent = pages[0].page_content;
+                              else
+                                attachmentContent = pages.map((p, i) => `Page ${i + 1}:\n${p.page_content}`).join('\n\n');
+                              commonStore.setCurrentTempAttachment(
+                                {
+                                  name: attachmentName!,
+                                  size: blob.size,
+                                  content: attachmentContent!
+                                });
+                            } else {
+                              toast(r.statusText + '\n' + (await r.text()), {
+                                type: 'error'
+                              });
+                            }
+                            commonStore.setAttachmentUploading(false);
+                          }
+                        ).catch(e => {
+                          commonStore.setAttachmentUploading(false);
+                          toast(t('Error') + ' - ' + (e.message || e), { type: 'error', autoClose: 2500 });
+                        });
+                      }
+                    }).catch(e => {
+                      toast(t('Error') + ' - ' + (e.message || e), { type: 'error', autoClose: 2500 });
+                    });
+                  }}
+                /> :
+                <div>
+                  <ToolTipButton
+                    text={
+                      commonStore.currentTempAttachment.name.replace(
+                        new RegExp('(^[^\\.]{5})[^\\.]+'), '$1...')
                     }
-                  }).catch(e => {
-                    toast(t('Error') + ' - ' + (e.message || e), { type: 'error', autoClose: 2500 });
-                  });
-                }}
-              /> :
-              <div>
-                <ToolTipButton
-                  text={
-                    commonStore.currentTempAttachment.name.replace(
-                      new RegExp('(^[^\\.]{5})[^\\.]+'), '$1...')
-                  }
-                  desc={`${commonStore.currentTempAttachment.name} (${bytesToReadable(commonStore.currentTempAttachment.size)})`}
-                  size="small" shape="circular" appearance="secondary" />
-                <ToolTipButton desc={t('Remove Attachment')}
-                  icon={<Dismiss16Regular />}
-                  size="small" shape="circular" appearance="subtle"
-                  onClick={() => {
-                    commonStore.setCurrentTempAttachment(null);
-                  }} />
-              </div>
-            }
+                    desc={`${commonStore.currentTempAttachment.name} (${bytesToReadable(commonStore.currentTempAttachment.size)})`}
+                    size="small" shape="circular" appearance="secondary" />
+                  <ToolTipButton desc={t('Remove Attachment')}
+                    icon={<Dismiss16Regular />}
+                    size="small" shape="circular" appearance="subtle"
+                    onClick={() => {
+                      commonStore.setCurrentTempAttachment(null);
+                    }} />
+                </div>
+              }
+            </div>
           </div>
+          <ToolTipButton desc={generating ? t('Stop') : t('Send')}
+            icon={generating ? <RecordStop28Regular /> : <ArrowCircleUp28Regular />}
+            size={mq ? 'large' : 'small'} shape="circular" appearance="subtle"
+            onClick={(e) => {
+              if (generating) {
+                for (const id in chatSseControllers) {
+                  chatSseControllers[id].abort();
+                  commonStore.conversation[id].type = MessageType.Error;
+                  commonStore.conversation[id].done = true;
+                }
+                chatSseControllers = {};
+                commonStore.setConversation(commonStore.conversation);
+                commonStore.setConversationOrder([...commonStore.conversationOrder]);
+              } else {
+                handleKeyDownOrClick(e);
+              }
+            }} />
         </div>
-        <ToolTipButton desc={generating ? t('Stop') : t('Send')}
-          icon={generating ? <RecordStop28Regular /> : <ArrowCircleUp28Regular />}
-          size={mq ? 'large' : 'small'} shape="circular" appearance="subtle"
-          onClick={(e) => {
-            if (generating) {
-              for (const id in chatSseControllers) {
-                chatSseControllers[id].abort();
-                commonStore.conversation[id].type = MessageType.Error;
-                commonStore.conversation[id].done = true;
-              }
-              chatSseControllers = {};
-              commonStore.setConversation(commonStore.conversation);
-              commonStore.setConversationOrder([...commonStore.conversationOrder]);
-            } else {
-              handleKeyDownOrClick(e);
-            }
-          }} />
-        <ToolTipButton desc={t('Save')}
-          icon={<Save28Regular />}
-          size={mq ? 'large' : 'small'} shape="circular" appearance="subtle"
-          onClick={() => {
-            let savedContent: string = '';
-            const isWorldModel = commonStore.getCurrentModelConfig().modelParameters.modelName.toLowerCase().includes('world');
-            const user = isWorldModel ? 'User' : 'Bob';
-            const bot = isWorldModel ? 'Assistant' : 'Alice';
-            commonStore.conversationOrder.forEach((uuid) => {
-              if (uuid === welcomeUuid)
-                return;
-              const messageItem = commonStore.conversation[uuid];
-              if (messageItem.type !== MessageType.Error) {
-                savedContent += `${messageItem.sender === userName ? user : bot}: ${messageItem.content}\n\n`;
-              }
-            });
-
-            OpenSaveFileDialog('*.txt', 'conversation.txt', savedContent).then((path) => {
-              if (path)
-                toastWithButton(t('Conversation Saved'), t('Open'), () => {
-                  OpenFileFolder(path, false);
-                });
-            }).catch(e => {
-              toast(t('Error') + ' - ' + (e.message || e), { type: 'error', autoClose: 2500 });
-            });
-          }} />
       </div>
+      <SidePanel />
     </div>
   );
 });
