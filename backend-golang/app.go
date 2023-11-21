@@ -69,8 +69,8 @@ func (a *App) OnBeforeClose(ctx context.Context) bool {
 func (a *App) watchFs() {
 	watcher, err := fsnotify.NewWatcher()
 	if err == nil {
-		watcher.Add("./lora-models")
-		watcher.Add("./models")
+		watcher.Add(a.exDir + "./lora-models")
+		watcher.Add(a.exDir + "./models")
 		go func() {
 			for {
 				select {
