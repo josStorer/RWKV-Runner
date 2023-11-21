@@ -273,10 +273,7 @@ const Configs: FC = observer(() => {
                     <ToolTipButton text={t('Convert To Safe Tensors Format')}
                       desc=""
                       onClick={async () => {
-                        if (commonStore.platform === 'darwin') {
-                          toast(t('MacOS is not yet supported for performing this operation, please do it manually.') + ' (backend-python/convert_safetensors.py)', { type: 'info' });
-                          return;
-                        } else if (commonStore.platform === 'linux') {
+                        if (commonStore.platform === 'linux') {
                           toast(t('Linux is not yet supported for performing this operation, please do it manually.') + ' (backend-python/convert_safetensors.py)', { type: 'info' });
                           return;
                         }
