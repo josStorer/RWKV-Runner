@@ -1,18 +1,12 @@
 ## Changes
 
-### Changes
-
-- add webgpu nf4
-- add sidePanel for Chat page
-- add hf-mirror for cn users
-- use local API when it's working, even if a custom API URL is provided
-- add rwkv API URL Option
-- macos: change default webgpu backend to aarch64-apple-darwin and fix the permission issue
-- strict default_stop
-- fix state_cache of deploy mode
-- fix a finetune bug
-- improve lazy loading ui
-- display lastModelName at the top (WorkHeader)
+- upgrade to rwkv 0.8.22 (rwkv6 support)
+- allow reading attachments even if the model is offline
+- improve launch flow of webgpu mode
+- allow safetensors converter on macOS
+- fix fs watcher of macOS
+- update defaultConfigs
+- update manifest
 - chores
 
 ## Install
