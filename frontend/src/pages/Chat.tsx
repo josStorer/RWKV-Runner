@@ -515,6 +515,7 @@ const ChatPanel: FC = observer(() => {
     <div className="flex h-full grow pt-4 overflow-hidden">
       <div className="relative flex flex-col w-full grow gap-4 overflow-hidden">
         <Button className="absolute top-1 right-1" size="medium" shape="circular" appearance="subtle"
+          style={{ zIndex: 1 }}
           icon={commonStore.sidePanelCollapsed ? <TextAlignJustify24Regular /> : <TextAlignJustifyRotate9024Regular />}
           onClick={() => commonStore.setSidePanelCollapsed(!commonStore.sidePanelCollapsed)} />
         <div ref={bodyRef} className="grow overflow-y-scroll overflow-x-hidden pr-2">
