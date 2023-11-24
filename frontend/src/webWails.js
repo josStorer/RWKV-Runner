@@ -1,3 +1,5 @@
+import { webOpenOpenFileDialog } from './utils/web-file-operations'
+
 function defineRuntime(name, func) {
   window.runtime[name] = func
 }
@@ -107,37 +109,7 @@ if (!window.go) {
   defineApp('ListDirFiles', async () => {
     return []
   })
-  defineApp('OpenOpenFileDialog', async (filterPattern) => {
-    return new Promise((resolve, reject) => {
-      const input = document.createElement('input')
-      input.type = 'file'
-      input.accept = filterPattern
-        .replaceAll('*.txt', 'text/plain')
-        .replaceAll('*.', 'application/')
-        .replaceAll(';', ',')
-
-      input.onchange = e => {
-        const file = e.target?.files[0]
-        if (file.type === 'text/plain') {
-          const reader = new FileReader()
-          reader.readAsText(file, 'UTF-8')
-
-          reader.onload = readerEvent => {
-            const content = readerEvent.target?.result
-            resolve({
-              blob: file,
-              content: content
-            })
-          }
-        } else {
-          resolve({
-            blob: file
-          })
-        }
-      }
-      input.click()
-    })
-  })
+  defineApp('OpenOpenFileDialog', webOpenOpenFileDialog)
   defineApp('OpenSaveFileDialog', async (filterPattern, defaultFileName, savedContent) => {
     const saver = await import('file-saver')
     saver.saveAs(new Blob([savedContent], { type: 'text/plain;charset=utf-8' }), defaultFileName)

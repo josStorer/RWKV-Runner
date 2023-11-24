@@ -3,6 +3,7 @@ import { dependencies } from './package.json';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { visualizer } from 'rollup-plugin-visualizer';
+import topLevelAwait from 'vite-plugin-top-level-await';
 
 // dependencies that exist anywhere
 const vendor = [
@@ -35,12 +36,18 @@ function renderChunks(deps: Record<string, string>) {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(),
+  plugins: [
+    react(),
     visualizer({
       template: 'treemap',
       gzipSize: true,
       brotliSize: true
-    })],
+    }),
+    topLevelAwait({
+      promiseExportName: '__tla',
+      promiseImportName: i => `__tla_${i}`
+    })
+  ],
   build: {
     chunkSizeWarningLimit: 3000,
     rollupOptions: {
