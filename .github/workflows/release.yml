@@ -109,6 +109,7 @@ jobs:
           go install github.com/wailsapp/wails/v2/cmd/wails@latest
           rm ./backend-python/rwkv_pip/wkv_cuda.pyd
           rm ./backend-python/rwkv_pip/rwkv5.pyd
+          rm ./backend-python/rwkv_pip/rwkv6.pyd
           rm ./backend-python/rwkv_pip/beta/wkv_cuda.pyd
           rm ./backend-python/get-pip.py
           make
@@ -141,6 +142,7 @@ jobs:
           go install github.com/wailsapp/wails/v2/cmd/wails@latest
           rm ./backend-python/rwkv_pip/wkv_cuda.pyd
           rm ./backend-python/rwkv_pip/rwkv5.pyd
+          rm ./backend-python/rwkv_pip/rwkv6.pyd
           rm ./backend-python/rwkv_pip/beta/wkv_cuda.pyd
           rm ./backend-python/get-pip.py
           make

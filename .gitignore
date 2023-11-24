@@ -18,7 +18,7 @@ __pycache__
 /cmd-helper.bat
 /install-py-dep.bat
 /backend-python/wkv_cuda
-/backend-python/rwkv5
+/backend-python/rwkv*
 *.exe
 *.old
 .DS_Store
