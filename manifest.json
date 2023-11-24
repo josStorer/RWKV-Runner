@@ -16,6 +16,32 @@
   ],
   "models": [
     {
+      "name": "RWKV-5-World-0.1B-v1-20230803-ctx4096.pth",
+      "desc": {
+        "en": "RWKV-5 Global Languages 0.1B v1",
+        "zh": "RWKV-5 全球语言 0.1B v1",
+        "ja": "RWKV-5 グローバル言語 0.1B v1"
+      },
+      "size": 385598386,
+      "SHA256": "c844a3ee05bcb9065848cb05b10c48a3f381f5ac1953aad89e156ecdf31d7703",
+      "lastUpdated": "2023-08-03T15:18:46",
+      "url": "https://huggingface.co/BlinkDL/rwkv-5-world/blob/main/RWKV-5-World-0.1B-v1-20230803-ctx4096.pth?download=true",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-world/resolve/main/RWKV-5-World-0.1B-v1-20230803-ctx4096.pth?download=true"
+    },
+    {
+      "name": "RWKV-5-World-0.4B-v2-20231113-ctx4096.pth",
+      "desc": {
+        "en": "RWKV-5 Global Languages 0.4B v2",
+        "zh": "RWKV-5 全球语言 0.4B v2",
+        "ja": "RWKV-5 グローバル言語 0.4B v2"
+      },
+      "size": 923523954,
+      "SHA256": "5a288c54c7f30b0e2d4af23991133fad2af2d5e59ec7ad850ffe78054a5e4f92",
+      "lastUpdated": "2023-11-14T01:23:49",
+      "url": "https://huggingface.co/BlinkDL/rwkv-5-world/blob/main/RWKV-5-World-0.4B-v2-20231113-ctx4096.pth?download=true",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-world/resolve/main/RWKV-5-World-0.4B-v2-20231113-ctx4096.pth?download=true"
+    },
+    {
       "name": "RWKV-5-World-1B5-v2-20231025-ctx4096.pth",
       "desc": {
         "en": "RWKV-5 Global Languages 1.5B v2",
@@ -27,6 +53,32 @@
       "lastUpdated": "2023-10-26T05:49:30",
       "url": "https://huggingface.co/BlinkDL/rwkv-5-world/blob/main/RWKV-5-World-1B5-v2-20231025-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-world/resolve/main/RWKV-5-World-1B5-v2-20231025-ctx4096.pth"
+    },
+    {
+      "name": "RWKV-5-World-3B-v2-20231113-ctx4096.pth",
+      "desc": {
+        "en": "RWKV-5 Global Languages 3B v2",
+        "zh": "RWKV-5 全球语言 3B v2",
+        "ja": "RWKV-5 グローバル言語 3B v2"
+      },
+      "size": 6126106674,
+      "SHA256": "a4bd430343c6fd138b85bbc68bb20262d3a2f053ea57dc4b41078269af68ff9c",
+      "lastUpdated": "2023-11-14T01:23:49",
+      "url": "https://huggingface.co/BlinkDL/rwkv-5-world/blob/main/RWKV-5-World-3B-v2-20231113-ctx4096.pth?download=true",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-world/resolve/main/RWKV-5-World-3B-v2-20231113-ctx4096.pth?download=true"
+    },
+    {
+      "name": "RWKV-5-World-3B-v2-20231118-ctx16k.pth",
+      "desc": {
+        "en": "RWKV-5 Global Languages 3B v2 Ctx16k",
+        "zh": "RWKV-5 全球语言 3B v2 16k上下文",
+        "ja": "RWKV-5 グローバル言語 3B v2 16kコンテキスト"
+      },
+      "size": 6126106467,
+      "SHA256": "efa5178d1c824b94ef17c6c9a456674e5581a8be832becbda9aba4dc533f88c2",
+      "lastUpdated": "2023-11-19T04:21:04",
+      "url": "https://huggingface.co/BlinkDL/rwkv-5-world/blob/main/RWKV-5-World-3B-v2-20231118-ctx16k.pth?download=true",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-world/resolve/main/RWKV-5-World-3B-v2-20231118-ctx16k.pth?download=true"
     },
     {
       "name": "RWKV-4-World-CHNtuned-0.1B-v1-20230617-ctx4096.pth",
