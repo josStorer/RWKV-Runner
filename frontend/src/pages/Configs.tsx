@@ -26,7 +26,7 @@ import { Page } from '../components/Page';
 import { useNavigate } from 'react-router';
 import { RunButton } from '../components/RunButton';
 import { updateConfig } from '../apis';
-import { ConvertModel, ConvertSafetensors, FileExists, GetPyError } from '../../wailsjs/go/backend_golang/App';
+import { ConvertModel, FileExists, GetPyError } from '../../wailsjs/go/backend_golang/App';
 import { checkDependencies, getStrategy } from '../utils';
 import { useTranslation } from 'react-i18next';
 import { WindowShow } from '../../wailsjs/runtime';
@@ -35,6 +35,7 @@ import strategyZhImg from '../assets/images/strategy_zh.jpg';
 import { ResetConfigsButton } from '../components/ResetConfigsButton';
 import { useMediaQuery } from 'usehooks-ts';
 import { ApiParameters, Device, ModelParameters, Precision } from '../types/configs';
+import { convertToSt } from '../utils/convert-to-st';
 
 const Configs: FC = observer(() => {
   const { t } = useTranslation();
@@ -272,38 +273,7 @@ const Configs: FC = observer(() => {
                       }} /> :
                     <ToolTipButton text={t('Convert To Safe Tensors Format')}
                       desc=""
-                      onClick={async () => {
-                        if (commonStore.platform === 'linux') {
-                          toast(t('Linux is not yet supported for performing this operation, please do it manually.') + ' (backend-python/convert_safetensors.py)', { type: 'info' });
-                          return;
-                        }
-
-                        const ok = await checkDependencies(navigate);
-                        if (!ok)
-                          return;
-
-                        const modelPath = `${commonStore.settings.customModelsPath}/${selectedConfig.modelParameters.modelName}`;
-                        if (await FileExists(modelPath)) {
-                          toast(t('Start Converting'), { autoClose: 1000, type: 'info' });
-                          const newModelPath = modelPath.replace(/\.pth$/, '.st');
-                          ConvertSafetensors(commonStore.settings.customPythonPath, modelPath, newModelPath).then(async () => {
-                            if (!await FileExists(newModelPath)) {
-                              toast(t('Convert Failed') + ' - ' + await GetPyError(), { type: 'error' });
-                            } else {
-                              toast(`${t('Convert Success')} - ${newModelPath}`, { type: 'success' });
-                            }
-                          }).catch(e => {
-                            const errMsg = e.message || e;
-                            if (errMsg.includes('path contains space'))
-                              toast(`${t('Convert Failed')} - ${t('File Path Cannot Contain Space')}`, { type: 'error' });
-                            else
-                              toast(`${t('Convert Failed')} - ${e.message || e}`, { type: 'error' });
-                          });
-                          setTimeout(WindowShow, 1000);
-                        } else {
-                          toast(`${t('Model Not Found')} - ${modelPath}`, { type: 'error' });
-                        }
-                      }} />
+                      onClick={() => convertToSt(navigate, selectedConfig)} />
                 }
                 <Labeled label={t('Strategy')} content={
                   <Dropdown style={{ minWidth: 0 }} className="grow" value={t(selectedConfig.modelParameters.device)!}

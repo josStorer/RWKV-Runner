@@ -17,6 +17,7 @@ import { ToolTipButton } from './ToolTipButton';
 import { Play16Regular, Stop16Regular } from '@fluentui/react-icons';
 import { useNavigate } from 'react-router';
 import { WindowShow } from '../../wailsjs/runtime';
+import { convertToSt } from '../utils/convert-to-st';
 
 const mainButtonText = {
   [ModelStatus.Offline]: 'Run',
@@ -63,7 +64,9 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
           if (await FileExists(stModelPath)) {
             modelPath = stModelPath;
           } else {
-            toast(t('Please convert model to safe tensors format first'), { type: 'error' });
+            toastWithButton(t('Please convert model to safe tensors format first'), t('Convert'), () => {
+              convertToSt(navigate, modelConfig);
+            });
             commonStore.setStatus({ status: ModelStatus.Offline });
             return;
           }
