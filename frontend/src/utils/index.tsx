@@ -117,7 +117,7 @@ function initLastUnfinishedModelDownloads() {
         {
           name: item.name,
           path: `${commonStore.settings.customModelsPath}/${item.name}`,
-          url: item.downloadUrl!,
+          url: getHfDownloadUrl(item.downloadUrl!),
           transferred: item.localSize!,
           size: item.size,
           speed: 0,
