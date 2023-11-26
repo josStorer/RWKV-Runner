@@ -23,7 +23,8 @@ export const convertToSt = async (navigate: NavigateFunction, selectedConfig: Mo
     const newModelPath = modelPath.replace(/\.pth$/, '.st');
     ConvertSafetensors(commonStore.settings.customPythonPath, modelPath, newModelPath).then(async () => {
       if (!await FileExists(newModelPath)) {
-        toast(t('Convert Failed') + ' - ' + await GetPyError(), { type: 'error' });
+        if (commonStore.platform === 'windows')
+          toast(t('Convert Failed') + ' - ' + await GetPyError(), { type: 'error' });
       } else {
         toast(`${t('Convert Success')} - ${newModelPath}`, { type: 'success' });
       }

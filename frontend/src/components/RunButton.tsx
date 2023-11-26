@@ -84,6 +84,10 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
             showDownloadPrompt(t('Model file not found'), modelName);
             commonStore.setStatus({ status: ModelStatus.Offline });
             return;
+          } else if (!currentModelSource?.isComplete) {
+            showDownloadPrompt(t('Model file download is not complete'), modelName);
+            commonStore.setStatus({ status: ModelStatus.Offline });
+            return;
           } else {
             toastWithButton(t('Please convert model to safe tensors format first'), t('Convert'), () => {
               convertToSt(navigate, modelConfig);
@@ -112,7 +116,9 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
         showDownloadPrompt(t('Model file not found'), modelName);
         commonStore.setStatus({ status: ModelStatus.Offline });
         return;
-      } else if (!currentModelSource?.isComplete) {
+      } else // If the user selects the .pth model with WebGPU mode, modelPath will be set to the .st model.
+        // However, if the .pth model is deleted, modelPath will exist and isComplete will be false.
+      if (!currentModelSource?.isComplete && modelPath.endsWith('.pth')) {
         showDownloadPrompt(t('Model file download is not complete'), modelName);
         commonStore.setStatus({ status: ModelStatus.Offline });
         return;
@@ -145,6 +151,8 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
           toast(t('Error') + ' - ' + errMsg, { type: 'error' });
       });
       setTimeout(WindowShow, 1000);
+      setTimeout(WindowShow, 2000);
+      setTimeout(WindowShow, 3000);
 
       let timeoutCount = 6;
       let loading = false;
@@ -161,7 +169,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
               });
             }
             commonStore.setStatus({ status: ModelStatus.Loading });
-            toast(t('Loading Model'), { type: 'info' });
+            const loadingId = toast(t('Loading Model'), { type: 'info' });
             if (!webgpu) {
               updateConfig({
                 max_tokens: modelConfig.apiParameters.maxResponseToken,
@@ -247,6 +255,8 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
             }).catch((e) => {
               commonStore.setStatus({ status: ModelStatus.Offline });
               toast(t('Failed to switch model') + ' - ' + (e.message || e), { type: 'error' });
+            }).finally(() => {
+              toast.dismiss(loadingId);
             });
           }
         }).catch(() => {

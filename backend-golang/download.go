@@ -33,9 +33,9 @@ type DownloadStatus struct {
 
 var downloadList []*DownloadStatus
 
-func existsInDownloadList(url string) bool {
+func existsInDownloadList(path string, url string) bool {
 	for _, ds := range downloadList {
-		if ds.Url == url {
+		if ds.Path == path || ds.Url == url {
 			return true
 		}
 	}
@@ -88,7 +88,7 @@ func (a *App) ContinueDownload(url string) {
 }
 
 func (a *App) AddToDownloadList(path string, url string) {
-	if !existsInDownloadList(url) {
+	if !existsInDownloadList(a.exDir+path, url) {
 		downloadList = append(downloadList, &DownloadStatus{
 			resp:        nil,
 			Name:        filepath.Base(path),
