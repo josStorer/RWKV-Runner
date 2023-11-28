@@ -2,7 +2,7 @@ import 'html-midi-player';
 import React, { FC, useEffect, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import { WorkHeader } from '../components/WorkHeader';
-import { Button, Checkbox, Textarea } from '@fluentui/react-components';
+import { Button, Checkbox, Dropdown, Option, Textarea } from '@fluentui/react-components';
 import { Labeled } from '../components/Labeled';
 import { ValuedSlider } from '../components/ValuedSlider';
 import { useTranslation } from 'react-i18next';
@@ -20,6 +20,7 @@ import { FileExists, OpenFileFolder, OpenSaveFileDialogBytes } from '../../wails
 import { getServerRoot, toastWithButton } from '../utils';
 import { CompositionParams } from '../types/composition';
 import { useMediaQuery } from 'usehooks-ts';
+import { AudiotrackButton } from './AudiotrackManager/AudiotrackButton';
 
 let compositionSseController: AbortController | null = null;
 
@@ -267,6 +268,18 @@ const CompositionPanel: FC = observer(() => {
                 autoPlay: data.checked as boolean
               });
             }} />
+            {commonStore.platform !== 'web' &&
+              <Labeled flex breakline label={t('MIDI Input')}
+                desc={t('Select the MIDI input device to be used.')}
+                content={
+                  <div className="flex flex-col gap-1">
+                    <Dropdown style={{ minWidth: 0 }}>
+                      <Option>{t('None')!}</Option>
+                    </Dropdown>
+                    <AudiotrackButton />
+                  </div>
+                } />
+            }
           </div>
           <div className="flex justify-between gap-2">
             <ToolTipButton desc={t('Regenerate')} icon={<ArrowSync20Regular />} onClick={() => {

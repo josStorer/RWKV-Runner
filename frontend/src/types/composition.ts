@@ -10,3 +10,9 @@ export type CompositionParams = {
   midi: ArrayBuffer | null,
   ns: NoteSequence | null
 }
+export type Track = {
+  id: string;
+  content: string;
+  offsetTime: number;
+  contentTime: number;
+};

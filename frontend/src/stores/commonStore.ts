@@ -9,7 +9,7 @@ import { Preset } from '../types/presets';
 import { AboutContent } from '../types/about';
 import { Attachment, ChatParams, Conversation } from '../types/chat';
 import { CompletionPreset } from '../types/completion';
-import { CompositionParams } from '../types/composition';
+import { CompositionParams, Track } from '../types/composition';
 import { ModelConfig } from '../types/configs';
 import { DownloadStatus } from '../types/downloads';
 import { IntroductionContent } from '../types/home';
@@ -90,6 +90,11 @@ class CommonStore {
   };
   compositionGenerating: boolean = false;
   compositionSubmittedPrompt: string = defaultCompositionPrompt;
+  tracks: Track[] = [];
+  trackScale: number = 1;
+  trackTotalTime: number = 5000;
+  trackCurrentTime: number = 0;
+  trackPlayStartTime: number = 0;
   // configs
   currentModelConfigIndex: number = 0;
   modelConfigs: ModelConfig[] = [];
@@ -379,6 +384,26 @@ class CommonStore {
 
   setSidePanelCollapsed(value: boolean | 'auto') {
     this.sidePanelCollapsed = value;
+  }
+
+  setTracks(value: Track[]) {
+    this.tracks = value;
+  }
+
+  setTrackScale(value: number) {
+    this.trackScale = value;
+  }
+
+  setTrackTotalTime(value: number) {
+    this.trackTotalTime = value;
+  }
+
+  setTrackCurrentTime(value: number) {
+    this.trackCurrentTime = value;
+  }
+
+  setTrackPlayStartTime(value: number) {
+    this.trackPlayStartTime = value;
   }
 }
 
