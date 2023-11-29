@@ -91,7 +91,7 @@ const velocityToBin = (velocity: number) => {
 };
 
 const midiMessageToToken = (msg: MidiMessage) => {
-  if (msg.messageType === 'NoteOn') {
+  if (msg.messageType === 'NoteOn' || msg.messageType === 'NoteOff') {
     const instrument = InstrumentTypeTokenMap[commonStore.instrumentType];
     const note = msg.note.toString(16);
     const velocity = velocityToBin(msg.velocity).toString(16);
@@ -478,7 +478,7 @@ const AudiotrackEditor: FC<{ setPrompt: (prompt: string) => void }> = observer((
               if (msg.messageType === 'ElapsedTime') {
                 accContentTime += msg.value;
                 currentTime = track.offsetTime + accContentTime;
-              } else if (msg.messageType === 'NoteOn') {
+              } else if (msg.messageType === 'NoteOn' || msg.messageType === 'NoteOff') {
                 const insertIndex = sortedTimestamp.findIndex(t => t >= currentTime);
                 globalMessages.splice(insertIndex + 1, 0, msg);
                 sortedTimestamp.splice(insertIndex + 1, 0, 0); // placeholder
