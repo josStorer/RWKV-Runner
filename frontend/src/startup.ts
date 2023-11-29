@@ -140,7 +140,8 @@ async function initHardwareMonitor() {
 
 async function initMidi() {
   EventsOn('midiError', (data: string) => {
-    toast('MIDI Error: ' + data, { type: 'error' });
+    if (commonStore.platform === 'windows')
+      toast('MIDI Error: ' + data, { type: 'error' });
   });
   EventsOn('midiPorts', (data: MidiPort[]) => {
     commonStore.setMidiPorts(data);
