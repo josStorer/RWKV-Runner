@@ -272,5 +272,15 @@
   "Failed to load model, try to increase the virtual memory (Swap of WSL) or use a smaller base model.": "モデルの読み込みに失敗しました、仮想メモリ (WSL Swap) を増やすか小さなベースモデルを使用してみてください。",
   "Save Conversation": "会話を保存",
   "Use Hugging Face Mirror": "Hugging Faceミラーを使用",
-  "File is empty": "ファイルが空です"
+  "File is empty": "ファイルが空です",
+  "Open MIDI Input Audio Tracks": "MIDI入力オーディオトラックを開く",
+  "Track": "トラック",
+  "Play All": "すべて再生",
+  "Clear All": "すべてクリア",
+  "Scale View": "スケールビュー",
+  "Record": "録音",
+  "Play": "再生",
+  "New Track": "新規トラック",
+  "Select a track to preview the content": "トラックを選択して内容をプレビュー",
+  "Save to generation area": "生成エリアに保存"
 }

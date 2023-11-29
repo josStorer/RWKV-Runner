@@ -272,5 +272,15 @@
   "Failed to load model, try to increase the virtual memory (Swap of WSL) or use a smaller base model.": "模型载入失败，尝试增加虚拟内存(WSL Swap)，或使用一个更小规模的基底模型",
   "Save Conversation": "保存对话",
   "Use Hugging Face Mirror": "使用Hugging Face镜像源",
-  "File is empty": "文件为空"
+  "File is empty": "文件为空",
+  "Open MIDI Input Audio Tracks": "打开MIDI输入音轨",
+  "Track": "音轨",
+  "Play All": "播放全部",
+  "Clear All": "清空",
+  "Scale View": "缩放视图",
+  "Record": "录制",
+  "Play": "播放",
+  "New Track": "新建音轨",
+  "Select a track to preview the content": "选择一个音轨以预览内容",
+  "Save to generation area": "保存到生成区"
 }
