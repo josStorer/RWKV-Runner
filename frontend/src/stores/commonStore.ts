@@ -9,7 +9,14 @@ import { Preset } from '../types/presets';
 import { AboutContent } from '../types/about';
 import { Attachment, ChatParams, Conversation } from '../types/chat';
 import { CompletionPreset } from '../types/completion';
-import { CompositionParams, Track } from '../types/composition';
+import {
+  CompositionParams,
+  InstrumentType,
+  MidiMessage,
+  MidiPort,
+  Track,
+  tracksMinimalTotalTime
+} from '../types/composition';
 import { ModelConfig } from '../types/configs';
 import { DownloadStatus } from '../types/downloads';
 import { IntroductionContent } from '../types/home';
@@ -90,11 +97,19 @@ class CommonStore {
   };
   compositionGenerating: boolean = false;
   compositionSubmittedPrompt: string = defaultCompositionPrompt;
+  // composition midi device
+  midiPorts: MidiPort[] = [];
+  activeMidiDeviceIndex: number = -1;
+  instrumentType: InstrumentType = InstrumentType.Piano;
+  // composition tracks
   tracks: Track[] = [];
   trackScale: number = 1;
-  trackTotalTime: number = 5000;
+  trackTotalTime: number = tracksMinimalTotalTime;
   trackCurrentTime: number = 0;
   trackPlayStartTime: number = 0;
+  recordingTrackId: string = '';
+  recordingContent: string = ''; // used to improve performance, and I'm too lazy to maintain an ID dictionary for this
+  recordingRawContent: MidiMessage[] = [];
   // configs
   currentModelConfigIndex: number = 0;
   modelConfigs: ModelConfig[] = [];
@@ -404,6 +419,30 @@ class CommonStore {
 
   setTrackPlayStartTime(value: number) {
     this.trackPlayStartTime = value;
+  }
+
+  setMidiPorts(value: MidiPort[]) {
+    this.midiPorts = value;
+  }
+
+  setInstrumentType(value: InstrumentType) {
+    this.instrumentType = value;
+  }
+
+  setRecordingTrackId(value: string) {
+    this.recordingTrackId = value;
+  }
+
+  setActiveMidiDeviceIndex(value: number) {
+    this.activeMidiDeviceIndex = value;
+  }
+
+  setRecordingContent(value: string) {
+    this.recordingContent = value;
+  }
+
+  setRecordingRawContent(value: MidiMessage[]) {
+    this.recordingRawContent = value;
   }
 }
 

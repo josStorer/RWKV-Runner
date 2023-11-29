@@ -22,6 +22,7 @@ import { DownloadStatus } from '../types/downloads';
 import { ModelSourceItem } from '../types/models';
 import { Language, Languages, SettingsType } from '../types/settings';
 import { DataProcessParameters, LoraFinetuneParameters } from '../types/train';
+import { tracksMinimalTotalTime } from '../types/composition';
 
 export type Cache = {
   version: string
@@ -478,6 +479,36 @@ export function getHfDownloadUrl(url: string) {
   if (commonStore.settings.useHfMirror && url.includes('huggingface.co') && url.includes('resolve'))
     return url.replace('huggingface.co', 'hf-mirror.com');
   return url;
+}
+
+export function refreshTracksTotalTime() {
+  const endTimes = commonStore.tracks.map(t => t.offsetTime + t.contentTime);
+  const totalTime = Math.max(...endTimes) + tracksMinimalTotalTime;
+  if (commonStore.trackPlayStartTime > totalTime)
+    commonStore.setTrackPlayStartTime(totalTime);
+  commonStore.setTrackTotalTime(totalTime);
+}
+
+export function flushMidiRecordingContent() {
+  const recordingTrackIndex = commonStore.tracks.findIndex(t => t.id === commonStore.recordingTrackId);
+  if (recordingTrackIndex >= 0) {
+    const recordingTrack = commonStore.tracks[recordingTrackIndex];
+    const tracks = commonStore.tracks.slice();
+    const contentTime = commonStore.recordingRawContent
+    .reduce((sum, current) =>
+        sum + (current.messageType === 'ElapsedTime' ? current.value : 0)
+      , 0);
+    tracks[recordingTrackIndex] = {
+      ...recordingTrack,
+      content: commonStore.recordingContent,
+      rawContent: commonStore.recordingRawContent,
+      contentTime: contentTime
+    };
+    commonStore.setTracks(tracks);
+    refreshTracksTotalTime();
+  }
+  commonStore.setRecordingContent('');
+  commonStore.setRecordingRawContent([]);
 }
 
 export function getSupportedCustomCudaFile(isBeta: boolean) {

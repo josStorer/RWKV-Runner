@@ -5,6 +5,7 @@ go 1.20
 require (
 	github.com/cavaliergopher/grab/v3 v3.0.1
 	github.com/fsnotify/fsnotify v1.6.0
+	github.com/mattrtaylor/go-rtmidi v0.0.0-20220428034745-af795b1c1a79
 	github.com/minio/selfupdate v0.6.0
 	github.com/nyaosorg/go-windows-su v0.2.1
 	github.com/ubuntu/gowsl v0.0.0-20230615094051-94945650cc1e

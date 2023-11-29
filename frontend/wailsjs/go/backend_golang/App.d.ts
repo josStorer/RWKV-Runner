@@ -4,6 +4,8 @@ import {backend_golang} from '../models';
 
 export function AddToDownloadList(arg1:string,arg2:string):Promise<void>;
 
+export function CloseMidiPort():Promise<void>;
+
 export function ContinueDownload(arg1:string):Promise<void>;
 
 export function ConvertData(arg1:string,arg2:string,arg3:string,arg4:string):Promise<string>;
@@ -35,6 +37,8 @@ export function ListDirFiles(arg1:string):Promise<Array<backend_golang.FileInfo>
 export function MergeLora(arg1:string,arg2:boolean,arg3:number,arg4:string,arg5:string,arg6:string):Promise<string>;
 
 export function OpenFileFolder(arg1:string,arg2:boolean):Promise<void>;
+
+export function OpenMidiPort(arg1:number):Promise<void>;
 
 export function OpenOpenFileDialog(arg1:string):Promise<string>;
 

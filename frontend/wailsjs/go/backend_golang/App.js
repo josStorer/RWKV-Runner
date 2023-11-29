@@ -6,6 +6,10 @@ export function AddToDownloadList(arg1, arg2) {
   return window['go']['backend_golang']['App']['AddToDownloadList'](arg1, arg2);
 }
 
+export function CloseMidiPort() {
+  return window['go']['backend_golang']['App']['CloseMidiPort']();
+}
+
 export function ContinueDownload(arg1) {
   return window['go']['backend_golang']['App']['ContinueDownload'](arg1);
 }
@@ -68,6 +72,10 @@ export function MergeLora(arg1, arg2, arg3, arg4, arg5, arg6) {
 
 export function OpenFileFolder(arg1, arg2) {
   return window['go']['backend_golang']['App']['OpenFileFolder'](arg1, arg2);
+}
+
+export function OpenMidiPort(arg1) {
+  return window['go']['backend_golang']['App']['OpenMidiPort'](arg1);
 }
 
 export function OpenOpenFileDialog(arg1) {

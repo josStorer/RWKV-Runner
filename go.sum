@@ -38,6 +38,8 @@ github.com/mattn/go-isatty v0.0.14/go.mod h1:7GGIvUiUoEMVVmxf/4nioHXj79iQHKdU27k
 github.com/mattn/go-isatty v0.0.16/go.mod h1:kYGgaQfpe5nmfYZH+SKPsOc2e4SrIfOl2e/yFXSvRLM=
 github.com/mattn/go-isatty v0.0.19 h1:JITubQf0MOLdlGRuRq+jtsDlekdYPia9ZFsB8h/APPA=
 github.com/mattn/go-isatty v0.0.19/go.mod h1:W+V8PltTTMOvKvAeJH7IuucS94S2C6jfK/D7dTCTo3Y=
+github.com/mattrtaylor/go-rtmidi v0.0.0-20220428034745-af795b1c1a79 h1:CA1UHN3RuY70DlC0RlvgtB1e8h3kYzmvK7s8CFe+Ohw=
+github.com/mattrtaylor/go-rtmidi v0.0.0-20220428034745-af795b1c1a79/go.mod h1:oBuZjmjlKSj9CZKrNhcx/adNhHiiE0hZknECjIP8Z0Q=
 github.com/minio/selfupdate v0.6.0 h1:i76PgT0K5xO9+hjzKcacQtO7+MjJ4JKA8Ak8XQ9DDwU=
 github.com/minio/selfupdate v0.6.0/go.mod h1:bO02GTIPCMQFTEvE5h4DjYB58bCoZ35XLeBf0buTDdM=
 github.com/nyaosorg/go-windows-su v0.2.1 h1:5V0XavLyjOqPUp7psxxCvBISaneU4XmFPSMlejSl5sc=

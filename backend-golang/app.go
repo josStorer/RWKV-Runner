@@ -55,6 +55,7 @@ func (a *App) OnStartup(ctx context.Context) {
 	}
 
 	a.downloadLoop()
+	a.midiLoop()
 	a.watchFs()
 	a.monitorHardware()
 }

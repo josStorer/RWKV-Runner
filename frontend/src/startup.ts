@@ -7,6 +7,8 @@ import manifest from '../../manifest.json';
 import { defaultModelConfigs, defaultModelConfigsMac } from './pages/defaultConfigs';
 import { t } from 'i18next';
 import { Preset } from './types/presets';
+import { toast } from 'react-toastify';
+import { MidiMessage, MidiPort } from './types/composition';
 
 export async function startup() {
   initPresets();
@@ -26,6 +28,7 @@ export async function startup() {
     initLocalModelsNotify();
     initLoraModels();
     initHardwareMonitor();
+    initMidi();
   }
 
   await initConfig();
@@ -132,5 +135,17 @@ async function initHardwareMonitor() {
       commonStore.setMonitorData(results);
       WindowSetTitle(`RWKV-Runner (${t('RAM')}: ${results.usedMemory.toFixed(1)}/${results.totalMemory.toFixed(1)} GB, ${t('VRAM')}: ${(results.usedVram / 1024).toFixed(1)}/${(results.totalVram / 1024).toFixed(1)} GB, ${t('GPU Usage')}: ${results.gpuUsage}%)`);
     }
+  });
+}
+
+async function initMidi() {
+  EventsOn('midiError', (data: string) => {
+    toast('MIDI Error: ' + data, { type: 'error' });
+  });
+  EventsOn('midiPorts', (data: MidiPort[]) => {
+    commonStore.setMidiPorts(data);
+  });
+  EventsOn('midiMessage', async (data: MidiMessage) => {
+    (await import('./pages/AudiotrackManager/AudiotrackEditor')).midiMessageHandler(data);
   });
 }

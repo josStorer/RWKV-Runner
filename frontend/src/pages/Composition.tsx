@@ -16,7 +16,13 @@ import { PlayerElement, VisualizerElement } from 'html-midi-player';
 import * as mm from '@magenta/music/esm/core.js';
 import { NoteSequence } from '@magenta/music/esm/protobuf.js';
 import { defaultCompositionPrompt } from './defaultConfigs';
-import { FileExists, OpenFileFolder, OpenSaveFileDialogBytes } from '../../wailsjs/go/backend_golang/App';
+import {
+  CloseMidiPort,
+  FileExists,
+  OpenFileFolder,
+  OpenMidiPort,
+  OpenSaveFileDialogBytes
+} from '../../wailsjs/go/backend_golang/App';
 import { getServerRoot, toastWithButton } from '../utils';
 import { CompositionParams } from '../types/composition';
 import { useMediaQuery } from 'usehooks-ts';
@@ -273,8 +279,26 @@ const CompositionPanel: FC = observer(() => {
                 desc={t('Select the MIDI input device to be used.')}
                 content={
                   <div className="flex flex-col gap-1">
-                    <Dropdown style={{ minWidth: 0 }}>
-                      <Option>{t('None')!}</Option>
+                    <Dropdown style={{ minWidth: 0 }}
+                      value={commonStore.activeMidiDeviceIndex === -1 ? t('None')! : commonStore.midiPorts[commonStore.activeMidiDeviceIndex].name}
+                      selectedOptions={[commonStore.activeMidiDeviceIndex.toString()]}
+                      onOptionSelect={(_, data) => {
+                        if (data.optionValue) {
+                          const index = Number(data.optionValue);
+                          let action = (index === -1)
+                            ? () => CloseMidiPort()
+                            : () => OpenMidiPort(index);
+                          action().then(() => {
+                            commonStore.setActiveMidiDeviceIndex(index);
+                          }).catch((e) => {
+                            toast(t('Error') + ' - ' + (e.message || e), { type: 'error', autoClose: 2500 });
+                          });
+                        }
+                      }}>
+                      <Option value={'-1'}>{t('None')!}</Option>
+                      {commonStore.midiPorts.map((p, i) =>
+                        <Option key={i} value={i.toString()}>{p.name}</Option>)
+                      }
                     </Dropdown>
                     <AudiotrackButton />
                   </div>
