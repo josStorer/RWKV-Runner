@@ -23,6 +23,7 @@ type MIDIMessage struct {
 
 var ports []Port
 var input rtmidi.MIDIIn
+var out rtmidi.MIDIOut
 var activeIndex int = -1
 var lastNoteTime time.Time
 
@@ -32,6 +33,14 @@ func (a *App) midiLoop() {
 	if err != nil {
 		runtime.EventsEmit(a.ctx, "midiError", err.Error())
 		return
+	}
+	out, err = rtmidi.NewMIDIOutDefault()
+	if err != nil {
+		runtime.EventsEmit(a.ctx, "midiError", err.Error())
+	}
+	err = out.OpenPort(0, "")
+	if err != nil {
+		runtime.EventsEmit(a.ctx, "midiError", err.Error())
 	}
 	ticker := time.NewTicker(500 * time.Millisecond)
 	go func() {
@@ -55,7 +64,7 @@ func (a *App) midiLoop() {
 
 func (a *App) OpenMidiPort(index int) error {
 	if input == nil {
-		return errors.New("failed to initialize MIDI")
+		return errors.New("failed to initialize MIDI input")
 	}
 	if activeIndex == index {
 		return nil
@@ -126,7 +135,7 @@ func (a *App) OpenMidiPort(index int) error {
 
 func (a *App) CloseMidiPort() error {
 	if input == nil {
-		return errors.New("failed to initialize MIDI")
+		return errors.New("failed to initialize MIDI input")
 	}
 	if activeIndex == -1 {
 		return nil
@@ -137,6 +146,19 @@ func (a *App) CloseMidiPort() error {
 	input, err = rtmidi.NewMIDIInDefault()
 	if err != nil {
 		return err
+	}
+	return nil
+}
+
+func (a *App) PlayNote(msg MIDIMessage) error {
+	if out == nil {
+		return errors.New("failed to initialize MIDI output")
+	}
+	channelByte := byte(msg.Channel)
+	if msg.MessageType == "NoteOn" {
+		out.SendMessage([]byte{0x90 | channelByte, byte(msg.Note), byte(msg.Velocity)})
+	} else if msg.MessageType == "NoteOff" {
+		out.SendMessage([]byte{0x80 | channelByte, byte(msg.Note), byte(msg.Velocity)})
 	}
 	return nil
 }

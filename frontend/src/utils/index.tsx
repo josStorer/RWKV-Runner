@@ -511,6 +511,22 @@ export function flushMidiRecordingContent() {
   commonStore.setRecordingRawContent([]);
 }
 
+export async function getSoundFont() {
+  let soundUrl: string;
+  if (commonStore.compositionParams.useLocalSoundFont)
+    soundUrl = 'assets/sound-font';
+  else
+    soundUrl = !commonStore.settings.giteeUpdatesSource ?
+      `https://raw.githubusercontent.com/josStorer/sgm_plus/master` :
+      `https://gitee.com/josc146/sgm_plus/raw/master`;
+  const fallbackUrl = 'https://cdn.jsdelivr.net/gh/josstorer/sgm_plus';
+  await fetch(soundUrl + '/soundfont.json').then(r => {
+    if (!r.ok)
+      soundUrl = fallbackUrl;
+  }).catch(() => soundUrl = fallbackUrl);
+  return soundUrl;
+}
+
 export function getSupportedCustomCudaFile(isBeta: boolean) {
   if ([' 10', ' 16', ' 20', ' 30', 'MX', 'Tesla P', 'Quadro P', 'NVIDIA P', 'TITAN X', 'TITAN RTX', 'RTX A',
     'Quadro RTX 4000', 'Quadro RTX 5000', 'Tesla T4', 'NVIDIA A10', 'NVIDIA A40'].some(v => commonStore.status.device_name.includes(v)))

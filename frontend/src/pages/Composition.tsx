@@ -23,7 +23,7 @@ import {
   OpenMidiPort,
   OpenSaveFileDialogBytes
 } from '../../wailsjs/go/backend_golang/App';
-import { getServerRoot, toastWithButton } from '../utils';
+import { getServerRoot, getSoundFont, toastWithButton } from '../utils';
 import { CompositionParams } from '../types/composition';
 import { useMediaQuery } from 'usehooks-ts';
 import { AudiotrackButton } from './AudiotrackManager/AudiotrackButton';
@@ -71,20 +71,8 @@ const CompositionPanel: FC = observer(() => {
   };
 
   const setSoundFont = async () => {
-    let soundUrl: string;
-    if (commonStore.compositionParams.useLocalSoundFont)
-      soundUrl = 'assets/sound-font';
-    else
-      soundUrl = !commonStore.settings.giteeUpdatesSource ?
-        `https://raw.githubusercontent.com/josStorer/sgm_plus/master` :
-        `https://gitee.com/josc146/sgm_plus/raw/master`;
-    const fallbackUrl = 'https://cdn.jsdelivr.net/gh/josstorer/sgm_plus';
-    await fetch(soundUrl + '/soundfont.json').then(r => {
-      if (!r.ok)
-        soundUrl = fallbackUrl;
-    }).catch(() => soundUrl = fallbackUrl);
     if (playerRef.current) {
-      playerRef.current.soundFont = soundUrl;
+      playerRef.current.soundFont = await getSoundFont();
     }
   };
 
@@ -302,7 +290,7 @@ const CompositionPanel: FC = observer(() => {
                         <Option key={i} value={i.toString()}>{p.name}</Option>)
                       }
                     </Dropdown>
-                    <AudiotrackButton />
+                    <AudiotrackButton setPrompt={setPrompt} />
                   </div>
                 } />
             }

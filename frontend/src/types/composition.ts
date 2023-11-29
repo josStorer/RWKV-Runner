@@ -32,6 +32,7 @@ export type MidiMessage = {
   velocity: number;
   control: number;
   value: number;
+  instrument: InstrumentType;
 }
 
 export enum InstrumentType {

@@ -48,6 +48,8 @@ export function OpenSaveFileDialogBytes(arg1:string,arg2:string,arg3:Array<numbe
 
 export function PauseDownload(arg1:string):Promise<void>;
 
+export function PlayNote(arg1:backend_golang.MIDIMessage):Promise<void>;
+
 export function ReadFileInfo(arg1:string):Promise<backend_golang.FileInfo>;
 
 export function ReadJson(arg1:string):Promise<any>;

@@ -146,6 +146,6 @@ async function initMidi() {
     commonStore.setMidiPorts(data);
   });
   EventsOn('midiMessage', async (data: MidiMessage) => {
-    (await import('./pages/AudiotrackManager/AudiotrackEditor')).midiMessageHandler(data);
+    await (await import('./pages/AudiotrackManager/AudiotrackEditor')).midiMessageHandler(data);
   });
 }

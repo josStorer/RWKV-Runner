@@ -94,6 +94,10 @@ export function PauseDownload(arg1) {
   return window['go']['backend_golang']['App']['PauseDownload'](arg1);
 }
 
+export function PlayNote(arg1) {
+  return window['go']['backend_golang']['App']['PlayNote'](arg1);
+}
+
 export function ReadFileInfo(arg1) {
   return window['go']['backend_golang']['App']['ReadFileInfo'](arg1);
 }

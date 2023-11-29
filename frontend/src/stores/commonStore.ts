@@ -107,8 +107,9 @@ class CommonStore {
   trackTotalTime: number = tracksMinimalTotalTime;
   trackCurrentTime: number = 0;
   trackPlayStartTime: number = 0;
+  playingTrackId: string = '';
   recordingTrackId: string = '';
-  recordingContent: string = ''; // used to improve performance, and I'm too lazy to maintain an ID dictionary for this
+  recordingContent: string = ''; // used to improve performance of midiMessageHandler, and I'm too lazy to maintain an ID dictionary for this (although that would be better for realtime effects)
   recordingRawContent: MidiMessage[] = [];
   // configs
   currentModelConfigIndex: number = 0;
@@ -443,6 +444,10 @@ class CommonStore {
 
   setRecordingRawContent(value: MidiMessage[]) {
     this.recordingRawContent = value;
+  }
+
+  setPlayingTrackId(value: string) {
+    this.playingTrackId = value;
   }
 }
 

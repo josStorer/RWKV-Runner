@@ -12,13 +12,15 @@ export const AudiotrackButton: FC<{
   size?: 'small' | 'medium' | 'large',
   shape?: 'rounded' | 'circular' | 'square';
   appearance?: 'secondary' | 'primary' | 'outline' | 'subtle' | 'transparent';
-}> = ({ size, shape, appearance }) => {
+  setPrompt: (prompt: string) => void;
+}> = ({ size, shape, appearance, setPrompt }) => {
   const { t } = useTranslation();
 
   return <Dialog onOpenChange={(e, data) => {
     if (!data.open) {
       flushMidiRecordingContent();
       commonStore.setRecordingTrackId('');
+      commonStore.setPlayingTrackId('');
     }
   }}>
     <DialogTrigger disableButtonEnhancement>
@@ -30,7 +32,7 @@ export const AudiotrackButton: FC<{
       <DialogBody>
         <DialogContent className="overflow-hidden">
           <CustomToastContainer />
-          <LazyImportComponent lazyChildren={AudiotrackEditor} />
+          <LazyImportComponent lazyChildren={AudiotrackEditor} lazyProps={{ setPrompt }} />
         </DialogContent>
       </DialogBody>
     </DialogSurface>

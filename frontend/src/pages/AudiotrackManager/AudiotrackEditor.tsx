@@ -9,11 +9,13 @@ import {
   ArrowAutofitWidth20Regular,
   Delete16Regular,
   MusicNote220Regular,
+  Pause16Regular,
+  Play16Filled,
   Play16Regular,
   Record16Regular,
   Stop16Filled
 } from '@fluentui/react-icons';
-import { Button, Card, Slider, Text, Tooltip } from '@fluentui/react-components';
+import { Button, Card, DialogTrigger, Slider, Text, Tooltip } from '@fluentui/react-components';
 import { useWindowSize } from 'usehooks-ts';
 import commonStore from '../../stores/commonStore';
 import classnames from 'classnames';
@@ -26,6 +28,7 @@ import {
 import { toast } from 'react-toastify';
 import { ToastOptions } from 'react-toastify/dist/types';
 import { flushMidiRecordingContent, refreshTracksTotalTime } from '../../utils';
+import { PlayNote } from '../../../wailsjs/go/backend_golang/App';
 
 const snapValue = 25;
 const minimalMoveTime = 8; // 1000/125=8ms wait_events=125
@@ -109,9 +112,7 @@ const midiMessageToToken = (msg: MidiMessage) => {
 
 let dropRecordingTime = false;
 
-export const midiMessageHandler = (data: MidiMessage) => {
-  if (data.messageType === 'NoteOff')
-    return;
+export const midiMessageHandler = async (data: MidiMessage) => {
   if (data.messageType === 'ControlChange') {
     commonStore.setInstrumentType(Math.round(data.value / 127 * (InstrumentTypeNameMap.length - 1)));
     displayCurrentInstrumentType();
@@ -122,8 +123,15 @@ export const midiMessageHandler = (data: MidiMessage) => {
       dropRecordingTime = false;
       return;
     }
+    data = {
+      ...data,
+      instrument: commonStore.instrumentType
+    };
     commonStore.setRecordingRawContent([...commonStore.recordingRawContent, data]);
     commonStore.setRecordingContent(commonStore.recordingContent + midiMessageToToken(data));
+
+    //TODO data.channel = data.instrument;
+    PlayNote(data);
   }
 };
 
@@ -180,7 +188,7 @@ const Track: React.FC<TrackProps> = observer(({
   );
 });
 
-const AudiotrackEditor: FC = observer(() => {
+const AudiotrackEditor: FC<{ setPrompt: (prompt: string) => void }> = observer(({ setPrompt }) => {
   const { t } = useTranslation();
 
   const viewControlsContainerRef = useRef<HTMLDivElement>(null);
@@ -243,7 +251,7 @@ const AudiotrackEditor: FC = observer(() => {
       </div>
       <div className="flex pb-2 border-b" ref={toolbarRef}>
         <div className="flex gap-2" ref={toolbarButtonRef}>
-          <ToolTipButton desc={t('Play All')} icon={<Play16Regular />} />
+          <ToolTipButton disabled desc={t('Play All') + ' (Unavailable)'} icon={<Play16Regular />} />
           <ToolTipButton desc={t('Clear All')} icon={<Delete16Regular />} onClick={() => {
             commonStore.setTracks([]);
             commonStore.setTrackScale(1);
@@ -348,23 +356,38 @@ const AudiotrackEditor: FC = observer(() => {
             <div className="flex gap-1 border-r h-7">
               <ToolTipButton desc={commonStore.recordingTrackId === track.id ? t('Stop') : t('Record')}
                 icon={commonStore.recordingTrackId === track.id ? <Stop16Filled /> : <Record16Regular />}
-                size="small" shape="circular"
-                appearance="subtle" onClick={() => {
-                flushMidiRecordingContent();
+                size="small" shape="circular" appearance="subtle"
+                onClick={() => {
+                  flushMidiRecordingContent();
+                  commonStore.setPlayingTrackId('');
 
-                if (commonStore.recordingTrackId === track.id) {
+                  if (commonStore.recordingTrackId === track.id) {
+                    commonStore.setRecordingTrackId('');
+                  } else {
+                    dropRecordingTime = true;
+                    setSelectedTrackId(track.id);
+
+                    commonStore.setRecordingTrackId(track.id);
+                    commonStore.setRecordingContent(track.content);
+                    commonStore.setRecordingRawContent(track.rawContent.slice());
+                  }
+                }} />
+              <ToolTipButton disabled
+                desc={commonStore.playingTrackId === track.id ? t('Stop') : t('Play') + ' (Unavailable)'}
+                icon={commonStore.playingTrackId === track.id ? <Pause16Regular /> : <Play16Filled />}
+                size="small" shape="circular" appearance="subtle"
+                onClick={() => {
+                  flushMidiRecordingContent();
                   commonStore.setRecordingTrackId('');
-                } else {
-                  dropRecordingTime = true;
-                  setSelectedTrackId(track.id);
 
-                  commonStore.setRecordingTrackId(track.id);
-                  commonStore.setRecordingContent(track.content);
-                  commonStore.setRecordingRawContent(track.rawContent.slice());
-                }
-              }} />
-              <ToolTipButton desc={t('Play')} icon={<Play16Regular />} size="small" shape="circular"
-                appearance="subtle" />
+                  if (commonStore.playingTrackId === track.id) {
+                    commonStore.setPlayingTrackId('');
+                  } else {
+                    setSelectedTrackId(track.id);
+
+                    commonStore.setPlayingTrackId(track.id);
+                  }
+                }} />
               <ToolTipButton desc={t('Delete')} icon={<Delete16Regular />} size="small" shape="circular"
                 appearance="subtle" onClick={() => {
                 const tracks = commonStore.tracks.slice().filter(t => t.id !== track.id);
@@ -416,9 +439,52 @@ const AudiotrackEditor: FC = observer(() => {
           </div>
         </Card>
       }
-      <Button icon={<MusicNote220Regular />} style={{ minHeight: '32px' }}>
-        {t('Save to generation area')}
-      </Button>
+      <DialogTrigger disableButtonEnhancement>
+        <Button icon={<MusicNote220Regular />} style={{ minHeight: '32px' }} onClick={() => {
+          flushMidiRecordingContent();
+          commonStore.setRecordingTrackId('');
+          commonStore.setPlayingTrackId('');
+
+          const timestamp = [];
+          const sortedTracks = commonStore.tracks.slice().sort((a, b) => a.offsetTime - b.offsetTime);
+          for (const track of sortedTracks) {
+            timestamp.push(track.offsetTime);
+            let accContentTime = 0;
+            for (const msg of track.rawContent) {
+              if (msg.messageType === 'ElapsedTime') {
+                accContentTime += msg.value;
+                timestamp.push(track.offsetTime + accContentTime);
+              }
+            }
+          }
+          const sortedTimestamp = timestamp.slice().sort((a, b) => a - b);
+          const globalMessages: MidiMessage[] = sortedTimestamp.reduce((messages, current, i) =>
+              [...messages, {
+                messageType: 'ElapsedTime',
+                value: current - (i === 0 ? 0 : sortedTimestamp[i - 1])
+              } as MidiMessage]
+            , [] as MidiMessage[]);
+          for (const track of sortedTracks) {
+            let currentTime = track.offsetTime;
+            let accContentTime = 0;
+            for (const msg of track.rawContent) {
+              if (msg.messageType === 'ElapsedTime') {
+                accContentTime += msg.value;
+                currentTime = track.offsetTime + accContentTime;
+              } else if (msg.messageType === 'NoteOn') {
+                const insertIndex = sortedTimestamp.findIndex(t => t >= currentTime);
+                globalMessages.splice(insertIndex + 1, 0, msg);
+                sortedTimestamp.splice(insertIndex + 1, 0, 0); // placeholder
+              }
+            }
+          }
+          const result = globalMessages.map(m => midiMessageToToken(m)).join('');
+          commonStore.setCompositionSubmittedPrompt(result);
+          setPrompt(result);
+        }}>
+          {t('Save to generation area')}
+        </Button>
+      </DialogTrigger>
     </div>
   );
 });
