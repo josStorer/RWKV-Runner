@@ -365,6 +365,11 @@ const AudiotrackEditor: FC<{ setPrompt: (prompt: string) => void }> = observer((
                   if (commonStore.recordingTrackId === track.id) {
                     commonStore.setRecordingTrackId('');
                   } else {
+                    if (commonStore.activeMidiDeviceIndex === -1) {
+                      toast(t('Please select a MIDI device first'), { type: 'warning' });
+                      return;
+                    }
+
                     dropRecordingTime = true;
                     setSelectedTrackId(track.id);
 
@@ -393,6 +398,7 @@ const AudiotrackEditor: FC<{ setPrompt: (prompt: string) => void }> = observer((
                 appearance="subtle" onClick={() => {
                 const tracks = commonStore.tracks.slice().filter(t => t.id !== track.id);
                 commonStore.setTracks(tracks);
+                refreshTracksTotalTime();
               }} />
             </div>
             <div className="relative grow overflow-hidden">
@@ -431,7 +437,7 @@ const AudiotrackEditor: FC<{ setPrompt: (prompt: string) => void }> = observer((
         <Card size="small" appearance="outline" style={{ minHeight: '150px', maxHeight: '200px' }}>
           <div className="flex flex-col gap-1 overflow-hidden">
             <Text size={100}>{`${t('Start Time')}: ${selectedTrack.offsetTime} ms`}</Text>
-            <Text size={100}>{`${t('Content Time')}: ${selectedTrack.contentTime} ms`}</Text>
+            <Text size={100}>{`${t('Content Duration')}: ${selectedTrack.contentTime} ms`}</Text>
             <div className="overflow-y-auto overflow-x-hidden" ref={contentPreviewRef}>
               {selectedTrackId === commonStore.recordingTrackId
                 ? commonStore.recordingContent

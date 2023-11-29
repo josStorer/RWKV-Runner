@@ -295,5 +295,10 @@
   "Sax": "萨克斯",
   "Flute": "长笛",
   "Lead": "主音",
-  "Pad": "和音"
+  "Pad": "和音",
+  "MIDI Input": "MIDI输入",
+  "Select the MIDI input device to be used.": "选择要使用的MIDI输入设备",
+  "Start Time": "开始时间",
+  "Content Duration": "内容时长",
+  "Please select a MIDI device first": "请先选择一个MIDI设备"
 }

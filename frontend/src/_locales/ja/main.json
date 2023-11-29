@@ -295,5 +295,10 @@
   "Sax": "サックス",
   "Flute": "フルート",
   "Lead": "リード",
-  "Pad": "パッド"
+  "Pad": "パッド",
+  "MIDI Input": "MIDI入力",
+  "Select the MIDI input device to be used.": "使用するMIDI入力デバイスを選択します。",
+  "Start Time": "開始時間",
+  "Content Duration": "内容の長さ",
+  "Please select a MIDI device first": "まずMIDIデバイスを選択してください"
 }

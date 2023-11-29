@@ -482,6 +482,12 @@ export function getHfDownloadUrl(url: string) {
 }
 
 export function refreshTracksTotalTime() {
+  if (commonStore.tracks.length === 0) {
+    commonStore.setTrackTotalTime(tracksMinimalTotalTime);
+    commonStore.setTrackCurrentTime(0);
+    commonStore.setTrackPlayStartTime(0);
+    return;
+  }
   const endTimes = commonStore.tracks.map(t => t.offsetTime + t.contentTime);
   const totalTime = Math.max(...endTimes) + tracksMinimalTotalTime;
   if (commonStore.trackPlayStartTime > totalTime)
