@@ -211,7 +211,7 @@ export const defaultModelConfigsMac: ModelConfig[] = [
       frequencyPenalty: 1
     },
     modelParameters: {
-      modelName: 'RWKV-4-MIDI-120M-v1-20230714-ctx4096.pth',
+      modelName: 'RWKV-5-MIDI-120M-v1-20230728-ctx4096.pth',
       device: 'CPU',
       precision: 'fp32',
       storedLayers: 41,
@@ -229,7 +229,7 @@ export const defaultModelConfigsMac: ModelConfig[] = [
       frequencyPenalty: 1
     },
     modelParameters: {
-      modelName: 'RWKV-4-MIDI-560M-v1-20230717-ctx4096.pth',
+      modelName: 'RWKV-5-MIDI-560M-v1-20230902-ctx4096.pth',
       device: 'CPU',
       precision: 'fp32',
       storedLayers: 41,
@@ -687,7 +687,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 1
     },
     modelParameters: {
-      modelName: 'RWKV-4-MIDI-120M-v1-20230714-ctx4096.pth',
+      modelName: 'RWKV-5-MIDI-120M-v1-20230728-ctx4096.pth',
       device: 'CPU',
       precision: 'fp32',
       storedLayers: 41,
@@ -705,7 +705,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 1
     },
     modelParameters: {
-      modelName: 'RWKV-4-MIDI-560M-v1-20230717-ctx4096.pth',
+      modelName: 'RWKV-5-MIDI-560M-v1-20230902-ctx4096.pth',
       device: 'CPU',
       precision: 'fp32',
       storedLayers: 41,
