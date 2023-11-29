@@ -1,13 +1,9 @@
 ## Changes
 
-- upgrade to rwkv 0.8.22 (rwkv6 support)
-- allow reading attachments even if the model is offline
-- improve launch flow of webgpu mode
-- allow safetensors converter on macOS
-- fix fs watcher of macOS
-- update defaultConfigs
-- update manifest
-- chores
+- MIDI Input Audio Tracks (Experimental, playing tracks is not supported yet, please save to generation area to preview)
+- fix autoPlayed midi cannot be stopped
+- try to use local soundfont by default
+- improve details
 
 ## Install
 
@@ -15,3 +11,7 @@
 - MacOS: https://github.com/josStorer/RWKV-Runner/blob/master/build/darwin/Readme_Install.txt
 - Linux: https://github.com/josStorer/RWKV-Runner/blob/master/build/linux/Readme_Install.txt
 - Server-Deploy-Examples: https://github.com/josStorer/RWKV-Runner/tree/master/deploy-examples
+
+#### MIDI Input Audio Tracks
+
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/e35e23a4-1942-4649-995d-eabf386722f7)
