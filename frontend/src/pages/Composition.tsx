@@ -128,7 +128,9 @@ const CompositionPanel: FC = observer(() => {
         });
         updateNs(ns);
         if (autoPlay) {
-          playerRef.current?.start();
+          setTimeout(() => {
+            playerRef.current?.start();
+          });
         }
       });
     });
