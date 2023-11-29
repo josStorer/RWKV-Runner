@@ -1,5 +1,5 @@
 import commonStore, { MonitorData, Platform } from './stores/commonStore';
-import { GetPlatform, ListDirFiles, ReadJson } from '../wailsjs/go/backend_golang/App';
+import { FileExists, GetPlatform, ListDirFiles, ReadJson } from '../wailsjs/go/backend_golang/App';
 import { Cache, checkUpdate, downloadProgramFiles, LocalConfig, refreshLocalModels, refreshModels } from './utils';
 import { getStatus } from './apis';
 import { EventsOn, WindowSetTitle } from '../wailsjs/runtime';
@@ -148,4 +148,10 @@ async function initMidi() {
   EventsOn('midiMessage', async (data: MidiMessage) => {
     await (await import('./pages/AudiotrackManager/AudiotrackEditor')).midiMessageHandler(data);
   });
+  if (await FileExists('assets/sound-font/accordion/instrument.json')) {
+    commonStore.setCompositionParams({
+      ...commonStore.compositionParams,
+      useLocalSoundFont: true
+    });
+  }
 }
