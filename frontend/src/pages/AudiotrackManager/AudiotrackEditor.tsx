@@ -29,6 +29,7 @@ import { toast } from 'react-toastify';
 import { ToastOptions } from 'react-toastify/dist/types';
 import { flushMidiRecordingContent, refreshTracksTotalTime } from '../../utils';
 import { PlayNote } from '../../../wailsjs/go/backend_golang/App';
+import { t } from 'i18next';
 
 const snapValue = 25;
 const minimalMoveTime = 8; // 1000/125=8ms wait_events=125
@@ -63,7 +64,7 @@ const displayCurrentInstrumentType = () => {
           className={commonStore.instrumentType === i ? 'text-blue-600' : ''}
           weight={commonStore.instrumentType === i ? 'bold' : 'regular'}
           size={commonStore.instrumentType === i ? 300 : 100}
-        >{name}</Text>)}
+        >{t(name)}</Text>)}
     </div>;
   const options: ToastOptions = {
     type: 'default',

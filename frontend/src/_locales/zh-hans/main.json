@@ -282,5 +282,18 @@
   "Play": "播放",
   "New Track": "新建音轨",
   "Select a track to preview the content": "选择一个音轨以预览内容",
-  "Save to generation area": "保存到生成区"
+  "Save to generation area": "保存到生成区",
+  "Piano": "钢琴",
+  "Percussion": "打击乐",
+  "Drum": "鼓",
+  "Tuba": "大号",
+  "Marimba": "马林巴",
+  "Bass": "贝斯",
+  "Guitar": "吉他",
+  "Violin": "小提琴",
+  "Trumpet": "小号",
+  "Sax": "萨克斯",
+  "Flute": "长笛",
+  "Lead": "主音",
+  "Pad": "和音"
 }

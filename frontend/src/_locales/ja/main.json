@@ -282,5 +282,18 @@
   "Play": "再生",
   "New Track": "新規トラック",
   "Select a track to preview the content": "トラックを選択して内容をプレビュー",
-  "Save to generation area": "生成エリアに保存"
+  "Save to generation area": "生成エリアに保存",
+  "Piano": "ピアノ",
+  "Percussion": "パーカッション",
+  "Drum": "ドラム",
+  "Tuba": "チューバ",
+  "Marimba": "マリンバ",
+  "Bass": "ベース",
+  "Guitar": "ギター",
+  "Violin": "バイオリン",
+  "Trumpet": "トランペット",
+  "Sax": "サックス",
+  "Flute": "フルート",
+  "Lead": "リード",
+  "Pad": "パッド"
 }
