@@ -1,4 +1,4 @@
-## Changes (v1.5.6 is a patch for v1.5.5)
+## Changes (v1.5.7 is a patch for v1.5.5 & v1.5.6)
 
 - MIDI Input Audio Tracks (Experimental, playing tracks is not supported yet, please save to generation area to preview)
 - fix autoPlayed midi cannot be stopped
