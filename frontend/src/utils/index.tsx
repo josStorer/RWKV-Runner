@@ -23,6 +23,7 @@ import { ModelSourceItem } from '../types/models';
 import { Language, Languages, SettingsType } from '../types/settings';
 import { DataProcessParameters, LoraFinetuneParameters } from '../types/train';
 import { InstrumentTypeNameMap, tracksMinimalTotalTime } from '../types/composition';
+import logo from '../assets/images/logo.png';
 
 export type Cache = {
   version: string
@@ -304,6 +305,8 @@ export function getServerRoot(defaultLocalPort: number) {
 
 export function absPathAsset(path: string) {
   if (commonStore.platform === 'web')
+    return path;
+  if (path === logo)
     return path;
   if ((path.length > 0 && path[0] === '/') ||
     (path.length > 1 && path[1] === ':')) {
