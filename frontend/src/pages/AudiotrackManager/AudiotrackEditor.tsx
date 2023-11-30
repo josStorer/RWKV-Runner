@@ -146,7 +146,7 @@ const Track: React.FC<TrackProps> = observer(({
   const { t } = useTranslation();
   const trackIndex = commonStore.tracks.findIndex(t => t.id === id)!;
   const track = commonStore.tracks[trackIndex];
-  const trackClass = isSelected ? 'bg-blue-600' : 'bg-gray-700';
+  const trackClass = isSelected ? 'bg-blue-600' : (commonStore.settings.darkMode ? 'bg-blue-900' : 'bg-gray-700');
   const controlX = useRef(0);
 
   return (
@@ -298,7 +298,8 @@ const AudiotrackEditor: FC<{ setPrompt: (prompt: string) => void }> = observer((
                 }, 1);
               }}
             >
-              <div ref={currentTimeControlRef} className="h-2 bg-gray-700 cursor-move rounded"
+              <div ref={currentTimeControlRef}
+                className={classnames('h-2 cursor-move rounded', commonStore.settings.darkMode ? 'bg-neutral-600' : 'bg-gray-700')}
                 style={{ width: currentTimeControlWidth }} />
             </Draggable>
             <div className={classnames(
@@ -329,7 +330,8 @@ const AudiotrackEditor: FC<{ setPrompt: (prompt: string) => void }> = observer((
                 <div className="relative cursor-move"
                   ref={playStartTimeControlRef}>
                   <ArrowAutofitWidth20Regular />
-                  <div className="border-l absolute border-gray-700"
+                  <div
+                    className={classnames('border-l absolute', commonStore.settings.darkMode ? 'border-white' : 'border-gray-700')}
                     style={{
                       height: (tracksRef.current && commonStore.tracks.length > 0)
                         ? tracksRef.current.clientHeight
