@@ -1,9 +1,9 @@
-## Changes (v1.5.7 is a patch for v1.5.5 & v1.5.6)
+## Changes
 
-- MIDI Input Audio Tracks (Experimental, playing tracks is not supported yet, please save to generation area to preview)
-- fix autoPlayed midi cannot be stopped
-- try to use local soundfont by default
-- improve details
+- fix NoteOff ElapsedTime of MIDI Tracks
+- improve details of MIDI Input
+- add high loss warning
+- lora finetune version check
 
 ## Install
 
