@@ -66,6 +66,11 @@ const parseLossData = (data: string) => {
   const loss = parseFloat(lastMatch[8]);
   commonStore.setChartTitle(`Epoch ${epoch}: ${lastMatch[2]} - ${lastMatch[3]}/${lastMatch[4]} - ${lastMatch[5]}/${lastMatch[6]} - ${lastMatch[7]} Loss=${loss}`);
   addLossDataToChart(epoch, loss);
+  if (loss > 5)
+    toast(t('Loss is too high, please check the training data, and ensure your gpu driver is up to date.'), {
+      type: 'warning',
+      toastId: 'train_loss_high'
+    });
   return true;
 };
 

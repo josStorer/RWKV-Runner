@@ -301,5 +301,6 @@
   "Start Time": "開始時間",
   "Content Duration": "内容の長さ",
   "Please select a MIDI device first": "まずMIDIデバイスを選択してください",
-  "Piano is the main instrument": "ピアノはメインの楽器です"
+  "Piano is the main instrument": "ピアノはメインの楽器です",
+  "Loss is too high, please check the training data, and ensure your gpu driver is up to date.": "Lossが大きすぎます、トレーニングデータを確認し、GPUドライバが最新であることを確認してください。"
 }
