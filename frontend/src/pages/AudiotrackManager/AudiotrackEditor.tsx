@@ -487,7 +487,7 @@ const AudiotrackEditor: FC<{ setPrompt: (prompt: string) => void }> = observer((
               }
             }
           }
-          const result = globalMessages.map(m => midiMessageToToken(m)).join('');
+          const result = ('<pad> ' + globalMessages.map(m => midiMessageToToken(m)).join('')).trim();
           commonStore.setCompositionSubmittedPrompt(result);
           setPrompt(result);
         }}>

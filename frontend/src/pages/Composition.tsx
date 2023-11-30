@@ -98,6 +98,13 @@ const CompositionPanel: FC = observer(() => {
     }
   }, []);
 
+  useEffect(() => {
+    if (!(commonStore.activeMidiDeviceIndex in commonStore.midiPorts)) {
+      commonStore.setActiveMidiDeviceIndex(-1);
+      CloseMidiPort();
+    }
+  }, [commonStore.midiPorts]);
+
   const generateNs = (autoPlay: boolean) => {
     fetch(getServerRoot(port) + '/text-to-midi', {
       method: 'POST',
@@ -270,7 +277,9 @@ const CompositionPanel: FC = observer(() => {
                 content={
                   <div className="flex flex-col gap-1">
                     <Dropdown style={{ minWidth: 0 }}
-                      value={commonStore.activeMidiDeviceIndex === -1 ? t('None')! : commonStore.midiPorts[commonStore.activeMidiDeviceIndex].name}
+                      value={(commonStore.activeMidiDeviceIndex === -1 || !(commonStore.activeMidiDeviceIndex in commonStore.midiPorts))
+                        ? t('None')!
+                        : commonStore.midiPorts[commonStore.activeMidiDeviceIndex].name}
                       selectedOptions={[commonStore.activeMidiDeviceIndex.toString()]}
                       onOptionSelect={(_, data) => {
                         if (data.optionValue) {
