@@ -158,6 +158,9 @@ for i in np.argsort(embeddings_cos_sim)[::-1]:
 
 ## MIDI Input
 
+小贴士: 你可以下载 https://github.com/josStorer/sgm_plus, 并解压到程序的`assets/sound-font`目录, 以使用离线音源. 注意,
+如果你正在从源码编译程序, 请不要将其放置在源码目录中
+
 ### USB MIDI 连接
 
 - USB MIDI设备是即插即用的, 你能够在作曲页面选择你的输入设备
@@ -213,6 +216,9 @@ for i in np.argsort(embeddings_cos_sim)[::-1]:
 ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/69f9ba7a-2fe8-4a5e-94cb-aa655aa409e2)
 
 ### 作曲
+
+小贴士: 你可以下载 https://github.com/josStorer/sgm_plus, 并解压到程序的`assets/sound-font`目录, 以使用离线音源. 注意,
+如果你正在从源码编译程序, 请不要将其放置在源码目录中
 
 ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/95b34893-80c2-4706-87f9-bc141032ed4b)
 
