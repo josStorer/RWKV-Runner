@@ -149,6 +149,12 @@ const Track: React.FC<TrackProps> = observer(({
   const trackClass = isSelected ? 'bg-blue-600' : (commonStore.settings.darkMode ? 'bg-blue-900' : 'bg-gray-700');
   const controlX = useRef(0);
 
+  let trackName = t('Track') + ' ' + id;
+  if (track.mainInstrument)
+    trackName = t('Track') + ' - ' + t('Piano is the main instrument')!.replace(t('Piano')!, t(track.mainInstrument)) + (track.content && (' - ' + track.content));
+  else if (track.content)
+    trackName = t('Track') + ' - ' + track.content;
+
   return (
     <Draggable
       axis="x"
@@ -183,7 +189,7 @@ const Track: React.FC<TrackProps> = observer(({
         }}
         onClick={() => onSelect(id)}
       >
-        <span className="text-white">{t('Track') + ' ' + (track.content || id)}</span>
+        <span className="text-white">{trackName}</span>
       </div>
     </Draggable>
   );
@@ -421,6 +427,7 @@ const AudiotrackEditor: FC<{ setPrompt: (prompt: string) => void }> = observer((
             onClick={() => {
               commonStore.setTracks([...commonStore.tracks, {
                 id: uuid(),
+                mainInstrument: '',
                 content: '',
                 rawContent: [],
                 offsetTime: 0,

@@ -14,6 +14,7 @@ export type CompositionParams = {
 }
 export type Track = {
   id: string;
+  mainInstrument: string;
   content: string;
   rawContent: MidiMessage[];
   offsetTime: number;

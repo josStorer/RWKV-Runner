@@ -300,5 +300,6 @@
   "Select the MIDI input device to be used.": "使用するMIDI入力デバイスを選択します。",
   "Start Time": "開始時間",
   "Content Duration": "内容の長さ",
-  "Please select a MIDI device first": "まずMIDIデバイスを選択してください"
+  "Please select a MIDI device first": "まずMIDIデバイスを選択してください",
+  "Piano is the main instrument": "ピアノはメインの楽器です"
 }
