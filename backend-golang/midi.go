@@ -86,6 +86,12 @@ func (a *App) OpenMidiPort(index int) error {
 		channel := bytes[0] & 0x0f
 		switch msgType {
 		case 0x8:
+			elapsed := time.Since(lastNoteTime)
+			lastNoteTime = time.Now()
+			runtime.EventsEmit(a.ctx, "midiMessage", &MIDIMessage{
+				MessageType: "ElapsedTime",
+				Value:       int(elapsed.Milliseconds()),
+			})
 			note := bytes[1]
 			runtime.EventsEmit(a.ctx, "midiMessage", &MIDIMessage{
 				MessageType: "NoteOff",
