@@ -139,6 +139,7 @@ const errorsMap = Object.entries({
   'cuda_home environment variable is not set': 'Matched CUDA is not installed',
   'unsupported gpu architecture': 'Matched CUDA is not installed',
   'error building extension \'fused_adam\'': 'Matched CUDA is not installed',
+  'rwkv{version} is not supported': 'This version of RWKV is not supported yet.',
   'modelinfo is invalid': 'Failed to load model, try to increase the virtual memory (Swap of WSL) or use a smaller base model.'
 });
 

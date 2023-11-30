@@ -302,5 +302,6 @@
   "Content Duration": "内容时长",
   "Please select a MIDI device first": "请先选择一个MIDI设备",
   "Piano is the main instrument": "钢琴为主",
-  "Loss is too high, please check the training data, and ensure your gpu driver is up to date.": "Loss过高，请检查训练数据，并确保你的显卡驱动是最新的"
+  "Loss is too high, please check the training data, and ensure your gpu driver is up to date.": "Loss过高，请检查训练数据，并确保你的显卡驱动是最新的",
+  "This version of RWKV is not supported yet.": "暂不支持此版本的RWKV"
 }

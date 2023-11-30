@@ -47,7 +47,7 @@ else
 fi
 
 echo "loading $loadModel"
-modelInfo=$(python3 ./finetune/get_layer_and_embd.py $loadModel)
+modelInfo=$(python3 ./finetune/get_layer_and_embd.py $loadModel 4)
 echo $modelInfo
 if [[ $modelInfo =~ "--n_layer" ]]; then
   python3 ./finetune/lora/train.py $modelInfo $@ --proj_dir lora-models --data_type binidx --lora \
