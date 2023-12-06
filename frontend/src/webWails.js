@@ -48,6 +48,8 @@ if (!window.go) {
   // not implemented
   defineApp('AddToDownloadList', async () => {
   })
+  defineApp('CloseMidiPort', async () => {
+  })
   defineApp('ContinueDownload', async () => {
   })
   defineApp('ConvertData', async () => {
@@ -74,7 +76,11 @@ if (!window.go) {
   })
   defineApp('OpenFileFolder', async () => {
   })
+  defineApp('OpenMidiPort', async () => {
+  })
   defineApp('PauseDownload', async () => {
+  })
+  defineApp('PlayNote', async () => {
   })
   defineApp('ReadFileInfo', async () => {
   })
