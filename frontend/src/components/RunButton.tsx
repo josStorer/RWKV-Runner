@@ -169,7 +169,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
               });
             }
             commonStore.setStatus({ status: ModelStatus.Loading });
-            const loadingId = toast(t('Loading Model'), { type: 'info' });
+            const loadingId = toast(t('Loading Model'), { type: 'info', autoClose: false });
             if (!webgpu) {
               updateConfig({
                 max_tokens: modelConfig.apiParameters.maxResponseToken,
@@ -232,7 +232,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
                 if ((modelConfig.modelParameters.device === 'CUDA' || modelConfig.modelParameters.device === 'CUDA-Beta') &&
                   modelConfig.modelParameters.storedLayers < modelConfig.modelParameters.maxStoredLayers &&
                   commonStore.monitorData && commonStore.monitorData.totalVram !== 0 &&
-                  (commonStore.monitorData.usedVram / commonStore.monitorData.totalVram) < 0.85)
+                  (commonStore.monitorData.usedVram / commonStore.monitorData.totalVram) < 0.9)
                   toast(t('You can increase the number of stored layers in Configs page to improve performance'), { type: 'info' });
                 toastWithButton(t('Startup Completed'), t(buttonName), buttonFn, { type: 'success', autoClose: 3000 });
               } else if (r.status === 304) {
