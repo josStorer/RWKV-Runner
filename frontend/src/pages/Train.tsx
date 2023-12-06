@@ -470,7 +470,7 @@ const LoraFinetune: FC = observer(() => {
                   return;
                 if (loraParams.loraLoad) {
                   const outputPath = `models/${loraParams.baseModel}-LoRA-${loraParams.loraLoad}`;
-                  MergeLora(commonStore.settings.customPythonPath, true, loraParams.loraAlpha,
+                  MergeLora(commonStore.settings.customPythonPath, !!commonStore.monitorData && commonStore.monitorData.totalVram !== 0, loraParams.loraAlpha,
                     'models/' + loraParams.baseModel, 'lora-models/' + loraParams.loraLoad,
                     outputPath).then(async () => {
                     if (!await FileExists(outputPath)) {
