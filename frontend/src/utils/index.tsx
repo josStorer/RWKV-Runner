@@ -421,7 +421,10 @@ export const checkDependencies = async (navigate: NavigateFunction) => {
           toastWithButton(`${t('Downloading')} Python`, t('Check'), () => {
             navigate({ pathname: '/downloads' });
           }, { autoClose: 3000 });
-          AddToDownloadList('python-3.10.11-embed-amd64.zip', 'https://www.python.org/ftp/python/3.10.11/python-3.10.11-embed-amd64.zip');
+          AddToDownloadList('python-3.10.11-embed-amd64.zip',
+            !commonStore.settings.cnMirror
+              ? 'https://www.python.org/ftp/python/3.10.11/python-3.10.11-embed-amd64.zip'
+              : 'https://mirrors.huaweicloud.com/python/3.10.11/python-3.10.11-embed-amd64.zip');
         });
       } else if (depErrorMsg.includes('DepCheck Error')) {
         if (depErrorMsg.includes('vc_redist') || depErrorMsg.includes('DLL load failed while importing')) {
@@ -539,7 +542,7 @@ export async function getSoundFont() {
   else
     soundUrl = !commonStore.settings.giteeUpdatesSource ?
       `https://raw.githubusercontent.com/josStorer/sgm_plus/master` :
-      `https://gitee.com/josc146/sgm_plus/raw/master`;
+      `https://cdn.jsdelivr.net/gh/josstorer/sgm_plus`;
   const fallbackUrl = 'https://cdn.jsdelivr.net/gh/josstorer/sgm_plus';
   await fetch(soundUrl + '/soundfont.json').then(r => {
     if (!r.ok)
