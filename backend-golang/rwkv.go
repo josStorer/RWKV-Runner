@@ -46,15 +46,10 @@ func (a *App) ConvertModel(python string, modelPath string, strategy string, out
 	return Cmd(python, "./backend-python/convert_model.py", "--in", modelPath, "--out", outPath, "--strategy", strategy)
 }
 
-func (a *App) ConvertSafetensors(python string, modelPath string, outPath string) (string, error) {
-	var err error
-	if python == "" {
-		python, err = GetPython()
-	}
-	if err != nil {
-		return "", err
-	}
-	return Cmd(python, "./backend-python/convert_safetensors.py", "--input", modelPath, "--output", outPath)
+func (a *App) ConvertSafetensors(modelPath string, outPath string) (string, error) {
+	args := []string{"./backend-rust/web-rwkv-converter"}
+	args = append(args, "--input", modelPath, "--output", outPath)
+	return Cmd(args...)
 }
 
 func (a *App) ConvertData(python string, input string, outputPrefix string, vocab string) (string, error) {

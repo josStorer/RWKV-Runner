@@ -1,29 +1,18 @@
 import { toast } from 'react-toastify';
 import commonStore from '../stores/commonStore';
 import { t } from 'i18next';
-import { checkDependencies } from './index';
 import { ConvertSafetensors, FileExists, GetPyError } from '../../wailsjs/go/backend_golang/App';
 import { WindowShow } from '../../wailsjs/runtime';
-import { NavigateFunction } from 'react-router';
 import { ModelConfig } from '../types/configs';
 
-export const convertToSt = async (navigate: NavigateFunction, selectedConfig: ModelConfig) => {
-  if (commonStore.platform === 'linux') {
-    toast(t('Linux is not yet supported for performing this operation, please do it manually.') + ' (backend-python/convert_safetensors.py)', { type: 'info' });
-    return;
-  }
-
-  const ok = await checkDependencies(navigate);
-  if (!ok)
-    return;
-
+export const convertToSt = async (selectedConfig: ModelConfig) => {
   const modelPath = `${commonStore.settings.customModelsPath}/${selectedConfig.modelParameters.modelName}`;
   if (await FileExists(modelPath)) {
-    toast(t('Start Converting'), { autoClose: 1000, type: 'info' });
+    toast(t('Start Converting'), { autoClose: 2000, type: 'info' });
     const newModelPath = modelPath.replace(/\.pth$/, '.st');
-    ConvertSafetensors(commonStore.settings.customPythonPath, modelPath, newModelPath).then(async () => {
+    ConvertSafetensors(modelPath, newModelPath).then(async () => {
       if (!await FileExists(newModelPath)) {
-        if (commonStore.platform === 'windows')
+        if (commonStore.platform === 'windows' || commonStore.platform === 'linux')
           toast(t('Convert Failed') + ' - ' + await GetPyError(), { type: 'error' });
       } else {
         toast(`${t('Convert Success')} - ${newModelPath}`, { type: 'success' });

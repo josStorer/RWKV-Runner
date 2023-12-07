@@ -474,7 +474,8 @@ const LoraFinetune: FC = observer(() => {
                     'models/' + loraParams.baseModel, 'lora-models/' + loraParams.loraLoad,
                     outputPath).then(async () => {
                     if (!await FileExists(outputPath)) {
-                      toast(t('Failed to merge model') + ' - ' + await GetPyError(), { type: 'error' });
+                      if (commonStore.platform === 'windows' || commonStore.platform === 'linux')
+                        toast(t('Failed to merge model') + ' - ' + await GetPyError(), { type: 'error' });
                     } else {
                       toast(t('Merge model successfully'), { type: 'success' });
                     }

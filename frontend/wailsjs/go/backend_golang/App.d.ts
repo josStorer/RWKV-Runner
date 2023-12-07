@@ -12,7 +12,7 @@ export function ConvertData(arg1:string,arg2:string,arg3:string,arg4:string):Pro
 
 export function ConvertModel(arg1:string,arg2:string,arg3:string,arg4:string):Promise<string>;
 
-export function ConvertSafetensors(arg1:string,arg2:string,arg3:string):Promise<string>;
+export function ConvertSafetensors(arg1:string,arg2:string):Promise<string>;
 
 export function CopyFile(arg1:string,arg2:string):Promise<void>;
 

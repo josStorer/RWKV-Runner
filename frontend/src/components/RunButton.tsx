@@ -90,7 +90,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
             return;
           } else {
             toastWithButton(t('Please convert model to safe tensors format first'), t('Convert'), () => {
-              convertToSt(navigate, modelConfig);
+              convertToSt(modelConfig);
             });
             commonStore.setStatus({ status: ModelStatus.Offline });
             return;

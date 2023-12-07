@@ -273,7 +273,7 @@ const Configs: FC = observer(() => {
                       }} /> :
                     <ToolTipButton text={t('Convert To Safe Tensors Format')}
                       desc=""
-                      onClick={() => convertToSt(navigate, selectedConfig)} />
+                      onClick={() => convertToSt(selectedConfig)} />
                 }
                 <Labeled label={t('Strategy')} content={
                   <Dropdown style={{ minWidth: 0 }} className="grow" value={t(selectedConfig.modelParameters.device)!}
