@@ -57,8 +57,8 @@ jobs:
         with:
           args: install upx
       - run: |
-          Start-BitsTransfer https://github.com/josStorer/ai00_rwkv_server/releases/latest/download/webgpu_server_windows.exe ./backend-rust/webgpu_server.exe
-          Start-BitsTransfer https://github.com/josStorer/web-rwkv-converter/releases/latest/download/web-rwkv-converter_windows.exe ./backend-rust/web-rwkv-converter.exe
+          Start-BitsTransfer https://github.com/josStorer/ai00_rwkv_server/releases/latest/download/webgpu_server_windows_x86_64.exe ./backend-rust/webgpu_server.exe
+          Start-BitsTransfer https://github.com/josStorer/web-rwkv-converter/releases/latest/download/web-rwkv-converter_windows_x86_64.exe ./backend-rust/web-rwkv-converter.exe
           Start-BitsTransfer https://github.com/josStorer/LibreHardwareMonitor.Console/releases/latest/download/LibreHardwareMonitor.Console.zip ./LibreHardwareMonitor.Console.zip
           Expand-Archive ./LibreHardwareMonitor.Console.zip -DestinationPath ./components/LibreHardwareMonitor.Console
           Start-BitsTransfer https://www.python.org/ftp/python/3.10.11/python-3.10.11-embed-amd64.zip ./python-3.10.11-embed-amd64.zip
@@ -92,8 +92,8 @@ jobs:
           override: true
           target: wasm32-unknown-unknown
       - run: |
-          wget https://github.com/josStorer/ai00_rwkv_server/releases/latest/download/webgpu_server_linux -o ./backend-rust/webgpu_server
-          wget https://github.com/josStorer/web-rwkv-converter/releases/latest/download/web-rwkv-converter_linux -o ./backend-rust/web-rwkv-converter
+          wget https://github.com/josStorer/ai00_rwkv_server/releases/latest/download/webgpu_server_linux_x86_64 -o ./backend-rust/webgpu_server
+          wget https://github.com/josStorer/web-rwkv-converter/releases/latest/download/web-rwkv-converter_linux_x86_64 -o ./backend-rust/web-rwkv-converter
           sudo apt-get update
           sudo apt-get install upx
           sudo apt-get install build-essential libgtk-3-dev libwebkit2gtk-4.0-dev
@@ -124,8 +124,8 @@ jobs:
           override: true
           target: wasm32-unknown-unknown
       - run: |
-          wget https://github.com/josStorer/ai00_rwkv_server/releases/latest/download/webgpu_server_darwin -o ./backend-rust/webgpu_server
-          wget https://github.com/josStorer/web-rwkv-converter/releases/latest/download/web-rwkv-converter_darwin -o ./backend-rust/web-rwkv-converter
+          wget https://github.com/josStorer/ai00_rwkv_server/releases/latest/download/webgpu_server_darwin_aarch64 -o ./backend-rust/webgpu_server
+          wget https://github.com/josStorer/web-rwkv-converter/releases/latest/download/web-rwkv-converter_darwin_aarch64 -o ./backend-rust/web-rwkv-converter
           go install github.com/wailsapp/wails/v2/cmd/wails@latest
           rm ./backend-python/rwkv_pip/wkv_cuda.pyd
           rm ./backend-python/rwkv_pip/rwkv5.pyd
