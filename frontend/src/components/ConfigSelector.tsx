@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Dropdown, Option } from '@fluentui/react-components';
+import { Dropdown, Option, PresenceBadge } from '@fluentui/react-components';
 import commonStore from '../stores/commonStore';
 
 export const ConfigSelector: FC<{ size?: 'small' | 'medium' | 'large' }> = observer(({ size }) => {
@@ -12,7 +12,13 @@ export const ConfigSelector: FC<{ size?: 'small' | 'medium' | 'large' }> = obser
         commonStore.setCurrentConfigIndex(Number(data.optionValue));
     }}>
     {commonStore.modelConfigs.map((config, index) =>
-      <Option key={index} value={index.toString()}>{config.name}</Option>
+      <Option key={index} value={index.toString()} text={config.name}>
+        <div className="flex justify-between grow">
+          {config.name}
+          {commonStore.modelSourceList.find(item => item.name === config.modelParameters.modelName)?.isComplete
+            && <PresenceBadge status="available" />}
+        </div>
+      </Option>
     )}
   </Dropdown>;
 });

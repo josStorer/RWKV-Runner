@@ -8,6 +8,7 @@ import {
   Input,
   Label,
   Option,
+  PresenceBadge,
   Select,
   Switch,
   Text
@@ -106,7 +107,13 @@ const Configs: FC = observer(() => {
               }
             }}>
             {commonStore.modelConfigs.map((config, index) =>
-              <Option key={index} value={index.toString()}>{config.name}</Option>
+              <Option key={index} value={index.toString()} text={config.name}>
+                <div className="flex justify-between grow">
+                  {config.name}
+                  {commonStore.modelSourceList.find(item => item.name === config.modelParameters.modelName)?.isComplete
+                    && <PresenceBadge status="available" />}
+                </div>
+              </Option>
             )}
           </Dropdown>
           <ToolTipButton desc={t('New Config')} icon={<AddCircle20Regular />} onClick={() => {
