@@ -303,5 +303,13 @@
   "Please select a MIDI device first": "请先选择一个MIDI设备",
   "Piano is the main instrument": "钢琴为主",
   "Loss is too high, please check the training data, and ensure your gpu driver is up to date.": "Loss过高，请检查训练数据，并确保你的显卡驱动是最新的",
-  "This version of RWKV is not supported yet.": "暂不支持此版本的RWKV"
+  "This version of RWKV is not supported yet.": "暂不支持此版本的RWKV",
+  "Main": "主干",
+  "Finetuned": "微调",
+  "Global": "全球",
+  "Local": "本地",
+  "CN": "中文",
+  "JP": "日文",
+  "Music": "音乐",
+  "Other": "其他"
 }

@@ -79,7 +79,8 @@ export async function refreshLocalModels(cache: {
           size: d.size,
           lastUpdated: d.modTime,
           isComplete: true,
-          isLocal: true
+          isLocal: true,
+          tags: ['Local']
         }] as ModelSourceItem[];
       return [];
     }));
@@ -89,12 +90,15 @@ export async function refreshLocalModels(cache: {
   for (let i = 0; i < cache.models.length; i++) {
     if (!cache.models[i].lastUpdatedMs)
       cache.models[i].lastUpdatedMs = Date.parse(cache.models[i].lastUpdated);
+    if (!cache.models[i].tags)
+      cache.models[i].tags = ['Other'];
 
     for (let j = i + 1; j < cache.models.length; j++) {
       if (!cache.models[j].lastUpdatedMs)
         cache.models[j].lastUpdatedMs = Date.parse(cache.models[j].lastUpdated);
 
       if (cache.models[i].name === cache.models[j].name) {
+        const tags = Array.from(new Set([...cache.models[i].tags as string[], ...cache.models[j].tags as string[]]));
         if (cache.models[i].size <= cache.models[j].size) { // j is local file
           if (cache.models[i].lastUpdatedMs! < cache.models[j].lastUpdatedMs!) {
             cache.models[i] = Object.assign({}, cache.models[i], cache.models[j]);
@@ -104,6 +108,7 @@ export async function refreshLocalModels(cache: {
         } // else is not complete local file
         cache.models[i].isLocal = true;
         cache.models[i].localSize = cache.models[j].size;
+        cache.models[i].tags = tags;
         cache.models.splice(j, 1);
         j--;
       }

@@ -118,6 +118,7 @@ class CommonStore {
   modelConfigs: ModelConfig[] = [];
   modelParamsCollapsed: boolean = true;
   // models
+  activeModelListTags: string[] = [];
   modelSourceManifestList: string = 'https://cdn.jsdelivr.net/gh/josstorer/RWKV-Runner@master/manifest.json;';
   modelSourceList: ModelSourceItem[] = [];
   // downloads
@@ -452,6 +453,10 @@ class CommonStore {
 
   setPlayingTrackId(value: string) {
     this.playingTrackId = value;
+  }
+
+  setActiveModelListTags(value: string[]) {
+    this.activeModelListTags = value;
   }
 }
 

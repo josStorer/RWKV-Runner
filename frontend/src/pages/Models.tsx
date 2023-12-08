@@ -1,5 +1,6 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
+  Button,
   Checkbox,
   createTableColumn,
   DataGrid,
@@ -154,6 +155,22 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
 
 const Models: FC = observer(() => {
   const { t } = useTranslation();
+  const [tags, setTags] = useState<Array<string>>([]);
+  const [modelSourceList, setModelSourceList] = useState<ModelSourceItem[]>(commonStore.modelSourceList);
+
+  useEffect(() => {
+    setTags(Array.from(new Set(
+      [...commonStore.modelSourceList.map(item => item.tags || []).flat()
+      .filter(i => !i.includes('Other') && !i.includes('Local'))
+        , 'Other', 'Local'])));
+  }, [commonStore.modelSourceList]);
+
+  useEffect(() => {
+    if (commonStore.activeModelListTags.length === 0)
+      setModelSourceList(commonStore.modelSourceList);
+    else
+      setModelSourceList(commonStore.modelSourceList.filter(item => commonStore.activeModelListTags.some(tag => item.tags?.includes(tag))));
+  }, [commonStore.modelSourceList, commonStore.activeModelListTags]);
 
   return (
     <Page title={t('Models')} content={
@@ -184,9 +201,24 @@ const Models: FC = observer(() => {
             value={commonStore.modelSourceManifestList}
             onChange={(e, data) => commonStore.setModelSourceManifestList(data.value)} />
         </div>
+        <div className="flex gap-2 flex-wrap overflow-y-auto" style={{ minHeight: '88px' }}>
+          {tags.map(tag =>
+            <div key={tag} className="mt-auto">
+              <Button
+                appearance={commonStore.activeModelListTags.includes(tag) ? 'primary' : 'secondary'} onClick={
+                () => {
+                  if (commonStore.activeModelListTags.includes(tag))
+                    commonStore.setActiveModelListTags(commonStore.activeModelListTags.filter(t => t !== tag));
+                  else
+                    commonStore.setActiveModelListTags([...commonStore.activeModelListTags, tag]);
+                }
+              }>{t(tag)}</Button>
+            </div>)
+          }
+        </div>
         <div className="flex grow overflow-hidden">
           <DataGrid
-            items={commonStore.modelSourceList}
+            items={modelSourceList}
             columns={columns}
             sortable={true}
             defaultSortState={{ sortColumn: 'actions', sortDirection: 'ascending' }}

@@ -10,5 +10,6 @@ export type ModelSourceItem = {
   isLocal?: boolean;
   localSize?: number;
   lastUpdatedMs?: number;
+  tags?: string[];
   hide?: boolean;
 };
