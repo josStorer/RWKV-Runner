@@ -52,7 +52,10 @@ const defaultPreset: Preset = {
   prompt: '',
   stop: '',
   injectStart: '',
-  injectEnd: ''
+  injectEnd: '',
+  presystem: true,
+  userName: '',
+  assistantName: ''
 };
 
 const MessagesEditor = lazy(() => import('./MessagesEditor'));
@@ -80,7 +83,9 @@ const setActivePreset = (preset: Preset) => {
   //}
 };
 
-const PresetCardFrame: FC<PropsWithChildren & { onClick?: () => void }> = (props) => {
+const PresetCardFrame: FC<PropsWithChildren & {
+  onClick?: React.MouseEventHandler<HTMLButtonElement>
+}> = (props) => {
   return <Button
     className="flex flex-col gap-1 w-32 h-56 break-all"
     style={{ minWidth: 0, borderRadius: '0.75rem', justifyContent: 'unset' }}
@@ -103,7 +108,10 @@ const PresetCard: FC<{
 }) => {
   const { t } = useTranslation();
 
-  return <PresetCardFrame onClick={onClick}>
+  return <PresetCardFrame onClick={(e) => {
+    if (onClick && e.currentTarget.contains(e.target as Node))
+      onClick();
+  }}>
     <img src={absPathAsset(avatarImg)} className="rounded-xl select-none ml-auto mr-auto h-28" />
     <Text size={400}>{name}</Text>
     <Text size={200} style={{
@@ -116,7 +124,8 @@ const PresetCard: FC<{
       {editable ?
         <ChatPresetEditor presetIndex={presetIndex} triggerButton={
           <ToolTipButton size="small" appearance="transparent" desc={t('Edit')} icon={<Edit20Regular />}
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               commonStore.setEditingPreset({ ...commonStore.presets[presetIndex] });
             }} />
         } />
