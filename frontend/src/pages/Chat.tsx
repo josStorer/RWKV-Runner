@@ -28,7 +28,7 @@ import { toast } from 'react-toastify';
 import { WorkHeader } from '../components/WorkHeader';
 import { DialogButton } from '../components/DialogButton';
 import { OpenFileFolder, OpenOpenFileDialog, OpenSaveFileDialog } from '../../wailsjs/go/backend_golang/App';
-import { absPathAsset, bytesToReadable, getServerRoot, toastWithButton } from '../utils';
+import { absPathAsset, bytesToReadable, getServerRoot, setActivePreset, toastWithButton } from '../utils';
 import { useMediaQuery } from 'usehooks-ts';
 import { botName, ConversationMessage, MessageType, userName, welcomeUuid } from '../types/chat';
 import { Labeled } from '../components/Labeled';
@@ -536,8 +536,7 @@ const ChatPanel: FC = observer(() => {
                 }
                 chatSseControllers = {};
               }
-              commonStore.setConversation({});
-              commonStore.setConversationOrder([]);
+              setActivePreset(commonStore.activePreset);
             }} />
           <div className="relative flex grow">
             <Textarea

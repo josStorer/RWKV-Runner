@@ -70,7 +70,9 @@ class CommonStore {
   conversationOrder: string[] = [];
   activePreset: Preset | null = null;
   attachmentUploading: boolean = false;
-  attachments: { [uuid: string]: Attachment[] } = {};
+  attachments: {
+    [uuid: string]: Attachment[]
+  } = {};
   currentTempAttachment: Attachment | null = null;
   chatParams: ChatParams = {
     maxResponseToken: 1000,
@@ -327,7 +329,7 @@ class CommonStore {
       savePresets();
   }
 
-  setActivePreset(value: Preset) {
+  setActivePreset(value: Preset | null) {
     this.activePreset = value;
   }
 
@@ -379,7 +381,9 @@ class CommonStore {
     this.attachmentUploading = value;
   }
 
-  setAttachments(value: { [uuid: string]: Attachment[] }) {
+  setAttachments(value: {
+    [uuid: string]: Attachment[]
+  }) {
     this.attachments = value;
   }
 

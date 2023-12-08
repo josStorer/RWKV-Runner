@@ -33,10 +33,8 @@ import { observer } from 'mobx-react-lite';
 import { ClipboardGetText, ClipboardSetText } from '../../../wailsjs/runtime';
 import { toast } from 'react-toastify';
 import { CustomToastContainer } from '../../components/CustomToastContainer';
-import { v4 as uuid } from 'uuid';
-import { absPathAsset } from '../../utils';
+import { absPathAsset, setActivePreset } from '../../utils';
 import { Preset, PresetsNavigationItem } from '../../types/presets';
-import { botName, Conversation, MessageType, userName } from '../../types/chat';
 import { LazyImportComponent } from '../../components/LazyImportComponent';
 
 const defaultPreset: Preset = {
@@ -59,29 +57,6 @@ const defaultPreset: Preset = {
 };
 
 const MessagesEditor = lazy(() => import('./MessagesEditor'));
-
-const setActivePreset = (preset: Preset) => {
-  commonStore.setActivePreset(preset);
-  //TODO if (preset.displayPresetMessages) {
-  const conversation: Conversation = {};
-  const conversationOrder: string[] = [];
-  for (const message of preset.messages) {
-    const newUuid = uuid();
-    conversationOrder.push(newUuid);
-    conversation[newUuid] = {
-      sender: message.role === 'user' ? userName : botName,
-      type: MessageType.Normal,
-      color: message.role === 'user' ? 'brand' : 'colorful',
-      time: new Date().toISOString(),
-      content: message.content,
-      side: message.role === 'user' ? 'right' : 'left',
-      done: true
-    };
-  }
-  commonStore.setConversation(conversation);
-  commonStore.setConversationOrder(conversationOrder);
-  //}
-};
 
 const PresetCardFrame: FC<PropsWithChildren & {
   onClick?: React.MouseEventHandler<HTMLButtonElement>
@@ -380,7 +355,9 @@ const ChatPresets: FC = observer(() => {
   </div>;
 });
 
-const pages: { [label: string]: PresetsNavigationItem } = {
+const pages: {
+  [label: string]: PresetsNavigationItem
+} = {
   Chat: {
     icon: <Chat20Regular />,
     element: <ChatPresets />
@@ -395,7 +372,9 @@ const pages: { [label: string]: PresetsNavigationItem } = {
   }
 };
 
-const PresetsManager: FC<{ initTab: string }> = ({ initTab }) => {
+const PresetsManager: FC<{
+  initTab: string
+}> = ({ initTab }) => {
   const { t } = useTranslation();
   const [tab, setTab] = useState(initTab);
 

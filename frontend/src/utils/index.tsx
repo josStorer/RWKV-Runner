@@ -24,6 +24,9 @@ import { Language, Languages, SettingsType } from '../types/settings';
 import { DataProcessParameters, LoraFinetuneParameters } from '../types/train';
 import { InstrumentTypeNameMap, tracksMinimalTotalTime } from '../types/composition';
 import logo from '../assets/images/logo.png';
+import { Preset } from '../types/presets';
+import { botName, Conversation, MessageType, userName } from '../types/chat';
+import { v4 as uuid } from 'uuid';
 
 export type Cache = {
   version: string
@@ -41,7 +44,9 @@ export type LocalConfig = {
 }
 
 export async function refreshBuiltInModels(readCache: boolean = false) {
-  let cache: { models: ModelSourceItem[] } = { models: [] };
+  let cache: {
+    models: ModelSourceItem[]
+  } = { models: [] };
   if (readCache)
     await ReadJson('cache.json').then((cacheData: Cache) => {
       if (cacheData.models)
@@ -133,7 +138,9 @@ function initLastUnfinishedModelDownloads() {
   commonStore.setLastUnfinishedModelDownloads(list);
 }
 
-export async function refreshRemoteModels(cache: { models: ModelSourceItem[] }) {
+export async function refreshRemoteModels(cache: {
+  models: ModelSourceItem[]
+}) {
   const manifestUrls = commonStore.modelSourceManifestList.split(/[,，;；\n]/);
   const requests = manifestUrls.filter(url => url.endsWith('.json')).map(
     url => fetch(url, { cache: 'no-cache' }).then(r => r.json()));
@@ -515,7 +522,9 @@ export function flushMidiRecordingContent() {
     .filter(c => c.messageType === 'NoteOn')
     .map(c => c.instrument)
     .reduce((frequencyCount, current) => (frequencyCount[current] = (frequencyCount[current] || 0) + 1, frequencyCount)
-      , {} as { [key: string]: number }))
+      , {} as {
+        [key: string]: number
+      }))
     .sort((a, b) => b[1] - a[1]);
     let mainInstrument: string = '';
     if (sortedInstrumentFrequency.length > 0)
@@ -550,6 +559,30 @@ export async function getSoundFont() {
   }).catch(() => soundUrl = fallbackUrl);
   return soundUrl;
 }
+
+export const setActivePreset = (preset: Preset | null) => {
+  commonStore.setActivePreset(preset);
+  //TODO if (preset.displayPresetMessages) {
+  const conversation: Conversation = {};
+  const conversationOrder: string[] = [];
+  if (preset)
+    for (const message of preset.messages) {
+      const newUuid = uuid();
+      conversationOrder.push(newUuid);
+      conversation[newUuid] = {
+        sender: message.role === 'user' ? userName : botName,
+        type: MessageType.Normal,
+        color: message.role === 'user' ? 'brand' : 'colorful',
+        time: new Date().toISOString(),
+        content: message.content,
+        side: message.role === 'user' ? 'right' : 'left',
+        done: true
+      };
+    }
+  commonStore.setConversation(conversation);
+  commonStore.setConversationOrder(conversationOrder);
+  //}
+};
 
 export function getSupportedCustomCudaFile(isBeta: boolean) {
   if ([' 10', ' 16', ' 20', ' 30', 'MX', 'Tesla P', 'Quadro P', 'NVIDIA P', 'TITAN X', 'TITAN RTX', 'RTX A',
