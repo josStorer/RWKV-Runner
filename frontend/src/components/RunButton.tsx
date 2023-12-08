@@ -183,7 +183,8 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
             const strategy = getStrategy(modelConfig);
             let customCudaFile = '';
             if ((modelConfig.modelParameters.device.includes('CUDA') || modelConfig.modelParameters.device === 'Custom')
-              && modelConfig.modelParameters.useCustomCuda && !strategy.includes('fp32')) {
+              && modelConfig.modelParameters.useCustomCuda
+              && !strategy.split('->').some(s => ['cuda', 'fp32'].every(v => s.includes(v)))) {
               if (commonStore.platform === 'windows') {
                 // this part is currently unused because there's no longer a need to use different kernels for different GPUs, but it might still be needed in the future
                 //
