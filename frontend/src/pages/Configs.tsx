@@ -14,7 +14,7 @@ import {
   Text
 } from '@fluentui/react-components';
 import { AddCircle20Regular, DataUsageSettings20Regular, Delete20Regular, Save20Regular } from '@fluentui/react-icons';
-import React, { FC, useEffect, useRef } from 'react';
+import React, { FC, useCallback, useEffect, useRef } from 'react';
 import { Section } from '../components/Section';
 import { Labeled } from '../components/Labeled';
 import { ToolTipButton } from '../components/ToolTipButton';
@@ -38,6 +38,28 @@ import { useMediaQuery } from 'usehooks-ts';
 import { ApiParameters, Device, ModelParameters, Precision } from '../types/configs';
 import { convertToSt } from '../utils/convert-to-st';
 
+const ConfigSelector: FC<{ selectedIndex: number, updateSelectedIndex: (i: number) => void }> = observer(({ selectedIndex, updateSelectedIndex }) => {
+  return (
+    <Dropdown style={{ minWidth: 0 }} className="grow" value={commonStore.modelConfigs[selectedIndex].name}
+      selectedOptions={[selectedIndex.toString()]}
+      onOptionSelect={(_, data) => {
+        if (data.optionValue) {
+          updateSelectedIndex(Number(data.optionValue));
+        }
+      }}>
+      {commonStore.modelConfigs.map((config, index) => <Option key={index} value={index.toString()}
+          text={config.name}>
+          <div className="flex justify-between grow">
+            {config.name}
+            {commonStore.modelSourceList.find(item => item.name === config.modelParameters.modelName)?.isComplete
+              && <PresenceBadge status="available" />}
+          </div>
+        </Option>
+      )}
+    </Dropdown>
+  );
+});
+
 const Configs: FC = observer(() => {
   const { t } = useTranslation();
   const [selectedIndex, setSelectedIndex] = React.useState(commonStore.currentModelConfigIndex);
@@ -53,13 +75,13 @@ const Configs: FC = observer(() => {
       (advancedHeaderRef.current.firstElementChild as HTMLElement).style.padding = '0';
   }, []);
 
-  const updateSelectedIndex = (newIndex: number) => {
+  const updateSelectedIndex = useCallback((newIndex: number) => {
     setSelectedIndex(newIndex);
     setSelectedConfig(commonStore.modelConfigs[newIndex]);
 
     // if you don't want to update the config used by the current startup in real time, comment out this line
     commonStore.setCurrentConfigIndex(newIndex);
-  };
+  }, []);
 
   const setSelectedConfigName = (newName: string) => {
     setSelectedConfig({ ...selectedConfig, name: newName });
@@ -99,23 +121,7 @@ const Configs: FC = observer(() => {
     <Page title={t('Configs')} content={
       <div className="flex flex-col gap-2 overflow-hidden">
         <div className="flex gap-2 items-center">
-          <Dropdown style={{ minWidth: 0 }} className="grow" value={commonStore.modelConfigs[selectedIndex].name}
-            selectedOptions={[selectedIndex.toString()]}
-            onOptionSelect={(_, data) => {
-              if (data.optionValue) {
-                updateSelectedIndex(Number(data.optionValue));
-              }
-            }}>
-            {commonStore.modelConfigs.map((config, index) =>
-              <Option key={index} value={index.toString()} text={config.name}>
-                <div className="flex justify-between grow">
-                  {config.name}
-                  {commonStore.modelSourceList.find(item => item.name === config.modelParameters.modelName)?.isComplete
-                    && <PresenceBadge status="available" />}
-                </div>
-              </Option>
-            )}
-          </Dropdown>
+          <ConfigSelector selectedIndex={selectedIndex} updateSelectedIndex={updateSelectedIndex} />
           <ToolTipButton desc={t('New Config')} icon={<AddCircle20Regular />} onClick={() => {
             commonStore.createModelConfig();
             updateSelectedIndex(commonStore.modelConfigs.length - 1);
