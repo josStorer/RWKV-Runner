@@ -250,7 +250,7 @@
   "VRAM": "VRAM",
   "GPU Usage": "GPU使用率",
   "Use Custom Tokenizer": "カスタムトークナイザーを使用する",
-  "Tokenizer Path (e.g. backend-python/rwkv_pip/20B_tokenizer.json)": "トークナイザーパス (例: backend-python/rwkv_pip/20B_tokenizer.json)",
+  "Tokenizer Path (e.g. backend-python/rwkv_pip/20B_tokenizer.json or rwkv_vocab_v20230424.txt)": "トークナイザーパス (例: backend-python/rwkv_pip/20B_tokenizer.json または rwkv_vocab_v20230424.txt)",
   "User Name": "ユーザー名",
   "Assistant Name": "アシスタント名",
   "Insert default system prompt at the beginning": "最初にデフォルトのシステムプロンプトを挿入",

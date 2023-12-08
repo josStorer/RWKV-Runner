@@ -392,7 +392,7 @@ const Configs: FC = observer(() => {
                                 });
                               }} />
                             <Input className="grow"
-                              placeholder={t('Tokenizer Path (e.g. backend-python/rwkv_pip/20B_tokenizer.json)')!}
+                              placeholder={t('Tokenizer Path (e.g. backend-python/rwkv_pip/20B_tokenizer.json or rwkv_vocab_v20230424.txt)')!}
                               value={selectedConfig.modelParameters.customTokenizer}
                               onChange={(e, data) => {
                                 setSelectedConfigModelParams({
