@@ -212,7 +212,7 @@ it in the source code directory.
 - RWKV-LM-LoRA: https://github.com/Blealtan/RWKV-LM-LoRA
 - MIDI-LLM-tokenizer: https://github.com/briansemrau/MIDI-LLM-tokenizer
 
-## プレビュー
+## Preview
 
 ### ホームページ
 
