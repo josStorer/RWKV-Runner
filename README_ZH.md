@@ -61,7 +61,7 @@ API兼容的接口，这意味着一切ChatGPT客户端都是RWKV客户端。
   [简明服务部署示例](#Simple-Deploy-Example) | [服务器部署示例](https://github.com/josStorer/RWKV-Runner/tree/master/deploy-examples)
 - 与OpenAI API兼容，一切ChatGPT客户端，都是RWKV客户端。启动模型后，打开 http://127.0.0.1:8000/docs 查看API文档
 - 全自动依赖安装，你只需要一个轻巧的可执行程序
-- 预设多级显存配置，几乎在各种电脑上工作良好。通过配置页面切换到WebGPU策略，还可以在AMD，Intel等显卡上运行
+- 预设多级显存配置，几乎在各种电脑上工作良好。通过配置页面切换Strategy到WebGPU，还可以在AMD，Intel等显卡上运行
 - 自带用户友好的聊天，续写，作曲交互页面。支持聊天预设，附件上传，MIDI硬件输入及音轨编辑。
   [预览](#Preview) | [MIDI硬件输入](#MIDI-Input)
 - 内置WebUI选项，一键启动Web服务，共享硬件资源
@@ -230,7 +230,7 @@ for i in np.argsort(embeddings_cos_sim)[::-1]:
 
 ### 模型管理
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/6bbbecec-d000-457e-993d-27ff53881d09)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/871f2d2a-7e41-4be7-9b32-be1b3e00dc3e)
 
 ### 下载管理
 

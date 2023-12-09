@@ -21,7 +21,7 @@ English | [简体中文](README_ZH.md) | [日本語](README_JA.md)
 [![MacOS][MacOS-image]][MacOS-url]
 [![Linux][Linux-image]][Linux-url]
 
-[FAQs](https://github.com/josStorer/RWKV-Runner/wiki/FAQs) | [Preview](#Preview) | [Download][download-url] | [Server-Deploy-Examples](https://github.com/josStorer/RWKV-Runner/tree/master/deploy-examples)
+[FAQs](https://github.com/josStorer/RWKV-Runner/wiki/FAQs) | [Preview](#Preview) | [Download][download-url] | [Simple Deploy Example](#Simple-Deploy-Example) | [Server Deploy Examples](https://github.com/josStorer/RWKV-Runner/tree/master/deploy-examples) | [MIDI Hardware Input](#MIDI-Input)
 
 [license-image]: http://img.shields.io/badge/license-MIT-blue.svg
 
@@ -57,20 +57,49 @@ English | [简体中文](README_ZH.md) | [日本語](README_JA.md)
 
 ## Features
 
-- RWKV model management and one-click startup
-- Fully compatible with the OpenAI API, making every ChatGPT client an RWKV client. After starting the model,
+- RWKV model management and one-click startup.
+- Front-end and back-end separation, if you don't want to use the client, also allows for separately deploying the
+  front-end service, or the back-end inference service, or the back-end inference service with a WebUI.
+  [Simple Deploy Example](#Simple-Deploy-Example) | [Server Deploy Examples](https://github.com/josStorer/RWKV-Runner/tree/master/deploy-examples)
+- Compatible with the OpenAI API, making every ChatGPT client an RWKV client. After starting the model,
   open http://127.0.0.1:8000/docs to view more details.
-- Automatic dependency installation, requiring only a lightweight executable program
-- Configs with 2G to 32G VRAM are included, works well on almost all computers
-- User-friendly chat and completion interaction interface included
-- Easy-to-understand and operate parameter configuration
-- Built-in model conversion tool
-- Built-in download management and remote model inspection
-- Built-in one-click LoRA Finetune
-- Can also be used as an OpenAI ChatGPT and GPT-Playground client
-- Multilingual localization
-- Theme switching
-- Automatic updates
+- Automatic dependency installation, requiring only a lightweight executable program.
+- Pre-set multi-level VRAM configs, works well on almost all computers. In Configs page, switch Strategy to WebGPU, it
+  can also run on AMD, Intel, and other graphics cards.
+- User-friendly chat, completion, and composition interaction interface included. Also supports chat presets, attachment
+  uploads, MIDI hardware input, and track editing.
+  [Preview](#Preview) | [MIDI Hardware Input](#MIDI-Input)
+- Built-in WebUI option, one-click start of Web service, sharing your hardware resources.
+- Easy-to-understand and operate parameter configuration, along with various operation guidance prompts.
+- Built-in model conversion tool.
+- Built-in download management and remote model inspection.
+- Built-in one-click LoRA Finetune.
+- Can also be used as an OpenAI ChatGPT and GPT-Playground client. (Fill in the API URL and API Key in Settings page)
+- Multilingual localization.
+- Theme switching.
+- Automatic updates.
+
+## Simple Deploy Example
+
+```bash
+git clone https://github.com/josStorer/RWKV-Runner
+
+# Then
+cd RWKV-Runner
+python ./backend-python/main.py #The backend inference service has been started, request /switch-model API to load the model, refer to the API documentation: http://127.0.0.1:8000/docs
+
+# Or
+cd RWKV-Runner/frontend
+npm ci
+npm run build #Compile the frontend
+cd ..
+python ./backend-python/webui_server.py #Start the frontend service separately
+# Or
+python ./backend-python/main.py --webui #Start the frontend and backend service at the same time
+
+# Help Info
+python ./backend-python/main.py -h
+```
 
 ## API Concurrency Stress Testing
 
@@ -133,6 +162,48 @@ for i in np.argsort(embeddings_cos_sim)[::-1]:
     print(f"{embeddings_cos_sim[i]:.10f} - {values[i]}")
 ```
 
+## MIDI Input
+
+Tip: You can download https://github.com/josStorer/sgm_plus and unzip it to the program's `assets/sound-font` directory
+to use it as an offline sound source. Please note that if you are compiling the program from source code, do not place
+it in the source code directory.
+
+### USB MIDI Connection
+
+- USB MIDI devices are plug-and-play, and you can select your input device in the Composition page
+- ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/13bb92c3-4504-482d-ab82-026ac6c31095)
+
+### Mac MIDI Bluetooth Connection
+
+- For Mac users who want to use Bluetooth input,
+  please install [Bluetooth MIDI Connect](https://apps.apple.com/us/app/bluetooth-midi-connect/id1108321791), then click
+  the tray icon to connect after launching,
+  afterwards, you can select your input device in the Composition page.
+- ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/c079a109-1e3d-45c1-bbf5-eed85da1550e)
+
+### Windows MIDI Bluetooth Connection
+
+- Windows seems to have implemented Bluetooth MIDI support only for UWP (Universal Windows Platform) apps. Therefore, it
+  requires multiple steps to establish a connection. We need to create a local virtual MIDI device and then launch a UWP
+  application. Through this UWP application, we will redirect Bluetooth MIDI input to the virtual MIDI device, and then
+  this software will listen to the input from the virtual MIDI device.
+- So, first, you need to
+  download [loopMIDI](https://www.tobias-erichsen.de/wp-content/uploads/2020/01/loopMIDISetup_1_0_16_27.zip)
+  to create a virtual MIDI device. Click the plus sign in the bottom left corner to create the device.
+- ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/b75998ff-115c-4ddd-b97c-deeb5c106255)
+- Next, you need to download [Bluetooth LE Explorer](https://apps.microsoft.com/detail/9N0ZTKF1QD98) to discover and
+  connect to Bluetooth MIDI devices. Click "Start" to search for devices, and then click "Pair" to bind the MIDI device.
+- ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/c142c3ea-a973-4531-9807-4c385d640a2b)
+- Finally, you need to install [MIDIberry](https://apps.microsoft.com/detail/9N39720H2M05),
+  This UWP application can redirect Bluetooth MIDI input to the virtual MIDI device. After launching it, double-click
+  your actual Bluetooth MIDI device name in the input field, and in the output field, double-click the virtual MIDI
+  device name we created earlier.
+- ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/5ad6a1d9-4f68-4d95-ae17-4296107d1669)
+- Now, you can select the virtual MIDI device as the input in the Composition page. Bluetooth LE Explorer no longer
+  needs to run, and you can also close the loopMIDI window, it will run automatically in the background. Just keep
+  MIDIberry open.
+- ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/1c371821-c7b7-4c18-8e42-9e315efbe427)
+
 ## Related Repositories:
 
 - RWKV-4-World: https://huggingface.co/BlinkDL/rwkv-4-world/tree/main
@@ -146,11 +217,13 @@ for i in np.argsort(embeddings_cos_sim)[::-1]:
 
 ### Homepage
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/d7f24d80-f382-428d-8b28-edf87e1549e2)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/c9b9cdd0-63f9-4319-9f74-5bf5d7df5a67)
 
 ### Chat
 
 ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/80009872-528f-4932-aeb2-f724fa892e7c)
+
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/e98c9038-3323-47b0-8edb-d639fafd37b2)
 
 ### Completion
 
@@ -158,15 +231,21 @@ for i in np.argsort(embeddings_cos_sim)[::-1]:
 
 ### Composition
 
+Tip: You can download https://github.com/josStorer/sgm_plus and unzip it to the program's `assets/sound-font` directory
+to use it as an offline sound source. Please note that if you are compiling the program from source code, do not place
+it in the source code directory.
+
 ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/e8ad908d-3fd2-4e92-bcdb-96815cb836ee)
+
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/b2ce4761-9e75-477e-a182-d0255fb8ac76)
 
 ### Configuration
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/48befdc6-e03c-4851-9bee-22f77ee2640e)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/f41060dc-5517-44af-bb3f-8ef71720016d)
 
 ### Model Management
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/367fe4f8-cc12-475f-9371-3cf62cdbf293)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/b1581147-a6ce-4493-8010-e33c0ddeca0a)
 
 ### Download Management
 

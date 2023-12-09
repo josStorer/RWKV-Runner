@@ -21,7 +21,7 @@
 [![MacOS][MacOS-image]][MacOS-url]
 [![Linux][Linux-image]][Linux-url]
 
-[FAQs](https://github.com/josStorer/RWKV-Runner/wiki/FAQs) | [プレビュー](#Preview) | [ダウンロード][download-url] | [サーバーデプロイ例](https://github.com/josStorer/RWKV-Runner/tree/master/deploy-examples)
+[FAQs](https://github.com/josStorer/RWKV-Runner/wiki/FAQs) | [プレビュー](#Preview) | [ダウンロード][download-url] | [シンプルなデプロイの例](#Simple-Deploy-Example) | [サーバーデプロイ例](https://github.com/josStorer/RWKV-Runner/tree/master/deploy-examples) | [MIDIハードウェア入力](#MIDI-Input)
 
 [license-image]: http://img.shields.io/badge/license-MIT-blue.svg
 
@@ -58,19 +58,46 @@
 ## 特徴
 
 - RWKV モデル管理とワンクリック起動
-- OpenAI API と完全に互換性があり、すべての ChatGPT クライアントを RWKV クライアントにします。モデル起動後、
+- フロントエンドとバックエンドの分離は、クライアントを使用しない場合でも、フロントエンドサービス、またはバックエンド推論サービス、またはWebUIを備えたバックエンド推論サービスを個別に展開することを可能にします。
+  [シンプルなデプロイの例](#Simple-Deploy-Example) | [サーバーデプロイ例](https://github.com/josStorer/RWKV-Runner/tree/master/deploy-examples)
+- OpenAI API と互換性があり、すべての ChatGPT クライアントを RWKV クライアントにします。モデル起動後、
   http://127.0.0.1:8000/docs を開いて詳細をご覧ください。
 - 依存関係の自動インストールにより、軽量な実行プログラムのみを必要とします
-- 2G から 32G の VRAM のコンフィグが含まれており、ほとんどのコンピュータで動作します
-- ユーザーフレンドリーなチャットと完成インタラクションインターフェースを搭載
-- 分かりやすく操作しやすいパラメータ設定
+- 事前設定された多段階のVRAM設定、ほとんどのコンピュータで動作します。配置ページで、ストラテジーをWebGPUに切り替えると、AMD、インテル、その他のグラフィックカードでも動作します
+- ユーザーフレンドリーなチャット、完成、および作曲インターフェイスが含まれています。また、チャットプリセット、添付ファイルのアップロード、MIDIハードウェア入力、トラック編集もサポートしています。
+  [プレビュー](#Preview) | [MIDIハードウェア入力](#MIDI-Input)
+- 内蔵WebUIオプション、Webサービスのワンクリック開始、ハードウェアリソースの共有
+- 分かりやすく操作しやすいパラメータ設定、各種操作ガイダンスプロンプトとともに
 - 内蔵モデル変換ツール
 - ダウンロード管理とリモートモデル検査機能内蔵
 - 内蔵のLoRA微調整機能を搭載しています
-- このプログラムは、OpenAI ChatGPTとGPT Playgroundのクライアントとしても使用できます
+- このプログラムは、OpenAI ChatGPTとGPT Playgroundのクライアントとしても使用できます（設定ページで `API URL` と `API Key`
+  を入力してください）
 - 多言語ローカライズ
 - テーマ切り替え
 - 自動アップデート
+
+## Simple Deploy Example
+
+```bash
+git clone https://github.com/josStorer/RWKV-Runner
+
+# Then
+cd RWKV-Runner
+python ./backend-python/main.py #The backend inference service has been started, request /switch-model API to load the model, refer to the API documentation: http://127.0.0.1:8000/docs
+
+# Or
+cd RWKV-Runner/frontend
+npm ci
+npm run build #Compile the frontend
+cd ..
+python ./backend-python/webui_server.py #Start the frontend service separately
+# Or
+python ./backend-python/main.py --webui #Start the frontend and backend service at the same time
+
+# Help Info
+python ./backend-python/main.py -h
+```
 
 ## API 同時実行ストレステスト
 
@@ -134,6 +161,48 @@ for i in np.argsort(embeddings_cos_sim)[::-1]:
     print(f"{embeddings_cos_sim[i]:.10f} - {values[i]}")
 ```
 
+## MIDI Input
+
+Tip: You can download https://github.com/josStorer/sgm_plus and unzip it to the program's `assets/sound-font` directory
+to use it as an offline sound source. Please note that if you are compiling the program from source code, do not place
+it in the source code directory.
+
+### USB MIDI Connection
+
+- USB MIDI devices are plug-and-play, and you can select your input device in the Composition page
+- ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/13bb92c3-4504-482d-ab82-026ac6c31095)
+
+### Mac MIDI Bluetooth Connection
+
+- For Mac users who want to use Bluetooth input,
+  please install [Bluetooth MIDI Connect](https://apps.apple.com/us/app/bluetooth-midi-connect/id1108321791), then click
+  the tray icon to connect after launching,
+  afterwards, you can select your input device in the Composition page.
+- ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/c079a109-1e3d-45c1-bbf5-eed85da1550e)
+
+### Windows MIDI Bluetooth Connection
+
+- Windows seems to have implemented Bluetooth MIDI support only for UWP (Universal Windows Platform) apps. Therefore, it
+  requires multiple steps to establish a connection. We need to create a local virtual MIDI device and then launch a UWP
+  application. Through this UWP application, we will redirect Bluetooth MIDI input to the virtual MIDI device, and then
+  this software will listen to the input from the virtual MIDI device.
+- So, first, you need to
+  download [loopMIDI](https://www.tobias-erichsen.de/wp-content/uploads/2020/01/loopMIDISetup_1_0_16_27.zip)
+  to create a virtual MIDI device. Click the plus sign in the bottom left corner to create the device.
+- ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/b75998ff-115c-4ddd-b97c-deeb5c106255)
+- Next, you need to download [Bluetooth LE Explorer](https://apps.microsoft.com/detail/9N0ZTKF1QD98) to discover and
+  connect to Bluetooth MIDI devices. Click "Start" to search for devices, and then click "Pair" to bind the MIDI device.
+- ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/c142c3ea-a973-4531-9807-4c385d640a2b)
+- Finally, you need to install [MIDIberry](https://apps.microsoft.com/detail/9N39720H2M05),
+  This UWP application can redirect Bluetooth MIDI input to the virtual MIDI device. After launching it, double-click
+  your actual Bluetooth MIDI device name in the input field, and in the output field, double-click the virtual MIDI
+  device name we created earlier.
+- ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/5ad6a1d9-4f68-4d95-ae17-4296107d1669)
+- Now, you can select the virtual MIDI device as the input in the Composition page. Bluetooth LE Explorer no longer
+  needs to run, and you can also close the loopMIDI window, it will run automatically in the background. Just keep
+  MIDIberry open.
+- ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/1c371821-c7b7-4c18-8e42-9e315efbe427)
+
 ## 関連リポジトリ:
 
 - RWKV-4-World: https://huggingface.co/BlinkDL/rwkv-4-world/tree/main
@@ -147,11 +216,13 @@ for i in np.argsort(embeddings_cos_sim)[::-1]:
 
 ### ホームページ
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/d7f24d80-f382-428d-8b28-edf87e1549e2)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/c9b9cdd0-63f9-4319-9f74-5bf5d7df5a67)
 
 ### チャット
 
 ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/80009872-528f-4932-aeb2-f724fa892e7c)
+
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/e98c9038-3323-47b0-8edb-d639fafd37b2)
 
 ### 補完
 
@@ -159,15 +230,21 @@ for i in np.argsort(embeddings_cos_sim)[::-1]:
 
 ### 作曲
 
+Tip: You can download https://github.com/josStorer/sgm_plus and unzip it to the program's `assets/sound-font` directory
+to use it as an offline sound source. Please note that if you are compiling the program from source code, do not place
+it in the source code directory.
+
 ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/e8ad908d-3fd2-4e92-bcdb-96815cb836ee)
+
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/b2ce4761-9e75-477e-a182-d0255fb8ac76)
 
 ### コンフィグ
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/48befdc6-e03c-4851-9bee-22f77ee2640e)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/f41060dc-5517-44af-bb3f-8ef71720016d)
 
 ### モデル管理
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/367fe4f8-cc12-475f-9371-3cf62cdbf293)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/b1581147-a6ce-4493-8010-e33c0ddeca0a)
 
 ### ダウンロード管理
 
