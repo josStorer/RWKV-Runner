@@ -7,6 +7,7 @@ import { v4 as uuid } from 'uuid';
 import {
   Add16Regular,
   ArrowAutofitWidth20Regular,
+  ArrowUpload16Regular,
   Delete16Regular,
   MusicNote220Regular,
   Pause16Regular,
@@ -20,6 +21,7 @@ import { useWindowSize } from 'usehooks-ts';
 import commonStore from '../../stores/commonStore';
 import classnames from 'classnames';
 import {
+  InstrumentType,
   InstrumentTypeNameMap,
   InstrumentTypeTokenMap,
   MidiMessage,
@@ -27,8 +29,15 @@ import {
 } from '../../types/composition';
 import { toast } from 'react-toastify';
 import { ToastOptions } from 'react-toastify/dist/types';
-import { flushMidiRecordingContent, refreshTracksTotalTime } from '../../utils';
-import { PlayNote } from '../../../wailsjs/go/backend_golang/App';
+import {
+  absPathAsset,
+  flushMidiRecordingContent,
+  getMidiRawContentMainInstrument,
+  getMidiRawContentTime,
+  getServerRoot,
+  refreshTracksTotalTime
+} from '../../utils';
+import { OpenOpenFileDialog, PlayNote } from '../../../wailsjs/go/backend_golang/App';
 import { t } from 'i18next';
 
 const snapValue = 25;
@@ -46,14 +55,6 @@ const trackInitOffsetPx = 10;
 const pixelFix = 0.5;
 const topToArrowIcon = 19;
 const arrowIconToTracks = 23;
-
-type TrackProps = {
-  id: string;
-  right: number;
-  scale: number;
-  isSelected: boolean;
-  onSelect: (id: string) => void;
-};
 
 const displayCurrentInstrumentType = () => {
   const displayPanelId = 'instrument_panel_id';
@@ -88,6 +89,53 @@ const velocityToBin = (velocity: number) => {
   velocity = Math.max(0, Math.min(velocity, velocityEvents - 1));
   const binsize = velocityEvents / (velocityBins - 1);
   return Math.ceil((velocityEvents * ((Math.pow(velocityExp, (velocity / velocityEvents)) - 1.0) / (velocityExp - 1.0))) / binsize);
+};
+
+const binToVelocity = (bin: number) => {
+  const binsize = velocityEvents / (velocityBins - 1);
+  return Math.max(0, Math.ceil(velocityEvents * (Math.log(((velocityExp - 1) * binsize * bin) / velocityEvents + 1) / Math.log(velocityExp)) - 1));
+};
+
+const tokenToMidiMessage = (token: string): MidiMessage | null => {
+  if (token.startsWith('<')) return null;
+  if (token.startsWith('t') && !token.startsWith('t:')) {
+    return {
+      messageType: 'ElapsedTime',
+      value: parseInt(token.substring(1)) * minimalMoveTime,
+      channel: 0,
+      note: 0,
+      velocity: 0,
+      control: 0,
+      instrument: 0
+    };
+  }
+  const instrument: InstrumentType = InstrumentTypeTokenMap.findIndex(t => token.startsWith(t + ':'));
+  if (instrument >= 0) {
+    const parts = token.split(':');
+    if (parts.length !== 3) return null;
+    const note = parseInt(parts[1], 16);
+    const velocity = parseInt(parts[2], 16);
+    if (velocity < 0 || velocity > 127) return null;
+    if (velocity === 0) return {
+      messageType: 'NoteOff',
+      note: note,
+      instrument: instrument,
+      channel: 0,
+      velocity: 0,
+      control: 0,
+      value: 0
+    };
+    return {
+      messageType: 'NoteOn',
+      note: note,
+      velocity: binToVelocity(velocity),
+      instrument: instrument,
+      channel: 0,
+      control: 0,
+      value: 0
+    } as MidiMessage;
+  }
+  return null;
 };
 
 const midiMessageToToken = (msg: MidiMessage) => {
@@ -134,6 +182,14 @@ export const midiMessageHandler = async (data: MidiMessage) => {
     //TODO data.channel = data.instrument;
     PlayNote(data);
   }
+};
+
+type TrackProps = {
+  id: string;
+  right: number;
+  scale: number;
+  isSelected: boolean;
+  onSelect: (id: string) => void;
 };
 
 const Track: React.FC<TrackProps> = observer(({
@@ -422,20 +478,66 @@ const AudiotrackEditor: FC<{ setPrompt: (prompt: string) => void }> = observer((
             </div>
           </div>)}
         <div className="flex justify-between items-center">
-          <Button icon={<Add16Regular />} size="small" shape="circular"
-            appearance="subtle"
-            onClick={() => {
-              commonStore.setTracks([...commonStore.tracks, {
-                id: uuid(),
-                mainInstrument: '',
-                content: '',
-                rawContent: [],
-                offsetTime: 0,
-                contentTime: 0
-              }]);
-            }}>
-            {t('New Track')}
-          </Button>
+          <div className="flex gap-1">
+            <Button icon={<Add16Regular />} size="small" shape="circular"
+              appearance="subtle"
+              onClick={() => {
+                commonStore.setTracks([...commonStore.tracks, {
+                  id: uuid(),
+                  mainInstrument: '',
+                  content: '',
+                  rawContent: [],
+                  offsetTime: 0,
+                  contentTime: 0
+                }]);
+              }}>
+              {t('New Track')}
+            </Button>
+            <Button icon={<ArrowUpload16Regular />} size="small" shape="circular"
+              appearance="subtle"
+              onClick={() => {
+                OpenOpenFileDialog('*.mid').then(async filePath => {
+                  if (!filePath)
+                    return;
+
+                  const blob = await fetch(absPathAsset(filePath)).then(r => r.blob());
+                  const bodyForm = new FormData();
+                  bodyForm.append('file_data', blob);
+                  fetch(getServerRoot(commonStore.getCurrentModelConfig().apiParameters.apiPort) + '/midi-to-text', {
+                    method: 'POST',
+                    body: bodyForm
+                  }).then(async r => {
+                      if (r.status === 200) {
+                        const text = (await r.json()).text as string;
+                        const rawContent = text.split(' ').map(tokenToMidiMessage).filter(m => m) as MidiMessage[];
+                        const tracks = commonStore.tracks.slice();
+
+                        tracks.push({
+                          id: uuid(),
+                          mainInstrument: getMidiRawContentMainInstrument(rawContent),
+                          content: text,
+                          rawContent: rawContent,
+                          offsetTime: 0,
+                          contentTime: getMidiRawContentTime(rawContent)
+                        });
+                        commonStore.setTracks(tracks);
+                        refreshTracksTotalTime();
+                      } else {
+                        toast(r.statusText + '\n' + (await r.text()), {
+                          type: 'error'
+                        });
+                      }
+                    }
+                  ).catch(e => {
+                    toast(t('Error') + ' - ' + (e.message || e), { type: 'error', autoClose: 2500 });
+                  });
+                }).catch(e => {
+                  toast(t('Error') + ' - ' + (e.message || e), { type: 'error', autoClose: 2500 });
+                });
+              }}>
+              {t('Import MIDI')}
+            </Button>
+          </div>
           <Text size={100}>
             {t('Select a track to preview the content')}
           </Text>
@@ -494,7 +596,7 @@ const AudiotrackEditor: FC<{ setPrompt: (prompt: string) => void }> = observer((
               }
             }
           }
-          const result = ('<pad> ' + globalMessages.map(m => midiMessageToToken(m)).join('')).trim();
+          const result = ('<pad> ' + globalMessages.map(midiMessageToToken).join('')).trim();
           commonStore.setCompositionSubmittedPrompt(result);
           setPrompt(result);
         }}>

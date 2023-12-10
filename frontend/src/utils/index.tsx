@@ -22,7 +22,7 @@ import { DownloadStatus } from '../types/downloads';
 import { ModelSourceItem } from '../types/models';
 import { Language, Languages, SettingsType } from '../types/settings';
 import { DataProcessParameters, LoraFinetuneParameters } from '../types/train';
-import { InstrumentTypeNameMap, tracksMinimalTotalTime } from '../types/composition';
+import { InstrumentTypeNameMap, MidiMessage, tracksMinimalTotalTime } from '../types/composition';
 import logo from '../assets/images/logo.png';
 import { Preset } from '../types/presets';
 import { botName, Conversation, MessageType, userName } from '../types/chat';
@@ -513,34 +513,39 @@ export function refreshTracksTotalTime() {
   commonStore.setTrackTotalTime(totalTime);
 }
 
+export function getMidiRawContentTime(rawContent: MidiMessage[]) {
+  return rawContent.reduce((sum, current) =>
+      sum + (current.messageType === 'ElapsedTime' ? current.value : 0)
+    , 0);
+}
+
+export function getMidiRawContentMainInstrument(rawContent: MidiMessage[]) {
+  const sortedInstrumentFrequency = Object.entries(rawContent
+  .filter(c => c.messageType === 'NoteOn')
+  .map(c => c.instrument)
+  .reduce((frequencyCount, current) => (frequencyCount[current] = (frequencyCount[current] || 0) + 1, frequencyCount)
+    , {} as {
+      [key: string]: number
+    }))
+  .sort((a, b) => b[1] - a[1]);
+  let mainInstrument: string = '';
+  if (sortedInstrumentFrequency.length > 0)
+    mainInstrument = InstrumentTypeNameMap[Number(sortedInstrumentFrequency[0][0])];
+  return mainInstrument;
+}
+
 export function flushMidiRecordingContent() {
   const recordingTrackIndex = commonStore.tracks.findIndex(t => t.id === commonStore.recordingTrackId);
   if (recordingTrackIndex >= 0) {
     const recordingTrack = commonStore.tracks[recordingTrackIndex];
     const tracks = commonStore.tracks.slice();
-    const contentTime = commonStore.recordingRawContent
-    .reduce((sum, current) =>
-        sum + (current.messageType === 'ElapsedTime' ? current.value : 0)
-      , 0);
-
-    const sortedInstrumentFrequency = Object.entries(commonStore.recordingRawContent
-    .filter(c => c.messageType === 'NoteOn')
-    .map(c => c.instrument)
-    .reduce((frequencyCount, current) => (frequencyCount[current] = (frequencyCount[current] || 0) + 1, frequencyCount)
-      , {} as {
-        [key: string]: number
-      }))
-    .sort((a, b) => b[1] - a[1]);
-    let mainInstrument: string = '';
-    if (sortedInstrumentFrequency.length > 0)
-      mainInstrument = InstrumentTypeNameMap[Number(sortedInstrumentFrequency[0][0])];
 
     tracks[recordingTrackIndex] = {
       ...recordingTrack,
       content: commonStore.recordingContent,
       rawContent: commonStore.recordingRawContent,
-      contentTime: contentTime,
-      mainInstrument: mainInstrument
+      contentTime: getMidiRawContentTime(commonStore.recordingRawContent),
+      mainInstrument: getMidiRawContentMainInstrument(commonStore.recordingRawContent)
     };
     commonStore.setTracks(tracks);
     refreshTracksTotalTime();

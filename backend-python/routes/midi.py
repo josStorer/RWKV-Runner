@@ -1,6 +1,6 @@
 import io
 import global_var
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, UploadFile, status
 from starlette.responses import StreamingResponse
 from pydantic import BaseModel
 from utils.midi import *
@@ -31,6 +31,16 @@ def text_to_midi(body: TextToMidiBody):
     mid_data.seek(0)
 
     return StreamingResponse(mid_data, media_type="audio/midi")
+
+
+@router.post("/midi-to-text", tags=["MIDI"])
+async def midi_to_text(file_data: UploadFile):
+    vocab_config = "backend-python/utils/midi_vocab_config.json"
+    cfg = VocabConfig.from_json(vocab_config)
+    mid = mido.MidiFile(file=file_data.file)
+    text = convert_midi_to_str(cfg, mid)
+
+    return {"text": text}
 
 
 class TxtToMidiBody(BaseModel):

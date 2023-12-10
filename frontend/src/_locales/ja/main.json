@@ -311,5 +311,6 @@
   "CN": "中国語",
   "JP": "日本語",
   "Music": "音楽",
-  "Other": "その他"
+  "Other": "その他",
+  "Import MIDI": "MIDIをインポート"
 }
