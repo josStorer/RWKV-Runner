@@ -28,7 +28,6 @@ import {
   tracksMinimalTotalTime
 } from '../../types/composition';
 import { toast } from 'react-toastify';
-import { ToastOptions } from 'react-toastify/dist/types';
 import {
   absPathAsset,
   flushMidiRecordingContent,
@@ -38,7 +37,6 @@ import {
   refreshTracksTotalTime
 } from '../../utils';
 import { OpenOpenFileDialog, PlayNote } from '../../../wailsjs/go/backend_golang/App';
-import { t } from 'i18next';
 
 const snapValue = 25;
 const minimalMoveTime = 8; // 1000/125=8ms wait_events=125
@@ -55,35 +53,6 @@ const trackInitOffsetPx = 10;
 const pixelFix = 0.5;
 const topToArrowIcon = 19;
 const arrowIconToTracks = 23;
-
-const displayCurrentInstrumentType = () => {
-  const displayPanelId = 'instrument_panel_id';
-  const content: React.ReactNode =
-    <div className="flex gap-2 items-center">
-      {InstrumentTypeNameMap.map((name, i) =>
-        <Text key={name} style={{ whiteSpace: 'nowrap' }}
-          className={commonStore.instrumentType === i ? 'text-blue-600' : ''}
-          weight={commonStore.instrumentType === i ? 'bold' : 'regular'}
-          size={commonStore.instrumentType === i ? 300 : 100}
-        >{t(name)}</Text>)}
-    </div>;
-  const options: ToastOptions = {
-    type: 'default',
-    autoClose: 2000,
-    toastId: displayPanelId,
-    position: 'top-left',
-    style: {
-      width: 'fit-content'
-    }
-  };
-  if (toast.isActive(displayPanelId))
-    toast.update(displayPanelId, {
-      render: content,
-      ...options
-    });
-  else
-    toast(content, options);
-};
 
 const velocityToBin = (velocity: number) => {
   velocity = Math.max(0, Math.min(velocity, velocityEvents - 1));
@@ -164,7 +133,6 @@ let dropRecordingTime = false;
 export const midiMessageHandler = async (data: MidiMessage) => {
   if (data.messageType === 'ControlChange') {
     commonStore.setInstrumentType(Math.round(data.value / 127 * (InstrumentTypeNameMap.length - 1)));
-    displayCurrentInstrumentType();
     return;
   }
   if (commonStore.recordingTrackId) {
@@ -567,6 +535,18 @@ const AudiotrackEditor: FC<{ setPrompt: (prompt: string) => void }> = observer((
             </div>
           </div>
         </Card>
+      }
+      {
+        commonStore.platform !== 'web' &&
+        <div className="flex gap-2 items-end mx-auto">
+          {t('Current Instrument') + ':'}
+          {InstrumentTypeNameMap.map((name, i) =>
+            <Text key={name} style={{ whiteSpace: 'nowrap' }}
+              className={commonStore.instrumentType === i ? 'text-blue-600' : ''}
+              weight={commonStore.instrumentType === i ? 'bold' : 'regular'}
+              size={commonStore.instrumentType === i ? 300 : 100}
+            >{t(name)}</Text>)}
+        </div>
       }
       <DialogTrigger disableButtonEnhancement>
         <Button icon={<MusicNote220Regular />} style={{ minHeight: '32px' }} onClick={() => {

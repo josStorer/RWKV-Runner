@@ -312,5 +312,6 @@
   "JP": "日本語",
   "Music": "音楽",
   "Other": "その他",
-  "Import MIDI": "MIDIをインポート"
+  "Import MIDI": "MIDIをインポート",
+  "Current Instrument": "現在の楽器"
 }
