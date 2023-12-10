@@ -92,7 +92,7 @@ const velocityToBin = (velocity: number) => {
 
 const midiMessageToToken = (msg: MidiMessage) => {
   if (msg.messageType === 'NoteOn' || msg.messageType === 'NoteOff') {
-    const instrument = InstrumentTypeTokenMap[commonStore.instrumentType];
+    const instrument = InstrumentTypeTokenMap[msg.instrument];
     const note = msg.note.toString(16);
     const velocity = velocityToBin(msg.velocity).toString(16);
     return `${instrument}:${note}:${velocity} `;
