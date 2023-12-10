@@ -1,12 +1,17 @@
 import { getDocument, GlobalWorkerOptions, PDFDocumentProxy } from 'pdfjs-dist';
 import { TextItem } from 'pdfjs-dist/types/src/display/api';
 
-export function webOpenOpenFileDialog({ filterPattern, fnStartLoading }: { filterPattern: string, fnStartLoading: Function | null }): Promise<{ blob: Blob, content?: string }> {
+export function webOpenOpenFileDialog(filterPattern: string, fnStartLoading: Function | undefined): Promise<{
+  blob: Blob,
+  content?: string
+}> {
   return new Promise((resolve, reject) => {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = filterPattern
     .replaceAll('*.txt', 'text/plain')
+    .replace('*.midi', 'audio/midi')
+    .replace('*.mid', 'audio/midi')
     .replaceAll('*.', 'application/')
     .replaceAll(';', ',');
 
@@ -15,7 +20,7 @@ export function webOpenOpenFileDialog({ filterPattern, fnStartLoading }: { filte
       const file: Blob = e.target?.files[0];
       if (fnStartLoading && typeof fnStartLoading === 'function')
         fnStartLoading();
-      if (!GlobalWorkerOptions.workerSrc)
+      if (!GlobalWorkerOptions.workerSrc && file.type === 'application/pdf')
         // @ts-ignore
         GlobalWorkerOptions.workerSrc = await import('pdfjs-dist/build/pdf.worker.min.mjs');
       if (file.type === 'text/plain') {

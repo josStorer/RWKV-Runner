@@ -567,7 +567,7 @@ const ChatPanel: FC = observer(() => {
                     const setUploading = () => commonStore.setAttachmentUploading(true);
                     // actually, status of web platform is always Offline
                     if (commonStore.platform === 'web' || commonStore.status.status === ModelStatus.Offline || currentConfig.modelParameters.device === 'WebGPU') {
-                      webOpenOpenFileDialog({ filterPattern, fnStartLoading: setUploading }).then(webReturn => {
+                      webOpenOpenFileDialog(filterPattern, setUploading).then(webReturn => {
                         if (webReturn.content)
                           commonStore.setCurrentTempAttachment(
                             {

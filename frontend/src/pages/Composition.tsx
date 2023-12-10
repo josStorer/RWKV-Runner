@@ -250,32 +250,36 @@ const CompositionPanel: FC = observer(() => {
                   }} />
               } />
             <div className="grow" />
-            <Checkbox className="select-none"
-              size="large" label={t('Use Local Sound Font')} checked={params.useLocalSoundFont}
-              onChange={async (_, data) => {
-                if (data.checked) {
-                  if (!await FileExists('assets/sound-font/accordion/instrument.json')) {
-                    toast(t('Failed to load local sound font, please check if the files exist - assets/sound-font'),
-                      { type: 'warning' });
-                    return;
+            {
+              commonStore.platform !== 'web' &&
+              <Checkbox className="select-none"
+                size="large" label={t('Use Local Sound Font')} checked={params.useLocalSoundFont}
+                onChange={async (_, data) => {
+                  if (data.checked) {
+                    if (!await FileExists('assets/sound-font/accordion/instrument.json')) {
+                      toast(t('Failed to load local sound font, please check if the files exist - assets/sound-font'),
+                        { type: 'warning' });
+                      return;
+                    }
                   }
-                }
-                setParams({
-                  useLocalSoundFont: data.checked as boolean
-                });
-                setSoundFont();
-              }} />
+                  setParams({
+                    useLocalSoundFont: data.checked as boolean
+                  });
+                  setSoundFont();
+                }} />
+            }
             <Checkbox className="select-none"
               size="large" label={t('Auto Play At The End')} checked={params.autoPlay} onChange={(_, data) => {
               setParams({
                 autoPlay: data.checked as boolean
               });
             }} />
-            {commonStore.platform !== 'web' &&
-              <Labeled flex breakline label={t('MIDI Input')}
-                desc={t('Select the MIDI input device to be used.')}
-                content={
-                  <div className="flex flex-col gap-1">
+            <Labeled flex breakline label={t('MIDI Input')}
+              desc={t('Select the MIDI input device to be used.')}
+              content={
+                <div className="flex flex-col gap-1">
+                  {
+                    commonStore.platform !== 'web' &&
                     <Dropdown style={{ minWidth: 0 }}
                       value={(commonStore.activeMidiDeviceIndex === -1 || !(commonStore.activeMidiDeviceIndex in commonStore.midiPorts))
                         ? t('None')!
@@ -299,10 +303,10 @@ const CompositionPanel: FC = observer(() => {
                         <Option key={i} value={i.toString()}>{p.name}</Option>)
                       }
                     </Dropdown>
-                    <AudiotrackButton setPrompt={setPrompt} />
-                  </div>
-                } />
-            }
+                  }
+                  <AudiotrackButton setPrompt={setPrompt} />
+                </div>
+              } />
           </div>
           <div className="flex justify-between gap-2">
             <ToolTipButton desc={t('Regenerate')} icon={<ArrowSync20Regular />} onClick={() => {

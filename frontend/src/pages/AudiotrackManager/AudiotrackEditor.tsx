@@ -18,7 +18,7 @@ import {
 } from '@fluentui/react-icons';
 import { Button, Card, DialogTrigger, Slider, Text, Tooltip } from '@fluentui/react-components';
 import { useWindowSize } from 'usehooks-ts';
-import commonStore from '../../stores/commonStore';
+import commonStore, { ModelStatus } from '../../stores/commonStore';
 import classnames from 'classnames';
 import {
   InstrumentType,
@@ -420,6 +420,7 @@ const AudiotrackEditor: FC<{ setPrompt: (prompt: string) => void }> = observer((
           <div key={track.id} className="flex gap-2 pb-1 border-b">
             <div className="flex gap-1 border-r h-7">
               <ToolTipButton desc={commonStore.recordingTrackId === track.id ? t('Stop') : t('Record')}
+                disabled={commonStore.platform === 'web'}
                 icon={commonStore.recordingTrackId === track.id ? <Stop16Filled /> : <Record16Regular />}
                 size="small" shape="circular" appearance="subtle"
                 onClick={() => {
@@ -481,6 +482,7 @@ const AudiotrackEditor: FC<{ setPrompt: (prompt: string) => void }> = observer((
           <div className="flex gap-1">
             <Button icon={<Add16Regular />} size="small" shape="circular"
               appearance="subtle"
+              disabled={commonStore.platform === 'web'}
               onClick={() => {
                 commonStore.setTracks([...commonStore.tracks, {
                   id: uuid(),
@@ -496,11 +498,20 @@ const AudiotrackEditor: FC<{ setPrompt: (prompt: string) => void }> = observer((
             <Button icon={<ArrowUpload16Regular />} size="small" shape="circular"
               appearance="subtle"
               onClick={() => {
+                if (commonStore.status.status === ModelStatus.Offline && !commonStore.settings.apiUrl && commonStore.platform !== 'web') {
+                  toast(t('Please click the button in the top right corner to start the model'), { type: 'warning' });
+                  return;
+                }
+
                 OpenOpenFileDialog('*.mid').then(async filePath => {
                   if (!filePath)
                     return;
 
-                  const blob = await fetch(absPathAsset(filePath)).then(r => r.blob());
+                  let blob: Blob;
+                  if (commonStore.platform === 'web')
+                    blob = (filePath as unknown as { blob: Blob }).blob;
+                  else
+                    blob = await fetch(absPathAsset(filePath)).then(r => r.blob());
                   const bodyForm = new FormData();
                   bodyForm.append('file_data', blob);
                   fetch(getServerRoot(commonStore.getCurrentModelConfig().apiParameters.apiPort) + '/midi-to-text', {
