@@ -1,17 +1,9 @@
 ## Changes
 
-- add web-rwkv-converter (Safetensors Convert no longer depends on Python) (WebGPU Server 0.3.3)
-- model tags classifier
-- improve presets interaction
-- better state cache
-- better customCuda condition
-- add python-3.10.11-embed-amd64.zip cnMirror
-- always reset to activePreset
-- for devices that gpu is not supported, use cpu to merge lora
-- RWKV_RESCALE_LAYER 999 for music model
-- disable hashed assets
-- fix webWails undefined functions
-- fix damaged logo
+- allow importing midi file
+- add midi tracks to webUI
+- improve current instrument display
+- fix generation instrumentType
 - chore
 
 ## Install
