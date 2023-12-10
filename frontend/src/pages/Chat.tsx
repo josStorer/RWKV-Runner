@@ -553,7 +553,7 @@ const ChatPanel: FC = observer(() => {
               {!commonStore.currentTempAttachment ?
                 <ToolTipButton
                   desc={commonStore.attachmentUploading ?
-                    t('Uploading Attachment') :
+                    t('Processing Attachment') :
                     t('Add An Attachment (Accepts pdf, txt)')}
                   icon={commonStore.attachmentUploading ?
                     <ArrowClockwise16Regular className="animate-spin" />

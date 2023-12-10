@@ -256,7 +256,7 @@
   "Insert default system prompt at the beginning": "在开头自动插入默认系统提示",
   "Format Content": "规范格式",
   "Add An Attachment (Accepts pdf, txt)": "添加一个附件 (支持pdf, txt)",
-  "Uploading Attachment": "正在上传附件",
+  "Processing Attachment": "正在处理附件",
   "Remove Attachment": "移除附件",
   "The content of file": "文件",
   "is as follows. When replying to me, consider the file content and respond accordingly:": "内容如下。回复时考虑文件内容并做出相应回复:",

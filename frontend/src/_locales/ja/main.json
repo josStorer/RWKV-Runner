@@ -256,7 +256,7 @@
   "Insert default system prompt at the beginning": "最初にデフォルトのシステムプロンプトを挿入",
   "Format Content": "内容フォーマットの規格化",
   "Add An Attachment (Accepts pdf, txt)": "添付ファイルを追加 (pdf, txtを受け付けます)",
-  "Uploading Attachment": "添付ファイルアップロード中",
+  "Processing Attachment": "添付ファイルを処理中",
   "Remove Attachment": "添付ファイルを削除",
   "The content of file": "ファイル",
   "is as follows. When replying to me, consider the file content and respond accordingly:": "の内容は以下の通りです。私に返信する際は、ファイルの内容を考慮して適切に返信してください:",
