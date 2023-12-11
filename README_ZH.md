@@ -68,7 +68,7 @@ API兼容的接口，这意味着一切ChatGPT客户端都是RWKV客户端。
 - 易于理解和操作的参数配置，及各类操作引导提示
 - 内置模型转换工具
 - 内置下载管理和远程模型检视
-- 内置一键LoRA微调
+- 内置一键LoRA微调 (仅限Windows)
 - 也可用作 OpenAI ChatGPT 和 GPT Playground 客户端 (在设置内填写API URL和API Key)
 - 多语言本地化
 - 主题切换
