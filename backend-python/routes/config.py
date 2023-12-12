@@ -74,6 +74,10 @@ def switch_model(body: SwitchModelBody, response: Response, request: Request):
         )
     except Exception as e:
         print(e)
+        import traceback
+
+        print(traceback.format_exc())
+
         quick_log(request, body, f"Exception: {e}")
         global_var.set(global_var.Model_Status, global_var.ModelStatus.Offline)
         raise HTTPException(
