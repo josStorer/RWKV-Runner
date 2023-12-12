@@ -14,6 +14,13 @@ import (
 	wruntime "github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
+func (a *App) SaveFile(path string, savedContent []byte) error {
+	if err := os.WriteFile(a.exDir+path, savedContent, 0644); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *App) SaveJson(fileName string, jsonData any) error {
 	text, err := json.MarshalIndent(jsonData, "", "  ")
 	if err != nil {
@@ -194,4 +201,9 @@ func (a *App) OpenFileFolder(path string, relative bool) error {
 		return nil
 	}
 	return errors.New("unsupported OS")
+}
+
+func (a *App) StartFile(path string) error {
+	_, err := CmdHelper(path)
+	return err
 }

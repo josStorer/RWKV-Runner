@@ -21,7 +21,9 @@ import {
   FileExists,
   OpenFileFolder,
   OpenMidiPort,
-  OpenSaveFileDialogBytes
+  OpenSaveFileDialogBytes,
+  SaveFile,
+  StartFile
 } from '../../wailsjs/go/backend_golang/App';
 import { getServerRoot, getSoundFont, toastWithButton } from '../utils';
 import { CompositionParams } from '../types/composition';
@@ -98,6 +100,31 @@ const CompositionPanel: FC = observer(() => {
     }
   }, []);
 
+  const externalPlayListener = () => {
+    const params = commonStore.compositionParams;
+    const saveAndPlay = async (midi: ArrayBuffer, path: string) => {
+      await SaveFile(path, Array.from(new Uint8Array(midi)));
+      StartFile(path);
+    };
+    if (params.externalPlay) {
+      if (params.midi) {
+        setTimeout(() => {
+          playerRef.current?.stop();
+        });
+        saveAndPlay(params.midi, './midi/last.mid').catch((e: string) => {
+          if (e.includes('being used'))
+            saveAndPlay(params.midi!, './midi/last-2.mid');
+        });
+      }
+    }
+  };
+  useEffect(() => {
+    playerRef.current?.addEventListener('start', externalPlayListener);
+    return () => {
+      playerRef.current?.removeEventListener('start', externalPlayListener);
+    };
+  }, [params.externalPlay]);
+
   useEffect(() => {
     if (!(commonStore.activeMidiDeviceIndex in commonStore.midiPorts)) {
       commonStore.setActiveMidiDeviceIndex(-1);
@@ -123,9 +150,12 @@ const CompositionPanel: FC = observer(() => {
         });
         updateNs(ns);
         if (autoPlay) {
-          setTimeout(() => {
-            playerRef.current?.start();
-          });
+          if (commonStore.compositionParams.externalPlay)
+            externalPlayListener();
+          else
+            setTimeout(() => {
+              playerRef.current?.start();
+            });
         }
       });
     });
@@ -266,6 +296,16 @@ const CompositionPanel: FC = observer(() => {
                     useLocalSoundFont: data.checked as boolean
                   });
                   setSoundFont();
+                }} />
+            }
+            {
+              commonStore.platform === 'windows' &&
+              <Checkbox className="select-none"
+                size="large" label={t('Play With External Player')} checked={params.externalPlay}
+                onChange={async (_, data) => {
+                  setParams({
+                    externalPlay: data.checked as boolean
+                  });
                 }} />
             }
             <Checkbox className="select-none"

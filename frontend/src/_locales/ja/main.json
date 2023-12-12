@@ -316,5 +316,6 @@
   "Current Instrument": "現在の楽器",
   "Please convert model to GGML format first": "モデルをGGML形式に変換してください",
   "Convert To GGML Format": "GGML形式に変換",
-  "CPU (rwkv.cpp, Faster)": "CPU (rwkv.cpp, 高速)"
+  "CPU (rwkv.cpp, Faster)": "CPU (rwkv.cpp, 高速)",
+  "Play With External Player": "外部プレーヤーで再生"
 }

@@ -114,8 +114,16 @@ export function RestartApp() {
   return window['go']['backend_golang']['App']['RestartApp']();
 }
 
+export function SaveFile(arg1, arg2) {
+  return window['go']['backend_golang']['App']['SaveFile'](arg1, arg2);
+}
+
 export function SaveJson(arg1, arg2) {
   return window['go']['backend_golang']['App']['SaveJson'](arg1, arg2);
+}
+
+export function StartFile(arg1) {
+  return window['go']['backend_golang']['App']['StartFile'](arg1);
 }
 
 export function StartServer(arg1, arg2, arg3, arg4, arg5, arg6) {

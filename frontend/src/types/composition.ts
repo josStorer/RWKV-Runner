@@ -9,6 +9,7 @@ export type CompositionParams = {
   topP: number,
   autoPlay: boolean,
   useLocalSoundFont: boolean,
+  externalPlay: boolean,
   midi: ArrayBuffer | null,
   ns: NoteSequence | null
 }

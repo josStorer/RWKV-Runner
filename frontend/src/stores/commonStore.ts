@@ -94,6 +94,7 @@ class CommonStore {
     topP: 0.8,
     autoPlay: true,
     useLocalSoundFont: false,
+    externalPlay: false,
     midi: null,
     ns: null
   };

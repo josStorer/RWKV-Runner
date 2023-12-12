@@ -58,7 +58,11 @@ export function ReadJson(arg1:string):Promise<any>;
 
 export function RestartApp():Promise<void>;
 
+export function SaveFile(arg1:string,arg2:Array<number>):Promise<void>;
+
 export function SaveJson(arg1:string,arg2:any):Promise<void>;
+
+export function StartFile(arg1:string):Promise<void>;
 
 export function StartServer(arg1:string,arg2:number,arg3:string,arg4:boolean,arg5:boolean,arg6:boolean):Promise<string>;
 

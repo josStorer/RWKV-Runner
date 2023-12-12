@@ -15,33 +15,51 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"syscall"
 )
+
+func CmdHelper(args ...string) (*exec.Cmd, error) {
+	if runtime.GOOS != "windows" {
+		return nil, errors.New("unsupported OS")
+	}
+	filename := "./cmd-helper.bat"
+	_, err := os.Stat(filename)
+	if err != nil {
+		if err := os.WriteFile(filename, []byte("start %*"), 0644); err != nil {
+			return nil, err
+		}
+	}
+	cmdHelper, err := filepath.Abs(filename)
+	if err != nil {
+		return nil, err
+	}
+
+	if strings.Contains(cmdHelper, " ") {
+		for _, arg := range args {
+			if strings.Contains(arg, " ") {
+				return nil, errors.New("path contains space") // golang bug https://github.com/golang/go/issues/17149#issuecomment-473976818
+			}
+		}
+	}
+	cmd := exec.Command(cmdHelper, args...)
+	cmd.SysProcAttr = &syscall.SysProcAttr{}
+	//go:custom_build windows cmd.SysProcAttr.HideWindow = true
+	err = cmd.Start()
+	if err != nil {
+		return nil, err
+	}
+	return cmd, nil
+}
 
 func Cmd(args ...string) (string, error) {
 	switch platform := runtime.GOOS; platform {
 	case "windows":
-		if err := os.WriteFile("./cmd-helper.bat", []byte("start %*"), 0644); err != nil {
-			return "", err
-		}
-		cmdHelper, err := filepath.Abs("./cmd-helper")
+		cmd, err := CmdHelper(args...)
 		if err != nil {
 			return "", err
 		}
-
-		if strings.Contains(cmdHelper, " ") {
-			for _, arg := range args {
-				if strings.Contains(arg, " ") {
-					return "", errors.New("path contains space") // golang bug https://github.com/golang/go/issues/17149#issuecomment-473976818
-				}
-			}
-		}
-
-		cmd := exec.Command(cmdHelper, args...)
-		out, err := cmd.CombinedOutput()
-		if err != nil {
-			return "", err
-		}
-		return string(out), nil
+		cmd.Wait()
+		return "", nil
 	case "darwin":
 		ex, err := os.Executable()
 		if err != nil {

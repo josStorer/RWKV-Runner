@@ -316,5 +316,6 @@
   "Current Instrument": "当前乐器",
   "Please convert model to GGML format first": "请先将模型转换为GGML格式",
   "Convert To GGML Format": "转换为GGML格式",
-  "CPU (rwkv.cpp, Faster)": "CPU (rwkv.cpp, 更快)"
+  "CPU (rwkv.cpp, Faster)": "CPU (rwkv.cpp, 更快)",
+  "Play With External Player": "使用外部播放器播放"
 }

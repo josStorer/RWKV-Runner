@@ -68,6 +68,7 @@ jobs:
           del ./backend-python/rwkv_pip/cpp/librwkv.dylib
           del ./backend-python/rwkv_pip/cpp/librwkv.so
           (Get-Content -Path ./backend-golang/app.go) -replace "//go:custom_build windows ", "" | Set-Content -Path ./backend-golang/app.go
+          (Get-Content -Path ./backend-golang/utils.go) -replace "//go:custom_build windows ", "" | Set-Content -Path ./backend-golang/utils.go
           make
           Rename-Item -Path "build/bin/RWKV-Runner.exe" -NewName "RWKV-Runner_windows_x64.exe"
 
