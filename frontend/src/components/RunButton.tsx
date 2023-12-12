@@ -138,6 +138,14 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
         }
       }
 
+      if (!cpp) {
+        if (['.bin'].some(ext => modelPath.endsWith(ext))) {
+          toast(t('Please change Strategy to CPU (rwkv.cpp) to use ggml format'), { type: 'error' });
+          commonStore.setStatus({ status: ModelStatus.Offline });
+          return;
+        }
+      }
+
       if (!await FileExists(modelPath)) {
         showDownloadPrompt(t('Model file not found'), modelName);
         commonStore.setStatus({ status: ModelStatus.Offline });
