@@ -1,9 +1,9 @@
 ## Changes
 
-- rwkv.cpp(ggml) support
-- allow playing mid with external player
-- allow overriding Core API URL
-- chore
+- rwkv.cpp python38 compatibility
+- improve rwkv.cpp operation prompts
+- add load failed traceback
+- fix windows cmd waiting
 
 ## Install
 
