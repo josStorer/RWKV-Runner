@@ -44,21 +44,20 @@ func CmdHelper(hideWindow bool, args ...string) (*exec.Cmd, error) {
 	cmd := exec.Command(cmdHelper, args...)
 	cmd.SysProcAttr = &syscall.SysProcAttr{}
 	//go:custom_build windows cmd.SysProcAttr.HideWindow = hideWindow
-	err = cmd.Start()
-	if err != nil {
-		return nil, err
-	}
 	return cmd, nil
 }
 
 func Cmd(args ...string) (string, error) {
 	switch platform := runtime.GOOS; platform {
 	case "windows":
-		cmd, err := CmdHelper(false, args...)
+		cmd, err := CmdHelper(true, args...)
 		if err != nil {
 			return "", err
 		}
-		cmd.Wait()
+		_, err = cmd.CombinedOutput()
+		if err != nil {
+			return "", err
+		}
 		return "", nil
 	case "darwin":
 		ex, err := os.Executable()

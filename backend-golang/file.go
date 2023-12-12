@@ -204,6 +204,10 @@ func (a *App) OpenFileFolder(path string, relative bool) error {
 }
 
 func (a *App) StartFile(path string) error {
-	_, err := CmdHelper(true, path)
+	cmd, err := CmdHelper(true, path)
+	if err != nil {
+		return err
+	}
+	err = cmd.Start()
 	return err
 }
