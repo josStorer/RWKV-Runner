@@ -1,9 +1,8 @@
 ## Changes
 
-- allow importing midi file
-- add midi tracks to webUI
-- improve current instrument display
-- fix generation instrumentType
+- rwkv.cpp(ggml) support
+- allow playing mid with external player
+- allow overriding Core API URL
 - chore
 
 ## Install
