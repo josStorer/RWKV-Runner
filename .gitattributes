@@ -3,6 +3,7 @@ backend-python/wkv_cuda_utils/** linguist-vendored
 backend-python/get-pip.py linguist-vendored
 backend-python/convert_model.py linguist-vendored
 backend-python/convert_safetensors.py linguist-vendored
+backend-python/convert_pytorch_to_ggml.py linguist-vendored
 backend-python/utils/midi.py linguist-vendored
 build/** linguist-vendored
 finetune/lora/** linguist-vendored

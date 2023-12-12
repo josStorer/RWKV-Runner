@@ -128,7 +128,7 @@
   "Chinese Kongfu": "中国武術",
   "Allow external access to the API (service must be restarted)": "APIへの外部アクセスを許可する (サービスを再起動する必要があります)",
   "Custom": "カスタム",
-  "CUDA (Beta, Faster)": "CUDA (ベータ、高速)",
+  "CUDA (Beta, Faster)": "CUDA (Beta, 高速)",
   "Reset All Configs": "すべての設定をリセット",
   "Cancel": "キャンセル",
   "Confirm": "確認",
@@ -313,5 +313,8 @@
   "Music": "音楽",
   "Other": "その他",
   "Import MIDI": "MIDIをインポート",
-  "Current Instrument": "現在の楽器"
+  "Current Instrument": "現在の楽器",
+  "Please convert model to GGML format first": "モデルをGGML形式に変換してください",
+  "Convert To GGML Format": "GGML形式に変換",
+  "CPU (rwkv.cpp, Faster)": "CPU (rwkv.cpp, 高速)"
 }

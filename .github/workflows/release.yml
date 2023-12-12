@@ -65,6 +65,8 @@ jobs:
           Copy-Item -Path "${{ steps.cp310.outputs.python-path }}/../libs" -Destination "py310/libs" -Recurse
           ./py310/python -m pip install cyac==1.9
           go install github.com/wailsapp/wails/v2/cmd/wails@latest
+          del ./backend-python/rwkv_pip/cpp/librwkv.dylib
+          del ./backend-python/rwkv_pip/cpp/librwkv.so
           (Get-Content -Path ./backend-golang/app.go) -replace "//go:custom_build windows ", "" | Set-Content -Path ./backend-golang/app.go
           make
           Rename-Item -Path "build/bin/RWKV-Runner.exe" -NewName "RWKV-Runner_windows_x64.exe"
@@ -93,6 +95,8 @@ jobs:
           rm ./backend-python/rwkv_pip/rwkv6.pyd
           rm ./backend-python/rwkv_pip/beta/wkv_cuda.pyd
           rm ./backend-python/get-pip.py
+          rm ./backend-python/rwkv_pip/cpp/librwkv.dylib
+          rm ./backend-python/rwkv_pip/cpp/rwkv.dll
           make
           mv build/bin/RWKV-Runner build/bin/RWKV-Runner_linux_x64
 
@@ -117,6 +121,8 @@ jobs:
           rm ./backend-python/rwkv_pip/rwkv6.pyd
           rm ./backend-python/rwkv_pip/beta/wkv_cuda.pyd
           rm ./backend-python/get-pip.py
+          rm ./backend-python/rwkv_pip/cpp/rwkv.dll
+          rm ./backend-python/rwkv_pip/cpp/librwkv.so
           make
           cp build/darwin/Readme_Install.txt build/bin/Readme_Install.txt
           cp build/bin/RWKV-Runner.app/Contents/MacOS/RWKV-Runner build/bin/RWKV-Runner_darwin_universal

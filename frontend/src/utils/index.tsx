@@ -63,7 +63,7 @@ export async function refreshBuiltInModels(readCache: boolean = false) {
   return cache;
 }
 
-const modelSuffix = ['.pth', '.st', '.safetensors'];
+const modelSuffix = ['.pth', '.st', '.safetensors', '.bin'];
 
 export async function refreshLocalModels(cache: {
   models: ModelSourceItem[]

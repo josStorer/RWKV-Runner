@@ -510,13 +510,20 @@ def get_tokenizer(tokenizer_len: int):
 
 def RWKV(model: str, strategy: str, tokenizer: Union[str, None]) -> AbstractRWKV:
     rwkv_beta = global_var.get(global_var.Args).rwkv_beta
+    rwkv_cpp = getattr(global_var.get(global_var.Args), "rwkv.cpp")
 
     if "midi" in model.lower() or "abc" in model.lower():
         os.environ["RWKV_RESCALE_LAYER"] = "999"
 
     # dynamic import to make RWKV_CUDA_ON work
     if rwkv_beta:
+        print("Using rwkv-beta")
         from rwkv_pip.beta.model import (
+            RWKV as Model,
+        )
+    elif rwkv_cpp:
+        print("Using rwkv.cpp, strategy is ignored")
+        from rwkv_pip.cpp.model import (
             RWKV as Model,
         )
     else:

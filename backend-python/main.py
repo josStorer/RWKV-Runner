@@ -32,6 +32,11 @@ def get_args(args: Union[Sequence[str], None] = None):
         action="store_true",
         help="whether to use rwkv-beta (default: False)",
     )
+    group.add_argument(
+        "--rwkv.cpp",
+        action="store_true",
+        help="whether to use rwkv.cpp (default: False)",
+    )
     args = parser.parse_args(args)
 
     return args

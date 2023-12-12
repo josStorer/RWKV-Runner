@@ -3,6 +3,7 @@
 - ^backend-python/get-pip\.py
 - ^backend-python/convert_model\.py
 - ^backend-python/convert_safetensors\.py
+- ^backend-python/convert_pytorch_to_ggml\.py linguist-vendored
 - ^backend-python/utils/midi\.py
 - ^build/
 - ^finetune/lora/

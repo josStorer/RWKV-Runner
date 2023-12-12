@@ -49,19 +49,13 @@ def switch_model(body: SwitchModelBody, response: Response, request: Request):
     if body.model == "":
         return "success"
 
-    STRATEGY_REGEX = r"^(?:(?:^|->) *(?:cuda(?::[\d]+)?|cpu|mps|dml) (?:fp(?:16|32)|bf16)(?:i8|i4|i3)?(?: \*[\d]+\+?)? *)+$"
-    if not re.match(STRATEGY_REGEX, body.strategy):
-        raise HTTPException(
-            Status.HTTP_400_BAD_REQUEST,
-            "Invalid strategy. Please read https://pypi.org/project/rwkv/",
-        )
     devices = set(
         [
             x.strip().split(" ")[0].replace("cuda:0", "cuda")
             for x in body.strategy.split("->")
         ]
     )
-    print(f"Devices: {devices}")
+    print(f"Strategy Devices: {devices}")
     # if len(devices) > 1:
     #     state_cache.disable_state_cache()
     # else:

@@ -17,7 +17,8 @@ import { ToolTipButton } from './ToolTipButton';
 import { Play16Regular, Stop16Regular } from '@fluentui/react-icons';
 import { useNavigate } from 'react-router';
 import { WindowShow } from '../../wailsjs/runtime';
-import { convertToSt } from '../utils/convert-to-st';
+import { convertToGGML, convertToSt } from '../utils/convert-model';
+import { Precision } from '../types/configs';
 
 const mainButtonText = {
   [ModelStatus.Offline]: 'Run',
@@ -47,6 +48,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
 
       const modelConfig = commonStore.getCurrentModelConfig();
       const webgpu = modelConfig.modelParameters.device === 'WebGPU';
+      const cpp = modelConfig.modelParameters.device === 'CPU (rwkv.cpp)';
       let modelName = '';
       let modelPath = '';
       if (modelConfig && modelConfig.modelParameters) {
@@ -112,6 +114,30 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
           return;
       }
 
+      if (cpp) {
+        if (!['.bin'].some(ext => modelPath.endsWith(ext))) {
+          const precision: Precision = modelConfig.modelParameters.precision === 'Q5_1' ? 'Q5_1' : 'fp16';
+          const ggmlModelPath = modelPath.replace(/\.pth$/, `-${precision}.bin`);
+          if (await FileExists(ggmlModelPath)) {
+            modelPath = ggmlModelPath;
+          } else if (!await FileExists(modelPath)) {
+            showDownloadPrompt(t('Model file not found'), modelName);
+            commonStore.setStatus({ status: ModelStatus.Offline });
+            return;
+          } else if (!currentModelSource?.isComplete) {
+            showDownloadPrompt(t('Model file download is not complete'), modelName);
+            commonStore.setStatus({ status: ModelStatus.Offline });
+            return;
+          } else {
+            toastWithButton(t('Please convert model to GGML format first'), t('Convert'), () => {
+              convertToGGML(modelConfig, navigate);
+            });
+            commonStore.setStatus({ status: ModelStatus.Offline });
+            return;
+          }
+        }
+      }
+
       if (!await FileExists(modelPath)) {
         showDownloadPrompt(t('Model file not found'), modelName);
         commonStore.setStatus({ status: ModelStatus.Offline });
@@ -142,7 +168,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
       const isUsingCudaBeta = modelConfig.modelParameters.device === 'CUDA-Beta';
 
       startServer(commonStore.settings.customPythonPath, port, commonStore.settings.host !== '127.0.0.1' ? '0.0.0.0' : '127.0.0.1',
-        !!modelConfig.enableWebUI, isUsingCudaBeta
+        !!modelConfig.enableWebUI, isUsingCudaBeta, cpp
       ).catch((e) => {
         const errMsg = e.message || e;
         if (errMsg.includes('path contains space'))

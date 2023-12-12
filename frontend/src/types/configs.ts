@@ -6,8 +6,8 @@ export type ApiParameters = {
   presencePenalty: number;
   frequencyPenalty: number;
 }
-export type Device = 'CPU' | 'CUDA' | 'CUDA-Beta' | 'WebGPU' | 'MPS' | 'Custom';
-export type Precision = 'fp16' | 'int8' | 'fp32' | 'nf4';
+export type Device = 'CPU' | 'CPU (rwkv.cpp)' | 'CUDA' | 'CUDA-Beta' | 'WebGPU' | 'MPS' | 'Custom';
+export type Precision = 'fp16' | 'int8' | 'fp32' | 'nf4' | 'Q5_1';
 export type ModelParameters = {
   // different models can not have the same name
   modelName: string;

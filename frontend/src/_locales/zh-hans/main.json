@@ -313,5 +313,8 @@
   "Music": "音乐",
   "Other": "其他",
   "Import MIDI": "导入MIDI",
-  "Current Instrument": "当前乐器"
+  "Current Instrument": "当前乐器",
+  "Please convert model to GGML format first": "请先将模型转换为GGML格式",
+  "Convert To GGML Format": "转换为GGML格式",
+  "CPU (rwkv.cpp, Faster)": "CPU (rwkv.cpp, 更快)"
 }
