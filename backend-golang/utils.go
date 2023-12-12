@@ -18,7 +18,7 @@ import (
 	"syscall"
 )
 
-func CmdHelper(args ...string) (*exec.Cmd, error) {
+func CmdHelper(hideWindow bool, args ...string) (*exec.Cmd, error) {
 	if runtime.GOOS != "windows" {
 		return nil, errors.New("unsupported OS")
 	}
@@ -43,7 +43,7 @@ func CmdHelper(args ...string) (*exec.Cmd, error) {
 	}
 	cmd := exec.Command(cmdHelper, args...)
 	cmd.SysProcAttr = &syscall.SysProcAttr{}
-	//go:custom_build windows cmd.SysProcAttr.HideWindow = true
+	//go:custom_build windows cmd.SysProcAttr.HideWindow = hideWindow
 	err = cmd.Start()
 	if err != nil {
 		return nil, err
@@ -54,7 +54,7 @@ func CmdHelper(args ...string) (*exec.Cmd, error) {
 func Cmd(args ...string) (string, error) {
 	switch platform := runtime.GOOS; platform {
 	case "windows":
-		cmd, err := CmdHelper(args...)
+		cmd, err := CmdHelper(false, args...)
 		if err != nil {
 			return "", err
 		}

@@ -204,6 +204,6 @@ func (a *App) OpenFileFolder(path string, relative bool) error {
 }
 
 func (a *App) StartFile(path string) error {
-	_, err := CmdHelper(path)
+	_, err := CmdHelper(true, path)
 	return err
 }
