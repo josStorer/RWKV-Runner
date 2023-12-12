@@ -19,4 +19,5 @@ export type SettingsType = {
   apiKey: string
   apiChatModelName: string
   apiCompletionModelName: string
+  coreApiUrl: string
 }

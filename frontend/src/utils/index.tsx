@@ -303,7 +303,11 @@ export function bytesToReadable(size: number) {
   else return bytesToGb(size) + ' GB';
 }
 
-export function getServerRoot(defaultLocalPort: number) {
+export function getServerRoot(defaultLocalPort: number, isCore: boolean = false) {
+  const coreCustomApiUrl = commonStore.settings.coreApiUrl.trim().replace(/\/$/, '');
+  if (isCore && coreCustomApiUrl)
+    return coreCustomApiUrl;
+  
   const defaultRoot = `http://127.0.0.1:${defaultLocalPort}`;
   if (commonStore.status.status !== ModelStatus.Offline)
     return defaultRoot;

@@ -436,7 +436,7 @@ const ChatPanel: FC = observer(() => {
     const chatSseController = new AbortController();
     chatSseControllers[answerId] = chatSseController;
     fetchEventSource( // https://api.openai.com/v1/chat/completions || http://127.0.0.1:${port}/v1/chat/completions
-      getServerRoot(port) + '/v1/chat/completions',
+      getServerRoot(port, true) + '/v1/chat/completions',
       {
         method: 'POST',
         headers: {

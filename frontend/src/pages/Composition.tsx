@@ -173,7 +173,7 @@ const CompositionPanel: FC = observer(() => {
     let answer = '';
     compositionSseController = new AbortController();
     fetchEventSource( // https://api.openai.com/v1/completions || http://127.0.0.1:${port}/v1/completions
-      getServerRoot(port) + '/v1/completions',
+      getServerRoot(port, true) + '/v1/completions',
       {
         method: 'POST',
         headers: {

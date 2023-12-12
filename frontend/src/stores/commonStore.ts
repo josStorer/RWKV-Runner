@@ -175,7 +175,8 @@ class CommonStore {
     apiUrl: '',
     apiKey: '',
     apiChatModelName: 'rwkv',
-    apiCompletionModelName: 'rwkv'
+    apiCompletionModelName: 'rwkv',
+    coreApiUrl: ''
   };
   // about
   about: AboutContent = manifest.about;

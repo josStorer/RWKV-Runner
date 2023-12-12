@@ -317,5 +317,7 @@
   "Please convert model to GGML format first": "モデルをGGML形式に変換してください",
   "Convert To GGML Format": "GGML形式に変換",
   "CPU (rwkv.cpp, Faster)": "CPU (rwkv.cpp, 高速)",
-  "Play With External Player": "外部プレーヤーで再生"
+  "Play With External Player": "外部プレーヤーで再生",
+  "Core API URL": "コアAPI URL",
+  "Override core API URL(/chat/completions and /completions). If you don't know what this is, leave it blank.": "コアAPI URLを上書きします(/chat/completions と /completions)。何であるかわからない場合は空白のままにしてください。"
 }

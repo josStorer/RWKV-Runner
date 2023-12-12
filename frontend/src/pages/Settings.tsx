@@ -186,6 +186,16 @@ export const AdvancedGeneralSettings: FC = observer(() => {
           </Dropdown>
         </div>
       } />
+    <Labeled label={t('Core API URL')}
+      desc={t('Override core API URL(/chat/completions and /completions). If you don\'t know what this is, leave it blank.')}
+      content={
+        <Input style={{ minWidth: 0 }} className="grow" value={commonStore.settings.coreApiUrl}
+          onChange={(e, data) => {
+            commonStore.setSettings({
+              coreApiUrl: data.value
+            });
+          }} />
+      } />
   </div>;
 });
 
