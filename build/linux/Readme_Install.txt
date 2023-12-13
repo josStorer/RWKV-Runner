@@ -1,3 +1,8 @@
+Client Download URL:
+客户端下载地址:
+クライアントのダウンロードURL:
+https://github.com/josStorer/RWKV-Runner/releases/latest/download/RWKV-Runner_linux_x64
+
 For Mac and Linux users, please manually install Python 3.10 (usually the latest systems come with it built-in). You can specify the Python interpreter to use in Settings.
 对于Mac和Linux用户，请手动安装 Python3.10 (通常最新的系统已经内置了). 你可以在设置中指定使用的Python解释器.
 MacおよびLinuxのユーザーの方は、Python3.10を手動でインストールしてください（通常、最新のシステムには既に組み込まれています）。 設定メニューで使用するPythonインタプリタを指定することができます。
