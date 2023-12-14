@@ -1,9 +1,9 @@
 ## Changes
 
-- rwkv.cpp python38 compatibility
-- improve rwkv.cpp operation prompts
-- add load failed traceback
-- fix windows cmd waiting
+- add WebGPU Python Mode (https://github.com/cryscan/web-rwkv-py)
+- bump MIDI-LLM-tokenizer (fix note off)
+- fix refreshBuiltInModels
+- chore
 
 ## Install
 
