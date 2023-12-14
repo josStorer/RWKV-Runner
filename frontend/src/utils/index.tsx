@@ -51,11 +51,11 @@ export async function refreshBuiltInModels(readCache: boolean = false) {
     await ReadJson('cache.json').then((cacheData: Cache) => {
       if (cacheData.models)
         cache.models = cacheData.models;
-      else cache.models = manifest.models;
+      else cache.models = manifest.models.slice();
     }).catch(() => {
-      cache.models = manifest.models;
+      cache.models = manifest.models.slice();
     });
-  else cache.models = manifest.models;
+  else cache.models = manifest.models.slice();
 
   commonStore.setModelSourceList(cache.models);
   await saveCache().catch(() => {
