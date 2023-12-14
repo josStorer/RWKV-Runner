@@ -1,9 +1,6 @@
 ## Changes
 
-- add WebGPU Python Mode (https://github.com/cryscan/web-rwkv-py)
-- bump MIDI-LLM-tokenizer (fix note off)
-- fix refreshBuiltInModels
-- chore
+- WebGPU (Python) strategy
 
 ## Install
 
