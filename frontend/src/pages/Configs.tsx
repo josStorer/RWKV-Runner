@@ -394,6 +394,7 @@ const Configs: FC = observer(() => {
               </div>
             }
           />
+          {mq && <div style={{ minHeight: '30px' }} />}
         </div>
         <div className="flex flex-row-reverse sm:fixed bottom-2 right-2">
           <div className="flex gap-2">

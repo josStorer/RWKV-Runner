@@ -109,7 +109,7 @@ func main() {
 	err = wails.Run(&options.App{
 		Title:                    "RWKV-Runner",
 		Width:                    1024,
-		Height:                   680,
+		Height:                   700,
 		MinWidth:                 375,
 		MinHeight:                640,
 		EnableDefaultContextMenu: true,
