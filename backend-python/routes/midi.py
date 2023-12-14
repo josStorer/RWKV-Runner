@@ -37,10 +37,14 @@ def text_to_midi(body: TextToMidiBody):
 async def midi_to_text(file_data: UploadFile):
     vocab_config = "backend-python/utils/midi_vocab_config.json"
     cfg = VocabConfig.from_json(vocab_config)
+    filter_config = "backend-python/utils/midi_filter_config.json"
+    filter_cfg = FilterConfig.from_json(filter_config)
     mid = mido.MidiFile(file=file_data.file)
-    text = convert_midi_to_str(cfg, mid)
+    output_list = convert_midi_to_str(cfg, filter_cfg, mid)
+    if len(output_list) == 0:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "bad midi file")
 
-    return {"text": text}
+    return {"text": output_list[0]}
 
 
 class TxtToMidiBody(BaseModel):
