@@ -320,5 +320,6 @@
   "Play With External Player": "外部プレーヤーで再生",
   "Core API URL": "コアAPI URL",
   "Override core API URL(/chat/completions and /completions). If you don't know what this is, leave it blank.": "コアAPI URLを上書きします(/chat/completions と /completions)。何であるかわからない場合は空白のままにしてください。",
-  "Please change Strategy to CPU (rwkv.cpp) to use ggml format": "StrategyをCPU (rwkv.cpp)に変更して、ggml形式を使用してください"
+  "Please change Strategy to CPU (rwkv.cpp) to use ggml format": "StrategyをCPU (rwkv.cpp)に変更して、ggml形式を使用してください",
+  "Only Auto Play Generated Content": "生成されたコンテンツのみ自動再生"
 }

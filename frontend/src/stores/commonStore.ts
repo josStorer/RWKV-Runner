@@ -96,7 +96,9 @@ class CommonStore {
     useLocalSoundFont: false,
     externalPlay: false,
     midi: null,
-    ns: null
+    ns: null,
+    generationStartTime: 0,
+    playOnlyGeneratedContent: true
   };
   compositionGenerating: boolean = false;
   compositionSubmittedPrompt: string = defaultCompositionPrompt;

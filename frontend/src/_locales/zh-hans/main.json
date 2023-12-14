@@ -320,5 +320,6 @@
   "Play With External Player": "使用外部播放器播放",
   "Core API URL": "核心 API URL",
   "Override core API URL(/chat/completions and /completions). If you don't know what this is, leave it blank.": "覆盖核心的 API URL (/chat/completions 和 /completions)。如果你不知道这是什么，请留空",
-  "Please change Strategy to CPU (rwkv.cpp) to use ggml format": "请将Strategy改为CPU (rwkv.cpp)以使用ggml格式"
+  "Please change Strategy to CPU (rwkv.cpp) to use ggml format": "请将Strategy改为CPU (rwkv.cpp)以使用ggml格式",
+  "Only Auto Play Generated Content": "仅自动播放新生成的内容"
 }

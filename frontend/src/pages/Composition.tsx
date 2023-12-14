@@ -152,10 +152,14 @@ const CompositionPanel: FC = observer(() => {
         if (autoPlay) {
           if (commonStore.compositionParams.externalPlay)
             externalPlayListener();
-          else
+          else {
+            if (commonStore.compositionParams.playOnlyGeneratedContent && playerRef.current) {
+              playerRef.current.currentTime = Math.max(commonStore.compositionParams.generationStartTime - 1, 0);
+            }
             setTimeout(() => {
               playerRef.current?.start();
             });
+          }
         }
       });
     });
@@ -314,6 +318,14 @@ const CompositionPanel: FC = observer(() => {
                 autoPlay: data.checked as boolean
               });
             }} />
+            <Checkbox className="select-none"
+              size="large" label={t('Only Auto Play Generated Content')} checked={params.playOnlyGeneratedContent}
+              onChange={async (_, data) => {
+                setParams({
+                  autoPlay: data.checked as boolean || commonStore.compositionParams.autoPlay,
+                  playOnlyGeneratedContent: data.checked as boolean
+                });
+              }} />
             <Labeled flex breakline label={t('MIDI Input')}
               desc={t('Select the MIDI input device to be used.')}
               content={
@@ -359,6 +371,9 @@ const CompositionPanel: FC = observer(() => {
               contentText={t('Are you sure you want to reset this page? It cannot be undone.')}
               onConfirm={() => {
                 commonStore.setCompositionSubmittedPrompt(defaultCompositionPrompt);
+                setParams({
+                  generationStartTime: 0
+                });
                 setPrompt(defaultCompositionPrompt);
               }} />
             <Button className="grow" appearance="primary" onClick={() => {
@@ -368,6 +383,9 @@ const CompositionPanel: FC = observer(() => {
                 generateNs(params.autoPlay);
               } else {
                 commonStore.setCompositionGenerating(true);
+                setParams({
+                  generationStartTime: playerRef.current ? playerRef.current.duration : 0
+                });
                 onSubmit(params.prompt);
               }
             }}>{!commonStore.compositionGenerating ? t('Generate') : t('Stop')}</Button>

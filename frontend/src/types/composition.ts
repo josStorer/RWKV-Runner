@@ -11,7 +11,9 @@ export type CompositionParams = {
   useLocalSoundFont: boolean,
   externalPlay: boolean,
   midi: ArrayBuffer | null,
-  ns: NoteSequence | null
+  ns: NoteSequence | null,
+  generationStartTime: number,
+  playOnlyGeneratedContent: boolean,
 }
 export type Track = {
   id: string;
