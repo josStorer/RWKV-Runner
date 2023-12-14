@@ -84,6 +84,8 @@ class PIPELINE:
         return e / e.sum(axis=axis, keepdims=True)
 
     def sample_logits(self, logits, temperature=1.0, top_p=0.85, top_k=0):
+        if type(logits) == list:
+            logits = np.array(logits)
         np_logits = type(logits) == np.ndarray
         if np_logits:
             probs = self.np_softmax(logits, axis=-1)

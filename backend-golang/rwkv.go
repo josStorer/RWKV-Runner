@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func (a *App) StartServer(python string, port int, host string, webui bool, rwkvBeta bool, rwkvcpp bool) (string, error) {
+func (a *App) StartServer(python string, port int, host string, webui bool, rwkvBeta bool, rwkvcpp bool, webgpu bool) (string, error) {
 	var err error
 	if python == "" {
 		python, err = GetPython()
@@ -27,6 +27,9 @@ func (a *App) StartServer(python string, port int, host string, webui bool, rwkv
 	}
 	if rwkvcpp {
 		args = append(args, "--rwkv.cpp")
+	}
+	if webgpu {
+		args = append(args, "--webgpu")
 	}
 	args = append(args, "--port", strconv.Itoa(port), "--host", host)
 	return Cmd(args...)
@@ -53,6 +56,17 @@ func (a *App) ConvertSafetensors(modelPath string, outPath string) (string, erro
 	args := []string{"./backend-rust/web-rwkv-converter"}
 	args = append(args, "--input", modelPath, "--output", outPath)
 	return Cmd(args...)
+}
+
+func (a *App) ConvertSafetensorsWithPython(python string, modelPath string, outPath string) (string, error) {
+	var err error
+	if python == "" {
+		python, err = GetPython()
+	}
+	if err != nil {
+		return "", err
+	}
+	return Cmd(python, "./backend-python/convert_safetensors.py", "--input", modelPath, "--output", outPath)
 }
 
 func (a *App) ConvertGGML(python string, modelPath string, outPath string, Q51 bool) (string, error) {

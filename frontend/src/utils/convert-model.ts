@@ -5,6 +5,7 @@ import {
   ConvertGGML,
   ConvertModel,
   ConvertSafetensors,
+  ConvertSafetensorsWithPython,
   FileExists,
   GetPyError
 } from '../../wailsjs/go/backend_golang/App';
@@ -51,12 +52,22 @@ export const convertModel = async (selectedConfig: ModelConfig, navigate: Naviga
 };
 
 
-export const convertToSt = async (selectedConfig: ModelConfig) => {
+export const convertToSt = async (selectedConfig: ModelConfig, navigate: NavigateFunction) => {
+  const webgpuPython = selectedConfig.modelParameters.device === 'WebGPU (Python)';
+  if (webgpuPython) {
+    const ok = await checkDependencies(navigate);
+    if (!ok)
+      return;
+  }
+
   const modelPath = `${commonStore.settings.customModelsPath}/${selectedConfig.modelParameters.modelName}`;
   if (await FileExists(modelPath)) {
     toast(t('Start Converting'), { autoClose: 2000, type: 'info' });
     const newModelPath = modelPath.replace(/\.pth$/, '.st');
-    ConvertSafetensors(modelPath, newModelPath).then(async () => {
+    const convert = webgpuPython ?
+      (input: string, output: string) => ConvertSafetensorsWithPython(commonStore.settings.customPythonPath, input, output)
+      : ConvertSafetensors;
+    convert(modelPath, newModelPath).then(async () => {
       if (!await FileExists(newModelPath)) {
         if (commonStore.platform === 'windows' || commonStore.platform === 'linux')
           toast(t('Convert Failed') + ' - ' + await GetPyError(), { type: 'error' });

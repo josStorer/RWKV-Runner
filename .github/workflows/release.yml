@@ -98,6 +98,7 @@ jobs:
           rm ./backend-python/get-pip.py
           rm ./backend-python/rwkv_pip/cpp/librwkv.dylib
           rm ./backend-python/rwkv_pip/cpp/rwkv.dll
+          rm ./backend-python/rwkv_pip/webgpu/web_rwkv_py.cp310-win_amd64.pyd
           make
           mv build/bin/RWKV-Runner build/bin/RWKV-Runner_linux_x64
 
@@ -124,6 +125,7 @@ jobs:
           rm ./backend-python/get-pip.py
           rm ./backend-python/rwkv_pip/cpp/rwkv.dll
           rm ./backend-python/rwkv_pip/cpp/librwkv.so
+          rm ./backend-python/rwkv_pip/webgpu/web_rwkv_py.cp310-win_amd64.pyd
           make
           cp build/darwin/Readme_Install.txt build/bin/Readme_Install.txt
           cp build/bin/RWKV-Runner.app/Contents/MacOS/RWKV-Runner build/bin/RWKV-Runner_darwin_universal

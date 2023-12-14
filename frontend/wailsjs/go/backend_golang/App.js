@@ -30,6 +30,10 @@ export function ConvertSafetensors(arg1, arg2) {
   return window['go']['backend_golang']['App']['ConvertSafetensors'](arg1, arg2);
 }
 
+export function ConvertSafetensorsWithPython(arg1, arg2, arg3) {
+  return window['go']['backend_golang']['App']['ConvertSafetensorsWithPython'](arg1, arg2, arg3);
+}
+
 export function CopyFile(arg1, arg2) {
   return window['go']['backend_golang']['App']['CopyFile'](arg1, arg2);
 }
@@ -126,8 +130,8 @@ export function StartFile(arg1) {
   return window['go']['backend_golang']['App']['StartFile'](arg1);
 }
 
-export function StartServer(arg1, arg2, arg3, arg4, arg5, arg6) {
-  return window['go']['backend_golang']['App']['StartServer'](arg1, arg2, arg3, arg4, arg5, arg6);
+export function StartServer(arg1, arg2, arg3, arg4, arg5, arg6, arg7) {
+  return window['go']['backend_golang']['App']['StartServer'](arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 }
 
 export function StartWebGPUServer(arg1, arg2) {

@@ -16,6 +16,8 @@ export function ConvertModel(arg1:string,arg2:string,arg3:string,arg4:string):Pr
 
 export function ConvertSafetensors(arg1:string,arg2:string):Promise<string>;
 
+export function ConvertSafetensorsWithPython(arg1:string,arg2:string,arg3:string):Promise<string>;
+
 export function CopyFile(arg1:string,arg2:string):Promise<void>;
 
 export function DeleteFile(arg1:string):Promise<void>;
@@ -64,7 +66,7 @@ export function SaveJson(arg1:string,arg2:any):Promise<void>;
 
 export function StartFile(arg1:string):Promise<void>;
 
-export function StartServer(arg1:string,arg2:number,arg3:string,arg4:boolean,arg5:boolean,arg6:boolean):Promise<string>;
+export function StartServer(arg1:string,arg2:number,arg3:string,arg4:boolean,arg5:boolean,arg6:boolean,arg7:boolean):Promise<string>;
 
 export function StartWebGPUServer(arg1:number,arg2:string):Promise<string>;
 

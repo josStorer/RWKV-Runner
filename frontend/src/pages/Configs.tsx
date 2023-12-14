@@ -246,7 +246,7 @@ const Configs: FC = observer(() => {
                   </div>
                 } />
                 {
-                  selectedConfig.modelParameters.device !== 'WebGPU' ?
+                  !selectedConfig.modelParameters.device.startsWith('WebGPU') ?
                     (selectedConfig.modelParameters.device !== 'CPU (rwkv.cpp)' ?
                       <ToolTipButton text={t('Convert')}
                         desc={t('Convert model with these configs. Using a converted model will greatly improve the loading speed, but model parameters of the converted model cannot be modified.')}
@@ -256,7 +256,7 @@ const Configs: FC = observer(() => {
                         onClick={() => convertToGGML(selectedConfig, navigate)} />)
                     : <ToolTipButton text={t('Convert To Safe Tensors Format')}
                       desc=""
-                      onClick={() => convertToSt(selectedConfig)} />
+                      onClick={() => convertToSt(selectedConfig, navigate)} />
                 }
                 <Labeled label={t('Strategy')} content={
                   <Dropdown style={{ minWidth: 0 }} className="grow" value={t(selectedConfig.modelParameters.device)!}
@@ -274,6 +274,7 @@ const Configs: FC = observer(() => {
                     <Option value="CUDA">CUDA</Option>
                     <Option value="CUDA-Beta">{t('CUDA (Beta, Faster)')!}</Option>
                     <Option value="WebGPU">WebGPU</Option>
+                    <Option value="WebGPU (Python)">WebGPU (Python)</Option>
                     <Option value="Custom">{t('Custom')!}</Option>
                   </Dropdown>
                 } />
@@ -281,7 +282,8 @@ const Configs: FC = observer(() => {
                   selectedConfig.modelParameters.device !== 'Custom' && <Labeled label={t('Precision')}
                     desc={t('int8 uses less VRAM, but has slightly lower quality. fp16 has higher quality.')}
                     content={
-                      <Dropdown style={{ minWidth: 0 }} className="grow"
+                      <Dropdown disabled={selectedConfig.modelParameters.device === 'WebGPU (Python)'}
+                        style={{ minWidth: 0 }} className="grow"
                         value={selectedConfig.modelParameters.precision}
                         selectedOptions={[selectedConfig.modelParameters.precision]}
                         onOptionSelect={(_, data) => {
@@ -302,12 +304,12 @@ const Configs: FC = observer(() => {
                     } />
                 }
                 {
-                  selectedConfig.modelParameters.device.includes('CUDA') &&
+                  selectedConfig.modelParameters.device.startsWith('CUDA') &&
                   <Labeled label={t('Current Strategy')}
                     content={<Text> {getStrategy(selectedConfig)} </Text>} />
                 }
                 {
-                  selectedConfig.modelParameters.device.includes('CUDA') &&
+                  selectedConfig.modelParameters.device.startsWith('CUDA') &&
                   <Labeled label={t('Stored Layers')}
                     desc={t('Number of the neural network layers loaded into VRAM, the more you load, the faster the speed, but it consumes more VRAM. (If your VRAM is not enough, it will fail to load)')}
                     content={
@@ -320,7 +322,7 @@ const Configs: FC = observer(() => {
                         }} />
                     } />
                 }
-                {selectedConfig.modelParameters.device.includes('CUDA') && <div />}
+                {selectedConfig.modelParameters.device.startsWith('CUDA') && <div />}
                 {
                   displayStrategyImg &&
                   <img style={{ width: '80vh', height: 'auto', zIndex: 100 }}
@@ -345,7 +347,7 @@ const Configs: FC = observer(() => {
                 }
                 {selectedConfig.modelParameters.device === 'Custom' && <div />}
                 {
-                  (selectedConfig.modelParameters.device.includes('CUDA') || selectedConfig.modelParameters.device === 'Custom') &&
+                  (selectedConfig.modelParameters.device.startsWith('CUDA') || selectedConfig.modelParameters.device === 'Custom') &&
                   <Labeled label={t('Use Custom CUDA kernel to Accelerate')}
                     desc={t('Enabling this option can greatly improve inference speed and save some VRAM, but there may be compatibility issues (output garbled). If it fails to start, please turn off this option, or try to upgrade your gpu driver.')}
                     content={

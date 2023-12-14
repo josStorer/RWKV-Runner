@@ -192,6 +192,7 @@ export const getStrategy = (modelConfig: ModelConfig | undefined = undefined) =>
       strategy += params.precision === 'int8' ? 'fp32i8' : 'fp32';
       break;
     case 'WebGPU':
+    case 'WebGPU (Python)':
       strategy += params.precision === 'nf4' ? 'fp16i4' : params.precision === 'int8' ? 'fp16i8' : 'fp16';
       break;
     case 'CUDA':
@@ -307,7 +308,7 @@ export function getServerRoot(defaultLocalPort: number, isCore: boolean = false)
   const coreCustomApiUrl = commonStore.settings.coreApiUrl.trim().replace(/\/$/, '');
   if (isCore && coreCustomApiUrl)
     return coreCustomApiUrl;
-  
+
   const defaultRoot = `http://127.0.0.1:${defaultLocalPort}`;
   if (commonStore.status.status !== ModelStatus.Offline)
     return defaultRoot;
