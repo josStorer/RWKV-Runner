@@ -1,6 +1,7 @@
 ## Changes
 
-- WebGPU (Python) strategy
+- update midi_filter_config.json
+- Composition Option: Only Auto Play Generated Content
 
 ## Install
 
