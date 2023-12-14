@@ -282,7 +282,7 @@ const Configs: FC = observer(() => {
                   selectedConfig.modelParameters.device !== 'Custom' && <Labeled label={t('Precision')}
                     desc={t('int8 uses less VRAM, but has slightly lower quality. fp16 has higher quality.')}
                     content={
-                      <Dropdown disabled={selectedConfig.modelParameters.device === 'WebGPU (Python)'}
+                      <Dropdown
                         style={{ minWidth: 0 }} className="grow"
                         value={selectedConfig.modelParameters.precision}
                         selectedOptions={[selectedConfig.modelParameters.precision]}
@@ -296,8 +296,8 @@ const Configs: FC = observer(() => {
                         {selectedConfig.modelParameters.device !== 'CPU' && selectedConfig.modelParameters.device !== 'MPS' &&
                           <Option>fp16</Option>}
                         {selectedConfig.modelParameters.device !== 'CPU (rwkv.cpp)' && <Option>int8</Option>}
-                        {selectedConfig.modelParameters.device === 'WebGPU' && <Option>nf4</Option>}
-                        {selectedConfig.modelParameters.device !== 'CPU (rwkv.cpp)' && selectedConfig.modelParameters.device !== 'WebGPU' &&
+                        {selectedConfig.modelParameters.device.startsWith('WebGPU') && <Option>nf4</Option>}
+                        {selectedConfig.modelParameters.device !== 'CPU (rwkv.cpp)' && !selectedConfig.modelParameters.device.startsWith('WebGPU') &&
                           <Option>fp32</Option>}
                         {selectedConfig.modelParameters.device === 'CPU (rwkv.cpp)' && <Option>Q5_1</Option>}
                       </Dropdown>

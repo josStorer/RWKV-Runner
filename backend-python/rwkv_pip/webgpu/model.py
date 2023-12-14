@@ -12,8 +12,13 @@ except ModuleNotFoundError:
 
 
 class RWKV:
-    def __init__(self, model_path: str, strategy=None):
-        self.model = wrp.v5.Model(model_path, turbo=False)
+    def __init__(self, model_path: str, strategy: str = None):
+        self.model = wrp.v5.Model(
+            model_path,
+            turbo=False,
+            quant=32 if "i8" in strategy else None,
+            quant_nf4=26 if "i4" in strategy else None,
+        )
         self.w = {}  # fake weight
         self.w["emb.weight"] = [0] * wrp.peek_info(model_path).num_vocab
 
