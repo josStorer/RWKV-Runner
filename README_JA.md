@@ -169,6 +169,10 @@ Tip: You can download https://github.com/josStorer/sgm_plus and unzip it to the 
 to use it as an offline sound source. Please note that if you are compiling the program from source code, do not place
 it in the source code directory.
 
+MIDIキーボードをお持ちでない場合、`Virtual Midi Controller 3 LE`
+などの仮想MIDI入力ソフトウェアを使用することができます。[loopMIDI](https://www.tobias-erichsen.de/wp-content/uploads/2020/01/loopMIDISetup_1_0_16_27.zip)
+を組み合わせて、通常のコンピュータキーボードをMIDI入力として使用できます。
+
 ### USB MIDI Connection
 
 - USB MIDI devices are plug-and-play, and you can select your input device in the Composition page

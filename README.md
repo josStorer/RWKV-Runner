@@ -170,6 +170,10 @@ Tip: You can download https://github.com/josStorer/sgm_plus and unzip it to the 
 to use it as an offline sound source. Please note that if you are compiling the program from source code, do not place
 it in the source code directory.
 
+If you don't have a MIDI keyboard, you can use virtual MIDI input software like `Virtual Midi Controller 3 LE`, along
+with [loopMIDI](https://www.tobias-erichsen.de/wp-content/uploads/2020/01/loopMIDISetup_1_0_16_27.zip), to use a regular
+computer keyboard as MIDI input.
+
 ### USB MIDI Connection
 
 - USB MIDI devices are plug-and-play, and you can select your input device in the Composition page
