@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: master
 
@@ -38,7 +38,7 @@ jobs:
     runs-on: windows-2022
     needs: create-draft
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: master
       - uses: actions/setup-go@v4
@@ -78,7 +78,7 @@ jobs:
     runs-on: ubuntu-20.04
     needs: create-draft
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: master
       - uses: actions/setup-go@v4
@@ -108,7 +108,7 @@ jobs:
     runs-on: macos-13
     needs: create-draft
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: master
       - uses: actions/setup-go@v4
@@ -137,5 +137,5 @@ jobs:
     runs-on: ubuntu-22.04
     needs: [ windows, linux, macos ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: gh release edit ${{github.ref_name}} --draft=false
