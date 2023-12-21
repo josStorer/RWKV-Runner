@@ -47,15 +47,28 @@ English | [简体中文](README_ZH.md) | [日本語](README_JA.md)
 
 </div>
 
-#### Tip: You can deploy [backend-python](./backend-python/) on a server and use this program as a client only. Fill in your server address in the Settings `API URL`.
+## Tips
 
-#### If you are deploying and providing public services, please limit the request size through API gateway to prevent excessive resource usage caused by submitting overly long prompts. Additionally, please restrict the upper limit of requests' max_tokens based on your actual situation: https://github.com/josStorer/RWKV-Runner/blob/master/backend-python/utils/rwkv.py#L567, the default is set as le=102400, which may result in significant resource consumption for individual responses in extreme cases.
+- You can deploy [backend-python](./backend-python/) on a server and use this program as a client only. Fill in
+  your server address in the Settings `API URL`.
 
-#### Default configs has enabled custom CUDA kernel acceleration, which is much faster and consumes much less VRAM. If you encounter possible compatibility issues (output garbled), go to the Configs page and turn off `Use Custom CUDA kernel to Accelerate`, or try to upgrade your gpu driver.
+- If you are deploying and providing public services, please limit the request size through API gateway to prevent
+  excessive resource usage caused by submitting overly long prompts. Additionally, please restrict the upper limit of
+  requests' max_tokens based on your actual
+  situation: https://github.com/josStorer/RWKV-Runner/blob/master/backend-python/utils/rwkv.py#L567, the default is set
+  as le=102400, which may result in significant resource consumption for individual responses in extreme cases.
 
-#### If Windows Defender claims this is a virus, you can try downloading [v1.3.7_win.zip](https://github.com/josStorer/RWKV-Runner/releases/download/v1.3.7/RWKV-Runner_win.zip) and letting it update automatically to the latest version, or add it to the trusted list (`Windows Security` -> `Virus & threat protection` -> `Manage settings` -> `Exclusions` -> `Add or remove exclusions` -> `Add an exclusion` -> `Folder` -> `RWKV-Runner`).
+- Default configs has enabled custom CUDA kernel acceleration, which is much faster and consumes much less VRAM. If you
+  encounter possible compatibility issues (output garbled), go to the Configs page and turn
+  off `Use Custom CUDA kernel to Accelerate`, or try to upgrade your gpu driver.
 
-#### For different tasks, adjusting API parameters can achieve better results. For example, for translation tasks, you can try setting Temperature to 1 and Top_P to 0.3.
+- If Windows Defender claims this is a virus, you can try
+  downloading [v1.3.7_win.zip](https://github.com/josStorer/RWKV-Runner/releases/download/v1.3.7/RWKV-Runner_win.zip)
+  and letting it update automatically to the latest version, or add it to the trusted
+  list (`Windows Security` -> `Virus & threat protection` -> `Manage settings` -> `Exclusions` -> `Add or remove exclusions` -> `Add an exclusion` -> `Folder` -> `RWKV-Runner`).
+
+- For different tasks, adjusting API parameters can achieve better results. For example, for translation tasks, you can
+  try setting Temperature to 1 and Top_P to 0.3.
 
 ## Features
 

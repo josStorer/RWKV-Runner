@@ -46,15 +46,22 @@ API兼容的接口，这意味着一切ChatGPT客户端都是RWKV客户端。
 
 </div>
 
-#### 小贴士：你可以在服务器部署[backend-python](./backend-python/)，然后将此程序仅用作客户端，在设置的`API URL`中填入你的服务器地址
+## 小贴士
 
-#### 如果你正在部署并对外提供公开服务，请通过API网关限制请求大小，避免过长的prompt提交占用资源。此外，请根据你的实际情况，限制请求的max_tokens上限: https://github.com/josStorer/RWKV-Runner/blob/master/backend-python/utils/rwkv.py#L567, 默认le=102400, 这可能导致极端情况下单个响应消耗大量资源
+- 你可以在服务器部署[backend-python](./backend-python/)，然后将此程序仅用作客户端，在设置的`API URL`中填入你的服务器地址
 
-#### 预设配置已经开启自定义CUDA算子加速，速度更快，且显存消耗更少。如果你遇到可能的兼容性(输出乱码)问题，前往配置页面，关闭`使用自定义CUDA算子加速`，或更新你的显卡驱动
+- 如果你正在部署并对外提供公开服务，请通过API网关限制请求大小，避免过长的prompt提交占用资源。此外，请根据你的实际情况，限制请求的
+  max_tokens 上限: https://github.com/josStorer/RWKV-Runner/blob/master/backend-python/utils/rwkv.py#L567,
+  默认le=102400, 这可能导致极端情况下单个响应消耗大量资源
 
-#### 如果Windows Defender说这是一个病毒，你可以尝试下载[v1.3.7_win.zip](https://github.com/josStorer/RWKV-Runner/releases/download/v1.3.7/RWKV-Runner_win.zip)，然后让其自动更新到最新版，或添加信任 (`Windows Security` -> `Virus & threat protection` -> `Manage settings` -> `Exclusions` -> `Add or remove exclusions` -> `Add an exclusion` -> `Folder` -> `RWKV-Runner`)
+- 预设配置已经开启自定义CUDA算子加速，速度更快，且显存消耗更少。如果你遇到可能的兼容性(输出乱码)
+  问题，前往配置页面，关闭`使用自定义CUDA算子加速`，或更新你的显卡驱动
 
-#### 对于不同的任务，调整API参数会获得更好的效果，例如对于翻译任务，你可以尝试设置Temperature为1，Top_P为0.3
+- 如果 Windows Defender
+  说这是一个病毒，你可以尝试下载[v1.3.7_win.zip](https://github.com/josStorer/RWKV-Runner/releases/download/v1.3.7/RWKV-Runner_win.zip)，
+  然后让其自动更新到最新版，或添加信任 (`Windows Security` -> `Virus & threat protection` -> `Manage settings` -> `Exclusions` -> `Add or remove exclusions` -> `Add an exclusion` -> `Folder` -> `RWKV-Runner`)
+
+- 对于不同的任务，调整API参数会获得更好的效果，例如对于翻译任务，你可以尝试设置Temperature为1，Top_P为0.3
 
 ## 功能
 

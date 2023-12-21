@@ -47,15 +47,26 @@
 
 </div>
 
-#### ヒント：サーバーに[backend-python](./backend-python/)をデプロイし、このプログラムをクライアントとして使用することができます。設定された`API URL`にサーバーアドレスを入力してください。
+## ヒント
 
-#### もし、あなたがデプロイし、外部に公開するサービスを提供している場合、APIゲートウェイを使用してリクエストのサイズを制限し、長すぎるプロンプトの提出がリソースを占有しないようにしてください。さらに、実際の状況に応じて、リクエストのmax_tokensの上限を制限してください：https://github.com/josStorer/RWKV-Runner/blob/master/backend-python/utils/rwkv.py#L567 、デフォルトは le=102400 ですが、極端な場合には単一の応答が大量のリソースを消費する可能性があります。
+- サーバーに [backend-python](./backend-python/)
+  をデプロイし、このプログラムをクライアントとして使用することができます。設定された`API URL`にサーバーアドレスを入力してください。
 
-#### デフォルトの設定はカスタム CUDA カーネルアクセラレーションを有効にしています。互換性の問題 (文字化けを出力する) が発生する可能性がある場合は、コンフィグページに移動し、`Use Custom CUDA kernel to Accelerate` をオフにしてください、あるいは、GPUドライバーをアップグレードしてみてください。
+- もし、あなたがデプロイし、外部に公開するサービスを提供している場合、APIゲートウェイを使用してリクエストのサイズを制限し、
+  長すぎるプロンプトの提出がリソースを占有しないようにしてください。さらに、実際の状況に応じて、リクエストの max_tokens
+  の上限を制限してください：https://github.com/josStorer/RWKV-Runner/blob/master/backend-python/utils/rwkv.py#L567
+  、デフォルトは le=102400 ですが、極端な場合には単一の応答が大量のリソースを消費する可能性があります。
 
-#### Windows Defender がこれをウイルスだと主張する場合は、[v1.3.7_win.zip](https://github.com/josStorer/RWKV-Runner/releases/download/v1.3.7/RWKV-Runner_win.zip) をダウンロードして最新版に自動更新させるか、信頼済みリストに追加してみてください (`Windows Security` -> `Virus & threat protection` -> `Manage settings` -> `Exclusions` -> `Add or remove exclusions` -> `Add an exclusion` -> `Folder` -> `RWKV-Runner`)。
+- デフォルトの設定はカスタム CUDA カーネルアクセラレーションを有効にしています。互換性の問題 (文字化けを出力する)
+  が発生する可能性がある場合は、コンフィグページに移動し、`Use Custom CUDA kernel to Accelerate`
+  をオフにしてください、あるいは、GPUドライバーをアップグレードしてみてください。
 
-#### 異なるタスクについては、API パラメータを調整することで、より良い結果を得ることができます。例えば、翻訳タスクの場合、Temperature を 1 に、Top_P を 0.3 に設定してみてください。
+- Windows Defender
+  がこれをウイルスだと主張する場合は、[v1.3.7_win.zip](https://github.com/josStorer/RWKV-Runner/releases/download/v1.3.7/RWKV-Runner_win.zip)
+  をダウンロードして最新版に自動更新させるか、信頼済みリストに追加してみてください (`Windows Security` -> `Virus & threat protection` -> `Manage settings` -> `Exclusions` -> `Add or remove exclusions` -> `Add an exclusion` -> `Folder` -> `RWKV-Runner`)。
+
+- 異なるタスクについては、API パラメータを調整することで、より良い結果を得ることができます。例えば、翻訳タスクの場合、Temperature
+  を 1 に、Top_P を 0.3 に設定してみてください。
 
 ## 特徴
 
