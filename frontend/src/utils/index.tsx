@@ -90,7 +90,7 @@ export async function refreshLocalModels(cache: {
   for (let i = 0; i < cache.models.length; i++) {
     if (!cache.models[i].lastUpdatedMs)
       cache.models[i].lastUpdatedMs = Date.parse(cache.models[i].lastUpdated);
-    if (!cache.models[i].tags)
+    if (!cache.models[i].tags || !Array.isArray(cache.models[i].tags) || cache.models[i].tags?.length === 0)
       cache.models[i].tags = ['Other'];
 
     for (let j = i + 1; j < cache.models.length; j++) {

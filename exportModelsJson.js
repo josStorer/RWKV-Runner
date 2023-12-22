@@ -19,7 +19,7 @@ document.querySelectorAll('.grid.h-10.grid-cols-12.place-content-center.gap-x-3.
   if (!data.name.endsWith('.bin') && !data.name.endsWith('.pth'))
     return
 
-  data.desc = {en: '', zh: ''}
+  data.desc = { en: '', zh: '', ja: '' }
   const rawText = await (await fetch(e.children[1].href.replace('/resolve/', '/raw/'))).text()
 
   data.size = parseInt(extractValue(rawText, 'size'))
@@ -27,6 +27,7 @@ document.querySelectorAll('.grid.h-10.grid-cols-12.place-content-center.gap-x-3.
   data.lastUpdated = e.children[3].children[0].getAttribute('datetime')
   data.url = e.children[1].href.replace('/resolve/', '/blob/')
   data.downloadUrl = e.children[1].href
+  data.tags = []
 
   modelsJson.push(data)
 })
