@@ -334,6 +334,8 @@ The following is a coherent verbose detailed conversation between a girl named {
         body.stop.append(f"\n\n{bot_code}")
     elif body.stop is None:
         body.stop = default_stop
+    if not body.presystem:
+        body.stop.append("\n\n")
 
     if body.stream:
         return EventSourceResponse(
