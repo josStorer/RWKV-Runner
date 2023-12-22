@@ -3,6 +3,7 @@ package backend_golang
 import (
 	"archive/zip"
 	"bufio"
+	"crypto/sha256"
 	"embed"
 	"errors"
 	"fmt"
@@ -112,9 +113,19 @@ func CopyEmbed(efs embed.FS) error {
 			return err
 		}
 
-		err = os.WriteFile(path, content, 0644)
-		if err != nil {
-			return err
+		executeWrite := true
+		existedContent, err := os.ReadFile(path)
+		if err == nil {
+			if fmt.Sprintf("%x", sha256.Sum256(existedContent)) == fmt.Sprintf("%x", sha256.Sum256(content)) {
+				executeWrite = false
+			}
+		}
+
+		if executeWrite {
+			err = os.WriteFile(path, content, 0644)
+			if err != nil {
+				return err
+			}
 		}
 
 		return nil
