@@ -50,9 +50,12 @@ func (a *App) OnStartup(ctx context.Context) {
 	os.Mkdir(a.exDir+"models", os.ModePerm)
 	os.Mkdir(a.exDir+"lora-models", os.ModePerm)
 	os.Mkdir(a.exDir+"finetune/json2binidx_tool/data", os.ModePerm)
-	f, err := os.Create(a.exDir + "lora-models/train_log.txt")
-	if err == nil {
-		f.Close()
+	trainLogPath := a.exDir + "lora-models/train_log.txt"
+	if !a.FileExists(trainLogPath) {
+		f, err := os.Create(trainLogPath)
+		if err == nil {
+			f.Close()
+		}
 	}
 
 	a.downloadLoop()
