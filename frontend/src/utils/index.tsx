@@ -27,6 +27,7 @@ import logo from '../assets/images/logo.png';
 import { Preset } from '../types/presets';
 import { botName, Conversation, MessageType, userName } from '../types/chat';
 import { v4 as uuid } from 'uuid';
+import { findLastIndex } from 'lodash-es';
 
 export type Cache = {
   version: string
@@ -145,7 +146,7 @@ function initLastUnfinishedModelDownloads() {
 
 export async function refreshRemoteModels(cache: {
   models: ModelSourceItem[]
-}) {
+}, filter: boolean = true, initUnfinishedModels: boolean = false) {
   const manifestUrls = commonStore.modelSourceManifestList.split(/[,，;；\n]/);
   const requests = manifestUrls.filter(url => url.endsWith('.json')).map(
     url => fetch(url, { cache: 'no-cache' }).then(r => r.json()));
@@ -162,18 +163,16 @@ export async function refreshRemoteModels(cache: {
   });
   cache.models = cache.models.filter((model, index, self) => {
     return modelSuffix.some((ext => model.name.endsWith(ext)))
-      && index === self.findIndex(
-        m => m.name === model.name || (m.SHA256 && m.SHA256 === model.SHA256 && m.size === model.size));
+      && index === findLastIndex(self,
+        m => m.name === model.name || (!!m.SHA256 && m.SHA256 === model.SHA256 && m.size === model.size));
   });
-  commonStore.setModelSourceList(cache.models);
-  await saveCache().catch(() => {
-  });
+  await refreshLocalModels(cache, filter, initUnfinishedModels);
 }
 
 export const refreshModels = async (readCache: boolean = false, initUnfinishedModels: boolean = false) => {
   const cache = await refreshBuiltInModels(readCache);
   await refreshLocalModels(cache, false, initUnfinishedModels);
-  await refreshRemoteModels(cache);
+  await refreshRemoteModels(cache, false, initUnfinishedModels);
 };
 
 export const getStrategy = (modelConfig: ModelConfig | undefined = undefined) => {

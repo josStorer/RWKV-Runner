@@ -19,6 +19,7 @@
     "file-saver": "^2.0.5",
     "html-midi-player": "^1.5.0",
     "i18next": "^22.4.15",
+    "lodash-es": "^4.17.21",
     "mobx": "^6.9.0",
     "mobx-react-lite": "^3.4.3",
     "pdfjs-dist": "^4.0.189",
@@ -41,6 +42,7 @@
   },
   "devDependencies": {
     "@types/file-saver": "^2.0.7",
+    "@types/lodash-es": "^4.17.12",
     "@types/react": "^18.2.6",
     "@types/react-beautiful-dnd": "^13.1.4",
     "@types/react-dom": "^18.2.4",

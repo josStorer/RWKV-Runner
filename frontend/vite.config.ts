@@ -12,7 +12,7 @@ const vendor = [
   'mobx', 'mobx-react-lite',
   'i18next', 'react-i18next',
   'usehooks-ts', 'react-toastify',
-  'classnames'
+  'classnames', 'lodash-es'
 ];
 
 const embedded = [
