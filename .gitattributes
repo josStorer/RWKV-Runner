@@ -1,3 +1,5 @@
+* text=auto eol=lf
+
 backend-python/rwkv_pip/** linguist-vendored
 backend-python/wkv_cuda_utils/** linguist-vendored
 backend-python/get-pip.py linguist-vendored
