@@ -153,24 +153,32 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
   })
 ];
 
+const getTags = () => {
+  return Array.from(new Set(
+    ['Recommended',
+      ...commonStore.modelSourceList.map(item => item.tags || []).flat()
+      .filter(i => !i.includes('Other') && !i.includes('Local'))
+      , 'Other', 'Local']));
+};
+
+const getCurrentModelList = () => {
+  if (commonStore.activeModelListTags.length === 0)
+    return commonStore.modelSourceList;
+  else
+    return commonStore.modelSourceList.filter(item => commonStore.activeModelListTags.some(tag => item.tags?.includes(tag)));
+};
+
 const Models: FC = observer(() => {
   const { t } = useTranslation();
-  const [tags, setTags] = useState<Array<string>>([]);
-  const [modelSourceList, setModelSourceList] = useState<ModelSourceItem[]>(commonStore.modelSourceList);
+  const [tags, setTags] = useState<Array<string>>(getTags());
+  const [modelSourceList, setModelSourceList] = useState<ModelSourceItem[]>(getCurrentModelList());
 
   useEffect(() => {
-    setTags(Array.from(new Set(
-      ['Recommended',
-        ...commonStore.modelSourceList.map(item => item.tags || []).flat()
-        .filter(i => !i.includes('Other') && !i.includes('Local'))
-        , 'Other', 'Local'])));
+    setTags(getTags());
   }, [commonStore.modelSourceList]);
 
   useEffect(() => {
-    if (commonStore.activeModelListTags.length === 0)
-      setModelSourceList(commonStore.modelSourceList);
-    else
-      setModelSourceList(commonStore.modelSourceList.filter(item => commonStore.activeModelListTags.some(tag => item.tags?.includes(tag))));
+    setModelSourceList(getCurrentModelList());
   }, [commonStore.modelSourceList, commonStore.activeModelListTags]);
 
   return (
