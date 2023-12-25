@@ -202,6 +202,8 @@ export const getStrategy = (modelConfig: ModelConfig | undefined = undefined) =>
       strategy += params.precision === 'int8' ? 'fp16i8' : params.precision === 'fp32' ? 'fp32' : 'fp16';
       if (params.storedLayers < params.maxStoredLayers)
         strategy += ` *${params.storedLayers}+`;
+      else
+        strategy += ` -> cuda fp16 *1`;
       break;
     case 'MPS':
       if (avoidOverflow)
