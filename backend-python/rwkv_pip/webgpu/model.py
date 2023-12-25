@@ -15,7 +15,7 @@ class RWKV:
     def __init__(self, model_path: str, strategy: str = None):
         self.model = wrp.v5.Model(
             model_path,
-            turbo=False,
+            turbo=True,
             quant=32 if "i8" in strategy else None,
             quant_nf4=26 if "i4" in strategy else None,
         )
