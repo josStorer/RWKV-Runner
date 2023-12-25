@@ -25,8 +25,8 @@
       "size": 385598386,
       "SHA256": "c844a3ee05bcb9065848cb05b10c48a3f381f5ac1953aad89e156ecdf31d7703",
       "lastUpdated": "2023-08-03T15:18:46",
-      "url": "https://huggingface.co/BlinkDL/rwkv-5-world/blob/main/RWKV-5-World-0.1B-v1-20230803-ctx4096.pth?download=true",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-world/resolve/main/RWKV-5-World-0.1B-v1-20230803-ctx4096.pth?download=true",
+      "url": "https://huggingface.co/BlinkDL/rwkv-5-world/blob/main/RWKV-5-World-0.1B-v1-20230803-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-world/resolve/main/RWKV-5-World-0.1B-v1-20230803-ctx4096.pth",
       "tags": [
         "Main",
         "RWKV-5",
@@ -43,8 +43,8 @@
       "size": 923523954,
       "SHA256": "5a288c54c7f30b0e2d4af23991133fad2af2d5e59ec7ad850ffe78054a5e4f92",
       "lastUpdated": "2023-11-14T01:23:49",
-      "url": "https://huggingface.co/BlinkDL/rwkv-5-world/blob/main/RWKV-5-World-0.4B-v2-20231113-ctx4096.pth?download=true",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-world/resolve/main/RWKV-5-World-0.4B-v2-20231113-ctx4096.pth?download=true",
+      "url": "https://huggingface.co/BlinkDL/rwkv-5-world/blob/main/RWKV-5-World-0.4B-v2-20231113-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-world/resolve/main/RWKV-5-World-0.4B-v2-20231113-ctx4096.pth",
       "tags": [
         "Main",
         "RWKV-5",
@@ -70,6 +70,45 @@
       ]
     },
     {
+      "name": "RWKV-5-1B5-one-state-slim.pth",
+      "desc": {
+        "en": "RWKV-5 Global Languages 1.5B v2 Ctx16k Role Play",
+        "zh": "RWKV-5 全球语言 1.5B v2 16k上下文 角色扮演",
+        "ja": "RWKV-5 グローバル言語 1.5B v2 16kコンテキスト ロールプレイ"
+      },
+      "size": 3155589871,
+      "SHA256": "43e7b922d7ad49eafa17f8909c2813c91394925bc7f24caf0e19a91aa3281273",
+      "lastUpdated": "2023-11-02T04:03:27",
+      "url": "https://huggingface.co/xiaol/RWKV-v5-world-v2-1.5B-one-state-slim-16k/blob/main/RWKV-5-1B5-one-state-slim.pth",
+      "downloadUrl": "https://huggingface.co/xiaol/RWKV-v5-world-v2-1.5B-one-state-slim-16k/resolve/main/RWKV-5-1B5-one-state-slim.pth",
+      "tags": [
+        "Finetuned",
+        "RWKV-5",
+        "Global",
+        "Role Play"
+      ],
+      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt"
+    },
+    {
+      "name": "RWKV-5-1B5-one-state-slim-novel-tuned.pth",
+      "desc": {
+        "en": "RWKV-5 Global Languages 1.5B v2 Ctx16k Novel",
+        "zh": "RWKV-5 全球语言 1.5B v2 16k上下文 小说",
+        "ja": "RWKV-5 グローバル言語 1.5B v2 16kコンテキスト 小説"
+      },
+      "size": 3155589871,
+      "SHA256": "4f0aaecdce676e5236018ebd63e3d37c2f300fbac04001ee3a9c00d2f4244d0f",
+      "lastUpdated": "2023-11-03T02:45:52",
+      "url": "https://huggingface.co/xiaol/RWKV-v5-world-v2-1.5B-one-state-slim-16k-novel-tuned/blob/main/RWKV-5-1B5-one-state-slim-novel-tuned.pth",
+      "downloadUrl": "https://huggingface.co/xiaol/RWKV-v5-world-v2-1.5B-one-state-slim-16k-novel-tuned/resolve/main/RWKV-5-1B5-one-state-slim-novel-tuned.pth",
+      "tags": [
+        "Finetuned",
+        "RWKV-5",
+        "Global"
+      ],
+      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt"
+    },
+    {
       "name": "RWKV-5-World-3B-v2-20231113-ctx4096.pth",
       "desc": {
         "en": "RWKV-5 Global Languages 3B v2",
@@ -79,12 +118,13 @@
       "size": 6126106674,
       "SHA256": "a4bd430343c6fd138b85bbc68bb20262d3a2f053ea57dc4b41078269af68ff9c",
       "lastUpdated": "2023-11-14T01:23:49",
-      "url": "https://huggingface.co/BlinkDL/rwkv-5-world/blob/main/RWKV-5-World-3B-v2-20231113-ctx4096.pth?download=true",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-world/resolve/main/RWKV-5-World-3B-v2-20231113-ctx4096.pth?download=true",
+      "url": "https://huggingface.co/BlinkDL/rwkv-5-world/blob/main/RWKV-5-World-3B-v2-20231113-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-world/resolve/main/RWKV-5-World-3B-v2-20231113-ctx4096.pth",
       "tags": [
         "Main",
         "RWKV-5",
-        "Global"
+        "Global",
+        "Recommended"
       ]
     },
     {
@@ -97,13 +137,93 @@
       "size": 6126106467,
       "SHA256": "efa5178d1c824b94ef17c6c9a456674e5581a8be832becbda9aba4dc533f88c2",
       "lastUpdated": "2023-11-19T04:21:04",
-      "url": "https://huggingface.co/BlinkDL/rwkv-5-world/blob/main/RWKV-5-World-3B-v2-20231118-ctx16k.pth?download=true",
-      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-world/resolve/main/RWKV-5-World-3B-v2-20231118-ctx16k.pth?download=true",
+      "url": "https://huggingface.co/BlinkDL/rwkv-5-world/blob/main/RWKV-5-World-3B-v2-20231118-ctx16k.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-world/resolve/main/RWKV-5-World-3B-v2-20231118-ctx16k.pth",
       "tags": [
         "Main",
         "RWKV-5",
-        "Global"
+        "Global",
+        "Recommended"
       ]
+    },
+    {
+      "name": "rwkv-v5-7B-0.4-long-ctx-16k.pth",
+      "desc": {
+        "en": "RWKV-5 Global Languages 7B v2 40% Ctx300k Document Reader",
+        "zh": "RWKV-5 全球语言 7B v2 40% 300k上下文 文档阅读",
+        "ja": "RWKV-5 グローバル言語 7B v2 40% 300kコンテキスト ドキュメントリーダー"
+      },
+      "size": 15036198115,
+      "SHA256": "5888471a45caab903c1bd9c35af1c639ac8d03be6ee6eb39fa9fd3194fa6d437",
+      "lastUpdated": "2023-11-10T17:12:04",
+      "url": "https://huggingface.co/xiaol/RWKV-5-world-v2-7B-0.4-300k/blob/main/rwkv-v5-7B-0.4-long-ctx-16k.pth",
+      "downloadUrl": "https://huggingface.co/xiaol/RWKV-5-world-v2-7B-0.4-300k/resolve/main/rwkv-v5-7B-0.4-long-ctx-16k.pth",
+      "tags": [
+        "Finetuned",
+        "RWKV-5",
+        "Global"
+      ],
+      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt"
+    },
+    {
+      "name": "rwkv-v5.2-7B-horror-16k.pth",
+      "desc": {
+        "en": "RWKV-5 Global Languages 7B v2 40% Ctx16k Horror",
+        "zh": "RWKV-5 全球语言 7B v2 40% 16k上下文 恐怖",
+        "ja": "RWKV-5 グローバル言語 7B v2 40% 16kコンテキスト ホラー"
+      },
+      "size": 15036198115,
+      "SHA256": "3b36ce99bef06627dcb5d860972e2c1515327afe7db415b8c82dd5c3b926b52f",
+      "lastUpdated": "2023-11-13T15:21:25",
+      "url": "https://huggingface.co/xiaol/RWKV-v5.2-7B-horror-16k/blob/main/rwkv-v5.2-7B-horror-16k.pth",
+      "downloadUrl": "https://huggingface.co/xiaol/RWKV-v5.2-7B-horror-16k/resolve/main/rwkv-v5.2-7B-horror-16k.pth",
+      "tags": [
+        "Finetuned",
+        "RWKV-5",
+        "Global"
+      ],
+      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt"
+    },
+    {
+      "name": "rwkv_v5.2_7B_role_play_16k.pth",
+      "desc": {
+        "en": "RWKV-5 Global Languages 7B v2 Ctx16k Claude Like",
+        "zh": "RWKV-5 全球语言 7B v2 16k上下文 Claude功能",
+        "ja": "RWKV-5 グローバル言語 7B v2 16kコンテキスト Claude機能"
+      },
+      "size": 15036198115,
+      "SHA256": "6fe8a7bf06b9f5e5b740cd87e24bff91325518ad19bf92bf5c75799b3c24b150",
+      "lastUpdated": "2023-11-14T04:18:16",
+      "url": "https://huggingface.co/xiaol/RWKV-v5.2-7B-Role-play-16k/blob/main/rwkv_v5.2_7B_role_play_16k.pth",
+      "downloadUrl": "https://huggingface.co/xiaol/RWKV-v5.2-7B-Role-play-16k/resolve/main/rwkv_v5.2_7B_role_play_16k.pth",
+      "tags": [
+        "Finetuned",
+        "RWKV-5",
+        "Global",
+        "Role Play",
+        "Recommended"
+      ],
+      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt"
+    },
+    {
+      "name": "RWKV-5-12B-one-state-chat-16k.pth",
+      "desc": {
+        "en": "RWKV-5 Global Languages 12B Ctx16k",
+        "zh": "RWKV-5 全球语言 12B 16k上下文",
+        "ja": "RWKV-5 グローバル言語 12B 16kコンテキスト"
+      },
+      "size": 23157296483,
+      "SHA256": "330be74738d3936f4c9bd6caf838db11c96f52ff360d0f4fa5401d9bafc898ab",
+      "lastUpdated": "2023-12-16T16:34:30",
+      "url": "https://huggingface.co/xiaol/RWKV-v5-12B-one-state-chat-16k/blob/main/RWKV-5-12B-one-state-chat-16k.pth",
+      "downloadUrl": "https://huggingface.co/xiaol/RWKV-v5-12B-one-state-chat-16k/resolve/main/RWKV-5-12B-one-state-chat-16k.pth",
+      "tags": [
+        "Finetuned",
+        "RWKV-5",
+        "Global",
+        "Recommended"
+      ],
+      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt"
     },
     {
       "name": "RWKV-4-World-CHNtuned-0.1B-v1-20230617-ctx4096.pth",
@@ -256,6 +376,25 @@
         "RWKV-4",
         "Global"
       ]
+    },
+    {
+      "name": "RWKV-for-mobile-4-world-1.5B-20230906-ctx16k.pth",
+      "desc": {
+        "en": "Global Languages 1.5B v1 Ctx16k Claude Like",
+        "zh": "全球语言 1.5B v1 16k上下文 Claude功能",
+        "ja": "グローバル言語 1.5B v1 16kコンテキスト Claude機能"
+      },
+      "size": 3155280301,
+      "SHA256": "20547a6deca32add57c45d2f6cff52c6b59cd3b92676ee369b964affba35619d",
+      "lastUpdated": "2023-09-07T01:35:46",
+      "url": "https://huggingface.co/xiaol/RWKV-claude-for-mobile-v4-world-1.5B-16k/blob/main/RWKV-for-mobile-4-world-1.5B-20230906-ctx16k.pth",
+      "downloadUrl": "https://huggingface.co/xiaol/RWKV-claude-for-mobile-v4-world-1.5B-16k/resolve/main/RWKV-for-mobile-4-world-1.5B-20230906-ctx16k.pth",
+      "tags": [
+        "Finetuned",
+        "RWKV-4",
+        "Global"
+      ],
+      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt"
     },
     {
       "name": "RWKV-4-World-3B-v1-OnlyForTest_35%_trained-20230529-ctx4096.pth",
@@ -512,6 +651,83 @@
         "RWKV-4",
         "Global"
       ]
+    },
+    {
+      "name": "RWKV-7B-world-one.pth",
+      "desc": {
+        "en": "Global Languages 7B v1 Ctx65k Novel",
+        "zh": "全球语言 7B v1 65k上下文 小说",
+        "ja": "グローバル言語 7B v1 65kコンテキスト 小説"
+      },
+      "size": 15035391533,
+      "SHA256": "7ce95a4b460c3385c75c29b6ebe3cd7db438b1107e85d7d3e42dff85cfaa0b78",
+      "lastUpdated": "2023-10-09T05:23:38",
+      "url": "https://huggingface.co/xiaol/RWKV-v4-world-7B-one-state-65k/blob/main/RWKV-7B-world-one.pth",
+      "downloadUrl": "https://huggingface.co/xiaol/RWKV-v4-world-7B-one-state-65k/resolve/main/RWKV-7B-world-one.pth",
+      "tags": [
+        "Finetuned",
+        "RWKV-4",
+        "Global"
+      ],
+      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt"
+    },
+    {
+      "name": "rwkv-world-one-novel-cot-ultrachat-novel-instructions.pth",
+      "desc": {
+        "en": "Global Languages 7B v1 Ctx65k Novel Instruction",
+        "zh": "全球语言 7B v1 65k上下文 小说指令",
+        "ja": "グローバル言語 7B v1 65kコンテキスト 小説指示"
+      },
+      "size": 15035391533,
+      "SHA256": "fc2d4643828bb9dfe0733c3b2eb54ba2d996ed3eb6afa051b558da2eb2c1e309",
+      "lastUpdated": "2023-10-22T09:50:39",
+      "url": "https://huggingface.co/xiaol/RWKV-4-world-one-state-ultrachat-COT-65k/blob/main/rwkv-world-one-novel-cot-ultrachat-novel-instructions.pth",
+      "downloadUrl": "https://huggingface.co/xiaol/RWKV-4-world-one-state-ultrachat-COT-65k/resolve/main/rwkv-world-one-novel-cot-ultrachat-novel-instructions.pth",
+      "tags": [
+        "Finetuned",
+        "RWKV-4",
+        "Global"
+      ],
+      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt"
+    },
+    {
+      "name": "RWKV-world-novel-one-state-ultrachat-cot-tuned-Role-play-65k.pth",
+      "desc": {
+        "en": "Global Languages 7B v1 Ctx65k Role Play",
+        "zh": "全球语言 7B v1 65k上下文 角色扮演",
+        "ja": "グローバル言語 7B v1 65kコンテキスト ロールプレイ"
+      },
+      "size": 15035391533,
+      "SHA256": "2f55b4710dcd360e83b4df9a6358661284d9a6c6108f62c5a30b86df181ed67a",
+      "lastUpdated": "2023-10-22T05:54:27",
+      "url": "https://huggingface.co/xiaol/RWKV-4-world-one-state-ultrachat-COT-65k/blob/main/RWKV-world-novel-one-state-ultrachat-cot-tuned-Role-play-65k.pth",
+      "downloadUrl": "https://huggingface.co/xiaol/RWKV-4-world-one-state-ultrachat-COT-65k/resolve/main/RWKV-world-novel-one-state-ultrachat-cot-tuned-Role-play-65k.pth",
+      "tags": [
+        "Finetuned",
+        "RWKV-4",
+        "Global",
+        "Role Play"
+      ],
+      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt"
+    },
+    {
+      "name": "RWKV-4-7B-world-one-novel-tuned-65k.pth",
+      "desc": {
+        "en": "Global Languages 7B v1 Ctx65k Chinese Novel Instruction",
+        "zh": "全球语言 7B v1 65k上下文 中文小说指令",
+        "ja": "グローバル言語 7B v1 65kコンテキスト 中国語小説指示"
+      },
+      "size": 15035391533,
+      "SHA256": "e8ff256d74ca404621dcbf87c43c37e25ea745fed30c404fbf45cc5acc7ba2b5",
+      "lastUpdated": "2023-10-15T00:57:53",
+      "url": "https://huggingface.co/xiaol/RWKV-4-world-one-state-novel-tuned-65k/blob/main/RWKV-4-7B-world-one-novel-tuned-65k.pth",
+      "downloadUrl": "https://huggingface.co/xiaol/RWKV-4-world-one-state-novel-tuned-65k/resolve/main/RWKV-4-7B-world-one-novel-tuned-65k.pth",
+      "tags": [
+        "Finetuned",
+        "RWKV-4",
+        "CN"
+      ],
+      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt"
     },
     {
       "name": "RWKV-4-World-CHNtuned-7B-v1-20230709-ctx4096.pth",
