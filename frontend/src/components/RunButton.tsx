@@ -280,7 +280,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
                   'not enough memory': 'Memory is not enough, try to increase the virtual memory or use a smaller model.',
                   'not compiled with CUDA': 'Bad PyTorch version, please reinstall PyTorch with cuda.',
                   'invalid header or archive is corrupted': 'The model file is corrupted, please download again.',
-                  'no NVIDIA driver': 'Found no NVIDIA driver, please install the latest driver.',
+                  'no NVIDIA driver': 'Found no NVIDIA driver, please install the latest driver. If you are not using an Nvidia GPU, please switch the \'Strategy\' to WebGPU or CPU in the Configs page.',
                   'CUDA out of memory': 'VRAM is not enough, please reduce stored layers or use a lower precision in Configs page.',
                   'Ninja is required to load C++ extensions': 'Failed to enable custom CUDA kernel, ninja is required to load C++ extensions. You may be using the CPU version of PyTorch, please reinstall PyTorch with CUDA. Or if you are using a custom Python interpreter, you must compile the CUDA kernel by yourself or disable Custom CUDA kernel acceleration.'
                 };

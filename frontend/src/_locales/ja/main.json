@@ -162,7 +162,7 @@
   "Memory is not enough, try to increase the virtual memory or use a smaller model.": "メモリが不足しています。仮想メモリを増やすか、もしくは小さなモデルを使ってみてください",
   "Bad PyTorch version, please reinstall PyTorch with cuda.": "不適切なPyTorchのバージョンです。cudaと共にPyTorchを再インストールしてください。",
   "The model file is corrupted, please download again.": "モデルファイルが破損しています。再度ダウンロードしてください。",
-  "Found no NVIDIA driver, please install the latest driver.": "NVIDIAのドライバが見つかりません。最新版のドライバをインストールしてください。",
+  "Found no NVIDIA driver, please install the latest driver. If you are not using an Nvidia GPU, please switch the 'Strategy' to WebGPU or CPU in the Configs page.": "NVIDIAのドライバが見つかりません。最新版のドライバをインストールしてください。NvidiaのGPUを使用していない場合は、設定ページで\"Strategy\"をWebGPUまたはCPUに切り替えてください。",
   "VRAM is not enough, please reduce stored layers or use a lower precision in Configs page.": "VRAMが足りません。設定ページで保存されているレイヤーを減らすか、精度を下げてください。",
   "Failed to enable custom CUDA kernel, ninja is required to load C++ extensions. You may be using the CPU version of PyTorch, please reinstall PyTorch with CUDA. Or if you are using a custom Python interpreter, you must compile the CUDA kernel by yourself or disable Custom CUDA kernel acceleration.": "カスタムCUDAカーネルの有効化に失敗しました。C++拡張を読み込むためにはNinjaが必要です。あなたは恐らくCPU版のPyTorchを使用しており、CUDA版のPyTorchを再インストールする必要があります。または、あなたがカスタムPythonインタプリタを使用している場合は、CUDAカーネルを自分でコンパイルするか、カスタムCUDAカーネルのアクセラレーションを無効にする必要があります。",
   "Presets": "プリセット",
