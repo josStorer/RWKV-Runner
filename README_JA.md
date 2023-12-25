@@ -222,12 +222,16 @@ MIDIキーボードをお持ちでない場合、`Virtual Midi Controller 3 LE`
 
 ## 関連リポジトリ:
 
+- RWKV-5-World: https://huggingface.co/BlinkDL/rwkv-5-world/tree/main
 - RWKV-4-World: https://huggingface.co/BlinkDL/rwkv-4-world/tree/main
 - RWKV-4-Raven: https://huggingface.co/BlinkDL/rwkv-4-raven/tree/main
 - ChatRWKV: https://github.com/BlinkDL/ChatRWKV
 - RWKV-LM: https://github.com/BlinkDL/RWKV-LM
 - RWKV-LM-LoRA: https://github.com/Blealtan/RWKV-LM-LoRA
 - MIDI-LLM-tokenizer: https://github.com/briansemrau/MIDI-LLM-tokenizer
+- ai00_rwkv_server: https://github.com/cgisky1980/ai00_rwkv_server
+- rwkv.cpp: https://github.com/saharNooby/rwkv.cpp
+- web-rwkv-py: https://github.com/cryscan/web-rwkv-py
 
 ## Preview
 
