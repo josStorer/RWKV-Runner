@@ -25,8 +25,8 @@ document.querySelectorAll('.grid.h-10.grid-cols-12.place-content-center.gap-x-3.
   data.size = parseInt(extractValue(rawText, 'size'))
   data.SHA256 = extractValue(rawText, 'oid sha256:')
   data.lastUpdated = e.children[3].children[0].getAttribute('datetime')
-  data.url = e.children[1].href.replace('/resolve/', '/blob/')
-  data.downloadUrl = e.children[1].href
+  data.url = e.children[1].href.replace('/resolve/', '/blob/').replace('?download=true', '')
+  data.downloadUrl = e.children[1].href.replace('?download=true', '')
   data.tags = []
 
   modelsJson.push(data)

@@ -312,6 +312,8 @@
   "JP": "日文",
   "Music": "音乐",
   "Other": "其他",
+  "Role Play": "角色扮演",
+  "Recommended": "推荐",
   "Import MIDI": "导入MIDI",
   "Current Instrument": "当前乐器",
   "Please convert model to GGML format first": "请先将模型转换为GGML格式",

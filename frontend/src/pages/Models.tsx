@@ -160,8 +160,9 @@ const Models: FC = observer(() => {
 
   useEffect(() => {
     setTags(Array.from(new Set(
-      [...commonStore.modelSourceList.map(item => item.tags || []).flat()
-      .filter(i => !i.includes('Other') && !i.includes('Local'))
+      ['Recommended',
+        ...commonStore.modelSourceList.map(item => item.tags || []).flat()
+        .filter(i => !i.includes('Other') && !i.includes('Local'))
         , 'Other', 'Local'])));
   }, [commonStore.modelSourceList]);
 

@@ -312,6 +312,8 @@
   "JP": "日本語",
   "Music": "音楽",
   "Other": "その他",
+  "Role Play": "ロールプレイ",
+  "Recommended": "おすすめ",
   "Import MIDI": "MIDIをインポート",
   "Current Instrument": "現在の楽器",
   "Please convert model to GGML format first": "モデルをGGML形式に変換してください",

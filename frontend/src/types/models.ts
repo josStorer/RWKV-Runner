@@ -1,15 +1,17 @@
 export type ModelSourceItem = {
   name: string;
-  size: number;
-  lastUpdated: string;
   desc?: { [lang: string]: string | undefined; };
+  size: number;
   SHA256?: string;
+  lastUpdated: string;
   url?: string;
   downloadUrl?: string;
+  tags?: string[];
+  customTokenizer?: string;
+  hide?: boolean;
+
+  lastUpdatedMs?: number;
   isComplete?: boolean;
   isLocal?: boolean;
   localSize?: number;
-  lastUpdatedMs?: number;
-  tags?: string[];
-  hide?: boolean;
 };
