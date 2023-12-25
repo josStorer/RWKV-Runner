@@ -8,10 +8,10 @@ export const defaultPresets: CompletionPreset[] = [{
   prompt: 'The following is an epic science fiction masterpiece that is immortalized, with delicate descriptions and grand depictions of interstellar civilization wars.\nChapter 1.\n',
   params: {
     maxResponseToken: 500,
-    temperature: 1.2,
-    topP: 0.5,
-    presencePenalty: 0.4,
-    frequencyPenalty: 0.4,
+    temperature: 1,
+    topP: 0.3,
+    presencePenalty: 0,
+    frequencyPenalty: 1,
     stop: '\\n\\nUser',
     injectStart: '',
     injectEnd: ''
