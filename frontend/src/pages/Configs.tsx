@@ -228,9 +228,18 @@ const Configs: FC = observer(() => {
                     <Select style={{ minWidth: 0 }} className="grow"
                       value={selectedConfig.modelParameters.modelName}
                       onChange={(e, data) => {
-                        setSelectedConfigModelParams({
-                          modelName: data.value
-                        });
+                        const modelSource = commonStore.modelSourceList.find(item => item.name === data.value);
+                        if (modelSource?.customTokenizer)
+                          setSelectedConfigModelParams({
+                            modelName: data.value,
+                            useCustomTokenizer: true,
+                            customTokenizer: modelSource?.customTokenizer
+                          });
+                        else // prevent customTokenizer from being overwritten
+                          setSelectedConfigModelParams({
+                            modelName: data.value,
+                            useCustomTokenizer: false
+                          });
                       }}>
                       {!commonStore.modelSourceList.find(item => item.name === selectedConfig.modelParameters.modelName)?.isComplete
                         && <option key={-1}
