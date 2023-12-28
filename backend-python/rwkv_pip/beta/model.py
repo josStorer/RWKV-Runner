@@ -251,7 +251,7 @@ class RWKV(MyModule):
                 )
                 assert (
                     w["_strategy"] == args.strategy_string
-                )  # if you are using a new strategy, re-convert the model
+                ), "model has been converted and does not match current strategy; if you are using a new strategy, re-convert the model"
                 assert (
                     float(w["_version"]) >= 0.7
                 )  # sometimes you should re-convert using latest convert_model.py

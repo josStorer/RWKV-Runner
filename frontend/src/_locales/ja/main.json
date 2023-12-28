@@ -323,5 +323,6 @@
   "Core API URL": "コアAPI URL",
   "Override core API URL(/chat/completions and /completions). If you don't know what this is, leave it blank.": "コアAPI URLを上書きします(/chat/completions と /completions)。何であるかわからない場合は空白のままにしてください。",
   "Please change Strategy to CPU (rwkv.cpp) to use ggml format": "StrategyをCPU (rwkv.cpp)に変更して、ggml形式を使用してください",
-  "Only Auto Play Generated Content": "生成されたコンテンツのみ自動再生"
+  "Only Auto Play Generated Content": "生成されたコンテンツのみ自動再生",
+  "Model has been converted and does not match current strategy. If you are using a new strategy, re-convert the model.": "モデルが変換され、現在の戦略と一致しません。新しい戦略を使用している場合は、モデルを再変換してください。"
 }

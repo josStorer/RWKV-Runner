@@ -282,7 +282,8 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
                   'invalid header or archive is corrupted': 'The model file is corrupted, please download again.',
                   'no NVIDIA driver': 'Found no NVIDIA driver, please install the latest driver. If you are not using an Nvidia GPU, please switch the \'Strategy\' to WebGPU or CPU in the Configs page.',
                   'CUDA out of memory': 'VRAM is not enough, please reduce stored layers or use a lower precision in Configs page.',
-                  'Ninja is required to load C++ extensions': 'Failed to enable custom CUDA kernel, ninja is required to load C++ extensions. You may be using the CPU version of PyTorch, please reinstall PyTorch with CUDA. Or if you are using a custom Python interpreter, you must compile the CUDA kernel by yourself or disable Custom CUDA kernel acceleration.'
+                  'Ninja is required to load C++ extensions': 'Failed to enable custom CUDA kernel, ninja is required to load C++ extensions. You may be using the CPU version of PyTorch, please reinstall PyTorch with CUDA. Or if you are using a custom Python interpreter, you must compile the CUDA kernel by yourself or disable Custom CUDA kernel acceleration.',
+                  're-convert the model': 'Model has been converted and does not match current strategy. If you are using a new strategy, re-convert the model.'
                 };
                 const matchedError = Object.entries(errorsMap).find(([key, _]) => error.includes(key));
                 const message = matchedError ? t(matchedError[1]) : error;
