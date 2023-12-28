@@ -94,7 +94,7 @@ def add_state(body: AddStateBody):
         state: Union[Any, None] = None
 
         if body.state is not None:
-            if type(state) == list and hasattr(state[0], "device"):  # torch
+            if type(body.state) == list and hasattr(body.state[0], "device"):  # torch
                 devices = [tensor.device for tensor in body.state]
                 state = [tensor.cpu() for tensor in body.state]
             elif type(body.state) == np.ndarray:  # rwkv.cpp
