@@ -239,7 +239,12 @@ class AbstractRWKV(ABC):
             self.model_tokens = []
         else:
             delta_prompt = prompt[len(cache["prompt"]) :]
-            self.model_state = copy.deepcopy(cache["state"])
+            state = cache["state"]
+            self.model_state = (
+                copy.deepcopy(state)
+                if type(state) == list or type(state) == np.ndarray
+                else state
+            )
             self.model_tokens = copy.deepcopy(cache["tokens"])
             logits = copy.deepcopy(cache["logits"])
 

@@ -109,7 +109,7 @@ def add_state(body: AddStateBody):
                     else copy.deepcopy(body.state)
                 )
             else:
-                pass  # WebGPU
+                state = body.state.back()  # WebGPU
 
         id: int = trie.insert(body.prompt)
         dtrie[id] = {
