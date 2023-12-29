@@ -32,6 +32,7 @@ cleaner_thread.start()
 w = torch.load(model_file, map_location="cpu")
 gc.collect()
 
+vocab_size = w["emb.weight"].shape[0]
 n_embd = w["emb.weight"].shape[1]
 n_layer = 0
 keys = list(w.keys())
@@ -52,6 +53,9 @@ for x in keys:
         version = max(6, version)
 
 if version <= expected_max_version:
-    print(f"--n_layer {n_layer} --n_embd {n_embd}", end="")
+    print(
+        f"v{int(version)}/train.py --vocab_size {vocab_size} --n_layer {n_layer} --n_embd {n_embd}",
+        end="",
+    )
 else:
     raise Exception(f"RWKV{version} is not supported")

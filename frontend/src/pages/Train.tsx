@@ -131,7 +131,7 @@ const showError = (e: any) => {
 };
 
 const errorsMap = Object.entries({
-  'python3 ./finetune/lora/train.py': 'Memory is not enough, try to increase the virtual memory (Swap of WSL) or use a smaller base model.',
+  'python3 ./finetune/lora/v': 'Memory is not enough, try to increase the virtual memory (Swap of WSL) or use a smaller base model.',
   'cuda out of memory': 'VRAM is not enough',
   'valueerror: high <= 0': 'Training data is not enough, reduce context length or add more data for training',
   '+= \'+ptx\'': 'Can not find an Nvidia GPU. Perhaps the gpu driver of windows is too old, or you are using WSL 1 for training, please upgrade to WSL 2. e.g. Run "wsl --set-version Ubuntu-22.04 2"',
@@ -299,7 +299,6 @@ const LoraFinetune: FC = observer(() => {
           (loraParams.baseModel ? `--load_model models/${loraParams.baseModel} ` : '') +
           (loraParams.loraLoad ? `--lora_load lora-models/${loraParams.loraLoad} ` : '') +
           `--data_file ${convertedDataPath} ` +
-          `--vocab_size ${loraParams.baseModel.toLowerCase().includes('world') ? '65536' : '50277'} ` +
           `--ctx_len ${ctxLen} --epoch_steps ${loraParams.epochSteps} --epoch_count ${loraParams.epochCount} ` +
           `--epoch_begin ${loraParams.epochBegin} --epoch_save ${loraParams.epochSave} ` +
           `--micro_bsz ${loraParams.microBsz} --accumulate_grad_batches ${loraParams.accumGradBatches} ` +
