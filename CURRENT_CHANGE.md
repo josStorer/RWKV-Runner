@@ -1,12 +1,10 @@
 ## Changes
 
-- improve refreshRemoteModels
-- reduce precompiled web_rwkv_py size
-- webgpu(Python) max_buffer_size (12B support) and turbo
-- improve role-playing effect
-- update manifest.json (a lot of new models)
-- bump webgpu(ai00_server) mode to v0.3.8
-- improve details
+- rwkv5 lora finetune support (https://github.com/JL-er/RWKV-v5-lora)
+- improve memory usage and speed of convert_safetensors.py
+- webgpu(python) state cache support
+- improve state cache performance (especially for rwkv.cpp)
+- chore
 
 ## Install
 
