@@ -34,6 +34,25 @@ class PIPELINE_ARGS:
         )
 
 
+class ABC_TOKENIZER:
+    def __init__(self):
+        self.pad_token_id = 0
+        self.bos_token_id = 2
+        self.eos_token_id = 3
+
+    def encode(self, text):
+        ids = [ord(c) for c in text]
+        return ids
+
+    def decode(self, ids):
+        txt = "".join(
+            chr(idx) if idx > self.eos_token_id else ""
+            for idx in ids
+            if idx != self.eos_token_id
+        )
+        return txt
+
+
 class PIPELINE:
     def __init__(self, model, WORD_NAME: str):
         self.model = model
@@ -48,6 +67,8 @@ class PIPELINE:
             self.tokenizer = TRIE_TOKENIZER(
                 os.path.dirname(os.path.abspath(__file__)) + "/rwkv_vocab_v20230424.txt"
             )
+        elif WORD_NAME == "abc_tokenizer":
+            self.tokenizer = ABC_TOKENIZER()
         else:
             if WORD_NAME.endswith(".txt"):
                 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
