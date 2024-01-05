@@ -21,6 +21,7 @@ import {
   FileExists,
   OpenFileFolder,
   OpenMidiPort,
+  OpenSaveFileDialog,
   OpenSaveFileDialogBytes,
   SaveFile,
   StartFile
@@ -36,7 +37,9 @@ const CompositionPanel: FC = observer(() => {
   const { t } = useTranslation();
   const mq = useMediaQuery('(min-width: 640px)');
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const port = commonStore.getCurrentModelConfig().apiParameters.apiPort;
+  const modelConfig = commonStore.getCurrentModelConfig();
+  const port = modelConfig.apiParameters.apiPort;
+  const isABC = modelConfig.modelParameters.modelName.toLowerCase().includes('abc');
   const visualizerRef = useRef<VisualizerElement>(null);
   const playerRef = useRef<PlayerElement>(null);
 
@@ -133,6 +136,13 @@ const CompositionPanel: FC = observer(() => {
   }, [commonStore.midiPorts]);
 
   const generateNs = (autoPlay: boolean) => {
+    if (commonStore.getCurrentModelConfig().modelParameters.modelName.toLowerCase().includes('abc')) {
+      import('abcjs').then(ABCJS => {
+        ABCJS.renderAbc('abc-paper', commonStore.compositionParams.prompt, { responsive: 'resize' });
+      });
+      return;
+    }
+
     fetch(getServerRoot(port) + '/text-to-midi', {
       method: 'POST',
       headers: {
@@ -396,18 +406,33 @@ const CompositionPanel: FC = observer(() => {
       </div>
       <div className="flex flex-col">
         <div className="ml-auto mr-auto">
-          <midi-visualizer
-            ref={visualizerRef}
-            type="waterfall"
-          />
+          {isABC ? <div /> :
+            <midi-visualizer
+              ref={visualizerRef}
+              type="waterfall"
+            />}
         </div>
         <div className="flex">
-          <midi-player
-            ref={playerRef}
-            style={{ width: '100%' }}
-          />
+          {isABC ? <div className="flex flex-col overflow-y-auto grow m-1" style={{ maxHeight: '260px' }}>
+              <div id="abc-paper" />
+            </div> :
+            <midi-player
+              ref={playerRef}
+              style={{ width: '100%' }}
+            />}
           <Button icon={<Save28Regular />} size={mq ? 'large' : 'medium'} appearance={mq ? 'secondary' : 'subtle'}
             onClick={() => {
+              if (isABC) {
+                OpenSaveFileDialog('*.txt', 'abc-music.txt', commonStore.compositionParams.prompt).then((path) => {
+                  if (path)
+                    toastWithButton(t('File Saved'), t('Open'), () => {
+                      OpenFileFolder(path, false);
+                    });
+                }).catch((e) => {
+                  toast(t('Error') + ' - ' + (e.message || e), { type: 'error', autoClose: 2500 });
+                });
+                return;
+              }
               if (params.midi) {
                 OpenSaveFileDialogBytes('*.mid', 'music.mid', Array.from(new Uint8Array(params.midi))).then((path) => {
                   if (path)
