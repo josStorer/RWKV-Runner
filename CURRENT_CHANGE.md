@@ -1,10 +1,8 @@
 ## Changes
 
-- rwkv5 lora finetune support (https://github.com/JL-er/RWKV-v5-lora)
-- improve memory usage and speed of convert_safetensors.py
-- webgpu(python) state cache support
-- improve state cache performance (especially for rwkv.cpp)
-- chore
+- abc music inference support
+- basic abc frontend support
+- fix finetune errorsMap ($modelInfo)
 
 ## Install
 

@@ -1215,6 +1215,24 @@
       ]
     },
     {
+      "name": "RWKV-4-ABC-82M-v1-20230805-ctx1024.pth",
+      "desc": {
+        "en": "Music ABC 82M v1",
+        "zh": "作曲 ABC 82M v1",
+        "ja": "作曲 ABC 82M v1"
+      },
+      "size": 164183345,
+      "SHA256": "4c83859f387bc3953d19890338a3e50ea7f2278e1bbb9d6eae9b773c81958a01",
+      "lastUpdated": "2023-08-06T05:46:55",
+      "url": "https://huggingface.co/BlinkDL/rwkv-4-music/blob/main/RWKV-4-ABC-82M-v1-20230805-ctx1024.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-music/resolve/main/RWKV-4-ABC-82M-v1-20230805-ctx1024.pth",
+      "tags": [
+        "Main",
+        "RWKV-4",
+        "Music"
+      ]
+    },
+    {
       "name": "RWKV-5-MIDI-120M-v1-20230728-ctx4096.pth",
       "desc": {
         "en": "RWKV-5 Music 120M v1",
@@ -1244,6 +1262,24 @@
       "lastUpdated": "2023-09-03T04:48:41",
       "url": "https://huggingface.co/BlinkDL/rwkv-5-music/blob/main/RWKV-5-MIDI-560M-v1-20230902-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-music/resolve/main/RWKV-5-MIDI-560M-v1-20230902-ctx4096.pth",
+      "tags": [
+        "Main",
+        "RWKV-5",
+        "Music"
+      ]
+    },
+    {
+      "name": "RWKV-5-ABC-82M-v1-20230901-ctx1024.pth",
+      "desc": {
+        "en": "RWKV-5 Music ABC 82M v1",
+        "zh": "RWKV-5 作曲 ABC 82M v1",
+        "ja": "RWKV-5 作曲 ABC 82M v1"
+      },
+      "size": 164222002,
+      "SHA256": "5bf9ae32e4ef05c3851d6010709c6c00dda926d110766b9a712bc48c0a53e098",
+      "lastUpdated": "2023-09-02T06:55:12",
+      "url": "https://huggingface.co/BlinkDL/rwkv-5-music/blob/main/RWKV-5-ABC-82M-v1-20230901-ctx1024.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-music/resolve/main/RWKV-5-ABC-82M-v1-20230901-ctx1024.pth",
       "tags": [
         "Main",
         "RWKV-5",
