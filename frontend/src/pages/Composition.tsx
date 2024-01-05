@@ -15,7 +15,7 @@ import { ArrowSync20Regular, Save28Regular } from '@fluentui/react-icons';
 import { PlayerElement, VisualizerElement } from 'html-midi-player';
 import * as mm from '@magenta/music/esm/core.js';
 import { NoteSequence } from '@magenta/music/esm/protobuf.js';
-import { defaultCompositionPrompt } from './defaultConfigs';
+import { defaultCompositionABCPrompt, defaultCompositionPrompt } from './defaultConfigs';
 import {
   CloseMidiPort,
   FileExists,
@@ -370,11 +370,13 @@ const CompositionPanel: FC = observer(() => {
             <DialogButton className="grow" text={t('Reset')} title={t('Reset')}
               contentText={t('Are you sure you want to reset this page? It cannot be undone.')}
               onConfirm={() => {
-                commonStore.setCompositionSubmittedPrompt(defaultCompositionPrompt);
+                const isABC = commonStore.getCurrentModelConfig().modelParameters.modelName.toLowerCase().includes('abc');
+                const defaultPrompt = isABC ? defaultCompositionABCPrompt : defaultCompositionPrompt;
+                commonStore.setCompositionSubmittedPrompt(defaultPrompt);
                 setParams({
                   generationStartTime: 0
                 });
-                setPrompt(defaultCompositionPrompt);
+                setPrompt(defaultPrompt);
               }} />
             <Button className="grow" appearance="primary" onClick={() => {
               if (commonStore.compositionGenerating) {

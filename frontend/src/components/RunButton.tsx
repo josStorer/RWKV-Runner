@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router';
 import { WindowShow } from '../../wailsjs/runtime';
 import { convertToGGML, convertToSt } from '../utils/convert-model';
 import { Precision } from '../types/configs';
+import { defaultCompositionABCPrompt, defaultCompositionPrompt } from '../pages/defaultConfigs';
 
 const mainButtonText = {
   [ModelStatus.Offline]: 'Run',
@@ -257,6 +258,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
                 commonStore.setStatus({ status: ModelStatus.Working });
                 let buttonNameMap = {
                   'novel': 'Completion',
+                  'abc': 'Composition',
                   'midi': 'Composition'
                 };
                 let buttonName = 'Chat';
@@ -264,6 +266,13 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
                 const buttonFn = () => {
                   navigate({ pathname: '/' + buttonName.toLowerCase() });
                 };
+                if (modelName.toLowerCase().includes('abc') && commonStore.compositionParams.prompt === defaultCompositionPrompt) {
+                  commonStore.setCompositionParams({
+                    ...commonStore.compositionParams,
+                    prompt: defaultCompositionABCPrompt
+                  });
+                  commonStore.setCompositionSubmittedPrompt(defaultCompositionABCPrompt);
+                }
 
                 if (modelConfig.modelParameters.device.startsWith('CUDA') &&
                   modelConfig.modelParameters.storedLayers < modelConfig.modelParameters.maxStoredLayers &&

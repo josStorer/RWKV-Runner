@@ -2,6 +2,17 @@ import { CompletionPreset } from '../types/completion';
 import { ModelConfig } from '../types/configs';
 
 export const defaultCompositionPrompt = '<pad>';
+export const defaultCompositionABCPrompt='S:3\n' +
+  'B:9\n' +
+  'E:4\n' +
+  'B:9\n' +
+  'E:4\n' +
+  'E:4\n' +
+  'B:9\n' +
+  'L:1/8\n' +
+  'M:3/4\n' +
+  'K:D\n' +
+  ' Bc |"G" d2 cB"A" A2 FE |"Bm" F2 B4 F^G |'
 
 export const defaultPresets: CompletionPreset[] = [{
   name: 'Writer',
