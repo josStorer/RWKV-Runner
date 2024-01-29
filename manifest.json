@@ -147,6 +147,25 @@
       ]
     },
     {
+      "name": "RWKV-5-World-7B-v2-20240128-ctx4096.pth",
+      "desc": {
+        "en": "RWKV-5 Global Languages 7B v2",
+        "zh": "RWKV-5 全球语言 7B v2",
+        "ja": "RWKV-5 グローバル言語 7B v2"
+      },
+      "size": 15036197526,
+      "SHA256": "a88c7274184b211e5545c8f992f0b80d03c40a447980bbfcd0f6d5858982615a",
+      "lastUpdated": "2024-01-28T08:42:45",
+      "url": "https://huggingface.co/BlinkDL/rwkv-5-world/blob/main/RWKV-5-World-7B-v2-20240128-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-world/resolve/main/RWKV-5-World-7B-v2-20240128-ctx4096.pth",
+      "tags": [
+        "Main",
+        "RWKV-5",
+        "Global",
+        "Recommended"
+      ]
+    },
+    {
       "name": "rwkv-v5-7B-0.4-long-ctx-16k.pth",
       "desc": {
         "en": "RWKV-5 Global Languages 7B v2 40% Ctx300k Document Reader",
