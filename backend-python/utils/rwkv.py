@@ -272,6 +272,17 @@ class AbstractRWKV(ABC):
             )
 
             if token == self.EOS_ID:
+                try:
+                    state_cache.add_state(
+                        state_cache.AddStateBody(
+                            prompt=prompt + response,
+                            tokens=self.model_tokens,
+                            state=self.model_state,
+                            logits=logits,
+                        )
+                    )
+                except HTTPException:
+                    pass
                 yield response, "", prompt_token_len, completion_token_len
                 break
 
