@@ -28,7 +28,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-5-world/blob/main/RWKV-5-World-0.1B-v1-20230803-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-world/resolve/main/RWKV-5-World-0.1B-v1-20230803-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-5",
         "Global"
       ]
@@ -46,7 +46,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-5-world/blob/main/RWKV-5-World-0.4B-v2-20231113-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-world/resolve/main/RWKV-5-World-0.4B-v2-20231113-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-5",
         "Global"
       ]
@@ -64,7 +64,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-5-world/blob/main/RWKV-5-World-1B5-v2-20231025-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-world/resolve/main/RWKV-5-World-1B5-v2-20231025-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-5",
         "Global"
       ]
@@ -121,7 +121,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-5-world/blob/main/RWKV-5-World-3B-v2-20231113-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-world/resolve/main/RWKV-5-World-3B-v2-20231113-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-5",
         "Global",
         "Recommended"
@@ -140,7 +140,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-5-world/blob/main/RWKV-5-World-3B-v2-20231118-ctx16k.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-world/resolve/main/RWKV-5-World-3B-v2-20231118-ctx16k.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-5",
         "Global",
         "Recommended"
@@ -159,7 +159,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-5-world/blob/main/RWKV-5-World-7B-v2-20240128-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-world/resolve/main/RWKV-5-World-7B-v2-20240128-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-5",
         "Global",
         "Recommended"
@@ -257,7 +257,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-world/blob/main/RWKV-4-World-CHNtuned-0.1B-v1-20230617-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-CHNtuned-0.1B-v1-20230617-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "CN"
       ]
@@ -275,7 +275,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-world/blob/main/RWKV-4-World-0.1B-v1-20230520-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-0.1B-v1-20230520-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "Global"
       ]
@@ -293,7 +293,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-world/blob/main/RWKV-4-World-CHNtuned-0.4B-v1-20230618-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-CHNtuned-0.4B-v1-20230618-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "CN"
       ]
@@ -311,7 +311,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-world/blob/main/RWKV-4-World-0.4B-v1-20230529-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-0.4B-v1-20230529-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "Global"
       ]
@@ -329,7 +329,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-world/blob/main/RWKV-4-World-CHNtuned-1.5B-v1-20230620-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-CHNtuned-1.5B-v1-20230620-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "CN"
       ]
@@ -372,7 +372,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-world/blob/main/RWKV-4-World-1.5B-v1-20230607-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-1.5B-v1-20230607-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "Global"
       ],
@@ -391,7 +391,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-world/blob/main/RWKV-4-World-1.5B-v1-fixed-20230612-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-1.5B-v1-fixed-20230612-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "Global"
       ]
@@ -480,7 +480,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-world/blob/main/RWKV-4-World-3B-v1-20230619-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-3B-v1-20230619-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "Global"
       ]
@@ -498,7 +498,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-world/blob/main/RWKV-4-World-CHNtuned-3B-v1-20230625-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-CHNtuned-3B-v1-20230625-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "CN"
       ]
@@ -594,7 +594,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-world/blob/main/RWKV-4-World-7B-v1-20230626-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-7B-v1-20230626-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "Global"
       ]
@@ -761,7 +761,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-world/blob/main/RWKV-4-World-CHNtuned-7B-v1-20230709-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-CHNtuned-7B-v1-20230709-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "CN"
       ]
@@ -851,7 +851,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-world/blob/main/RWKV-4-World-JPNtuned-7B-v1-20230718-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-world/resolve/main/RWKV-4-World-JPNtuned-7B-v1-20230718-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "JP"
       ]
@@ -886,7 +886,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-novel/blob/main/RWKV-4-Novel-7B-v1-ChnEng-ChnPro-20230410-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-novel/resolve/main/RWKV-4-Novel-7B-v1-ChnEng-ChnPro-20230410-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "Raven",
         "Global"
@@ -904,7 +904,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-novel/blob/main/RWKV-4-Novel-3B-v1-ChnEng-20230412-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-novel/resolve/main/RWKV-4-Novel-3B-v1-ChnEng-20230412-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "Raven",
         "Global"
@@ -922,7 +922,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-novel/blob/main/RWKV-4-Novel-7B-v1-ChnEng-20230426-ctx8192.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-novel/resolve/main/RWKV-4-Novel-7B-v1-ChnEng-20230426-ctx8192.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "Raven",
         "Global"
@@ -940,7 +940,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-novel/blob/main/RWKV-4-Novel-3B-v1-Chn-20230412-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-novel/resolve/main/RWKV-4-Novel-3B-v1-Chn-20230412-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "Raven",
         "Global"
@@ -958,7 +958,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-novel/blob/main/RWKV-4-Novel-7B-v1-Chn-20230426-ctx8192.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-novel/resolve/main/RWKV-4-Novel-7B-v1-Chn-20230426-ctx8192.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "Raven",
         "Global"
@@ -976,7 +976,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-1B5-v11-Eng99%25-Other1%25-20230425-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-1B5-v11-Eng99%25-Other1%25-20230425-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "Raven"
       ],
@@ -994,7 +994,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-1B5-v12-Eng98%25-Other2%25-20230520-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-1B5-v12-Eng98%25-Other2%25-20230520-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "Raven"
       ]
@@ -1011,7 +1011,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-3B-v11-Eng99%25-Other1%25-20230425-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-3B-v11-Eng99%25-Other1%25-20230425-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "Raven"
       ],
@@ -1029,7 +1029,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-3B-v12-Eng98%25-Other2%25-20230520-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-3B-v12-Eng98%25-Other2%25-20230520-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "Raven"
       ]
@@ -1046,7 +1046,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-3B-v11-Eng49%25-Chn49%25-Jpn1%25-Other1%25-20230429-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-3B-v11-Eng49%25-Chn49%25-Jpn1%25-Other1%25-20230429-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "Raven",
         "CN"
@@ -1065,7 +1065,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-3B-v12-Eng49%25-Chn49%25-Jpn1%25-Other1%25-20230527-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-3B-v12-Eng49%25-Chn49%25-Jpn1%25-Other1%25-20230527-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "Raven",
         "CN"
@@ -1083,7 +1083,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-7B-v11x-Eng99%25-Other1%25-20230429-ctx8192.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v11x-Eng99%25-Other1%25-20230429-ctx8192.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "Raven"
       ],
@@ -1101,7 +1101,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-7B-v12-Eng98%25-Other2%25-20230521-ctx8192.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v12-Eng98%25-Other2%25-20230521-ctx8192.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "Raven"
       ]
@@ -1118,7 +1118,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-7B-v10x-Eng49%25-Chn50%25-Other1%25-20230423-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v10x-Eng49%25-Chn50%25-Other1%25-20230423-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "Raven",
         "CN"
@@ -1137,7 +1137,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-7B-v11-Eng49%25-Chn49%25-Jpn1%25-Other1%25-20230430-ctx8192.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v11-Eng49%25-Chn49%25-Jpn1%25-Other1%25-20230430-ctx8192.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "Raven",
         "CN"
@@ -1156,7 +1156,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-7B-v12-Eng49%25-Chn49%25-Jpn1%25-Other1%25-20230530-ctx8192.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-7B-v12-Eng49%25-Chn49%25-Jpn1%25-Other1%25-20230530-ctx8192.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "Raven",
         "CN"
@@ -1174,7 +1174,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-14B-v11x-Eng99%25-Other1%25-20230501-ctx8192.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-14B-v11x-Eng99%25-Other1%25-20230501-ctx8192.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "Raven"
       ],
@@ -1192,7 +1192,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-raven/blob/main/RWKV-4-Raven-14B-v12-Eng98%25-Other2%25-20230523-ctx8192.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-raven/resolve/main/RWKV-4-Raven-14B-v12-Eng98%25-Other2%25-20230523-ctx8192.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "Raven"
       ]
@@ -1210,7 +1210,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-music/blob/main/RWKV-4-MIDI-120M-v1-20230714-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-music/resolve/main/RWKV-4-MIDI-120M-v1-20230714-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "Music"
       ]
@@ -1228,7 +1228,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-music/blob/main/RWKV-4-MIDI-560M-v1-20230717-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-music/resolve/main/RWKV-4-MIDI-560M-v1-20230717-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "Music"
       ]
@@ -1246,7 +1246,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-4-music/blob/main/RWKV-4-ABC-82M-v1-20230805-ctx1024.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-4-music/resolve/main/RWKV-4-ABC-82M-v1-20230805-ctx1024.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-4",
         "Music"
       ]
@@ -1264,7 +1264,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-5-music/blob/main/RWKV-5-MIDI-120M-v1-20230728-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-music/resolve/main/RWKV-5-MIDI-120M-v1-20230728-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-5",
         "Music"
       ]
@@ -1282,7 +1282,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-5-music/blob/main/RWKV-5-MIDI-560M-v1-20230902-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-music/resolve/main/RWKV-5-MIDI-560M-v1-20230902-ctx4096.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-5",
         "Music"
       ]
@@ -1300,7 +1300,7 @@
       "url": "https://huggingface.co/BlinkDL/rwkv-5-music/blob/main/RWKV-5-ABC-82M-v1-20230901-ctx1024.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-5-music/resolve/main/RWKV-5-ABC-82M-v1-20230901-ctx1024.pth",
       "tags": [
-        "Main",
+        "Official",
         "RWKV-5",
         "Music"
       ]
