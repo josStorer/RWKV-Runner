@@ -146,7 +146,7 @@ func (a *App) WslIsEnabled() error {
 		}
 	}
 
-	cmd := `-Command (Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux).State | Out-File -Encoding utf8 -FilePath ` + exDir + "/wsl.state"
+	cmd := `-Command (Get-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform).State | Out-File -Encoding utf8 -FilePath ` + a.exDir + "wsl.state"
 	_, err = su.ShellExecute(su.RUNAS, "powershell", cmd, exDir)
 	if err != nil {
 		return err
@@ -164,7 +164,7 @@ func (a *App) WslIsEnabled() error {
 }
 
 func (a *App) WslEnable(forceMode bool) error {
-	cmd := `/online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux`
+	cmd := `/online /enable-feature /featurename:VirtualMachinePlatform`
 	_, err := su.ShellExecute(su.RUNAS, "dism", cmd, `C:\`)
 	if err != nil {
 		return err
