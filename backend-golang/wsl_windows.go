@@ -9,7 +9,6 @@ import (
 	"io"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"strings"
 	"time"
 
@@ -133,13 +132,7 @@ func (a *App) WslStop() error {
 }
 
 func (a *App) WslIsEnabled() error {
-	ex, err := os.Executable()
-	if err != nil {
-		return err
-	}
-	exDir := filepath.Dir(ex)
-
-	data, err := os.ReadFile(exDir + "/wsl.state")
+	data, err := os.ReadFile(a.exDir + "wsl.state")
 	if err == nil {
 		if strings.Contains(string(data), "Enabled") {
 			return nil
@@ -147,12 +140,12 @@ func (a *App) WslIsEnabled() error {
 	}
 
 	cmd := `-Command (Get-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform).State | Out-File -Encoding utf8 -FilePath ` + a.exDir + "wsl.state"
-	_, err = su.ShellExecute(su.RUNAS, "powershell", cmd, exDir)
+	_, err = su.ShellExecute(su.RUNAS, "powershell", cmd, a.exDir)
 	if err != nil {
 		return err
 	}
 	time.Sleep(2 * time.Second)
-	data, err = os.ReadFile(exDir + "/wsl.state")
+	data, err = os.ReadFile(a.exDir + "wsl.state")
 	if err != nil {
 		return err
 	}
@@ -170,7 +163,7 @@ func (a *App) WslEnable(forceMode bool) error {
 		return err
 	}
 	if forceMode {
-		os.WriteFile("./wsl.state", []byte("Enabled"), 0644)
+		os.WriteFile(a.exDir+"wsl.state", []byte("Enabled"), 0644)
 	}
 	return nil
 }

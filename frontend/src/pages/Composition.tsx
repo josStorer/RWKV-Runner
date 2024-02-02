@@ -426,7 +426,7 @@ const CompositionPanel: FC = observer(() => {
                 OpenSaveFileDialog('*.txt', 'abc-music.txt', commonStore.compositionParams.prompt).then((path) => {
                   if (path)
                     toastWithButton(t('File Saved'), t('Open'), () => {
-                      OpenFileFolder(path, false);
+                      OpenFileFolder(path);
                     });
                 }).catch((e) => {
                   toast(t('Error') + ' - ' + (e.message || e), { type: 'error', autoClose: 2500 });
@@ -437,7 +437,7 @@ const CompositionPanel: FC = observer(() => {
                 OpenSaveFileDialogBytes('*.mid', 'music.mid', Array.from(new Uint8Array(params.midi))).then((path) => {
                   if (path)
                     toastWithButton(t('File Saved'), t('Open'), () => {
-                      OpenFileFolder(path, false);
+                      OpenFileFolder(path);
                     });
                 }).catch((e) => {
                   toast(t('Error') + ' - ' + (e.message || e), { type: 'error', autoClose: 2500 });

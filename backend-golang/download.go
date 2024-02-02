@@ -10,7 +10,11 @@ import (
 )
 
 func (a *App) DownloadFile(path string, url string) error {
-	_, err := grab.Get(a.exDir+path, url)
+	absPath, err := a.GetAbsPath(path)
+	if err != nil {
+		return err
+	}
+	_, err = grab.Get(absPath, url)
 	if err != nil {
 		return err
 	}
@@ -88,11 +92,15 @@ func (a *App) ContinueDownload(url string) {
 }
 
 func (a *App) AddToDownloadList(path string, url string) {
-	if !existsInDownloadList(a.exDir+path, url) {
+	absPath, err := a.GetAbsPath(path)
+	if err != nil {
+		return
+	}
+	if !existsInDownloadList(absPath, url) {
 		downloadList = append(downloadList, &DownloadStatus{
 			resp:        nil,
 			Name:        filepath.Base(path),
-			Path:        a.exDir + path,
+			Path:        absPath,
 			Url:         url,
 			Downloading: false,
 		})

@@ -14,27 +14,55 @@ import (
 	wruntime "github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
+func (a *App) GetAbsPath(path string) (string, error) {
+	var absPath string
+	var err error
+	if filepath.IsAbs(path) {
+		absPath = path
+	} else {
+		absPath, err = filepath.Abs(filepath.Join(a.exDir, path))
+		if err != nil {
+			return "", err
+		}
+	}
+	absPath = strings.ReplaceAll(absPath, "/", string(os.PathSeparator))
+	println("GetAbsPath:", absPath)
+	return absPath, nil
+}
+
 func (a *App) SaveFile(path string, savedContent []byte) error {
-	if err := os.WriteFile(a.exDir+path, savedContent, 0644); err != nil {
+	absPath, err := a.GetAbsPath(path)
+	if err != nil {
+		return err
+	}
+	if err := os.WriteFile(absPath, savedContent, 0644); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *App) SaveJson(fileName string, jsonData any) error {
+func (a *App) SaveJson(path string, jsonData any) error {
 	text, err := json.MarshalIndent(jsonData, "", "  ")
 	if err != nil {
 		return err
 	}
 
-	if err := os.WriteFile(a.exDir+fileName, text, 0644); err != nil {
+	absPath, err := a.GetAbsPath(path)
+	if err != nil {
+		return err
+	}
+	if err := os.WriteFile(absPath, text, 0644); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *App) ReadJson(fileName string) (any, error) {
-	file, err := os.ReadFile(a.exDir + fileName)
+func (a *App) ReadJson(path string) (any, error) {
+	absPath, err := a.GetAbsPath(path)
+	if err != nil {
+		return nil, err
+	}
+	file, err := os.ReadFile(absPath)
 	if err != nil {
 		return nil, err
 	}
@@ -48,8 +76,12 @@ func (a *App) ReadJson(fileName string) (any, error) {
 	return data, nil
 }
 
-func (a *App) FileExists(fileName string) bool {
-	_, err := os.Stat(a.exDir + fileName)
+func (a *App) FileExists(path string) bool {
+	absPath, err := a.GetAbsPath(path)
+	if err != nil {
+		return false
+	}
+	_, err = os.Stat(absPath)
 	return err == nil
 }
 
@@ -60,8 +92,12 @@ type FileInfo struct {
 	ModTime string `json:"modTime"`
 }
 
-func (a *App) ReadFileInfo(fileName string) (*FileInfo, error) {
-	info, err := os.Stat(a.exDir + fileName)
+func (a *App) ReadFileInfo(path string) (*FileInfo, error) {
+	absPath, err := a.GetAbsPath(path)
+	if err != nil {
+		return nil, err
+	}
+	info, err := os.Stat(absPath)
 	if err != nil {
 		return nil, err
 	}
@@ -74,7 +110,11 @@ func (a *App) ReadFileInfo(fileName string) (*FileInfo, error) {
 }
 
 func (a *App) ListDirFiles(dirPath string) ([]FileInfo, error) {
-	files, err := os.ReadDir(a.exDir + dirPath)
+	absDirPath, err := a.GetAbsPath(dirPath)
+	if err != nil {
+		return nil, err
+	}
+	files, err := os.ReadDir(absDirPath)
 	if err != nil {
 		return nil, err
 	}
@@ -96,7 +136,11 @@ func (a *App) ListDirFiles(dirPath string) ([]FileInfo, error) {
 }
 
 func (a *App) DeleteFile(path string) error {
-	err := os.Remove(a.exDir + path)
+	absPath, err := a.GetAbsPath(path)
+	if err != nil {
+		return err
+	}
+	err = os.Remove(absPath)
 	if err != nil {
 		return err
 	}
@@ -104,18 +148,27 @@ func (a *App) DeleteFile(path string) error {
 }
 
 func (a *App) CopyFile(src string, dst string) error {
-	sourceFile, err := os.Open(a.exDir + src)
+	absSrc, err := a.GetAbsPath(src)
+	if err != nil {
+		return err
+	}
+	absDst, err := a.GetAbsPath(dst)
+	if err != nil {
+		return err
+	}
+
+	sourceFile, err := os.Open(absSrc)
 	if err != nil {
 		return err
 	}
 	defer sourceFile.Close()
 
-	err = os.MkdirAll(a.exDir+dst[:strings.LastIndex(dst, "/")], 0755)
+	err = os.MkdirAll(filepath.Dir(absDst), 0755)
 	if err != nil {
 		return err
 	}
 
-	destFile, err := os.Create(a.exDir + dst)
+	destFile, err := os.Create(absDst)
 	if err != nil {
 		return err
 	}
@@ -166,14 +219,8 @@ func (a *App) OpenOpenFileDialog(filterPattern string) (string, error) {
 	return path, nil
 }
 
-func (a *App) OpenFileFolder(path string, relative bool) error {
-	var absPath string
-	var err error
-	if relative {
-		absPath, err = filepath.Abs(a.exDir + path)
-	} else {
-		absPath, err = filepath.Abs(path)
-	}
+func (a *App) OpenFileFolder(path string) error {
+	absPath, err := a.GetAbsPath(path)
 	if err != nil {
 		return err
 	}

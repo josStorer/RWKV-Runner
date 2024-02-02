@@ -54,6 +54,10 @@ export function FileExists(arg1) {
   return window['go']['backend_golang']['App']['FileExists'](arg1);
 }
 
+export function GetAbsPath(arg1) {
+  return window['go']['backend_golang']['App']['GetAbsPath'](arg1);
+}
+
 export function GetPlatform() {
   return window['go']['backend_golang']['App']['GetPlatform']();
 }
@@ -78,8 +82,8 @@ export function MergeLora(arg1, arg2, arg3, arg4, arg5, arg6) {
   return window['go']['backend_golang']['App']['MergeLora'](arg1, arg2, arg3, arg4, arg5, arg6);
 }
 
-export function OpenFileFolder(arg1, arg2) {
-  return window['go']['backend_golang']['App']['OpenFileFolder'](arg1, arg2);
+export function OpenFileFolder(arg1) {
+  return window['go']['backend_golang']['App']['OpenFileFolder'](arg1);
 }
 
 export function OpenMidiPort(arg1) {

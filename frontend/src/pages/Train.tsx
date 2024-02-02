@@ -398,7 +398,7 @@ const LoraFinetune: FC = observer(() => {
                     'Even for multi-turn conversations, they must be written in a single line using `\\n` to indicate line breaks. ' +
                     'If they are different dialogues or topics, they should be written in separate lines.')} />
                 <ToolTipButton desc={t('Open Folder')} icon={<Folder20Regular />} onClick={() => {
-                  OpenFileFolder(dataParams.dataPath, false);
+                  OpenFileFolder(dataParams.dataPath);
                 }} />
               </div>
               <div className="flex gap-2 items-center">

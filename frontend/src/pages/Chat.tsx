@@ -295,7 +295,7 @@ const SidePanel: FC = observer(() => {
         OpenSaveFileDialog('*.txt', 'conversation.txt', savedContent).then((path) => {
           if (path)
             toastWithButton(t('Conversation Saved'), t('Open'), () => {
-              OpenFileFolder(path, false);
+              OpenFileFolder(path);
             });
         }).catch(e => {
           toast(t('Error') + ' - ' + (e.message || e), { type: 'error', autoClose: 2500 });

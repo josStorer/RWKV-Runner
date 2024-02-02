@@ -28,6 +28,8 @@ export function DownloadFile(arg1:string,arg2:string):Promise<void>;
 
 export function FileExists(arg1:string):Promise<boolean>;
 
+export function GetAbsPath(arg1:string):Promise<string>;
+
 export function GetPlatform():Promise<string>;
 
 export function GetPyError():Promise<string>;
@@ -40,7 +42,7 @@ export function ListDirFiles(arg1:string):Promise<Array<backend_golang.FileInfo>
 
 export function MergeLora(arg1:string,arg2:boolean,arg3:number,arg4:string,arg5:string,arg6:string):Promise<string>;
 
-export function OpenFileFolder(arg1:string,arg2:boolean):Promise<void>;
+export function OpenFileFolder(arg1:string):Promise<void>;
 
 export function OpenMidiPort(arg1:number):Promise<void>;
 

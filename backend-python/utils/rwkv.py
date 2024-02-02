@@ -4,7 +4,7 @@ import os
 import pathlib
 import copy
 import re
-from typing import Dict, Iterable, List, Tuple, Union, Type
+from typing import Dict, Iterable, List, Tuple, Union, Type, Callable
 from utils.log import quick_log
 from fastapi import HTTPException
 from pydantic import BaseModel, Field
@@ -556,7 +556,41 @@ def get_tokenizer(tokenizer_len: int):
         return "rwkv_vocab_v20230424"
 
 
+def get_model_path(model_path: str) -> str:
+    if os.path.isabs(model_path):
+        return model_path
+
+    working_dir: pathlib.Path = pathlib.Path(os.path.abspath(os.getcwd()))
+
+    parent_paths: List[pathlib.Path] = [
+        working_dir,  # [cwd](RWKV-Runner)/models/xxx
+        working_dir.parent,  # [cwd](backend-python)/../models/xxx
+        pathlib.Path(
+            os.path.abspath(__file__)
+        ).parent.parent,  # backend-python/models/xxx
+        pathlib.Path(
+            os.path.abspath(__file__)
+        ).parent.parent.parent,  # RWKV-Runner/models/xxx
+    ]
+
+    child_paths: List[Callable[[pathlib.Path], pathlib.Path]] = [
+        lambda p: p / model_path,
+        lambda p: p / "build" / "bin" / model_path,  # for dev
+    ]
+
+    for parent_path in parent_paths:
+        for child_path in child_paths:
+            full_path: pathlib.Path = child_path(parent_path)
+
+            if os.path.isfile(full_path):
+                return str(full_path)
+
+    return model_path
+
+
 def RWKV(model: str, strategy: str, tokenizer: Union[str, None]) -> AbstractRWKV:
+    model = get_model_path(model)
+
     rwkv_beta = global_var.get(global_var.Args).rwkv_beta
     rwkv_cpp = getattr(global_var.get(global_var.Args), "rwkv.cpp")
     webgpu = global_var.get(global_var.Args).webgpu

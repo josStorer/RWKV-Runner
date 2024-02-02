@@ -67,7 +67,7 @@ const Downloads: FC = observer(() => {
                         AddToDownloadList(status.path, status.url);
                     }} />}
                 <ToolTipButton desc={t('Open Folder')} icon={<Folder20Regular />} onClick={() => {
-                  OpenFileFolder(status.path, false);
+                  OpenFileFolder(status.path);
                 }} />
               </div>
             </Field>

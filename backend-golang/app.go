@@ -39,10 +39,15 @@ func (a *App) OnStartup(ctx context.Context) {
 	a.exDir = ""
 	a.cmdPrefix = ""
 
-	if runtime.GOOS == "darwin" {
-		ex, _ := os.Executable()
-		a.exDir = filepath.Dir(ex) + "/../../../"
-		a.cmdPrefix = "cd " + a.exDir + " && "
+	ex, err := os.Executable()
+	if err == nil {
+		if runtime.GOOS == "darwin" {
+			a.exDir = filepath.Dir(ex) + "/../../../"
+			a.cmdPrefix = "cd " + a.exDir + " && "
+		} else {
+			a.exDir = filepath.Dir(ex) + "/"
+			a.cmdPrefix = "cd " + a.exDir + " && "
+		}
 	}
 
 	os.Chmod(a.exDir+"backend-rust/webgpu_server", 0777)
@@ -50,9 +55,9 @@ func (a *App) OnStartup(ctx context.Context) {
 	os.Mkdir(a.exDir+"models", os.ModePerm)
 	os.Mkdir(a.exDir+"lora-models", os.ModePerm)
 	os.Mkdir(a.exDir+"finetune/json2binidx_tool/data", os.ModePerm)
-	trainLogPath := a.exDir + "lora-models/train_log.txt"
+	trainLogPath := "lora-models/train_log.txt"
 	if !a.FileExists(trainLogPath) {
-		f, err := os.Create(trainLogPath)
+		f, err := os.Create(a.exDir + trainLogPath)
 		if err == nil {
 			f.Close()
 		}

@@ -132,7 +132,7 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
             {
               item.isComplete &&
               <ToolTipButton desc={t('Open Folder')} icon={<Folder20Regular />} onClick={() => {
-                OpenFileFolder(`${commonStore.settings.customModelsPath}/${item.name}`, true);
+                OpenFileFolder(`${commonStore.settings.customModelsPath}/${item.name}`);
               }} />
             }
             {item.downloadUrl && !item.isComplete &&

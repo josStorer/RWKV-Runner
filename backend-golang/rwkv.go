@@ -1,3 +1,4 @@
+// Considering some whitespace and multilingual support, the functions in rwkv.go should always be executed with cwd as RWKV-Runner, and never use a.GetAbsPath() here.
 package backend_golang
 
 import (
@@ -11,14 +12,18 @@ import (
 )
 
 func (a *App) StartServer(python string, port int, host string, webui bool, rwkvBeta bool, rwkvcpp bool, webgpu bool) (string, error) {
-	var err error
+	execFile := "./backend-python/main.py"
+	_, err := os.Stat(execFile)
+	if err != nil {
+		return "", err
+	}
 	if python == "" {
 		python, err = GetPython()
 	}
 	if err != nil {
 		return "", err
 	}
-	args := []string{python, "./backend-python/main.py"}
+	args := []string{python, execFile}
 	if webui {
 		args = append(args, "--webui")
 	}
@@ -36,41 +41,77 @@ func (a *App) StartServer(python string, port int, host string, webui bool, rwkv
 }
 
 func (a *App) StartWebGPUServer(port int, host string) (string, error) {
-	args := []string{"./backend-rust/webgpu_server"}
+	var execFile string
+	execFiles := []string{"./backend-rust/webgpu_server", "./backend-rust/webgpu_server.exe"}
+	for _, file := range execFiles {
+		_, err := os.Stat(file)
+		if err == nil {
+			execFile = file
+			break
+		}
+	}
+	if execFile == "" {
+		return "", errors.New(execFiles[0] + " not found")
+	}
+	args := []string{execFile}
 	args = append(args, "--port", strconv.Itoa(port), "--ip", host)
 	return Cmd(args...)
 }
 
 func (a *App) ConvertModel(python string, modelPath string, strategy string, outPath string) (string, error) {
-	var err error
+	execFile := "./backend-python/convert_model.py"
+	_, err := os.Stat(execFile)
+	if err != nil {
+		return "", err
+	}
 	if python == "" {
 		python, err = GetPython()
 	}
 	if err != nil {
 		return "", err
 	}
-	return Cmd(python, "./backend-python/convert_model.py", "--in", modelPath, "--out", outPath, "--strategy", strategy)
+	return Cmd(python, execFile, "--in", modelPath, "--out", outPath, "--strategy", strategy)
 }
 
 func (a *App) ConvertSafetensors(modelPath string, outPath string) (string, error) {
-	args := []string{"./backend-rust/web-rwkv-converter"}
+	var execFile string
+	execFiles := []string{"./backend-rust/web-rwkv-converter", "./backend-rust/web-rwkv-converter.exe"}
+	for _, file := range execFiles {
+		_, err := os.Stat(file)
+		if err == nil {
+			execFile = file
+			break
+		}
+	}
+	if execFile == "" {
+		return "", errors.New(execFiles[0] + " not found")
+	}
+	args := []string{execFile}
 	args = append(args, "--input", modelPath, "--output", outPath)
 	return Cmd(args...)
 }
 
 func (a *App) ConvertSafetensorsWithPython(python string, modelPath string, outPath string) (string, error) {
-	var err error
+	execFile := "./backend-python/convert_safetensors.py"
+	_, err := os.Stat(execFile)
+	if err != nil {
+		return "", err
+	}
 	if python == "" {
 		python, err = GetPython()
 	}
 	if err != nil {
 		return "", err
 	}
-	return Cmd(python, "./backend-python/convert_safetensors.py", "--input", modelPath, "--output", outPath)
+	return Cmd(python, execFile, "--input", modelPath, "--output", outPath)
 }
 
 func (a *App) ConvertGGML(python string, modelPath string, outPath string, Q51 bool) (string, error) {
-	var err error
+	execFile := "./backend-python/convert_pytorch_to_ggml.py"
+	_, err := os.Stat(execFile)
+	if err != nil {
+		return "", err
+	}
 	if python == "" {
 		python, err = GetPython()
 	}
@@ -81,11 +122,15 @@ func (a *App) ConvertGGML(python string, modelPath string, outPath string, Q51 b
 	if Q51 {
 		dataType = "Q5_1"
 	}
-	return Cmd(python, "./backend-python/convert_pytorch_to_ggml.py", modelPath, outPath, dataType)
+	return Cmd(python, execFile, modelPath, outPath, dataType)
 }
 
 func (a *App) ConvertData(python string, input string, outputPrefix string, vocab string) (string, error) {
-	var err error
+	execFile := "./finetune/json2binidx_tool/tools/preprocess_data.py"
+	_, err := os.Stat(execFile)
+	if err != nil {
+		return "", err
+	}
 	if python == "" {
 		python, err = GetPython()
 	}
@@ -129,19 +174,23 @@ func (a *App) ConvertData(python string, input string, outputPrefix string, voca
 		return "", err
 	}
 
-	return Cmd(python, "./finetune/json2binidx_tool/tools/preprocess_data.py", "--input", input, "--output-prefix", outputPrefix, "--vocab", vocab,
+	return Cmd(python, execFile, "--input", input, "--output-prefix", outputPrefix, "--vocab", vocab,
 		"--tokenizer-type", tokenizerType, "--dataset-impl", "mmap", "--append-eod")
 }
 
 func (a *App) MergeLora(python string, useGpu bool, loraAlpha int, baseModel string, loraPath string, outputPath string) (string, error) {
-	var err error
+	execFile := "./finetune/lora/merge_lora.py"
+	_, err := os.Stat(execFile)
+	if err != nil {
+		return "", err
+	}
 	if python == "" {
 		python, err = GetPython()
 	}
 	if err != nil {
 		return "", err
 	}
-	args := []string{python, "./finetune/lora/merge_lora.py"}
+	args := []string{python, execFile}
 	if useGpu {
 		args = append(args, "--use-gpu")
 	}
@@ -157,9 +206,9 @@ func (a *App) DepCheck(python string) error {
 	if err != nil {
 		return err
 	}
-	out, err := exec.Command(python, a.exDir+"./backend-python/dep_check.py").CombinedOutput()
+	out, err := exec.Command(python, a.exDir+"backend-python/dep_check.py").CombinedOutput()
 	if err != nil {
-		return errors.New("DepCheck Error: " + string(out))
+		return errors.New("DepCheck Error: " + string(out) + " GError: " + err.Error())
 	}
 	return nil
 }
@@ -185,7 +234,7 @@ func (a *App) InstallPyDep(python string, cnMirror bool) (string, error) {
 		if !cnMirror {
 			installScript = strings.Replace(installScript, " -i https://pypi.tuna.tsinghua.edu.cn/simple", "", -1)
 		}
-		err = os.WriteFile("./install-py-dep.bat", []byte(installScript), 0644)
+		err = os.WriteFile(a.exDir+"install-py-dep.bat", []byte(installScript), 0644)
 		if err != nil {
 			return "", err
 		}

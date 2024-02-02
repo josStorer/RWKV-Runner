@@ -23,14 +23,19 @@ func CmdHelper(hideWindow bool, args ...string) (*exec.Cmd, error) {
 	if runtime.GOOS != "windows" {
 		return nil, errors.New("unsupported OS")
 	}
-	filename := "./cmd-helper.bat"
-	_, err := os.Stat(filename)
+	ex, err := os.Executable()
 	if err != nil {
-		if err := os.WriteFile(filename, []byte("start %*"), 0644); err != nil {
+		return nil, err
+	}
+	exDir := filepath.Dir(ex) + "/"
+	path := exDir + "cmd-helper.bat"
+	_, err = os.Stat(path)
+	if err != nil {
+		if err := os.WriteFile(path, []byte("start %*"), 0644); err != nil {
 			return nil, err
 		}
 	}
-	cmdHelper, err := filepath.Abs(filename)
+	cmdHelper, err := filepath.Abs(path)
 	if err != nil {
 		return nil, err
 	}
@@ -86,16 +91,18 @@ func Cmd(args ...string) (string, error) {
 }
 
 func CopyEmbed(efs embed.FS) error {
-	prefix := ""
+	ex, err := os.Executable()
+	if err != nil {
+		return err
+	}
+	var prefix string
 	if runtime.GOOS == "darwin" {
-		ex, err := os.Executable()
-		if err != nil {
-			return err
-		}
 		prefix = filepath.Dir(ex) + "/../../../"
+	} else {
+		prefix = filepath.Dir(ex) + "/"
 	}
 
-	err := fs.WalkDir(efs, ".", func(path string, d fs.DirEntry, err error) error {
+	err = fs.WalkDir(efs, ".", func(path string, d fs.DirEntry, err error) error {
 		if d.IsDir() {
 			return nil
 		}
@@ -136,13 +143,19 @@ func CopyEmbed(efs embed.FS) error {
 func GetPython() (string, error) {
 	switch platform := runtime.GOOS; platform {
 	case "windows":
-		_, err := os.Stat("py310/python.exe")
+		ex, err := os.Executable()
 		if err != nil {
-			_, err := os.Stat("python-3.10.11-embed-amd64.zip")
+			return "", err
+		}
+		exDir := filepath.Dir(ex) + "/"
+		pyexe := exDir + "py310/python.exe"
+		_, err = os.Stat(pyexe)
+		if err != nil {
+			_, err := os.Stat(exDir + "python-3.10.11-embed-amd64.zip")
 			if err != nil {
 				return "", errors.New("python zip not found")
 			} else {
-				err := Unzip("python-3.10.11-embed-amd64.zip", "py310")
+				err := Unzip(exDir+"python-3.10.11-embed-amd64.zip", exDir+"py310")
 				if err != nil {
 					return "", errors.New("failed to unzip python")
 				} else {
