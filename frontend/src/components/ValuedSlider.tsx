@@ -9,8 +9,9 @@ export const ValuedSlider: FC<{
   max: number,
   step?: number,
   input?: boolean
-  onChange?: (ev: React.ChangeEvent<HTMLInputElement>, data: SliderOnChangeData) => void
-}> = ({ value, min, max, step, input, onChange }) => {
+  onChange?: (ev: React.ChangeEvent<HTMLInputElement>, data: SliderOnChangeData) => void,
+  toFixed?: number
+}> = ({ value, min, max, step, input, onChange, toFixed }) => {
   const sliderRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     if (step && sliderRef.current && sliderRef.current.parentElement) {
@@ -25,7 +26,8 @@ export const ValuedSlider: FC<{
         max={max} step={step}
         onChange={onChange} />
       {input
-        ? <NumberInput style={{ minWidth: 0 }} value={value} min={min} max={max} step={step} onChange={onChange} />
+        ? <NumberInput style={{ minWidth: 0 }} value={value} min={min} max={max} step={step} onChange={onChange}
+          toFixed={toFixed} />
         : <Text>{value}</Text>}
     </div>
   );

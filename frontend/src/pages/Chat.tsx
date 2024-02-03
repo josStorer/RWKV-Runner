@@ -35,6 +35,7 @@ import { Labeled } from '../components/Labeled';
 import { ValuedSlider } from '../components/ValuedSlider';
 import { PresetsButton } from './PresetsManager/PresetsButton';
 import { webOpenOpenFileDialog } from '../utils/web-file-operations';
+import { defaultPenaltyDecay } from './defaultConfigs';
 
 let chatSseControllers: {
   [id: string]: AbortController
@@ -268,6 +269,18 @@ const SidePanel: FC = observer(() => {
               });
             }} />
         } />
+      <Labeled flex breakline
+        label={t('Penalty Decay') + (params.penaltyDecay === defaultPenaltyDecay ? ` (${t('Default')})` : '')}
+        desc={t('If you don\'t know what it is, keep it default.')}
+        content={
+          <ValuedSlider value={params.penaltyDecay!} min={0.99} max={0.999}
+            step={0.001} toFixed={3} input
+            onChange={(e, data) => {
+              commonStore.setChatParams({
+                penaltyDecay: data.value
+              });
+            }} />
+        } />
     </div>
     <div className="grow" />
     {/*<Button*/}
@@ -451,6 +464,7 @@ const ChatPanel: FC = observer(() => {
           top_p: commonStore.chatParams.topP,
           presence_penalty: commonStore.chatParams.presencePenalty,
           frequency_penalty: commonStore.chatParams.frequencyPenalty,
+          penalty_decay: commonStore.chatParams.penaltyDecay === defaultPenaltyDecay ? undefined : commonStore.chatParams.penaltyDecay,
           user_name: commonStore.activePreset?.userName || undefined,
           assistant_name: commonStore.activePreset?.assistantName || undefined,
           presystem: commonStore.activePreset?.presystem && undefined

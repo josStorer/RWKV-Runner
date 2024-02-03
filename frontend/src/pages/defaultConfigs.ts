@@ -1,6 +1,8 @@
 import { CompletionPreset } from '../types/completion';
 import { ModelConfig } from '../types/configs';
 
+export const defaultPenaltyDecay = 0.996;
+
 export const defaultCompositionPrompt = '<pad>';
 export const defaultCompositionABCPrompt = 'S:3\n' +
   'B:9\n' +

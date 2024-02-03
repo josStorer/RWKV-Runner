@@ -8,8 +8,9 @@ export const NumberInput: FC<{
   max: number,
   step?: number,
   onChange?: (ev: React.ChangeEvent<HTMLInputElement>, data: SliderOnChangeData) => void
-  style?: CSSProperties
-}> = ({ value, min, max, step, onChange, style }) => {
+  style?: CSSProperties,
+  toFixed?: number
+}> = ({ value, min, max, step, onChange, style, toFixed = 2 }) => {
   return (
     <Input type="number" style={style} value={value.toString()} min={min} max={max} step={step}
       onChange={(e, data) => {
@@ -22,7 +23,7 @@ export const NumberInput: FC<{
             value = Number(((
                 Math.round((value - offset) / step) * step)
               + offset)
-            .toFixed(2)); // avoid precision issues
+            .toFixed(toFixed)); // avoid precision issues
           }
           onChange(e, { value: Math.max(Math.min(value, max), min) });
         }

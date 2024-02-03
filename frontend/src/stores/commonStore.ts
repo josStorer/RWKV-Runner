@@ -79,7 +79,8 @@ class CommonStore {
     temperature: 1,
     topP: 0.3,
     presencePenalty: 0,
-    frequencyPenalty: 1
+    frequencyPenalty: 1,
+    penaltyDecay: 0.996
   };
   sidePanelCollapsed: boolean | 'auto' = 'auto';
   // completion
