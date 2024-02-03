@@ -23,6 +23,7 @@ type App struct {
 	ctx           context.Context
 	HasConfigData bool
 	ConfigData    map[string]any
+	Dev           bool
 	exDir         string
 	cmdPrefix     string
 }
@@ -48,7 +49,11 @@ func (a *App) OnStartup(ctx context.Context) {
 			a.exDir = filepath.Dir(ex) + "/"
 			a.cmdPrefix = "cd " + a.exDir + " && "
 		}
-		os.Chdir(a.exDir)
+		if a.Dev {
+			a.exDir = ""
+		} else {
+			os.Chdir(a.exDir)
+		}
 	}
 
 	os.Chmod(a.exDir+"backend-rust/webgpu_server", 0777)

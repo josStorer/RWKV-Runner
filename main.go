@@ -67,9 +67,12 @@ var midiAssets embed.FS
 var components embed.FS
 
 func main() {
-	dev := true
+	// Create an instance of the app structure
+	app := backend.NewApp()
+	app.Dev = true
+
 	if buildInfo, ok := debug.ReadBuildInfo(); !ok || strings.Contains(buildInfo.String(), "-ldflags") {
-		dev = false
+		app.Dev = false
 
 		backend.CopyEmbed(assets)
 		os.RemoveAll("./py310/Lib/site-packages/cyac-1.7.dist-info")
@@ -82,9 +85,6 @@ func main() {
 		backend.CopyEmbed(midiAssets)
 		backend.CopyEmbed(components)
 	}
-
-	// Create an instance of the app structure
-	app := backend.NewApp()
 
 	var zoomFactor float64 = 1.0
 	data, err := app.ReadJson("config.json")
@@ -99,7 +99,7 @@ func main() {
 	}
 
 	var logger wailsLogger.Logger
-	if dev {
+	if app.Dev {
 		logger = wailsLogger.NewDefaultLogger()
 	} else {
 		logger = wailsLogger.NewFileLogger("crash.log")
