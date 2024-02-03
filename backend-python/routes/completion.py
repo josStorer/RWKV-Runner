@@ -70,10 +70,10 @@ class ChatCompletionBody(ModelConfigBody):
                 "assistant_name": None,
                 "presystem": True,
                 "max_tokens": 1000,
-                "temperature": 1.2,
-                "top_p": 0.5,
-                "presence_penalty": 0.4,
-                "frequency_penalty": 0.4,
+                "temperature": 1,
+                "top_p": 0.3,
+                "presence_penalty": 0,
+                "frequency_penalty": 1,
             }
         }
     }
@@ -94,10 +94,10 @@ class CompletionBody(ModelConfigBody):
                 "stream": False,
                 "stop": None,
                 "max_tokens": 100,
-                "temperature": 1.2,
-                "top_p": 0.5,
-                "presence_penalty": 0.4,
-                "frequency_penalty": 0.4,
+                "temperature": 1,
+                "top_p": 0.3,
+                "presence_penalty": 0,
+                "frequency_penalty": 1,
             }
         }
     }
