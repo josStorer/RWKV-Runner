@@ -23,7 +23,11 @@ class TextToMidiBody(BaseModel):
 
 @router.post("/text-to-midi", tags=["MIDI"])
 def text_to_midi(body: TextToMidiBody):
-    vocab_config = "backend-python/utils/midi_vocab_config.json"
+    vocab_config_type = global_var.get(global_var.Midi_Vocab_Config_Type)
+    if vocab_config_type == global_var.MidiVocabConfig.Piano:
+        vocab_config = "backend-python/utils/vocab_config_piano.json"
+    else:
+        vocab_config = "backend-python/utils/midi_vocab_config.json"
     cfg = VocabConfig.from_json(vocab_config)
     mid = convert_str_to_midi(cfg, body.text.strip())
     mid_data = io.BytesIO()
@@ -35,7 +39,11 @@ def text_to_midi(body: TextToMidiBody):
 
 @router.post("/midi-to-text", tags=["MIDI"])
 async def midi_to_text(file_data: UploadFile):
-    vocab_config = "backend-python/utils/midi_vocab_config.json"
+    vocab_config_type = global_var.get(global_var.Midi_Vocab_Config_Type)
+    if vocab_config_type == global_var.MidiVocabConfig.Piano:
+        vocab_config = "backend-python/utils/vocab_config_piano.json"
+    else:
+        vocab_config = "backend-python/utils/midi_vocab_config.json"
     cfg = VocabConfig.from_json(vocab_config)
     filter_config = "backend-python/utils/midi_filter_config.json"
     filter_cfg = FilterConfig.from_json(filter_config)
@@ -69,7 +77,11 @@ def txt_to_midi(body: TxtToMidiBody):
     if not body.midi_path.startswith("midi/"):
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "bad output path")
 
-    vocab_config = "backend-python/utils/midi_vocab_config.json"
+    vocab_config_type = global_var.get(global_var.Midi_Vocab_Config_Type)
+    if vocab_config_type == global_var.MidiVocabConfig.Piano:
+        vocab_config = "backend-python/utils/vocab_config_piano.json"
+    else:
+        vocab_config = "backend-python/utils/midi_vocab_config.json"
     cfg = VocabConfig.from_json(vocab_config)
     with open(body.txt_path, "r") as f:
         text = f.read()
