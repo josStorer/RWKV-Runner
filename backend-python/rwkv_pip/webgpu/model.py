@@ -13,19 +13,26 @@ except ModuleNotFoundError:
 
 class RWKV:
     def __init__(self, model_path: str, strategy: str = None):
-        self.model = wrp.v5.Model(
-            model_path,
-            turbo=True,
-            quant=32 if "i8" in strategy else None,
-            quant_nf4=26 if "i4" in strategy else None,
-        )
+        self.info = wrp.peek_info(model_path)
         self.w = {}  # fake weight
-        self.w["emb.weight"] = [0] * wrp.peek_info(model_path).num_vocab
+        self.w["emb.weight"] = [0] * self.info.num_vocab
+        self.version = str(self.info.version).lower()
+        self.wrp = getattr(wrp, self.version)
+
+        args = {
+            "file": model_path,
+            "turbo": True,
+            "quant": 32 if "i8" in strategy else 0,
+            "quant_nf4": 26 if "i4" in strategy else 0,
+            "token_chunk_size": 32,
+            "lora": None,
+        }
+        self.model = self.wrp.Model(**args)
 
     def forward(self, tokens: List[int], state: Union[Any, None] = None):
         if type(state).__name__ == "BackedState":  # memory state
-            gpu_state = wrp.v5.ModelState(self.model, 1)
+            gpu_state = self.wrp.ModelState(self.model, 1)
             gpu_state.load(state)
         else:
             gpu_state = state
-        return wrp.v5.run_one(self.model, tokens, gpu_state)
+        return self.wrp.run_one(self.model, tokens, gpu_state)
