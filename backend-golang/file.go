@@ -18,7 +18,7 @@ func (a *App) GetAbsPath(path string) (string, error) {
 	var absPath string
 	var err error
 	if filepath.IsAbs(path) {
-		absPath = path
+		absPath = filepath.Clean(path)
 	} else {
 		absPath, err = filepath.Abs(filepath.Join(a.exDir, path))
 		if err != nil {
