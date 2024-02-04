@@ -231,7 +231,7 @@ const SidePanel: FC = observer(() => {
         onClick={() => commonStore.setSidePanelCollapsed(true)}
       />
     </div>
-    <div className="flex flex-col gap-1 overflow-x-hidden overflow-y-auto p-1">
+    <div className="flex flex-col gap-1 overflow-x-hidden overflow-y-auto p-0.5">
       <Labeled flex breakline label={t('Max Response Token')}
         desc={t('By default, the maximum number of tokens that can be answered in a single response, it can be changed by the user by specifying API parameters.')}
         content={
@@ -296,6 +296,19 @@ const SidePanel: FC = observer(() => {
             onChange={(e, data) => {
               commonStore.setChatParams({
                 penaltyDecay: data.value
+              });
+            }} />
+        } />
+      <Labeled flex breakline
+        label={t('History Message Number') + (params.historyN === 0 ? ` (${t('Default')})` : '')}
+        desc={params.historyN === 0 ? t('Send All Message') : t('The latest X messages will be sent to the server. If you are using the RWKV-Runner server, please use the default value because RWKV-Runner has built-in state cache management which only calculates increments. Sending all messages will have lower cost. If you are using ChatGPT, adjust this value according to your needs to reduce ChatGPT expenses.')
+        .replace('X', String(params.historyN))}
+        content={
+          <ValuedSlider value={params.historyN} min={0} max={20}
+            step={1} input
+            onChange={(e, data) => {
+              commonStore.setChatParams({
+                historyN: data.value
               });
             }} />
         } />
@@ -518,7 +531,7 @@ const ChatPanel: FC = observer(() => {
           Authorization: `Bearer ${commonStore.settings.apiKey}`
         },
         body: JSON.stringify({
-          messages,
+          messages: messages.slice(-commonStore.chatParams.historyN),
           stream: true,
           model: commonStore.settings.apiChatModelName, // 'gpt-3.5-turbo'
           temperature: commonStore.chatParams.temperature,
@@ -594,7 +607,7 @@ const ChatPanel: FC = observer(() => {
           style={{ zIndex: 1 }}
           icon={commonStore.sidePanelCollapsed ? <TextAlignJustify24Regular /> : <TextAlignJustifyRotate9024Regular />}
           onClick={() => commonStore.setSidePanelCollapsed(!commonStore.sidePanelCollapsed)} />
-        <div ref={bodyRef} className="grow overflow-y-scroll overflow-x-hidden pr-2">
+        <div ref={bodyRef} className="grow overflow-y-auto overflow-x-hidden pr-2">
           {commonStore.conversationOrder.map(uuid =>
             <ChatMessageItem key={uuid} uuid={uuid} onSubmit={onSubmit} />
           )}

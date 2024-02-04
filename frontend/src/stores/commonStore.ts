@@ -3,7 +3,12 @@ import { getUserLanguage, isSystemLightMode, saveCache, saveConfigs, savePresets
 import { WindowSetDarkTheme, WindowSetLightTheme } from '../../wailsjs/runtime';
 import manifest from '../../../manifest.json';
 import i18n from 'i18next';
-import { defaultCompositionPrompt, defaultModelConfigs, defaultModelConfigsMac } from '../pages/defaultConfigs';
+import {
+  defaultCompositionPrompt,
+  defaultModelConfigs,
+  defaultModelConfigsMac,
+  defaultPenaltyDecay
+} from '../pages/defaultConfigs';
 import { ChartData } from 'chart.js';
 import { Preset } from '../types/presets';
 import { AboutContent } from '../types/about';
@@ -80,7 +85,8 @@ class CommonStore {
     topP: 0.3,
     presencePenalty: 0,
     frequencyPenalty: 1,
-    penaltyDecay: 0.996,
+    penaltyDecay: defaultPenaltyDecay,
+    historyN: 0,
     markdown: true
   };
   sidePanelCollapsed: boolean | 'auto' = 'auto';

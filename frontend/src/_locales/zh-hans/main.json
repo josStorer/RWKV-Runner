@@ -338,5 +338,8 @@
   "If you don't know what it is, keep it default.": "如果你不知道这是什么，保持默认",
   "Failed to find the base model, please try to change your base model.": "未找到基底模型，请尝试更换基底模型",
   "Markdown Renderer": "Markdown渲染",
-  "Load Conversation": "读取对话"
+  "Load Conversation": "读取对话",
+  "The latest X messages will be sent to the server. If you are using the RWKV-Runner server, please use the default value because RWKV-Runner has built-in state cache management which only calculates increments. Sending all messages will have lower cost. If you are using ChatGPT, adjust this value according to your needs to reduce ChatGPT expenses.": "最近的X条消息会发送至服务器. 如果你正在使用RWKV-Runner服务器, 请使用默认值, 因为RWKV-Runner内置了state缓存管理, 只计算增量, 发送所有消息将具有更低的成本. 如果你正在使用ChatGPT, 则根据你的需要调整此值, 这可以降低ChatGPT的费用",
+  "History Message Number": "历史消息数量",
+  "Send All Message": "发送所有消息"
 }
