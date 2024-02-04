@@ -50,8 +50,9 @@ echo "loading $loadModel"
 modelInfo=$(python3 ./finetune/get_layer_and_embd.py $loadModel 5.2)
 echo $modelInfo
 if [[ $modelInfo =~ "--n_layer" ]]; then
+  sudo rm -rf /root/.cache/torch_extensions
   python3 ./finetune/lora/$modelInfo $@ --proj_dir lora-models --data_type binidx --lora \
-    --lora_parts=att,ffn,time,ln --strategy deepspeed_stage_2 --accelerator gpu
+    --lora_parts=att,ffn,time,ln --strategy deepspeed_stage_2 --accelerator gpu --ds_bucket_mb 2
 else
   echo "modelInfo is invalid"
   exit 1
