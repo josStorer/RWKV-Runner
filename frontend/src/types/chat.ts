@@ -34,4 +34,6 @@ export type Attachment = {
   size: number;
   content: string;
 }
-export type ChatParams = Omit<ApiParameters, 'apiPort'>
+export type ChatParams = Omit<ApiParameters, 'apiPort'> & {
+  markdown: boolean
+}

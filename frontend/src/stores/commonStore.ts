@@ -80,7 +80,8 @@ class CommonStore {
     topP: 0.3,
     presencePenalty: 0,
     frequencyPenalty: 1,
-    penaltyDecay: 0.996
+    penaltyDecay: 0.996,
+    markdown: true
   };
   sidePanelCollapsed: boolean | 'auto' = 'auto';
   // completion

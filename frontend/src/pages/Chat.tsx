@@ -1,6 +1,15 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Avatar, Button, Menu, MenuPopover, MenuTrigger, PresenceBadge, Textarea } from '@fluentui/react-components';
+import {
+  Avatar,
+  Button,
+  Menu,
+  MenuPopover,
+  MenuTrigger,
+  PresenceBadge,
+  Switch,
+  Textarea
+} from '@fluentui/react-components';
 import commonStore, { ModelStatus } from '../stores/commonStore';
 import { observer } from 'mobx-react-lite';
 import { v4 as uuid } from 'uuid';
@@ -137,7 +146,7 @@ const ChatMessageItem: FC<{
     >
       {!editing ?
         <div className="flex flex-col">
-          <MarkdownRender>{messageItem.content}</MarkdownRender>
+          <MarkdownRender disabled={!commonStore.chatParams.markdown}>{messageItem.content}</MarkdownRender>
           {uuid in commonStore.attachments &&
             <div className="flex grow">
               <div className="grow" />
@@ -283,6 +292,16 @@ const SidePanel: FC = observer(() => {
         } />
     </div>
     <div className="grow" />
+    <Labeled flex spaceBetween
+      label={t('Markdown Renderer')}
+      content={
+        <Switch checked={params.markdown}
+          onChange={(e, data) => {
+            commonStore.setChatParams({
+              markdown: data.checked
+            });
+          }} />
+      } />
     {/*<Button*/}
     {/*  icon={<FolderOpenVerticalRegular />}*/}
     {/*  onClick={() => {*/}

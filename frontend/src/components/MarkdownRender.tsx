@@ -21,27 +21,93 @@ const Hyperlink: FC<any> = ({ href, children }) => {
   );
 };
 
-const MarkdownRender: FC<ReactMarkdownOptions> = (props) => {
+const MarkdownRender: FC<ReactMarkdownOptions & { disabled?: boolean }> = (props) => {
   return (
     <div dir="auto" className="markdown-body">
-      <ReactMarkdown
-        remarkPlugins={[remarkGfm, remarkBreaks]}
-        rehypePlugins={[
-          rehypeRaw,
-          [
-            rehypeHighlight,
-            {
-              detect: true,
-              ignoreMissing: true
-            }
-          ]
-        ]}
-        components={{
-          a: Hyperlink
-        }}
-      >
-        {props.children}
-      </ReactMarkdown>
+      {props.disabled ?
+        <div style={{ whiteSpace: 'pre-wrap' }}>
+          {props.children}
+        </div> :
+        <ReactMarkdown
+          allowedElements={[
+            'div',
+            'p',
+            'span',
+
+            'video',
+            'img',
+
+            'abbr',
+            'acronym',
+            'b',
+            'blockquote',
+            'code',
+            'em',
+            'i',
+            'li',
+            'ol',
+            'ul',
+            'strong',
+            'table',
+            'tr',
+            'td',
+            'th',
+
+            'details',
+            'summary',
+            'kbd',
+            'samp',
+            'sub',
+            'sup',
+            'ins',
+            'del',
+            'var',
+            'q',
+            'dl',
+            'dt',
+            'dd',
+            'ruby',
+            'rt',
+            'rp',
+
+            'br',
+            'hr',
+
+            'h1',
+            'h2',
+            'h3',
+            'h4',
+            'h5',
+            'h6',
+
+            'thead',
+            'tbody',
+            'tfoot',
+            'u',
+            's',
+            'a',
+            'pre',
+            'cite'
+          ]}
+          unwrapDisallowed={true}
+          remarkPlugins={[remarkGfm, remarkBreaks]}
+          rehypePlugins={[
+            rehypeRaw,
+            [
+              rehypeHighlight,
+              {
+                detect: true,
+                ignoreMissing: true
+              }
+            ]
+          ]}
+          components={{
+            a: Hyperlink
+          }}
+        >
+          {props.children}
+        </ReactMarkdown>
+      }
     </div>
   );
 };
