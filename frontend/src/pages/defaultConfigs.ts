@@ -145,7 +145,7 @@ export const defaultPresets: CompletionPreset[] = [{
     'In the RWKV model, the rotary mechanism transforms the input data in a way that helps the model better understand the position or or order of elements in a sequence. The weighted key value also makes the model efficient by retrieving the stored information from previous elements in a sequence. \n' +
     'However, questions remain about the scalability of RWKV compared to transformers, although there is optimism regarding its potential. The team plans to include additional training, an in-depth paper on Eagle 7B, and the development of a 2T model.\n' +
     '\n' +
-    'Response:',
+    'Response: {',
   params: {
     maxResponseToken: 500,
     temperature: 1,
