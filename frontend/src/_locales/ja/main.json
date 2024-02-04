@@ -337,5 +337,6 @@
   "Penalty Decay": "ペナルティ減衰",
   "If you don't know what it is, keep it default.": "何であるかわからない場合はデフォルトのままにしてください。",
   "Failed to find the base model, please try to change your base model.": "ベースモデルが見つかりませんでした、ベースモデルを変更してみてください。",
-  "Markdown Renderer": "Markdownレンダリング"
+  "Markdown Renderer": "Markdownレンダリング",
+  "Load Conversation": "会話を読み込む"
 }

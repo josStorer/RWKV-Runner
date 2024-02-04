@@ -337,5 +337,6 @@
   "Penalty Decay": "惩罚衰减",
   "If you don't know what it is, keep it default.": "如果你不知道这是什么，保持默认",
   "Failed to find the base model, please try to change your base model.": "未找到基底模型，请尝试更换基底模型",
-  "Markdown Renderer": "Markdown渲染"
+  "Markdown Renderer": "Markdown渲染",
+  "Load Conversation": "读取对话"
 }

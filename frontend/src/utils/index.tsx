@@ -4,6 +4,7 @@ import {
   DepCheck,
   InstallPyDep,
   ListDirFiles,
+  OpenOpenFileDialog,
   ReadFileInfo,
   ReadJson,
   SaveJson,
@@ -25,7 +26,7 @@ import { DataProcessParameters, LoraFinetuneParameters } from '../types/train';
 import { InstrumentTypeNameMap, MidiMessage, tracksMinimalTotalTime } from '../types/composition';
 import logo from '../assets/images/logo.png';
 import { Preset } from '../types/presets';
-import { botName, Conversation, MessageType, userName } from '../types/chat';
+import { botName, Conversation, MessageType, Role, userName } from '../types/chat';
 import { v4 as uuid } from 'uuid';
 import { findLastIndex } from 'lodash-es';
 
@@ -579,24 +580,12 @@ export async function getSoundFont() {
 export const setActivePreset = (preset: Preset | null) => {
   commonStore.setActivePreset(preset);
   //TODO if (preset.displayPresetMessages) {
-  const conversation: Conversation = {};
-  const conversationOrder: string[] = [];
+  const { pushMessage, saveConversation } = newChatConversation();
   if (preset)
     for (const message of preset.messages) {
-      const newUuid = uuid();
-      conversationOrder.push(newUuid);
-      conversation[newUuid] = {
-        sender: message.role === 'user' ? userName : botName,
-        type: MessageType.Normal,
-        color: message.role === 'user' ? 'brand' : 'colorful',
-        time: new Date().toISOString(),
-        content: message.content,
-        side: message.role === 'user' ? 'right' : 'left',
-        done: true
-      };
+      pushMessage(message.role, message.content);
     }
-  commonStore.setConversation(conversation);
-  commonStore.setConversationOrder(conversationOrder);
+  saveConversation();
   //}
 };
 
@@ -612,4 +601,49 @@ export function getSupportedCustomCudaFile(isBeta: boolean) {
       './backend-python/wkv_cuda_utils/wkv_cuda40.pyd';
   else
     return '';
+}
+
+// a wrapper for webOpenOpenFileDialog and OpenOpenFileDialog
+export function OpenFileDialog(filterPattern: string): Promise<Blob> {
+  return new Promise((resolve) => {
+      OpenOpenFileDialog(filterPattern).then(async filePath => {
+        if (!filePath)
+          return;
+
+        let blob: Blob;
+        if (commonStore.platform === 'web')
+          blob = (filePath as unknown as { blob: Blob }).blob;
+        else
+          blob = await fetch(absPathAsset(filePath)).then(r => r.blob());
+
+        resolve(blob);
+      }).catch(e => {
+        toast(t('Error') + ' - ' + (e.message || e), { type: 'error', autoClose: 2500 });
+      });
+    }
+  );
+}
+
+export function newChatConversation() {
+  const conversation: Conversation = {};
+  const conversationOrder: string[] = [];
+  const pushMessage = (role: Role, content: string) => {
+    const newUuid = uuid();
+    conversationOrder.push(newUuid);
+    conversation[newUuid] = {
+      sender: role === 'user' ? userName : botName,
+      type: MessageType.Normal,
+      color: role === 'user' ? 'brand' : 'colorful',
+      avatarImg: role === 'user' ? undefined : logo,
+      time: new Date().toISOString(),
+      content: content,
+      side: role === 'user' ? 'right' : 'left',
+      done: true
+    };
+  };
+  const saveConversation = () => {
+    commonStore.setConversation(conversation);
+    commonStore.setConversationOrder(conversationOrder);
+  };
+  return { pushMessage, saveConversation };
 }

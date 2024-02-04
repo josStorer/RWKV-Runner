@@ -29,14 +29,14 @@ import {
 } from '../../types/composition';
 import { toast } from 'react-toastify';
 import {
-  absPathAsset,
   flushMidiRecordingContent,
   getMidiRawContentMainInstrument,
   getMidiRawContentTime,
   getServerRoot,
+  OpenFileDialog,
   refreshTracksTotalTime
 } from '../../utils';
-import { OpenOpenFileDialog, PlayNote } from '../../../wailsjs/go/backend_golang/App';
+import { PlayNote } from '../../../wailsjs/go/backend_golang/App';
 
 const snapValue = 25;
 const minimalMoveTime = 8; // 1000/125=8ms wait_events=125
@@ -471,15 +471,7 @@ const AudiotrackEditor: FC<{ setPrompt: (prompt: string) => void }> = observer((
                   return;
                 }
 
-                OpenOpenFileDialog('*.mid').then(async filePath => {
-                  if (!filePath)
-                    return;
-
-                  let blob: Blob;
-                  if (commonStore.platform === 'web')
-                    blob = (filePath as unknown as { blob: Blob }).blob;
-                  else
-                    blob = await fetch(absPathAsset(filePath)).then(r => r.blob());
+                OpenFileDialog('*.mid').then(async blob => {
                   const bodyForm = new FormData();
                   bodyForm.append('file_data', blob);
                   fetch(getServerRoot(commonStore.getCurrentModelConfig().apiParameters.apiPort) + '/midi-to-text', {
@@ -510,8 +502,6 @@ const AudiotrackEditor: FC<{ setPrompt: (prompt: string) => void }> = observer((
                   ).catch(e => {
                     toast(t('Error') + ' - ' + (e.message || e), { type: 'error', autoClose: 2500 });
                   });
-                }).catch(e => {
-                  toast(t('Error') + ' - ' + (e.message || e), { type: 'error', autoClose: 2500 });
                 });
               }}>
               {t('Import MIDI')}

@@ -26,6 +26,7 @@ import {
   Delete28Regular,
   Dismiss16Regular,
   Dismiss24Regular,
+  FolderOpenVerticalRegular,
   RecordStop28Regular,
   SaveRegular,
   TextAlignJustify24Regular,
@@ -37,9 +38,17 @@ import { toast } from 'react-toastify';
 import { WorkHeader } from '../components/WorkHeader';
 import { DialogButton } from '../components/DialogButton';
 import { OpenFileFolder, OpenOpenFileDialog, OpenSaveFileDialog } from '../../wailsjs/go/backend_golang/App';
-import { absPathAsset, bytesToReadable, getServerRoot, setActivePreset, toastWithButton } from '../utils';
+import {
+  absPathAsset,
+  bytesToReadable,
+  getServerRoot,
+  newChatConversation,
+  OpenFileDialog,
+  setActivePreset,
+  toastWithButton
+} from '../utils';
 import { useMediaQuery } from 'usehooks-ts';
-import { botName, ConversationMessage, MessageType, userName, welcomeUuid } from '../types/chat';
+import { botName, ConversationMessage, MessageType, Role, userName, welcomeUuid } from '../types/chat';
 import { Labeled } from '../components/Labeled';
 import { ValuedSlider } from '../components/ValuedSlider';
 import { PresetsButton } from './PresetsManager/PresetsButton';
@@ -302,12 +311,45 @@ const SidePanel: FC = observer(() => {
             });
           }} />
       } />
-    {/*<Button*/}
-    {/*  icon={<FolderOpenVerticalRegular />}*/}
-    {/*  onClick={() => {*/}
-    {/*  }}>*/}
-    {/*  {t('Load Conversation')}*/}
-    {/*</Button>*/}
+    <Button
+      icon={<FolderOpenVerticalRegular />}
+      onClick={() => {
+        OpenFileDialog('*.txt;*.md').then(async blob => {
+          const userNames = ['User:', 'Question:', 'Q:', 'Human:', 'Bob:'];
+          const assistantNames = ['Assistant:', 'Answer:', 'A:', 'Bot:', 'Alice:'];
+          const names = userNames.concat(assistantNames);
+          const content = await blob.text();
+          const lines = content.split('\n');
+
+          const { pushMessage, saveConversation } = newChatConversation();
+          let messageRole: Role = 'user';
+          let messageContent = '';
+          for (const [i, line] of lines.entries()) {
+            let lineName = '';
+            if (names.some(name => {
+              lineName = name;
+              return line.startsWith(name);
+            })) {
+              if (messageContent.trim())
+                pushMessage(messageRole, messageContent.trim());
+
+              if (userNames.includes(lineName))
+                messageRole = 'user';
+              else
+                messageRole = 'assistant';
+
+              messageContent = line.replace(lineName, '');
+            } else {
+              messageContent += '\n' + line;
+            }
+            if (i === lines.length - 1)
+              pushMessage(messageRole, messageContent.trim());
+          }
+          saveConversation();
+        });
+      }}>
+      {t('Load Conversation')}
+    </Button>
     <Button
       icon={<SaveRegular />}
       onClick={() => {
