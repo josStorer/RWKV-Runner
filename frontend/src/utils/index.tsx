@@ -352,7 +352,7 @@ export async function checkUpdate(notifyEvenLatest: boolean = false) {
                 if (r.ok) {
                   r.json().then((data) => {
                     if (data.assets && data.assets.length > 0) {
-                      const asset = data.assets.find((a: any) => a.name.toLowerCase().includes(commonStore.platform.toLowerCase()));
+                      const asset = data.assets.find((a: any) => a.name.toLowerCase().includes(commonStore.platform.toLowerCase().replace('darwin', 'macos')));
                       if (asset) {
                         const updateUrl = !commonStore.settings.giteeUpdatesSource ?
                           `https://github.com/josStorer/RWKV-Runner/releases/download/${versionTag}/${asset.name}` :

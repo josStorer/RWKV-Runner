@@ -272,18 +272,16 @@ const Settings: FC = observer(() => {
                     <AccordionHeader ref={advancedHeaderRef} size="large">{t('Advanced')}</AccordionHeader>
                     <AccordionPanel>
                       <div className="flex flex-col gap-2 overflow-hidden">
-                        {commonStore.platform !== 'darwin' &&
-                          <Labeled label={t('Custom Models Path')}
-                            content={
-                              <Input className="grow" placeholder="./models"
-                                value={commonStore.settings.customModelsPath}
-                                onChange={(e, data) => {
-                                  commonStore.setSettings({
-                                    customModelsPath: data.value
-                                  });
-                                }} />
-                            } />
-                        }
+                        <Labeled label={t('Custom Models Path')}
+                          content={
+                            <Input className="grow" placeholder="./models"
+                              value={commonStore.settings.customModelsPath}
+                              onChange={(e, data) => {
+                                commonStore.setSettings({
+                                  customModelsPath: data.value
+                                });
+                              }} />
+                          } />
                         <Labeled label={t('Custom Python Path')} // if set, will not use precompiled cuda kernel
                           content={
                             <Input className="grow" placeholder="./py310/python"

@@ -419,7 +419,8 @@ const LoraFinetune: FC = observer(() => {
                     outputPrefix,
                     dataParams.vocabPath).then(async () => {
                     if (!await FileExists(outputPrefix + '_text_document.idx')) {
-                      toast(t('Failed to convert data') + ' - ' + await GetPyError(), { type: 'error' });
+                      if (commonStore.platform === 'windows' || commonStore.platform === 'linux')
+                        toast(t('Failed to convert data') + ' - ' + await GetPyError(), { type: 'error' });
                     } else {
                       toast(t('Convert Data successfully'), { type: 'success' });
                     }

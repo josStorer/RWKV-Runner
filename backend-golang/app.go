@@ -1,7 +1,9 @@
 package backend_golang
 
 import (
+	"archive/zip"
 	"bufio"
+	"bytes"
 	"context"
 	"errors"
 	"io"
@@ -10,6 +12,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"syscall"
 	"time"
 
@@ -160,6 +163,7 @@ func (a *App) UpdateApp(url string) (broken bool, err error) {
 	ticker := time.NewTicker(250 * time.Millisecond)
 	defer ticker.Stop()
 
+	// update progress
 	go func() {
 		for {
 			<-ticker.C
@@ -179,13 +183,35 @@ func (a *App) UpdateApp(url string) (broken bool, err error) {
 			}
 		}
 	}()
-	err = selfupdate.Apply(pr, selfupdate.Options{})
+
+	var updateFile io.Reader = pr
+	// extract macos binary from zip
+	if strings.HasSuffix(url, ".zip") && runtime.GOOS == "darwin" {
+		zipBytes, err := io.ReadAll(pr)
+		if err != nil {
+			return false, err
+		}
+		archive, err := zip.NewReader(bytes.NewReader(zipBytes), int64(len(zipBytes)))
+		if err != nil {
+			return false, err
+		}
+		file, err := archive.Open("Contents/MacOS/RWKV-Runner")
+		if err != nil {
+			return false, err
+		}
+		defer file.Close()
+		updateFile = file
+	}
+
+	// apply update
+	err = selfupdate.Apply(updateFile, selfupdate.Options{})
 	if err != nil {
 		if rerr := selfupdate.RollbackError(err); rerr != nil {
 			return true, rerr
 		}
 		return false, err
 	}
+	// restart app
 	if runtime.GOOS == "windows" {
 		name, err := os.Executable()
 		if err != nil {
