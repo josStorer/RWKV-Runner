@@ -228,10 +228,12 @@ MIDIキーボードをお持ちでない場合、`Virtual Midi Controller 3 LE`
 - ChatRWKV: https://github.com/BlinkDL/ChatRWKV
 - RWKV-LM: https://github.com/BlinkDL/RWKV-LM
 - RWKV-LM-LoRA: https://github.com/Blealtan/RWKV-LM-LoRA
+- RWKV-v5-lora: https://github.com/JL-er/RWKV-v5-lora
 - MIDI-LLM-tokenizer: https://github.com/briansemrau/MIDI-LLM-tokenizer
 - ai00_rwkv_server: https://github.com/cgisky1980/ai00_rwkv_server
 - rwkv.cpp: https://github.com/saharNooby/rwkv.cpp
 - web-rwkv-py: https://github.com/cryscan/web-rwkv-py
+- web-rwkv: https://github.com/cryscan/web-rwkv
 
 ## Preview
 
