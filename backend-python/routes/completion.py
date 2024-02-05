@@ -144,6 +144,7 @@ async def eval_rwkv(
                 return
             set_rwkv_config(model, global_var.get(global_var.Model_Config))
             set_rwkv_config(model, body)
+            print(get_rwkv_config(model))
 
             response, prompt_tokens, completion_tokens = "", 0, 0
             for response, delta, prompt_tokens, completion_tokens in model.generate(
@@ -155,23 +156,27 @@ async def eval_rwkv(
                 if stream:
                     yield json.dumps(
                         {
-                            "object": "chat.completion.chunk"
-                            if chat_mode
-                            else "text_completion",
+                            "object": (
+                                "chat.completion.chunk"
+                                if chat_mode
+                                else "text_completion"
+                            ),
                             # "response": response,
                             "model": model.name,
                             "choices": [
-                                {
-                                    "delta": {"content": delta},
-                                    "index": 0,
-                                    "finish_reason": None,
-                                }
-                                if chat_mode
-                                else {
-                                    "text": delta,
-                                    "index": 0,
-                                    "finish_reason": None,
-                                }
+                                (
+                                    {
+                                        "delta": {"content": delta},
+                                        "index": 0,
+                                        "finish_reason": None,
+                                    }
+                                    if chat_mode
+                                    else {
+                                        "text": delta,
+                                        "index": 0,
+                                        "finish_reason": None,
+                                    }
+                                )
                             ],
                         }
                     )
@@ -193,23 +198,25 @@ async def eval_rwkv(
             if stream:
                 yield json.dumps(
                     {
-                        "object": "chat.completion.chunk"
-                        if chat_mode
-                        else "text_completion",
+                        "object": (
+                            "chat.completion.chunk" if chat_mode else "text_completion"
+                        ),
                         # "response": response,
                         "model": model.name,
                         "choices": [
-                            {
-                                "delta": {},
-                                "index": 0,
-                                "finish_reason": "stop",
-                            }
-                            if chat_mode
-                            else {
-                                "text": "",
-                                "index": 0,
-                                "finish_reason": "stop",
-                            }
+                            (
+                                {
+                                    "delta": {},
+                                    "index": 0,
+                                    "finish_reason": "stop",
+                                }
+                                if chat_mode
+                                else {
+                                    "text": "",
+                                    "index": 0,
+                                    "finish_reason": "stop",
+                                }
+                            )
                         ],
                     }
                 )
@@ -225,20 +232,22 @@ async def eval_rwkv(
                         "total_tokens": prompt_tokens + completion_tokens,
                     },
                     "choices": [
-                        {
-                            "message": {
-                                "role": Role.Assistant.value,
-                                "content": response,
-                            },
-                            "index": 0,
-                            "finish_reason": "stop",
-                        }
-                        if chat_mode
-                        else {
-                            "text": response,
-                            "index": 0,
-                            "finish_reason": "stop",
-                        }
+                        (
+                            {
+                                "message": {
+                                    "role": Role.Assistant.value,
+                                    "content": response,
+                                },
+                                "index": 0,
+                                "finish_reason": "stop",
+                            }
+                            if chat_mode
+                            else {
+                                "text": response,
+                                "index": 0,
+                                "finish_reason": "stop",
+                            }
+                        )
                     ],
                 }
 

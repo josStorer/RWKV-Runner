@@ -86,13 +86,27 @@ def switch_model(body: SwitchModelBody, response: Response, request: Request):
 
     if body.deploy:
         global_var.set(global_var.Deploy_Mode, True)
-    if global_var.get(global_var.Model_Config) is None:
-        global_var.set(
-            global_var.Model_Config, get_rwkv_config(global_var.get(global_var.Model))
-        )
+
+    saved_model_config = global_var.get(global_var.Model_Config)
+    init_model_config = get_rwkv_config(global_var.get(global_var.Model))
+    if saved_model_config is not None:
+        merge_model(init_model_config, saved_model_config)
+    global_var.set(global_var.Model_Config, init_model_config)
     global_var.set(global_var.Model_Status, global_var.ModelStatus.Working)
 
     return "success"
+
+
+def merge_model(to_model: BaseModel, from_model: BaseModel):
+    from_model_fields = [x for x in from_model.dict().keys()]
+    to_model_fields = [x for x in to_model.dict().keys()]
+
+    for field_name in from_model_fields:
+        if field_name in to_model_fields:
+            from_value = getattr(from_model, field_name)
+
+            if from_value is not None:
+                setattr(to_model, field_name, from_value)
 
 
 @router.post("/update-config", tags=["Configs"])
@@ -101,8 +115,12 @@ def update_config(body: ModelConfigBody):
     Will not update the model config immediately, but set it when completion called to avoid modifications during generation
     """
 
-    print(body)
-    global_var.set(global_var.Model_Config, body)
+    model_config = global_var.get(global_var.Model_Config)
+    if model_config is None:
+        model_config = ModelConfigBody()
+        global_var.set(global_var.Model_Config, model_config)
+    merge_model(model_config, body)
+    print("Updated Model Config:", model_config)
 
     return "success"
 
