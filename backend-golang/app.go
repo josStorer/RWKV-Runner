@@ -195,7 +195,7 @@ func (a *App) UpdateApp(url string) (broken bool, err error) {
 		if err != nil {
 			return false, err
 		}
-		file, err := archive.Open("Contents/MacOS/RWKV-Runner")
+		file, err := archive.Open("RWKV-Runner.app/Contents/MacOS/RWKV-Runner")
 		if err != nil {
 			return false, err
 		}

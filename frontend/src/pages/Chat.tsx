@@ -355,9 +355,9 @@ const SidePanel: FC = observer(() => {
             } else {
               messageContent += '\n' + line;
             }
-            if (i === lines.length - 1)
-              pushMessage(messageRole, messageContent.trim());
           }
+          if (messageContent.trim())
+            pushMessage(messageRole, messageContent.trim());
           saveConversation();
         });
       }}>
