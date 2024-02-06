@@ -12,6 +12,7 @@ compatible with the OpenAI API, which means that every ChatGPT client is an RWKV
 
 [![license][license-image]][license-url]
 [![release][release-image]][release-url]
+[![py-version][py-version-image]][py-version-url]
 
 English | [简体中文](README_ZH.md) | [日本語](README_JA.md)
 
@@ -30,6 +31,10 @@ English | [简体中文](README_ZH.md) | [日本語](README_JA.md)
 [release-image]: https://img.shields.io/github/release/josStorer/RWKV-Runner.svg
 
 [release-url]: https://github.com/josStorer/RWKV-Runner/releases/latest
+
+[py-version-image]: https://img.shields.io/pypi/pyversions/fastapi.svg
+
+[py-version-url]: https://github.com/josStorer/RWKV-Runner/tree/master/backend-python
 
 [download-url]: https://github.com/josStorer/RWKV-Runner/releases
 

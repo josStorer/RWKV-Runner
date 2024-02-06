@@ -11,6 +11,7 @@ API兼容的接口，这意味着一切ChatGPT客户端都是RWKV客户端。
 
 [![license][license-image]][license-url]
 [![release][release-image]][release-url]
+[![py-version][py-version-image]][py-version-url]
 
 [English](README.md) | 简体中文 | [日本語](README_JA.md)
 
@@ -29,6 +30,10 @@ API兼容的接口，这意味着一切ChatGPT客户端都是RWKV客户端。
 [release-image]: https://img.shields.io/github/release/josStorer/RWKV-Runner.svg
 
 [release-url]: https://github.com/josStorer/RWKV-Runner/releases/latest
+
+[py-version-image]: https://img.shields.io/pypi/pyversions/fastapi.svg
+
+[py-version-url]: https://github.com/josStorer/RWKV-Runner/tree/master/backend-python
 
 [download-url]: https://github.com/josStorer/RWKV-Runner/releases
 
