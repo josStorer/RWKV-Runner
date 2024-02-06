@@ -372,18 +372,18 @@ class TextRWKV(AbstractRWKV):
             self.bot = "Assistant"
             self.END_OF_LINE = 11
 
-        self.AVOID_REPEAT_TOKENS = []
+        self.AVOID_REPEAT_TOKENS = set()
         AVOID_REPEAT = "，：？！"
         for i in AVOID_REPEAT:
             dd = self.pipeline.encode(i)
             assert len(dd) == 1
-            self.AVOID_REPEAT_TOKENS += dd
-        self.AVOID_PENALTY_TOKENS = []
+            self.AVOID_REPEAT_TOKENS.add(dd[0])
+        self.AVOID_PENALTY_TOKENS = set()
         AVOID_PENALTY = "\n,.:，。：<>[]{}()/\\|;；"  # \n,.:?!，。：？！"“”<>[]{}/\\|;；~`@#$%^&*()_+-=0123456789
         for i in AVOID_PENALTY:
             dd = self.pipeline.encode(i)
             assert len(dd) == 1
-            self.AVOID_PENALTY_TOKENS += dd
+            self.AVOID_PENALTY_TOKENS.add(dd[0])
 
         self.__preload()
 
