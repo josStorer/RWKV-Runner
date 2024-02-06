@@ -22,4 +22,4 @@ PyMuPDF==1.23.5
 python-multipart==0.0.6
 Cython==3.0.4
 cyac==1.9
-torch_directml==0.1.13.1.dev230413
+torch-directml==0.1.13.1.dev230413
