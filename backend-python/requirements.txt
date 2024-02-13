@@ -19,7 +19,7 @@ midi2audio==0.1.1
 mido==1.3.0
 safetensors==0.4.0
 PyMuPDF==1.23.5
-python-multipart==0.0.6
+python-multipart==0.0.7
 Cython==3.0.4
 cyac==1.9
 torch-directml==0.1.13.1.dev230413
