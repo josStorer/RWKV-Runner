@@ -24,6 +24,20 @@ RUN add-apt-repository -y ppa:deadsnakes/ppa && \
     apt install -y g++-11 python3.10 python3.10-distutils python3.10-dev && \
     curl -sS http://mirrors.aliyun.com/pypi/get-pip.py | python3.10
 
+RUN python3.10 -m pip install cmake
+
+FROM runtime AS librwkv
+
+WORKDIR /app
+
+RUN git clone https://github.com/RWKV/rwkv.cpp.git && \
+    cd rwkv.cpp && \
+    git submodule update --init --recursive && \
+    mkdir -p build && \
+    cd build && \
+    cmake -G Ninja .. && \
+    cmake --build .
+
 FROM runtime AS final
 
 WORKDIR /app
@@ -34,6 +48,7 @@ RUN python3.10 -m pip install --quiet -r ./backend-python/requirements.txt
 
 COPY . .
 COPY --from=frontend /app/frontend/dist /app/frontend/dist
+COPY --from=librwkv /app/rwkv.cpp/build/librwkv.so /app/backend-python/rwkv_pip/cpp/librwkv.so
 
 EXPOSE 27777
 
