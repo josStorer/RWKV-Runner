@@ -1,0 +1,18 @@
+services:
+  rmkv_runner:
+    image: rwkv-runner:latest
+    build: .
+    # Append "--rwkv.cpp" parameter to use rwkv.cpp
+    # command: python3.10 ./backend-python/main.py  --port 27777 --host 0.0.0.0 --webui --rwkv.cpp
+    volumes:
+      - /mnt:/mnt
+    ports:
+      - "27777:27777"
+    # Comment the following lines if use rwkv.cpp
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
