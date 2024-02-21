@@ -171,10 +171,17 @@ class PIPELINE:
             all_tokens += [token]
             for xxx in occurrence:
                 occurrence[xxx] *= args.alpha_decay
+
+            ttt = self.decode([token])
+            www = 1
+            if ttt in " \t0123456789":
+                www = 0
+            # elif ttt in '\r\n,.;?!"\':+-*/=#@$%^&_`~|<>\\()[]{}，。；“”：？！（）【】':
+            #     www = 0.5
             if token not in occurrence:
-                occurrence[token] = 1
+                occurrence[token] = www
             else:
-                occurrence[token] += 1
+                occurrence[token] += www
             # print(occurrence) # debug
 
             # output
