@@ -379,7 +379,9 @@ class TextRWKV(AbstractRWKV):
             assert len(dd) == 1
             self.AVOID_REPEAT_TOKENS.add(dd[0])
         self.AVOID_PENALTY_TOKENS = set()
-        AVOID_PENALTY = "\n,.:，。：<>[]{}()/\\|;；"  # \n,.:?!，。：？！"“”<>[]{}/\\|;；~`@#$%^&*()_+-=0123456789
+        AVOID_PENALTY = (
+            "\n"  # \n,.:?!，。：？！"“”<>[]{}/\\|;；~`@#$%^&*()_+-=0123456789
+        )
         for i in AVOID_PENALTY:
             dd = self.pipeline.encode(i)
             assert len(dd) == 1
