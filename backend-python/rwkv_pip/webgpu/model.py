@@ -22,7 +22,7 @@ class RWKV:
         args = {
             "file": model_path,
             "turbo": True,
-            "quant": 32 if "i8" in strategy else 0,
+            "quant": 31 if "i8" in strategy else 0,
             "quant_nf4": 26 if "i4" in strategy else 0,
             "token_chunk_size": 32,
             "lora": None,
