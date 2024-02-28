@@ -22,6 +22,12 @@ else
   sudo apt -y install python3-pip
 fi
 
+if dpkg -s "python3-dev" >/dev/null 2>&1; then
+  echo "python3-dev installed"
+else
+  sudo apt -y install python3-dev
+fi
+
 if dpkg -s "ninja-build" >/dev/null 2>&1; then
   echo "ninja installed"
 else
