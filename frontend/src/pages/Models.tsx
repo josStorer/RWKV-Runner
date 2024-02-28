@@ -155,7 +155,7 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
 
 const getTags = () => {
   return Array.from(new Set(
-    ['Recommended',
+    ['Recommended', 'Official',
       ...commonStore.modelSourceList.map(item => item.tags || []).flat()
       .filter(i => !i.includes('Other') && !i.includes('Local'))
       , 'Other', 'Local']));

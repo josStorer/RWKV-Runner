@@ -273,6 +273,27 @@
       "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt"
     },
     {
+      "name": "Mobius-r5-chat-12b-128k.pth",
+      "desc": {
+        "en": "RWKV-5 Mobius 12B Ctx128k",
+        "zh": "RWKV-5 Mobius 12B 128k上下文",
+        "ja": "RWKV-5 Mobius 12B 128kコンテキスト"
+      },
+      "size": 23157427004,
+      "SHA256": "2190d59e130f8d9b580e5531874f34f7eaeb7b7b6d04fb1439b7f5c5d7dbaafe",
+      "lastUpdated": "2024-02-24T01:33:27",
+      "url": "https://huggingface.co/TimeMobius/Mobius-Chat-12B-128k/blob/main/Mobius-r5-chat-12b-128k.pth",
+      "downloadUrl": "https://huggingface.co/TimeMobius/Mobius-Chat-12B-128k/resolve/main/Mobius-r5-chat-12b-128k.pth",
+      "tags": [
+        "Finetuned",
+        "RWKV-5",
+        "Global",
+        "Recommended",
+        "CN",
+        "JP"
+      ]
+    },
+    {
       "name": "RWKV-4-World-CHNtuned-0.1B-v1-20230617-ctx4096.pth",
       "desc": {
         "en": "Global Languages 0.1B v1 Enhanced Chinese",
