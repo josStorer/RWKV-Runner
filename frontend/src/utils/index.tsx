@@ -194,6 +194,8 @@ export const getStrategy = (modelConfig: ModelConfig | undefined = undefined) =>
     case 'WebGPU':
     case 'WebGPU (Python)':
       strategy += params.precision === 'nf4' ? 'fp16i4' : params.precision === 'int8' ? 'fp16i8' : 'fp16';
+      if (params.quantizedLayers)
+        strategy += ` layer${params.quantizedLayers}`;
       break;
     case 'CUDA':
     case 'CUDA-Beta':

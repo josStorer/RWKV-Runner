@@ -19,12 +19,19 @@ class RWKV:
         self.version = str(self.info.version).lower()
         self.wrp = getattr(wrp, self.version)
 
+        layer = (
+            int(s.lstrip("layer"))
+            for s in strategy.split()
+            for s in s.split(",")
+            if s.startswith("layer")
+        )
+
         args = {
             "file": model_path,
             "turbo": True,
-            "quant": 31 if "i8" in strategy else 0,
-            "quant_nf4": 26 if "i4" in strategy else 0,
-            "token_chunk_size": 32,
+            "quant": next(layer, 31) if "i8" in strategy else 0,
+            "quant_nf4": next(layer, 26) if "i4" in strategy else 0,
+            "token_chunk_size": 128,
             "lora": None,
         }
         self.model = self.wrp.Model(**args)

@@ -11,7 +11,8 @@ export const ValuedSlider: FC<{
   input?: boolean
   onChange?: (ev: React.ChangeEvent<HTMLInputElement>, data: SliderOnChangeData) => void,
   toFixed?: number
-}> = ({ value, min, max, step, input, onChange, toFixed }) => {
+  disabled?: boolean
+}> = ({ value, min, max, step, input, onChange, toFixed, disabled }) => {
   const sliderRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     if (step && sliderRef.current && sliderRef.current.parentElement) {
@@ -24,10 +25,10 @@ export const ValuedSlider: FC<{
     <div className="flex items-center">
       <Slider ref={sliderRef} className="grow" style={{ minWidth: '50%' }} value={value} min={min}
         max={max} step={step}
-        onChange={onChange} />
+        onChange={onChange} disabled={disabled} />
       {input
         ? <NumberInput style={{ minWidth: 0 }} value={value} min={min} max={max} step={step} onChange={onChange}
-          toFixed={toFixed} />
+          toFixed={toFixed} disabled={disabled} />
         : <Text>{value}</Text>}
     </div>
   );

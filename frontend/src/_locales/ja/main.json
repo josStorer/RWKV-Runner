@@ -341,5 +341,7 @@
   "Load Conversation": "会話を読み込む",
   "The latest X messages will be sent to the server. If you are using the RWKV-Runner server, please use the default value because RWKV-Runner has built-in state cache management which only calculates increments. Sending all messages will have lower cost. If you are using ChatGPT, adjust this value according to your needs to reduce ChatGPT expenses.": "最新のX件のメッセージがサーバーに送信されます。RWKV-Runnerサーバーを使用している場合は、デフォルト値を使用してください。RWKV-Runnerには組み込みの状態キャッシュ管理があり、増分のみを計算します。すべてのメッセージを送信すると、コストが低くなります。ChatGPTを使用している場合は、ChatGPTの費用を削減するために必要に応じてこの値を調整してください。",
   "History Message Number": "履歴メッセージ数",
-  "Send All Message": "すべてのメッセージを送信"
+  "Send All Message": "すべてのメッセージを送信",
+  "Quantized Layers": "量子化されたレイヤー",
+  "Number of the neural network layers quantized with current precision, the more you quantize, the lower the VRAM usage, but the quality correspondingly decreases.": "現在の精度で量子化されたニューラルネットワークのレイヤーの数、量子化するほどVRAMの使用量が低くなりますが、品質も相応に低下します。"
 }

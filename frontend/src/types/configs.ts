@@ -16,6 +16,7 @@ export type ModelParameters = {
   precision: Precision;
   storedLayers: number;
   maxStoredLayers: number;
+  quantizedLayers?: number;
   useCustomCuda?: boolean;
   customStrategy?: string;
   useCustomTokenizer?: boolean;

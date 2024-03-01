@@ -10,9 +10,10 @@ export const NumberInput: FC<{
   onChange?: (ev: React.ChangeEvent<HTMLInputElement>, data: SliderOnChangeData) => void
   style?: CSSProperties,
   toFixed?: number
-}> = ({ value, min, max, step, onChange, style, toFixed = 2 }) => {
+  disabled?: boolean
+}> = ({ value, min, max, step, onChange, style, toFixed = 2, disabled }) => {
   return (
-    <Input type="number" style={style} value={value.toString()} min={min} max={max} step={step}
+    <Input type="number" style={style} value={value.toString()} min={min} max={max} step={step} disabled={disabled}
       onChange={(e, data) => {
         onChange?.(e, { value: Number(data.value) });
       }}

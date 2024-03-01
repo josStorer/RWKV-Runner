@@ -331,6 +331,26 @@ const Configs: FC = observer(() => {
                         }} />
                     } />
                 }
+                {selectedConfig.modelParameters.device.startsWith('WebGPU') && <div />}
+                {
+                  selectedConfig.modelParameters.device.startsWith('WebGPU') &&
+                  <Labeled label={t('Quantized Layers')}
+                    desc={t('Number of the neural network layers quantized with current precision, the more you quantize, the lower the VRAM usage, but the quality correspondingly decreases.')}
+                    content={
+                      <ValuedSlider
+                        disabled={selectedConfig.modelParameters.precision !== 'int8' && selectedConfig.modelParameters.precision !== 'nf4'}
+                        value={selectedConfig.modelParameters.precision === 'int8' ? (selectedConfig.modelParameters.quantizedLayers || 31) :
+                          selectedConfig.modelParameters.precision === 'nf4' ? (selectedConfig.modelParameters.quantizedLayers || 26) :
+                            selectedConfig.modelParameters.maxStoredLayers
+                        } min={0}
+                        max={selectedConfig.modelParameters.maxStoredLayers} step={1} input
+                        onChange={(e, data) => {
+                          setSelectedConfigModelParams({
+                            quantizedLayers: data.value
+                          });
+                        }} />
+                    } />
+                }
                 {selectedConfig.modelParameters.device.startsWith('CUDA') && <div />}
                 {
                   displayStrategyImg &&
