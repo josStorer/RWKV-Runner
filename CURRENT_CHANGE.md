@@ -1,17 +1,31 @@
 ## Changes
 
+**This version includes important bug fixes, it is strongly recommended to upgrade to this version.**
+
 ### Upgrades
 
-- rwkv 0.8.25 (fix v6 fp16i8)
+- webgpu 0.3.20 https://github.com/cgisky1980/ai00_rwkv_server
+
+### Features
+
+- allow setting quantizedLayers of WebGPU mode
+
+### Improvements
+
+- improve occurrence[token] condition
+- disable AVOID_PENALTY_TOKENS when generating (still enabled when preprocessing)
+- enable useHfMirror by default for chinese users
 
 ### Fixes
 
-- fix /update-config can make the default value of unclearly specified fields invalid by passing in None fields
+- fix the issue where state cache could be modified leading to inconsistent hit results
+- fix convert_safetensors.py for rwkv6
+- add python3-dev to lora fine-tune dependencies (this may previously lead to the error of v5 fine-tune)
 
 ### Chores
 
-- change AVOID_PENALTY to \n only
-- chores
+- hide MPS and CUDA-Beta Options
+- update manifest
 
 ## Install
 
