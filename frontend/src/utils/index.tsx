@@ -196,6 +196,8 @@ export const getStrategy = (modelConfig: ModelConfig | undefined = undefined) =>
       strategy += params.precision === 'nf4' ? 'fp16i4' : params.precision === 'int8' ? 'fp16i8' : 'fp16';
       if (params.quantizedLayers)
         strategy += ` layer${params.quantizedLayers}`;
+      if (params.tokenChunkSize)
+        strategy += ` chunk${params.tokenChunkSize}`;
       break;
     case 'CUDA':
     case 'CUDA-Beta':

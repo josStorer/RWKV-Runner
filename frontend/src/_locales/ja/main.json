@@ -343,5 +343,7 @@
   "History Message Number": "履歴メッセージ数",
   "Send All Message": "すべてのメッセージを送信",
   "Quantized Layers": "量子化されたレイヤー",
-  "Number of the neural network layers quantized with current precision, the more you quantize, the lower the VRAM usage, but the quality correspondingly decreases.": "現在の精度で量子化されたニューラルネットワークのレイヤーの数、量子化するほどVRAMの使用量が低くなりますが、品質も相応に低下します。"
+  "Number of the neural network layers quantized with current precision, the more you quantize, the lower the VRAM usage, but the quality correspondingly decreases.": "現在の精度で量子化されたニューラルネットワークのレイヤーの数、量子化するほどVRAMの使用量が低くなりますが、品質も相応に低下します。",
+  "Parallel Token Chunk Size": "並列トークンチャンクサイズ",
+  "Maximum tokens to be processed in parallel at once. For high end GPUs, this could be 64 or 128 (faster).": "一度に並列で処理される最大トークン数。高性能なGPUの場合、64または128になります（高速）。"
 }

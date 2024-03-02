@@ -331,7 +331,21 @@ const Configs: FC = observer(() => {
                         }} />
                     } />
                 }
-                {selectedConfig.modelParameters.device.startsWith('WebGPU') && <div />}
+                {
+                  selectedConfig.modelParameters.device.startsWith('WebGPU') &&
+                  <Labeled label={t('Parallel Token Chunk Size')}
+                    desc={t('Maximum tokens to be processed in parallel at once. For high end GPUs, this could be 64 or 128 (faster).')}
+                    content={
+                      <ValuedSlider
+                        value={selectedConfig.modelParameters.tokenChunkSize || 32}
+                        min={16} max={256} step={16} input
+                        onChange={(e, data) => {
+                          setSelectedConfigModelParams({
+                            tokenChunkSize: data.value
+                          });
+                        }} />
+                    } />
+                }
                 {
                   selectedConfig.modelParameters.device.startsWith('WebGPU') &&
                   <Labeled label={t('Quantized Layers')}

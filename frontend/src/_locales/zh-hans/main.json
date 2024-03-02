@@ -343,5 +343,7 @@
   "History Message Number": "历史消息数量",
   "Send All Message": "发送所有消息",
   "Quantized Layers": "量化层数",
-  "Number of the neural network layers quantized with current precision, the more you quantize, the lower the VRAM usage, but the quality correspondingly decreases.": "神经网络以当前精度量化的层数, 量化越多, 占用显存越低, 但质量相应下降"
+  "Number of the neural network layers quantized with current precision, the more you quantize, the lower the VRAM usage, but the quality correspondingly decreases.": "神经网络以当前精度量化的层数, 量化越多, 占用显存越低, 但质量相应下降",
+  "Parallel Token Chunk Size": "并行Token块大小",
+  "Maximum tokens to be processed in parallel at once. For high end GPUs, this could be 64 or 128 (faster).": "一次最多可以并行处理的token数量. 对于高端显卡, 这可以是64或128 (更快)"
 }
