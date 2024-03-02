@@ -667,7 +667,7 @@ def RWKV(model: str, strategy: str, tokenizer: Union[str, None]) -> AbstractRWKV
 
 class ModelConfigBody(BaseModel):
     max_tokens: int = Field(default=None, gt=0, le=102400)
-    temperature: float = Field(default=None, ge=0, le=2)
+    temperature: float = Field(default=None, ge=0, le=3)
     top_p: float = Field(default=None, ge=0, le=1)
     presence_penalty: float = Field(default=None, ge=-2, le=2)
     frequency_penalty: float = Field(default=None, ge=-2, le=2)

@@ -176,7 +176,7 @@ const Configs: FC = observer(() => {
                 <Labeled label={t('Temperature') + ' *'}
                   desc={t('Sampling temperature, it\'s like giving alcohol to a model, the higher the stronger the randomness and creativity, while the lower, the more focused and deterministic it will be.')}
                   content={
-                    <ValuedSlider value={selectedConfig.apiParameters.temperature} min={0} max={2} step={0.1}
+                    <ValuedSlider value={selectedConfig.apiParameters.temperature} min={0} max={3} step={0.1}
                       input
                       onChange={(e, data) => {
                         setSelectedConfigApiParams({
@@ -187,7 +187,7 @@ const Configs: FC = observer(() => {
                 <Labeled label={t('Top_P') + ' *'}
                   desc={t('Just like feeding sedatives to the model. Consider the results of the top n% probability mass, 0.1 considers the top 10%, with higher quality but more conservative, 1 considers all results, with lower quality but more diverse.')}
                   content={
-                    <ValuedSlider value={selectedConfig.apiParameters.topP} min={0} max={1} step={0.1} input
+                    <ValuedSlider value={selectedConfig.apiParameters.topP} min={0} max={1} step={0.05} input
                       onChange={(e, data) => {
                         setSelectedConfigApiParams({
                           topP: data.value
