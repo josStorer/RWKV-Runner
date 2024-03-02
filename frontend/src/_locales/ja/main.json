@@ -345,5 +345,7 @@
   "Quantized Layers": "量子化されたレイヤー",
   "Number of the neural network layers quantized with current precision, the more you quantize, the lower the VRAM usage, but the quality correspondingly decreases.": "現在の精度で量子化されたニューラルネットワークのレイヤーの数、量子化するほどVRAMの使用量が低くなりますが、品質も相応に低下します。",
   "Parallel Token Chunk Size": "並列トークンチャンクサイズ",
-  "Maximum tokens to be processed in parallel at once. For high end GPUs, this could be 64 or 128 (faster).": "一度に並列で処理される最大トークン数。高性能なGPUの場合、64または128になります（高速）。"
+  "Maximum tokens to be processed in parallel at once. For high end GPUs, this could be 64 or 128 (faster).": "一度に並列で処理される最大トークン数。高性能なGPUの場合、64または128になります（高速）。",
+  "Global Penalty": "グローバルペナルティ",
+  "When generating a response, whether to include the submitted prompt as a penalty factor. By turning this off, you will get the same generated results as official RWKV Gradio. If you find duplicate results in the generated results, turning this on can help avoid generating duplicates.": "レスポンスを生成する際、提出されたプロンプトをペナルティ要因として含めるかどうか。これをオフにすると、公式RWKV Gradioと同じ生成結果を得ることができます。生成された結果に重複がある場合、これをオンにすることで重複の生成を回避するのに役立ちます。"
 }

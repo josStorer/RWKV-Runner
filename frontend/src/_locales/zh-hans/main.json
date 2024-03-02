@@ -345,5 +345,7 @@
   "Quantized Layers": "量化层数",
   "Number of the neural network layers quantized with current precision, the more you quantize, the lower the VRAM usage, but the quality correspondingly decreases.": "神经网络以当前精度量化的层数, 量化越多, 占用显存越低, 但质量相应下降",
   "Parallel Token Chunk Size": "并行Token块大小",
-  "Maximum tokens to be processed in parallel at once. For high end GPUs, this could be 64 or 128 (faster).": "一次最多可以并行处理的token数量. 对于高端显卡, 这可以是64或128 (更快)"
+  "Maximum tokens to be processed in parallel at once. For high end GPUs, this could be 64 or 128 (faster).": "一次最多可以并行处理的token数量. 对于高端显卡, 这可以是64或128 (更快)",
+  "Global Penalty": "全局惩罚",
+  "When generating a response, whether to include the submitted prompt as a penalty factor. By turning this off, you will get the same generated results as official RWKV Gradio. If you find duplicate results in the generated results, turning this on can help avoid generating duplicates.": "生成响应时, 是否将提交的prompt也纳入到惩罚项. 关闭此项将得到与RWKV官方Gradio完全一致的生成结果. 如果你发现生成结果出现重复, 那么开启此项有助于避免生成重复"
 }

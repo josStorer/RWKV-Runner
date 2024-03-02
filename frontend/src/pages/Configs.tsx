@@ -35,6 +35,7 @@ import { ResetConfigsButton } from '../components/ResetConfigsButton';
 import { useMediaQuery } from 'usehooks-ts';
 import { ApiParameters, Device, ModelParameters, Precision } from '../types/configs';
 import { convertModel, convertToGGML, convertToSt } from '../utils/convert-model';
+import { defaultPenaltyDecay } from './defaultConfigs';
 
 const ConfigSelector: FC<{
   selectedIndex: number,
@@ -66,14 +67,17 @@ const Configs: FC = observer(() => {
   const [selectedIndex, setSelectedIndex] = React.useState(commonStore.currentModelConfigIndex);
   const [selectedConfig, setSelectedConfig] = React.useState(commonStore.modelConfigs[selectedIndex]);
   const [displayStrategyImg, setDisplayStrategyImg] = React.useState(false);
-  const advancedHeaderRef = useRef<HTMLDivElement>(null);
+  const advancedHeaderRef1 = useRef<HTMLDivElement>(null);
+  const advancedHeaderRef2 = useRef<HTMLDivElement>(null);
   const mq = useMediaQuery('(min-width: 640px)');
   const navigate = useNavigate();
   const port = selectedConfig.apiParameters.apiPort;
 
   useEffect(() => {
-    if (advancedHeaderRef.current)
-      (advancedHeaderRef.current.firstElementChild as HTMLElement).style.padding = '0';
+    if (advancedHeaderRef1.current)
+      (advancedHeaderRef1.current.firstElementChild as HTMLElement).style.padding = '0';
+    if (advancedHeaderRef2.current)
+      (advancedHeaderRef2.current.firstElementChild as HTMLElement).style.padding = '0';
   }, []);
 
   const updateSelectedIndex = useCallback((newIndex: number) => {
@@ -113,7 +117,9 @@ const Configs: FC = observer(() => {
       temperature: selectedConfig.apiParameters.temperature,
       top_p: selectedConfig.apiParameters.topP,
       presence_penalty: selectedConfig.apiParameters.presencePenalty,
-      frequency_penalty: selectedConfig.apiParameters.frequencyPenalty
+      frequency_penalty: selectedConfig.apiParameters.frequencyPenalty,
+      penalty_decay: selectedConfig.apiParameters.penaltyDecay,
+      global_penalty: selectedConfig.apiParameters.globalPenalty
     });
     toast(t('Config Saved'), { autoClose: 300, type: 'success' });
   };
@@ -194,28 +200,67 @@ const Configs: FC = observer(() => {
                         });
                       }} />
                   } />
-                <Labeled label={t('Presence Penalty') + ' *'}
-                  desc={t('Positive values penalize new tokens based on whether they appear in the text so far, increasing the model\'s likelihood to talk about new topics.')}
-                  content={
-                    <ValuedSlider value={selectedConfig.apiParameters.presencePenalty} min={-2} max={2}
-                      step={0.1} input
-                      onChange={(e, data) => {
-                        setSelectedConfigApiParams({
-                          presencePenalty: data.value
-                        });
-                      }} />
-                  } />
-                <Labeled label={t('Frequency Penalty') + ' *'}
-                  desc={t('Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model\'s likelihood to repeat the same line verbatim.')}
-                  content={
-                    <ValuedSlider value={selectedConfig.apiParameters.frequencyPenalty} min={-2} max={2}
-                      step={0.1} input
-                      onChange={(e, data) => {
-                        setSelectedConfigApiParams({
-                          frequencyPenalty: data.value
-                        });
-                      }} />
-                  } />
+                <Accordion className="sm:col-span-2" collapsible
+                  openItems={!commonStore.apiParamsCollapsed && 'advanced'}
+                  onToggle={(e, data) => {
+                    if (data.value === 'advanced')
+                      commonStore.setApiParamsCollapsed(!commonStore.apiParamsCollapsed);
+                  }}>
+                  <AccordionItem value="advanced">
+                    <AccordionHeader ref={advancedHeaderRef1} size="small">{t('Advanced')}</AccordionHeader>
+                    <AccordionPanel>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <Labeled label={t('Presence Penalty') + ' *'}
+                          desc={t('Positive values penalize new tokens based on whether they appear in the text so far, increasing the model\'s likelihood to talk about new topics.')}
+                          content={
+                            <ValuedSlider value={selectedConfig.apiParameters.presencePenalty} min={-2} max={2}
+                              step={0.1} input
+                              onChange={(e, data) => {
+                                setSelectedConfigApiParams({
+                                  presencePenalty: data.value
+                                });
+                              }} />
+                          } />
+                        <Labeled label={t('Frequency Penalty') + ' *'}
+                          desc={t('Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model\'s likelihood to repeat the same line verbatim.')}
+                          content={
+                            <ValuedSlider value={selectedConfig.apiParameters.frequencyPenalty} min={-2} max={2}
+                              step={0.1} input
+                              onChange={(e, data) => {
+                                setSelectedConfigApiParams({
+                                  frequencyPenalty: data.value
+                                });
+                              }} />
+                          } />
+                        <Labeled
+                          label={t('Penalty Decay')
+                            + ((!selectedConfig.apiParameters.penaltyDecay || selectedConfig.apiParameters.penaltyDecay === defaultPenaltyDecay)
+                              ? ` (${t('Default')})` : '')
+                            + ' *'}
+                          desc={t('If you don\'t know what it is, keep it default.')}
+                          content={
+                            <ValuedSlider value={selectedConfig.apiParameters.penaltyDecay || defaultPenaltyDecay}
+                              min={0.99} max={0.999} step={0.001} toFixed={3} input
+                              onChange={(e, data) => {
+                                setSelectedConfigApiParams({
+                                  penaltyDecay: data.value
+                                });
+                              }} />
+                          } />
+                        <Labeled label={t('Global Penalty') + ' *'}
+                          desc={t('When generating a response, whether to include the submitted prompt as a penalty factor. By turning this off, you will get the same generated results as official RWKV Gradio. If you find duplicate results in the generated results, turning this on can help avoid generating duplicates.')}
+                          content={
+                            <Switch checked={selectedConfig.apiParameters.globalPenalty}
+                              onChange={(e, data) => {
+                                setSelectedConfigApiParams({
+                                  globalPenalty: data.checked
+                                });
+                              }} />
+                          } />
+                      </div>
+                    </AccordionPanel>
+                  </AccordionItem>
+                </Accordion>
               </div>
             }
           />
@@ -410,7 +455,7 @@ const Configs: FC = observer(() => {
                         commonStore.setModelParamsCollapsed(!commonStore.modelParamsCollapsed);
                     }}>
                     <AccordionItem value="advanced">
-                      <AccordionHeader ref={advancedHeaderRef} size="small">{t('Advanced')}</AccordionHeader>
+                      <AccordionHeader ref={advancedHeaderRef2} size="small">{t('Advanced')}</AccordionHeader>
                       <AccordionPanel>
                         <div className="flex flex-col">
                           <div className="flex grow">

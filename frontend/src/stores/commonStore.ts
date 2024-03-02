@@ -127,6 +127,7 @@ class CommonStore {
   // configs
   currentModelConfigIndex: number = 0;
   modelConfigs: ModelConfig[] = [];
+  apiParamsCollapsed: boolean = true;
   modelParamsCollapsed: boolean = true;
   // models
   activeModelListTags: string[] = [];
@@ -322,6 +323,10 @@ class CommonStore {
 
   setAdvancedCollapsed(value: boolean) {
     this.advancedCollapsed = value;
+  }
+
+  setApiParamsCollapsed(value: boolean) {
+    this.apiParamsCollapsed = value;
   }
 
   setModelParamsCollapsed(value: boolean) {
