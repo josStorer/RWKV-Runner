@@ -1,0 +1,117 @@
+name: pre-release
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - "backend-python/**"
+    tags-ignore:
+      - "v*"
+
+jobs:
+  windows:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.20.5'
+      - uses: actions/setup-python@v5
+        id: cp310
+        with:
+          python-version: '3.10'
+      - uses: crazy-max/ghaction-chocolatey@v3
+        with:
+          args: install upx
+      - run: |
+          Start-BitsTransfer https://github.com/josStorer/ai00_rwkv_server/releases/latest/download/webgpu_server_windows_x86_64.exe ./backend-rust/webgpu_server.exe
+          Start-BitsTransfer https://github.com/josStorer/web-rwkv-converter/releases/latest/download/web-rwkv-converter_windows_x86_64.exe ./backend-rust/web-rwkv-converter.exe
+          Start-BitsTransfer https://github.com/josStorer/LibreHardwareMonitor.Console/releases/latest/download/LibreHardwareMonitor.Console.zip ./LibreHardwareMonitor.Console.zip
+          Expand-Archive ./LibreHardwareMonitor.Console.zip -DestinationPath ./components/LibreHardwareMonitor.Console
+          Start-BitsTransfer https://www.python.org/ftp/python/3.10.11/python-3.10.11-embed-amd64.zip ./python-3.10.11-embed-amd64.zip
+          Expand-Archive ./python-3.10.11-embed-amd64.zip -DestinationPath ./py310
+          $content=Get-Content "./py310/python310._pth"; $content | ForEach-Object {if ($_.ReadCount -eq 3) {"Lib\\site-packages"} else {$_}} | Set-Content ./py310/python310._pth
+          ./py310/python ./backend-python/get-pip.py
+          ./py310/python -m pip install Cython==3.0.4
+          Copy-Item -Path "${{ steps.cp310.outputs.python-path }}/../include" -Destination "py310/include" -Recurse
+          Copy-Item -Path "${{ steps.cp310.outputs.python-path }}/../libs" -Destination "py310/libs" -Recurse
+          ./py310/python -m pip install cyac==1.9
+          go install github.com/wailsapp/wails/v2/cmd/wails@latest
+          del ./backend-python/rwkv_pip/cpp/librwkv.dylib
+          del ./backend-python/rwkv_pip/cpp/librwkv.so
+          (Get-Content -Path ./backend-golang/app.go) -replace "//go:custom_build windows ", "" | Set-Content -Path ./backend-golang/app.go
+          (Get-Content -Path ./backend-golang/utils.go) -replace "//go:custom_build windows ", "" | Set-Content -Path ./backend-golang/utils.go
+          make
+          Rename-Item -Path "build/bin/RWKV-Runner.exe" -NewName "RWKV-Runner_windows_x64.exe"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: RWKV-Runner_windows_x64.exe
+          path: build/bin/RWKV-Runner_windows_x64.exe
+
+  linux:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.20.5'
+      - run: |
+          wget https://github.com/josStorer/ai00_rwkv_server/releases/latest/download/webgpu_server_linux_x86_64 -O ./backend-rust/webgpu_server
+          wget https://github.com/josStorer/web-rwkv-converter/releases/latest/download/web-rwkv-converter_linux_x86_64 -O ./backend-rust/web-rwkv-converter
+          sudo apt-get update
+          sudo apt-get install upx
+          sudo apt-get install build-essential libgtk-3-dev libwebkit2gtk-4.0-dev libasound2-dev
+          go install github.com/wailsapp/wails/v2/cmd/wails@latest
+          rm ./backend-python/rwkv_pip/wkv_cuda.pyd
+          rm ./backend-python/rwkv_pip/rwkv5.pyd
+          rm ./backend-python/rwkv_pip/rwkv6.pyd
+          rm ./backend-python/rwkv_pip/beta/wkv_cuda.pyd
+          rm ./backend-python/get-pip.py
+          rm ./backend-python/rwkv_pip/cpp/librwkv.dylib
+          rm ./backend-python/rwkv_pip/cpp/rwkv.dll
+          rm ./backend-python/rwkv_pip/webgpu/web_rwkv_py.cp310-win_amd64.pyd
+          make
+          mv build/bin/RWKV-Runner build/bin/RWKV-Runner_linux_x64
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: RWKV-Runner_linux_x64
+          path: build/bin/RWKV-Runner_linux_x64
+
+  macos:
+    runs-on: macos-13
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.20.5'
+      - run: |
+          wget https://github.com/josStorer/ai00_rwkv_server/releases/latest/download/webgpu_server_darwin_aarch64 -O ./backend-rust/webgpu_server
+          wget https://github.com/josStorer/web-rwkv-converter/releases/latest/download/web-rwkv-converter_darwin_aarch64 -O ./backend-rust/web-rwkv-converter
+          go install github.com/wailsapp/wails/v2/cmd/wails@latest
+          rm ./backend-python/rwkv_pip/wkv_cuda.pyd
+          rm ./backend-python/rwkv_pip/rwkv5.pyd
+          rm ./backend-python/rwkv_pip/rwkv6.pyd
+          rm ./backend-python/rwkv_pip/beta/wkv_cuda.pyd
+          rm ./backend-python/get-pip.py
+          rm ./backend-python/rwkv_pip/cpp/rwkv.dll
+          rm ./backend-python/rwkv_pip/cpp/librwkv.so
+          rm ./backend-python/rwkv_pip/webgpu/web_rwkv_py.cp310-win_amd64.pyd
+          make
+          cp build/darwin/Readme_Install.txt build/bin/Readme_Install.txt
+          cp build/bin/RWKV-Runner.app/Contents/MacOS/RWKV-Runner build/bin/RWKV-Runner_darwin_universal
+          cd build/bin && zip -r RWKV-Runner_macos_universal.zip RWKV-Runner.app Readme_Install.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: RWKV-Runner_macos_universal.zip
+          path: build/bin/RWKV-Runner_macos_universal.zip
+
