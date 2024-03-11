@@ -2,16 +2,24 @@
 
 ### Features
 
-- allow setting tokenChunkSize of WebGPU mode
-- expose global_penalty
+- add Docker support (#291) @LonghronShen
+
+### Fixes
+
+- fix a generation exception caused by potentially dangerous regex being passed into the stop array
+- fix max_tokens parameter of Chat page not being passed to backend
+- fix the issue where penalty_decay and global_penalty are not being passed to the backend default config when running
+  the model through client
 
 ### Improvements
 
-- improve parameters controllable range
+- prevent 'torch' has no attribute 'cuda' error in torch_gc, so user can use CPU or WebGPU (#302)
 
 ### Chores
 
-- update defaultModelConfigs
+- bump dependencies
+- add pre-release workflow
+- dep_check.py now ignores GPUtil
 
 ## Install
 
