@@ -127,9 +127,12 @@ def update_config(body: ModelConfigBody):
 
 @router.get("/status", tags=["Configs"])
 def status():
-    import GPUtil
+    try:
+        import GPUtil
 
-    gpus = GPUtil.getGPUs()
+        gpus = GPUtil.getGPUs()
+    except:
+        gpus = []
     if len(gpus) == 0:
         device_name = "CPU"
     else:

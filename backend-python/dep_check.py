@@ -7,7 +7,6 @@ import lm_dataformat
 import ftfy
 import tqdm
 import tiktoken
-import GPUtil
 
 import torch
 import rwkv
