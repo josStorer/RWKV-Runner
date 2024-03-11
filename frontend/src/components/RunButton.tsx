@@ -212,7 +212,9 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
                 temperature: modelConfig.apiParameters.temperature,
                 top_p: modelConfig.apiParameters.topP,
                 presence_penalty: modelConfig.apiParameters.presencePenalty,
-                frequency_penalty: modelConfig.apiParameters.frequencyPenalty
+                frequency_penalty: modelConfig.apiParameters.frequencyPenalty,
+                penalty_decay: modelConfig.apiParameters.penaltyDecay,
+                global_penalty: modelConfig.apiParameters.globalPenalty
               });
             }
 
