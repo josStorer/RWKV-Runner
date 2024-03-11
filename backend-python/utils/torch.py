@@ -19,9 +19,12 @@ def set_torch():
 
 
 def torch_gc():
-    import torch
+    try:
+        import torch
 
-    if torch.cuda.is_available():
-        with torch.cuda.device(0):
-            torch.cuda.empty_cache()
-            torch.cuda.ipc_collect()
+        if torch.cuda.is_available():
+            with torch.cuda.device(0):
+                torch.cuda.empty_cache()
+                torch.cuda.ipc_collect()
+    except:
+        pass  # prevent 'torch' has no attribute 'cuda' error, so user can use CPU or WebGPU
