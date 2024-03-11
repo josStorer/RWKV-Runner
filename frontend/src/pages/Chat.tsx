@@ -534,6 +534,7 @@ const ChatPanel: FC = observer(() => {
           messages: messages.slice(-commonStore.chatParams.historyN),
           stream: true,
           model: commonStore.settings.apiChatModelName, // 'gpt-3.5-turbo'
+          max_tokens: commonStore.chatParams.maxResponseToken,
           temperature: commonStore.chatParams.temperature,
           top_p: commonStore.chatParams.topP,
           presence_penalty: commonStore.chatParams.presencePenalty,
