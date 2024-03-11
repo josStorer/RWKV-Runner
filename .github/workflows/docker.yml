@@ -33,7 +33,7 @@ jobs:
           string: ${{ github.event.repository.name }}
 
       - name: Checkout base
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -126,7 +126,7 @@ jobs:
           string: ${{ github.event.repository.name }}
 
       - name: Checkout base
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
