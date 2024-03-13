@@ -2,24 +2,15 @@
 
 ### Features
 
-- add Docker support (#291) @LonghronShen
-
-### Fixes
-
-- fix a generation exception caused by potentially dangerous regex being passed into the stop array
-- fix max_tokens parameter of Chat page not being passed to backend
-- fix the issue where penalty_decay and global_penalty are not being passed to the backend default config when running
-  the model through client
+- rwkv6 lora finetune support (https://github.com/JL-er/RWKV-LORA)
+- latex support
 
 ### Improvements
 
-- prevent 'torch' has no attribute 'cuda' error in torch_gc, so user can use CPU or WebGPU (#302)
-
-### Chores
-
-- bump dependencies
-- add pre-release workflow
-- dep_check.py now ignores GPUtil
+- improve markdown rendering
+- improve theme
+- improve usability
+- for Chinese users, replace Tsinghua pip mirrors with Alibaba Cloud to avoid 403 http error
 
 ## Install
 
