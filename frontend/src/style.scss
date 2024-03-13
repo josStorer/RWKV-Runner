@@ -46,48 +46,24 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
 
-  ul,
-  ol {
-    padding-left: 1.5em;
-  }
-
-  ol {
-    list-style: none;
-    counter-reset: item;
-
-    li {
-      counter-increment: item;
-
-      &::marker {
-        content: counter(item) '. ';
-      }
-    }
-  }
-
   pre {
     padding: 0;
+    background: transparent;
 
     code {
       font-size: 14px;
     }
   }
 
-  p {
-    margin: 0 0 10px;
-  }
-
   code {
-    padding: 0 0.4em;
-    margin: 0;
     white-space: pre-wrap;
     word-break: break-word;
     border-radius: 8px;
     background-color: var(--color-neutral-muted);
-    font-size: 11px;
+  }
 
-    .hljs {
-      padding: 0;
-    }
+  details summary {
+    cursor: pointer;
   }
 }
 

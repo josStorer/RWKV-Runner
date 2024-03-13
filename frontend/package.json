@@ -42,6 +42,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.10",
     "@types/file-saver": "^2.0.7",
     "@types/lodash-es": "^4.17.12",
     "@types/react": "^18.2.6",

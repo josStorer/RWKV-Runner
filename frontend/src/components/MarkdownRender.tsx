@@ -23,7 +23,7 @@ const Hyperlink: FC<any> = ({ href, children }) => {
 
 const MarkdownRender: FC<ReactMarkdownOptions & { disabled?: boolean }> = (props) => {
   return (
-    <div dir="auto" className="markdown-body">
+    <div dir="auto" className="prose markdown-body" style={{ maxWidth: '100%' }}>
       {props.disabled ?
         <div style={{ whiteSpace: 'pre-wrap' }}>
           {props.children}
