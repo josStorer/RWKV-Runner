@@ -127,7 +127,11 @@ if (!window.go) {
     return ''
   })
   defineApp('ReadJson', async (fileName) => {
-    return JSON.parse(localStorage.getItem(fileName))
+    const data = JSON.parse(localStorage.getItem(fileName))
+    if (data)
+      return data
+    else
+      throw new Error('File not found')
   })
   defineApp('SaveJson', async (fileName, data) => {
     localStorage.setItem(fileName, JSON.stringify(data))

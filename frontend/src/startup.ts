@@ -81,6 +81,7 @@ async function initConfig() {
   }).catch(() => {
     commonStore.setModelConfigs(commonStore.platform !== 'darwin' ? defaultModelConfigs : defaultModelConfigsMac, true);
   });
+  commonStore.setSettings({}, false); // to activate side effects
 }
 
 async function initCache(initUnfinishedModels: boolean) {

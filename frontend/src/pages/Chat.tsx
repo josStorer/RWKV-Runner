@@ -149,8 +149,8 @@ const ChatMessageItem: FC<{
       className={classnames(
         'flex p-2 rounded-lg overflow-hidden',
         editing ? 'grow' : '',
-        messageItem.side === 'left' ? 'bg-gray-200' : 'bg-blue-500',
-        messageItem.side === 'left' ? 'text-gray-600' : 'text-white'
+        commonStore.settings.darkMode ? 'bg-neutral-800 border-neutral-600 border-[1px]' : (messageItem.side === 'left' ? 'bg-gray-200' : 'bg-blue-500'),
+        commonStore.settings.darkMode ? 'text-white' : (messageItem.side === 'left' ? 'text-gray-600' : 'text-white')
       )}
     >
       {!editing ?

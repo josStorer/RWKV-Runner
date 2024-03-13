@@ -259,13 +259,18 @@ class CommonStore {
   setSettings = (value: Partial<SettingsType>, saveConfig: boolean = true) => {
     this.settings = { ...this.settings, ...value };
 
-    if (this.settings.darkMode)
+    if (this.settings.darkMode) {
       WindowSetDarkTheme();
-    else
+      document.documentElement.setAttribute('style', 'color-scheme: dark;');
+    } else {
       WindowSetLightTheme();
+      document.documentElement.setAttribute('style', 'color-scheme: light;');
+    }
 
-    if (this.settings.language)
+    if (this.settings.language) {
       i18n.changeLanguage(this.settings.language);
+      document.documentElement.setAttribute('lang', this.settings.language === 'dev' ? 'en' : this.settings.language);
+    }
 
     if (saveConfig)
       saveConfigs();
