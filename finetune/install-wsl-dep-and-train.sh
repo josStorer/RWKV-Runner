@@ -53,7 +53,7 @@ else
 fi
 
 echo "loading $loadModel"
-modelInfo=$(python3 ./finetune/get_layer_and_embd.py $loadModel 5.2)
+modelInfo=$(python3 ./finetune/get_layer_and_embd.py $loadModel 6.0)
 echo $modelInfo
 if [[ $modelInfo =~ "--n_layer" ]]; then
   sudo rm -rf /root/.cache/torch_extensions

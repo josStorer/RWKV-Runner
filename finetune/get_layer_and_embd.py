@@ -52,9 +52,13 @@ for x in keys:
     if "time_maa" in x:
         version = max(6, version)
 
+params = f"--vocab_size {vocab_size} --n_layer {n_layer} --n_embd {n_embd}"
+
 if version <= expected_max_version:
+    if version == 6:
+        params += ' --my_testing "x060"'
     print(
-        f"v{int(version)}/train.py --vocab_size {vocab_size} --n_layer {n_layer} --n_embd {n_embd}",
+        f"v{int(version)}/train.py {params}",
         end="",
     )
 else:
