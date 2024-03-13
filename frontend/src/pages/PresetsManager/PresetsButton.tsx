@@ -230,6 +230,7 @@ const ChatPresetEditor: FC<{
             editingMessages ?
               <div className="flex flex-col gap-1">
                 <Labeled flex spaceBetween label={t('Insert default system prompt at the beginning')}
+                  desc={t('Inside the model, there is a default prompt to improve the model\'s handling of common issues, but it may degrade the role-playing effect. You can disable this option to achieve a better role-playing effect.')}
                   content={
                     <Switch checked={editingPreset.presystem === undefined ? true : editingPreset.presystem}
                       onChange={(e, data) => {
@@ -239,6 +240,7 @@ const ChatPresetEditor: FC<{
                       }} />
                   } />
                 <Labeled flex breakline label={t('User Name')}
+                  desc={t('The name used internally by the model when processing user message, changing this value helps improve the role-playing effect.')}
                   content={
                     <Input placeholder="User" value={editingPreset.userName} onChange={(e, data) => {
                       setEditingPreset({
@@ -247,6 +249,7 @@ const ChatPresetEditor: FC<{
                     }} />
                   } />
                 <Labeled flex breakline label={t('Assistant Name')}
+                  desc={t('The name used internally by the model when processing AI message, changing this value helps improve the role-playing effect.')}
                   content={
                     <Input placeholder="Assistant" value={editingPreset.assistantName} onChange={(e, data) => {
                       setEditingPreset({

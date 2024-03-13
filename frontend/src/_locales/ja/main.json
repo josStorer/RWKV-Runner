@@ -4,7 +4,7 @@
   "About": "約",
   "Settings": "設定",
   "Go to chat page": "チャットページに移動する",
-  "Manage your configs": "あなたの設定を管理する",
+  "Manage your configs, adjust the starting model and parameters": "設定を管理し、開始モデルとパラメータを調整します",
   "Manage models": "モデルの管理",
   "Run": "実行",
   "Offline": "オフライン",
@@ -347,5 +347,9 @@
   "Parallel Token Chunk Size": "並列トークンチャンクサイズ",
   "Maximum tokens to be processed in parallel at once. For high end GPUs, this could be 64 or 128 (faster).": "一度に並列で処理される最大トークン数。高性能なGPUの場合、64または128になります（高速）。",
   "Global Penalty": "グローバルペナルティ",
-  "When generating a response, whether to include the submitted prompt as a penalty factor. By turning this off, you will get the same generated results as official RWKV Gradio. If you find duplicate results in the generated results, turning this on can help avoid generating duplicates.": "レスポンスを生成する際、提出されたプロンプトをペナルティ要因として含めるかどうか。これをオフにすると、公式RWKV Gradioと同じ生成結果を得ることができます。生成された結果に重複がある場合、これをオンにすることで重複の生成を回避するのに役立ちます。"
+  "When generating a response, whether to include the submitted prompt as a penalty factor. By turning this off, you will get the same generated results as official RWKV Gradio. If you find duplicate results in the generated results, turning this on can help avoid generating duplicates.": "レスポンスを生成する際、提出されたプロンプトをペナルティ要因として含めるかどうか。これをオフにすると、公式RWKV Gradioと同じ生成結果を得ることができます。生成された結果に重複がある場合、これをオンにすることで重複の生成を回避するのに役立ちます。",
+  "Create a new user or AI message content. You can prepare a chat record with AI here, and fill in the responses you want to get from AI in the tone of AI. When you use this preset, the chat record will be processed, and at this point, AI will better understand what you want it to do or what role to play.": "新しいユーザーまたはAIメッセージコンテンツを作成します。ここでAIとのチャット記録を準備し、AIから得たい応答をAIのトーンで記入することができます。このプリセットを使用すると、チャット記録が処理され、この時点でAIはあなたが望むことやどのような役割を果たすかをよりよく理解することができます。",
+  "The name used internally by the model when processing user message, changing this value helps improve the role-playing effect.": "ユーザーメッセージを処理する際にモデルが内部で使用する名前、この値を変更することで、役割演技の効果を向上させることができます。",
+  "The name used internally by the model when processing AI message, changing this value helps improve the role-playing effect.": "AIメッセージを処理する際にモデルが内部で使用する名前、この値を変更することで、役割演技の効果を向上させることができます。",
+  "Inside the model, there is a default prompt to improve the model's handling of common issues, but it may degrade the role-playing effect. You can disable this option to achieve a better role-playing effect.": "モデル内部には、一般的な問題の処理を改善するためのデフォルトのプロンプトがありますが、役割演技の効果を低下させる可能性があります。このオプションを無効にすることで、より良い役割演技効果を得ることができます。"
 }

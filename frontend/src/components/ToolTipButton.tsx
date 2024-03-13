@@ -26,10 +26,12 @@ export const ToolTipButton: FC<{
   onClick,
   showDelay = 0
 }) => {
-  return (
-    <Tooltip content={desc} showDelay={showDelay} hideDelay={0} relationship="label">
+  return (desc ?
+      <Tooltip content={desc} showDelay={showDelay} hideDelay={0} relationship="label">
+        <Button style={style} className={className} disabled={disabled} icon={icon} onClick={onClick} size={size}
+          shape={shape} appearance={appearance}>{text}</Button>
+      </Tooltip> :
       <Button style={style} className={className} disabled={disabled} icon={icon} onClick={onClick} size={size}
         shape={shape} appearance={appearance}>{text}</Button>
-    </Tooltip>
   );
 };

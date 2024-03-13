@@ -37,7 +37,7 @@ const clientNavCards: NavCard[] = [
   },
   {
     label: 'Configs',
-    desc: 'Manage your configs',
+    desc: 'Manage your configs, adjust the starting model and parameters',
     path: '/configs',
     icon: <DocumentSettings20Regular />
   },

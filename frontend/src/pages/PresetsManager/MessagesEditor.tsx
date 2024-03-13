@@ -3,7 +3,7 @@ import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautif
 import commonStore from '../../stores/commonStore';
 import { observer } from 'mobx-react-lite';
 import { v4 as uuid } from 'uuid';
-import { Button, Card, Dropdown, Option, Textarea } from '@fluentui/react-components';
+import { Card, Dropdown, Option, Textarea } from '@fluentui/react-components';
 import { useTranslation } from 'react-i18next';
 import { ToolTipButton } from '../../components/ToolTipButton';
 import { Delete20Regular, ReOrderDotsVertical20Regular } from '@fluentui/react-icons';
@@ -84,7 +84,10 @@ const MessagesEditor: FC = observer(() => {
 
   return (
     <div className="grid grid-cols-1 gap-2 overflow-hidden">
-      <Button style={{ width: '100%' }} onClick={createNewItem}>{t('New')}</Button>
+      <ToolTipButton text={t('New')}
+        desc={t('Create a new user or AI message content. You can prepare a chat record with AI here, and fill in the responses you want to get from AI in the tone of AI. When you use this preset, the chat record will be processed, and at this point, AI will better understand what you want it to do or what role to play.')}
+        style={{ width: '100%' }}
+        onClick={createNewItem} />
       <div className="overflow-x-hidden overflow-y-auto p-2">
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="droppable">
