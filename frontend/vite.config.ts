@@ -23,7 +23,7 @@ const embedded = [
   'react-beautiful-dnd',
   'react-draggable',
   '@magenta/music', 'html-midi-player',
-  'react-markdown', 'rehype-highlight', 'rehype-raw', 'remark-breaks', 'remark-gfm'
+  'react-markdown', 'rehype-highlight', 'rehype-raw', 'remark-breaks', 'remark-gfm', 'remark-math', 'rehype-katex', 'katex'
 ];
 
 function renderChunks(deps: Record<string, string>) {

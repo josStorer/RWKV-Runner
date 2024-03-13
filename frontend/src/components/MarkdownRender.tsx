@@ -1,6 +1,9 @@
+import 'katex/dist/katex.min.css';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import rehypeHighlight from 'rehype-highlight';
+import rehypeKatex from 'rehype-katex';
+import remarkMath from 'remark-math';
 import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
 import { FC } from 'react';
@@ -90,8 +93,9 @@ const MarkdownRender: FC<ReactMarkdownOptions & { disabled?: boolean }> = (props
             'cite'
           ]}
           unwrapDisallowed={true}
-          remarkPlugins={[remarkGfm, remarkBreaks]}
+          remarkPlugins={[remarkMath, remarkGfm, remarkBreaks]}
           rehypePlugins={[
+            rehypeKatex,
             rehypeRaw,
             [
               rehypeHighlight,
