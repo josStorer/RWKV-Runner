@@ -96,7 +96,7 @@
   "Python dependencies are incomplete, would you like to install them?": "Pythonの依存関係が不完全です、インストールしますか？",
   "Install": "インストール",
   "This is the latest version": "これは最新バージョンです",
-  "Use Tsinghua Pip Mirrors": "清華大学Pipミラーサーバーを使用",
+  "Use Alibaba Cloud Pip Mirrors": "Alibaba Cloud Pipミラーサーバーを使用",
   "Model Config Exception": "モデル設定例外",
   "Use Gitee Updates Source": "Gitee更新ソースを使用",
   "Use Custom CUDA kernel to Accelerate": "カスタムCUDAカーネルを使用して加速",

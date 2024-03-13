@@ -1,7 +1,7 @@
 echo $@
 
 if [[ ${cnMirror} == 1 ]]; then
-  export PIP_INDEX_URL="https://pypi.tuna.tsinghua.edu.cn/simple"
+  export PIP_INDEX_URL="https://mirrors.aliyun.com/pypi/simple"
   if grep -q "mirrors.aliyun.com" /etc/apt/sources.list; then
     echo "apt cnMirror already set"
   else

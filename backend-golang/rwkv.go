@@ -227,12 +227,12 @@ func (a *App) InstallPyDep(python string, cnMirror bool) (string, error) {
 
 	if runtime.GOOS == "windows" {
 		ChangeFileLine("./py310/python310._pth", 3, "Lib\\site-packages")
-		installScript := python + " ./backend-python/get-pip.py -i https://pypi.tuna.tsinghua.edu.cn/simple --no-warn-script-location\n" +
+		installScript := python + " ./backend-python/get-pip.py -i https://mirrors.aliyun.com/pypi/simple --no-warn-script-location\n" +
 			python + " -m pip install torch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 --index-url https://download.pytorch.org/whl/cu117 --no-warn-script-location\n" +
-			python + " -m pip install -r ./backend-python/requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple --no-warn-script-location\n" +
+			python + " -m pip install -r ./backend-python/requirements.txt -i https://mirrors.aliyun.com/pypi/simple --no-warn-script-location\n" +
 			"exit"
 		if !cnMirror {
-			installScript = strings.Replace(installScript, " -i https://pypi.tuna.tsinghua.edu.cn/simple", "", -1)
+			installScript = strings.Replace(installScript, " -i https://mirrors.aliyun.com/pypi/simple", "", -1)
 		}
 		err = os.WriteFile(a.exDir+"install-py-dep.bat", []byte(installScript), 0644)
 		if err != nil {
@@ -242,7 +242,7 @@ func (a *App) InstallPyDep(python string, cnMirror bool) (string, error) {
 	}
 
 	if cnMirror {
-		return Cmd(python, "-m", "pip", "install", "-r", "./backend-python/requirements_without_cyac.txt", "-i", "https://pypi.tuna.tsinghua.edu.cn/simple")
+		return Cmd(python, "-m", "pip", "install", "-r", "./backend-python/requirements_without_cyac.txt", "-i", "https://mirrors.aliyun.com/pypi/simple")
 	} else {
 		return Cmd(python, "-m", "pip", "install", "-r", "./backend-python/requirements_without_cyac.txt")
 	}
