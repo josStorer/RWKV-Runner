@@ -1,16 +1,8 @@
 ## Changes
 
-### Features
+### Fixes
 
-- rwkv6 lora finetune support (https://github.com/JL-er/RWKV-LORA)
-- latex support
-
-### Improvements
-
-- improve markdown rendering
-- improve theme
-- improve usability
-- for Chinese users, replace Tsinghua pip mirrors with Alibaba Cloud to avoid 403 http error
+- fix v6 lora (https://github.com/JL-er/RWKV-LORA/commit/c03cdbbdafa498a7d65da37bf54a4228eff79132)
 
 ## Install
 
