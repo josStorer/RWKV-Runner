@@ -677,7 +677,10 @@ class ModelConfigBody(BaseModel):
     frequency_penalty: float = Field(default=None, ge=-2, le=2)
     penalty_decay: float = Field(default=None, ge=0.99, le=0.999)
     top_k: int = Field(default=None, ge=0, le=25)
-    global_penalty: bool = Field(default=None)
+    global_penalty: bool = Field(
+        default=None,
+        description="When generating a response, whether to include the submitted prompt as a penalty factor. By turning this off, you will get the same generated results as official RWKV Gradio. If you find duplicate results in the generated results, turning this on can help avoid generating duplicates.",
+    )
 
     model_config = {
         "json_schema_extra": {
