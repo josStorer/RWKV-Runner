@@ -18,6 +18,7 @@ class RWKV:
         self.w["emb.weight"] = [0] * self.info.num_vocab
         self.version = str(self.info.version).lower()
         self.wrp = getattr(wrp, self.version)
+        self.version = float(self.version.replace("v", ""))
 
         layer = (
             int(s.lstrip("layer"))

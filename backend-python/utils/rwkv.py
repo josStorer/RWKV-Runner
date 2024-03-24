@@ -26,6 +26,7 @@ class AbstractRWKV(ABC):
         self.EOS_ID = 0
 
         self.name = "rwkv"
+        self.version = 4
         self.model = model
         self.pipeline = pipeline
         self.model_state = None
@@ -665,6 +666,7 @@ def RWKV(model: str, strategy: str, tokenizer: Union[str, None]) -> AbstractRWKV
         else:
             rwkv = TextRWKV(model, pipeline)
     rwkv.name = filename
+    rwkv.version = model.version
 
     return rwkv
 

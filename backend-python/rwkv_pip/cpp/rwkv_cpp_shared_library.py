@@ -6,20 +6,21 @@ import platform
 from typing import Optional, List, Tuple, Callable
 
 QUANTIZED_FORMAT_NAMES: Tuple[str, str, str, str, str] = (
-    'Q4_0',
-    'Q4_1',
-    'Q5_0',
-    'Q5_1',
-    'Q8_0'
+    "Q4_0",
+    "Q4_1",
+    "Q5_0",
+    "Q5_1",
+    "Q8_0",
 )
 
 P_FLOAT = ctypes.POINTER(ctypes.c_float)
 P_INT = ctypes.POINTER(ctypes.c_int32)
 
-class RWKVContext:
 
+class RWKVContext:
     def __init__(self, ptr: ctypes.pointer) -> None:
         self.ptr: ctypes.pointer = ptr
+
 
 class RWKVSharedLibrary:
     """
@@ -39,7 +40,7 @@ class RWKVSharedLibrary:
         #  When Python is greater than 3.8, we need to reprocess the custom dll
         #  according to the documentation to prevent loading failure errors.
         #  https://docs.python.org/3/whatsnew/3.8.html#ctypes
-        if platform.system().lower() == 'windows':
+        if platform.system().lower() == "windows":
             self.library = ctypes.CDLL(shared_library_path, winmode=0)
         else:
             self.library = ctypes.cdll.LoadLibrary(shared_library_path)
@@ -47,38 +48,47 @@ class RWKVSharedLibrary:
         self.library.rwkv_init_from_file.argtypes = [ctypes.c_char_p, ctypes.c_uint32]
         self.library.rwkv_init_from_file.restype = ctypes.c_void_p
 
-        self.library.rwkv_gpu_offload_layers.argtypes = [ctypes.c_void_p, ctypes.c_uint32]
+        self.library.rwkv_gpu_offload_layers.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_uint32,
+        ]
         self.library.rwkv_gpu_offload_layers.restype = ctypes.c_bool
 
         self.library.rwkv_eval.argtypes = [
-            ctypes.c_void_p, # ctx
-            ctypes.c_int32, # token
-            P_FLOAT, # state_in
-            P_FLOAT, # state_out
-            P_FLOAT  # logits_out
+            ctypes.c_void_p,  # ctx
+            ctypes.c_int32,  # token
+            P_FLOAT,  # state_in
+            P_FLOAT,  # state_out
+            P_FLOAT,  # logits_out
         ]
         self.library.rwkv_eval.restype = ctypes.c_bool
 
         self.library.rwkv_eval_sequence.argtypes = [
-            ctypes.c_void_p, # ctx
-            P_INT, # tokens
-            ctypes.c_size_t, # token count
-            P_FLOAT, # state_in
-            P_FLOAT, # state_out
-            P_FLOAT  # logits_out
+            ctypes.c_void_p,  # ctx
+            P_INT,  # tokens
+            ctypes.c_size_t,  # token count
+            P_FLOAT,  # state_in
+            P_FLOAT,  # state_out
+            P_FLOAT,  # logits_out
         ]
         self.library.rwkv_eval_sequence.restype = ctypes.c_bool
 
         self.library.rwkv_eval_sequence_in_chunks.argtypes = [
-            ctypes.c_void_p, # ctx
-            P_INT, # tokens
-            ctypes.c_size_t, # token count
-            ctypes.c_size_t, # chunk size
-            P_FLOAT, # state_in
-            P_FLOAT, # state_out
-            P_FLOAT  # logits_out
+            ctypes.c_void_p,  # ctx
+            P_INT,  # tokens
+            ctypes.c_size_t,  # token count
+            ctypes.c_size_t,  # chunk size
+            P_FLOAT,  # state_in
+            P_FLOAT,  # state_out
+            P_FLOAT,  # logits_out
         ]
         self.library.rwkv_eval_sequence_in_chunks.restype = ctypes.c_bool
+
+        self.library.rwkv_get_arch_version_major.argtypes = [ctypes.c_void_p]
+        self.library.rwkv_get_arch_version_major.restype = ctypes.c_uint32
+
+        self.library.rwkv_get_arch_version_minor.argtypes = [ctypes.c_void_p]
+        self.library.rwkv_get_arch_version_minor.restype = ctypes.c_uint32
 
         self.library.rwkv_get_n_vocab.argtypes = [ctypes.c_void_p]
         self.library.rwkv_get_n_vocab.restype = ctypes.c_size_t
@@ -101,7 +111,11 @@ class RWKVSharedLibrary:
         self.library.rwkv_free.argtypes = [ctypes.c_void_p]
         self.library.rwkv_free.restype = None
 
-        self.library.rwkv_quantize_model_file.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p]
+        self.library.rwkv_quantize_model_file.argtypes = [
+            ctypes.c_char_p,
+            ctypes.c_char_p,
+            ctypes.c_char_p,
+        ]
         self.library.rwkv_quantize_model_file.restype = ctypes.c_bool
 
         self.library.rwkv_get_system_info_string.argtypes = []
@@ -109,7 +123,9 @@ class RWKVSharedLibrary:
 
         self.nullptr = ctypes.cast(0, ctypes.c_void_p)
 
-    def rwkv_init_from_file(self, model_file_path: str, thread_count: int) -> RWKVContext:
+    def rwkv_init_from_file(
+        self, model_file_path: str, thread_count: int
+    ) -> RWKVContext:
         """
         Loads the model from a file and prepares it for inference.
         Throws an exception in case of any error. Error messages would be printed to stderr.
@@ -122,9 +138,12 @@ class RWKVSharedLibrary:
             Count of threads to use, must be positive.
         """
 
-        ptr = self.library.rwkv_init_from_file(model_file_path.encode('utf-8'), ctypes.c_uint32(thread_count))
+        ptr = self.library.rwkv_init_from_file(
+            model_file_path.encode("utf-8"), ctypes.c_uint32(thread_count)
+        )
 
-        assert ptr is not None, 'rwkv_init_from_file failed, check stderr'
+        if ptr is None:
+            raise ValueError("rwkv_init_from_file failed, check stderr")
 
         return RWKVContext(ptr)
 
@@ -145,17 +164,20 @@ class RWKVSharedLibrary:
             Count of layers to offload onto the GPU, must be >= 0.
         """
 
-        assert layer_count >= 0, 'Layer count must be >= 0'
+        if not (layer_count >= 0):
+            raise ValueError("Layer count must be >= 0")
 
-        return self.library.rwkv_gpu_offload_layers(ctx.ptr, ctypes.c_uint32(layer_count))
+        return self.library.rwkv_gpu_offload_layers(
+            ctx.ptr, ctypes.c_uint32(layer_count)
+        )
 
     def rwkv_eval(
-            self,
-            ctx: RWKVContext,
-            token: int,
-            state_in_address: Optional[int],
-            state_out_address: int,
-            logits_out_address: int
+        self,
+        ctx: RWKVContext,
+        token: int,
+        state_in_address: Optional[int],
+        state_out_address: int,
+        logits_out_address: int,
     ) -> None:
         """
         Evaluates the model for a single token.
@@ -176,21 +198,22 @@ class RWKVSharedLibrary:
             Address of the first element of a FP32 buffer of size rwkv_get_logits_buffer_element_count. This buffer will be written to.
         """
 
-        assert self.library.rwkv_eval(
+        if not self.library.rwkv_eval(
             ctx.ptr,
             ctypes.c_int32(token),
             ctypes.cast(0 if state_in_address is None else state_in_address, P_FLOAT),
             ctypes.cast(state_out_address, P_FLOAT),
-            ctypes.cast(logits_out_address, P_FLOAT)
-        ), 'rwkv_eval failed, check stderr'
+            ctypes.cast(logits_out_address, P_FLOAT),
+        ):
+            raise ValueError("rwkv_eval failed, check stderr")
 
     def rwkv_eval_sequence(
-            self,
-            ctx: RWKVContext,
-            tokens: List[int],
-            state_in_address: Optional[int],
-            state_out_address: int,
-            logits_out_address: int
+        self,
+        ctx: RWKVContext,
+        tokens: List[int],
+        state_in_address: Optional[int],
+        state_out_address: int,
+        logits_out_address: int,
     ) -> None:
         """
         Evaluates the model for a sequence of tokens.
@@ -223,23 +246,24 @@ class RWKVSharedLibrary:
             Address of the first element of a FP32 buffer of size rwkv_get_logits_buffer_element_count. This buffer will be written to.
         """
 
-        assert self.library.rwkv_eval_sequence(
+        if not self.library.rwkv_eval_sequence(
             ctx.ptr,
             ctypes.cast((ctypes.c_int32 * len(tokens))(*tokens), P_INT),
             ctypes.c_size_t(len(tokens)),
             ctypes.cast(0 if state_in_address is None else state_in_address, P_FLOAT),
             ctypes.cast(state_out_address, P_FLOAT),
-            ctypes.cast(logits_out_address, P_FLOAT)
-        ), 'rwkv_eval_sequence failed, check stderr'
+            ctypes.cast(logits_out_address, P_FLOAT),
+        ):
+            raise ValueError("rwkv_eval_sequence failed, check stderr")
 
     def rwkv_eval_sequence_in_chunks(
-            self,
-            ctx: RWKVContext,
-            tokens: List[int],
-            chunk_size: int,
-            state_in_address: Optional[int],
-            state_out_address: int,
-            logits_out_address: int
+        self,
+        ctx: RWKVContext,
+        tokens: List[int],
+        chunk_size: int,
+        state_in_address: Optional[int],
+        state_out_address: int,
+        logits_out_address: int,
     ) -> None:
         """
         Evaluates the model for a sequence of tokens using `rwkv_eval_sequence`, splitting a potentially long sequence into fixed-length chunks.
@@ -269,15 +293,40 @@ class RWKVSharedLibrary:
             Address of the first element of a FP32 buffer of size rwkv_get_logits_buffer_element_count. This buffer will be written to.
         """
 
-        assert self.library.rwkv_eval_sequence_in_chunks(
+        if not self.library.rwkv_eval_sequence_in_chunks(
             ctx.ptr,
             ctypes.cast((ctypes.c_int32 * len(tokens))(*tokens), P_INT),
             ctypes.c_size_t(len(tokens)),
             ctypes.c_size_t(chunk_size),
             ctypes.cast(0 if state_in_address is None else state_in_address, P_FLOAT),
             ctypes.cast(state_out_address, P_FLOAT),
-            ctypes.cast(logits_out_address, P_FLOAT)
-        ), 'rwkv_eval_sequence_in_chunks failed, check stderr'
+            ctypes.cast(logits_out_address, P_FLOAT),
+        ):
+            raise ValueError("rwkv_eval_sequence_in_chunks failed, check stderr")
+
+    def rwkv_get_arch_version_major(self, ctx: RWKVContext) -> int:
+        """
+        Returns the major version used by the given model.
+
+        Parameters
+        ----------
+        ctx : RWKVContext
+            RWKV context obtained from rwkv_init_from_file.
+        """
+
+        return self.library.rwkv_get_arch_version_major(ctx.ptr)
+
+    def rwkv_get_arch_version_minor(self, ctx: RWKVContext) -> int:
+        """
+        Returns the minor version used by the given model.
+
+        Parameters
+        ----------
+        ctx : RWKVContext
+            RWKV context obtained from rwkv_init_from_file.
+        """
+
+        return self.library.rwkv_get_arch_version_minor(ctx.ptr)
 
     def rwkv_get_n_vocab(self, ctx: RWKVContext) -> int:
         """
@@ -358,7 +407,9 @@ class RWKVSharedLibrary:
 
         ctx.ptr = self.nullptr
 
-    def rwkv_quantize_model_file(self, model_file_path_in: str, model_file_path_out: str, format_name: str) -> None:
+    def rwkv_quantize_model_file(
+        self, model_file_path_in: str, model_file_path_out: str, format_name: str
+    ) -> None:
         """
         Quantizes FP32 or FP16 model to one of INT4 formats.
         Throws an exception in case of any error. Error messages would be printed to stderr.
@@ -373,20 +424,25 @@ class RWKVSharedLibrary:
             One of QUANTIZED_FORMAT_NAMES.
         """
 
-        assert format_name in QUANTIZED_FORMAT_NAMES, f'Unknown format name {format_name}, use one of {QUANTIZED_FORMAT_NAMES}'
+        if format_name not in QUANTIZED_FORMAT_NAMES:
+            raise ValueError(
+                f"Unknown format name {format_name}, use one of {QUANTIZED_FORMAT_NAMES}"
+            )
 
-        assert self.library.rwkv_quantize_model_file(
-            model_file_path_in.encode('utf-8'),
-            model_file_path_out.encode('utf-8'),
-            format_name.encode('utf-8')
-        ), 'rwkv_quantize_model_file failed, check stderr'
+        if not self.library.rwkv_quantize_model_file(
+            model_file_path_in.encode("utf-8"),
+            model_file_path_out.encode("utf-8"),
+            format_name.encode("utf-8"),
+        ):
+            raise ValueError("rwkv_quantize_model_file failed, check stderr")
 
     def rwkv_get_system_info_string(self) -> str:
         """
         Returns system information string.
         """
 
-        return self.library.rwkv_get_system_info_string().decode('utf-8')
+        return self.library.rwkv_get_system_info_string().decode("utf-8")
+
 
 def load_rwkv_shared_library() -> RWKVSharedLibrary:
     """
@@ -396,27 +452,27 @@ def load_rwkv_shared_library() -> RWKVSharedLibrary:
 
     file_name: str
 
-    if 'win32' in sys.platform or 'cygwin' in sys.platform:
-        file_name = 'rwkv.dll'
-    elif 'darwin' in sys.platform:
-        file_name = 'librwkv.dylib'
+    if "win32" in sys.platform or "cygwin" in sys.platform:
+        file_name = "rwkv.dll"
+    elif "darwin" in sys.platform:
+        file_name = "librwkv.dylib"
     else:
-        file_name = 'librwkv.so'
+        file_name = "librwkv.so"
 
     # Possible sub-paths to the library relative to the repo dir.
     child_paths: List[Callable[[pathlib.Path], pathlib.Path]] = [
         # No lookup for Debug config here.
         # I assume that if a user wants to debug the library,
         # they will be able to find the library and set the exact path explicitly.
-        lambda p: p / 'backend-python' / 'rwkv_pip' / 'cpp' / file_name,
-        lambda p: p / 'bin' / 'Release' / file_name,
-        lambda p: p / 'bin' / file_name,
+        lambda p: p / "backend-python" / "rwkv_pip" / "cpp" / file_name,
+        lambda p: p / "bin" / "Release" / file_name,
+        lambda p: p / "bin" / file_name,
         # Some people prefer to build in the "build" subdirectory.
-        lambda p: p / 'build' / 'bin' / 'Release' / file_name,
-        lambda p: p / 'build' / 'bin' / file_name,
-        lambda p: p / 'build' / file_name,
+        lambda p: p / "build" / "bin" / "Release" / file_name,
+        lambda p: p / "build" / "bin" / file_name,
+        lambda p: p / "build" / file_name,
         # Fallback.
-        lambda p: p / file_name
+        lambda p: p / file_name,
     ]
 
     working_dir: pathlib.Path = pathlib.Path(os.path.abspath(os.getcwd()))
@@ -430,7 +486,7 @@ def load_rwkv_shared_library() -> RWKVSharedLibrary:
         # .
         working_dir,
         # Repo dir relative to this Python file.
-        pathlib.Path(os.path.abspath(__file__)).parent.parent.parent
+        pathlib.Path(os.path.abspath(__file__)).parent.parent.parent,
     ]
 
     for parent_path in parent_paths:
@@ -440,5 +496,7 @@ def load_rwkv_shared_library() -> RWKVSharedLibrary:
             if os.path.isfile(full_path):
                 return RWKVSharedLibrary(str(full_path))
 
-    assert False, (f'Failed to find {file_name} automatically; '
-                   f'you need to find the library and create RWKVSharedLibrary specifying the path to it')
+    raise ValueError(
+        f"Failed to find {file_name} automatically; "
+        f"you need to find the library and create RWKVSharedLibrary specifying the path to it"
+    )
