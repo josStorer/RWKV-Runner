@@ -342,7 +342,7 @@ const LoraFinetune: FC = observer(() => {
       };
 
       if (msg === 'wsl is not enabled') {
-        enableWsl(false);
+        enableWsl(true);
       } else if (msg.includes('wsl.state: The system cannot find the file')) {
         enableWsl(true);
       } else {
