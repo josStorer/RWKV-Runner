@@ -48,12 +48,13 @@ import {
   toastWithButton
 } from '../utils';
 import { useMediaQuery } from 'usehooks-ts';
-import { botName, ConversationMessage, MessageType, Role, userName, welcomeUuid } from '../types/chat';
+import { botName, ConversationMessage, MessageType, Role, systemName, userName, welcomeUuid } from '../types/chat';
 import { Labeled } from '../components/Labeled';
 import { ValuedSlider } from '../components/ValuedSlider';
 import { PresetsButton } from './PresetsManager/PresetsButton';
 import { webOpenOpenFileDialog } from '../utils/web-file-operations';
 import { defaultPenaltyDecay } from './defaultConfigs';
+import { AvatarProps } from '@fluentui/react-avatar';
 
 let chatSseControllers: {
   [id: string]: AbortController
@@ -92,6 +93,18 @@ const MoreUtilsButton: FC<{
   </Menu>;
 });
 
+const HiddenAvatar: FC<AvatarProps> = ({ children, hidden, ...props }) => {
+  if (hidden) {
+    return <div>{children}</div>;
+  } else {
+    return (
+      <Avatar {...props}>
+        {children}
+      </Avatar>
+    );
+  }
+};
+
 const ChatMessageItem: FC<{
   uuid: string,
   onSubmit: (message: string | null, answerId: string | null,
@@ -129,7 +142,9 @@ const ChatMessageItem: FC<{
   return <div
     className={classnames(
       'flex gap-2 mb-2 overflow-hidden',
-      messageItem.side === 'left' ? 'flex-row' : 'flex-row-reverse'
+      messageItem.side === 'left' && 'flex-row',
+      messageItem.side === 'right' && 'flex-row-reverse',
+      messageItem.side === 'center' && 'flex-row justify-center'
     )}
     onMouseEnter={() => {
       const utils = document.getElementById('utils-' + uuid);
@@ -140,22 +155,26 @@ const ChatMessageItem: FC<{
       if (utils) utils.classList.add('invisible');
     }}
   >
-    <Avatar
+    <HiddenAvatar
       color={messageItem.color}
       name={messageItem.sender}
       image={avatarImg ? { src: avatarImg } : undefined}
+      hidden={messageItem.side === 'center'}
     />
     <div
       className={classnames(
-        'flex p-2 rounded-lg overflow-hidden',
+        'flex rounded-lg overflow-hidden',
         editing ? 'grow' : '',
-        commonStore.settings.darkMode ? 'bg-neutral-800 border-neutral-600 border-[1px]' : (messageItem.side === 'left' ? 'bg-gray-200' : 'bg-blue-500'),
-        commonStore.settings.darkMode ? 'text-white' : (messageItem.side === 'left' ? 'text-gray-600' : 'text-white')
+        messageItem.side === 'center' ? 'p-1' : 'p-2',
+        commonStore.settings.darkMode ? 'bg-neutral-800 border-neutral-600 border-[1px]' : (messageItem.side === 'right' ? 'bg-blue-500' : 'bg-gray-200'),
+        commonStore.settings.darkMode ? 'text-white' : (messageItem.side === 'right' ? 'text-white' : 'text-gray-600'),
+        messageItem.side === 'center' && 'text-opacity-60 bg-opacity-30 border-opacity-30'
       )}
     >
       {!editing ?
         <div className="flex flex-col">
-          <MarkdownRender disabled={!commonStore.chatParams.markdown}>{messageItem.content}</MarkdownRender>
+          <MarkdownRender className={classnames(messageItem.side === 'center' && 'text-xs')}
+            disabled={!commonStore.chatParams.markdown || messageItem.side === 'center'}>{messageItem.content}</MarkdownRender>
           {uuid in commonStore.attachments &&
             <div className="flex grow">
               <div className="grow" />
@@ -375,7 +394,11 @@ const SidePanel: FC = observer(() => {
             return;
           const messageItem = commonStore.conversation[uuid];
           if (messageItem.type !== MessageType.Error) {
-            savedContent += `${messageItem.sender === userName ? user : bot}: ${messageItem.content}\n\n`;
+            if (messageItem.sender === userName) {
+              savedContent += `${user}: ${messageItem.content}\n\n`;
+            } else if (messageItem.sender === botName) {
+              savedContent += `${bot}: ${messageItem.content}\n\n`;
+            }
           }
         });
 
@@ -418,7 +441,7 @@ const ChatPanel: FC = observer(() => {
         [welcomeUuid]: {
           sender: botName,
           type: MessageType.Normal,
-          color: 'colorful',
+          color: 'neutral',
           avatarImg: logo,
           time: new Date().toISOString(),
           content: commonStore.platform === 'web' ? t('Hello, what can I do for you?') : t('Hello! I\'m RWKV, an open-source and commercially usable large language model.'),
@@ -499,6 +522,8 @@ const ChatPanel: FC = observer(() => {
         messages.push({ role: 'user', content: messageItem.content });
       } else if (messageItem.done && messageItem.type === MessageType.Normal && messageItem.sender === botName) {
         messages.push({ role: 'assistant', content: messageItem.content });
+      } else if (messageItem.done && messageItem.type === MessageType.Normal && messageItem.sender === systemName) {
+        messages.push({ role: 'system', content: messageItem.content });
       }
     });
 
@@ -509,7 +534,7 @@ const ChatPanel: FC = observer(() => {
     commonStore.conversation[answerId] = {
       sender: botName,
       type: MessageType.Normal,
-      color: 'colorful',
+      color: 'neutral',
       avatarImg: logo,
       time: new Date().toISOString(),
       content: '',

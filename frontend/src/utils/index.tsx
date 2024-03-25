@@ -26,7 +26,7 @@ import { DataProcessParameters, LoraFinetuneParameters } from '../types/train';
 import { InstrumentTypeNameMap, MidiMessage, tracksMinimalTotalTime } from '../types/composition';
 import logo from '../assets/images/logo.png';
 import { Preset } from '../types/presets';
-import { botName, Conversation, MessageType, Role, userName } from '../types/chat';
+import { botName, Conversation, MessageType, Role, systemName, userName } from '../types/chat';
 import { v4 as uuid } from 'uuid';
 import { findLastIndex } from 'lodash-es';
 
@@ -635,13 +635,13 @@ export function newChatConversation() {
     const newUuid = uuid();
     conversationOrder.push(newUuid);
     conversation[newUuid] = {
-      sender: role === 'user' ? userName : botName,
+      sender: role === 'user' ? userName : role === 'assistant' ? botName : systemName,
       type: MessageType.Normal,
-      color: role === 'user' ? 'brand' : 'colorful',
+      color: role === 'user' ? 'brand' : 'neutral',
       avatarImg: role === 'user' ? undefined : logo,
       time: new Date().toISOString(),
       content: content,
-      side: role === 'user' ? 'right' : 'left',
+      side: role === 'user' ? 'right' : role === 'assistant' ? 'left' : 'center',
       done: true
     };
   };

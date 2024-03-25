@@ -28,10 +28,10 @@ const MarkdownRender: FC<ReactMarkdownOptions & { disabled?: boolean }> = (props
   return (
     <div dir="auto" className="prose markdown-body" style={{ maxWidth: '100%' }}>
       {props.disabled ?
-        <div style={{ whiteSpace: 'pre-wrap' }}>
+        <div style={{ whiteSpace: 'pre-wrap' }} className={props.className}>
           {props.children}
         </div> :
-        <ReactMarkdown
+        <ReactMarkdown className={props.className}
           allowedElements={[
             'div',
             'p',

@@ -2,6 +2,7 @@ import { ApiParameters } from './configs';
 
 export const userName = 'M E';
 export const botName = 'A I';
+export const systemName = 'System';
 export const welcomeUuid = 'welcome';
 
 export enum MessageType {
@@ -9,7 +10,7 @@ export enum MessageType {
   Error
 }
 
-export type Side = 'left' | 'right'
+export type Side = 'left' | 'right' | 'center'
 export type Color = 'neutral' | 'brand' | 'colorful'
 export type MessageItem = {
   sender: string,
