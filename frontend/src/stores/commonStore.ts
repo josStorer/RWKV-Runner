@@ -74,6 +74,7 @@ class CommonStore {
   conversation: Conversation = {};
   conversationOrder: string[] = [];
   activePreset: Preset | null = null;
+  activePresetIndex: number = -1;
   attachmentUploading: boolean = false;
   attachments: {
     [uuid: string]: Attachment[]
@@ -342,7 +343,7 @@ class CommonStore {
     this.lastUnfinishedModelDownloads = value;
   }
 
-  setEditingPreset(value: Preset) {
+  setEditingPreset(value: Preset | null) {
     this.editingPreset = value;
   }
 
@@ -354,6 +355,10 @@ class CommonStore {
 
   setActivePreset(value: Preset | null) {
     this.activePreset = value;
+  }
+
+  setActivePresetIndex(value: number) {
+    this.activePresetIndex = value;
   }
 
   setCompletionSubmittedPrompt(value: string) {

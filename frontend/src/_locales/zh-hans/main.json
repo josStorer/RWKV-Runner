@@ -351,5 +351,7 @@
   "Create a new user or AI message content. You can prepare a chat record with AI here, and fill in the responses you want to get from AI in the tone of AI. When you use this preset, the chat record will be processed, and at this point, AI will better understand what you want it to do or what role to play.": "新建一个 用户 或 AI 的发言内容. 你可以在这里准备好一段你与 AI 的聊天记录, 并用 AI 的口吻正确填写你想得到的 AI 的回复, 这样你在使用这个预设时, 这些聊天记录也会被处理, 并且此时 AI 能更好地理解你希望它做什么 / 扮演什么样的角色",
   "The name used internally by the model when processing user message, changing this value helps improve the role-playing effect.": "模型内部处理用户发言时使用的名称, 更改此值有助于改善角色扮演效果",
   "The name used internally by the model when processing AI message, changing this value helps improve the role-playing effect.": "模型内部处理AI发言时使用的名称, 更改此值有助于改善角色扮演效果",
-  "Inside the model, there is a default prompt to improve the model's handling of common issues, but it may degrade the role-playing effect. You can disable this option to achieve a better role-playing effect.": "模型内部有一个默认提示来改善模型处理常规问题的效果, 但它可能会让角色扮演的效果变差, 你可以关闭此选项来获得更好的角色扮演效果"
+  "Inside the model, there is a default prompt to improve the model's handling of common issues, but it may degrade the role-playing effect. You can disable this option to achieve a better role-playing effect.": "模型内部有一个默认提示来改善模型处理常规问题的效果, 但它可能会让角色扮演的效果变差, 你可以关闭此选项来获得更好的角色扮演效果",
+  "Exit without saving": "退出而不保存",
+  "Content has been changed, are you sure you want to exit without saving?": "内容已经被修改, 你确定要退出而不保存吗?"
 }

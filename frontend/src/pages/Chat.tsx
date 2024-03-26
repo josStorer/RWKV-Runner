@@ -650,7 +650,7 @@ const ChatPanel: FC = observer(() => {
                 }
                 chatSseControllers = {};
               }
-              setActivePreset(commonStore.activePreset);
+              setActivePreset(commonStore.activePreset, commonStore.activePresetIndex);
             }} />
           <div className="relative flex grow">
             <Textarea

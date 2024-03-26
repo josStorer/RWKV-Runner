@@ -581,8 +581,9 @@ export async function getSoundFont() {
   return soundUrl;
 }
 
-export const setActivePreset = (preset: Preset | null) => {
+export const setActivePreset = (preset: Preset | null, index: number) => {
   commonStore.setActivePreset(preset);
+  commonStore.setActivePresetIndex(index);
   //TODO if (preset.displayPresetMessages) {
   const { pushMessage, saveConversation } = newChatConversation();
   if (preset)

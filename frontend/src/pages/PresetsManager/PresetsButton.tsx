@@ -4,6 +4,7 @@ import React, { FC, lazy, PropsWithChildren, ReactElement, useState } from 'reac
 import {
   Button,
   Dialog,
+  DialogActions,
   DialogBody,
   DialogContent,
   DialogSurface,
@@ -60,10 +61,15 @@ const MessagesEditor = lazy(() => import('./MessagesEditor'));
 
 const PresetCardFrame: FC<PropsWithChildren & {
   onClick?: React.MouseEventHandler<HTMLButtonElement>
+  highlight?: boolean
 }> = (props) => {
   return <Button
     className="flex flex-col gap-1 w-32 h-56 break-all"
-    style={{ minWidth: 0, borderRadius: '0.75rem', justifyContent: 'unset' }}
+    style={{
+      minWidth: 0,
+      borderRadius: '0.75rem',
+      justifyContent: 'unset', ...(props.highlight ? { borderColor: '#115ea3', borderWidth: '2px' } : {})
+    }}
     onClick={props.onClick}
   >
     {props.children}
@@ -71,31 +77,28 @@ const PresetCardFrame: FC<PropsWithChildren & {
 };
 
 const PresetCard: FC<{
-  avatarImg: string,
-  name: string,
-  desc: string,
-  tag: string,
   editable: boolean,
+  preset: Preset,
   presetIndex: number,
-  onClick?: () => void
 }> = observer(({
-  avatarImg, name, desc, tag, editable, presetIndex, onClick
+  editable, preset, presetIndex
 }) => {
   const { t } = useTranslation();
 
-  return <PresetCardFrame onClick={(e) => {
-    if (onClick && e.currentTarget.contains(e.target as Node))
-      onClick();
-  }}>
-    <img src={absPathAsset(avatarImg)} className="rounded-xl select-none ml-auto mr-auto h-28" />
-    <Text size={400}>{name}</Text>
+  return <PresetCardFrame highlight={commonStore.activePresetIndex === presetIndex}
+    onClick={(e) => {
+      if (e.currentTarget.contains(e.target as Node))
+        setActivePreset(presetIndex === -1 ? defaultPreset : preset, presetIndex);
+    }}>
+    <img src={absPathAsset(preset.avatarImg)} className="rounded-xl select-none ml-auto mr-auto h-28" />
+    <Text size={400}>{preset.name}</Text>
     <Text size={200} style={{
       overflow: 'hidden', textOverflow: 'ellipsis',
       display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical'
-    }}>{desc}</Text>
+    }}>{preset.desc}</Text>
     <div className="grow" />
     <div className="flex justify-between w-full items-end">
-      <div className="text-xs font-thin text-gray-500">{t(tag)}</div>
+      <div className="text-xs font-thin text-gray-500">{t(preset.tag)}</div>
       {editable ?
         <ChatPresetEditor presetIndex={presetIndex} triggerButton={
           <ToolTipButton size="small" appearance="transparent" desc={t('Edit')} icon={<Edit20Regular />}
@@ -115,9 +118,11 @@ const ChatPresetEditor: FC<{
   presetIndex: number
 }> = observer(({ triggerButton, presetIndex }) => {
   const { t } = useTranslation();
+  const [open, setOpen] = React.useState(false);
+  const [showExitConfirm, setShowExitConfirm] = React.useState(false);
   const [editingMessages, setEditingMessages] = useState(false);
 
-  if (!commonStore.editingPreset)
+  if (open && !commonStore.editingPreset)
     commonStore.setEditingPreset({ ...defaultPreset });
   const editingPreset = commonStore.editingPreset!;
 
@@ -168,26 +173,46 @@ const ChatPresetEditor: FC<{
   };
 
   const savePreset = () => {
+    setOpen(false);
+    setShowExitConfirm(false);
     if (presetIndex === -1) {
       commonStore.setPresets([...commonStore.presets, { ...editingPreset }]);
-      setEditingPreset(defaultPreset);
     } else {
       commonStore.presets[presetIndex] = editingPreset;
       commonStore.setPresets(commonStore.presets);
     }
+    commonStore.setEditingPreset(null);
   };
 
   const activatePreset = () => {
     savePreset();
-    setActivePreset(editingPreset);
+    setActivePreset(editingPreset, presetIndex === -1 ? commonStore.presets.length - 1 : presetIndex);
   };
 
   const deletePreset = () => {
+    if (commonStore.activePresetIndex === presetIndex) {
+      setActivePreset(defaultPreset, -1);
+    }
     commonStore.presets.splice(presetIndex, 1);
     commonStore.setPresets(commonStore.presets);
+    setOpen(false);
+    setShowExitConfirm(false);
+    commonStore.setEditingPreset(null);
   };
 
-  return <Dialog>
+  return <Dialog open={open} onOpenChange={(e, data) => {
+    if (data.open) {
+      setOpen(true);
+    } else if (!commonStore.editingPreset ||
+      (presetIndex === -1 && JSON.stringify(editingPreset) === JSON.stringify(defaultPreset)) ||
+      (presetIndex !== -1 && JSON.stringify(editingPreset) === JSON.stringify(commonStore.presets[presetIndex]))) {
+      setOpen(false);
+      setShowExitConfirm(false);
+      commonStore.setEditingPreset(null);
+    } else {
+      setShowExitConfirm(true);
+    }
+  }}>
     <DialogTrigger disableButtonEnhancement>
       {triggerButton}
     </DialogTrigger>
@@ -200,14 +225,31 @@ const ChatPresetEditor: FC<{
       transform: 'unset' // override the style for the new version of @fluentui/react-components to avoid conflicts with react-beautiful-dnd
     }}>
       <DialogBody style={{ height: '100%', overflow: 'hidden' }}>
-        <DialogContent className="flex flex-col gap-1 overflow-hidden">
+        {editingPreset && <DialogContent className="flex flex-col gap-1 overflow-hidden">
           <CustomToastContainer />
+          <Dialog open={showExitConfirm}>
+            <DialogSurface style={{ transform: 'unset' }}>
+              <DialogBody>
+                <DialogContent>
+                  {t('Content has been changed, are you sure you want to exit without saving?')}
+                </DialogContent>
+                <DialogActions>
+                  <Button appearance="secondary" onClick={() => {
+                    setShowExitConfirm(false);
+                  }}>{t('Cancel')}</Button>
+                  <Button appearance="primary" onClick={() => {
+                    setOpen(false);
+                    setShowExitConfirm(false);
+                    commonStore.setEditingPreset(null);
+                  }}>{t('Exit without saving')}</Button>
+                </DialogActions>
+              </DialogBody>
+            </DialogSurface>
+          </Dialog>
           <div className="flex justify-between">{
             presetIndex === -1
               ? <div />
-              : <DialogTrigger disableButtonEnhancement>
-                <Button appearance="subtle" icon={<Delete20Regular />} onClick={deletePreset} />
-              </DialogTrigger>
+              : <Button appearance="subtle" icon={<Delete20Regular />} onClick={deletePreset} />
           }
             <DialogTrigger disableButtonEnhancement>
               <Button appearance="subtle" icon={<Dismiss20Regular />} />
@@ -310,14 +352,10 @@ const ChatPresetEditor: FC<{
             <Button onClick={copyPreset}>{t('Copy')}</Button>
           </div>
           <div className="flex justify-between">
-            <DialogTrigger disableButtonEnhancement>
-              <Button appearance="primary" onClick={savePreset}>{t('Save')}</Button>
-            </DialogTrigger>
-            <DialogTrigger disableButtonEnhancement>
-              <Button appearance="primary" onClick={activatePreset}>{t('Activate')}</Button>
-            </DialogTrigger>
+            <Button appearance="primary" onClick={savePreset}>{t('Save')}</Button>
+            <Button appearance="primary" onClick={activatePreset}>{t('Activate')}</Button>
           </div>
-        </DialogContent>
+        </DialogContent>}
       </DialogBody>
     </DialogSurface>
   </Dialog>;
@@ -340,20 +378,16 @@ const ChatPresets: FC = observer(() => {
     {/*  </div>*/}
     {/*</PresetCardFrame>*/}
     <PresetCard
+      preset={defaultPreset}
       presetIndex={-1}
       editable={false}
-      onClick={() => {
-        setActivePreset(defaultPreset);
-      }} avatarImg={defaultPreset.avatarImg} name={defaultPreset.name} desc={defaultPreset.desc} tag={defaultPreset.tag}
     />
     {commonStore.presets.map((preset, index) => {
       return <PresetCard
+        key={index}
+        preset={preset}
         presetIndex={index}
         editable={true}
-        onClick={() => {
-          setActivePreset(preset);
-        }}
-        key={index} avatarImg={preset.avatarImg} name={preset.name} desc={preset.desc} tag={preset.tag}
       />;
     })}
   </div>;
