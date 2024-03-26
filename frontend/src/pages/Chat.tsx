@@ -608,7 +608,12 @@ const ChatPanel: FC = observer(() => {
         },
         async onopen(response) {
           if (response.status !== 200) {
-            commonStore.conversation[answerId!].content += '\n[ERROR]\n```\n' + response.statusText + '\n' + (await response.text()) + '\n```';
+            let errText = await response.text();
+            try {
+              errText = JSON.stringify(JSON.parse(errText), null, 2);
+            } catch (e) {
+            }
+            commonStore.conversation[answerId!].content += '\n[ERROR]\n```\n' + response.status + ' - ' + response.statusText + '\n' + errText + '\n```';
             commonStore.setConversation(commonStore.conversation);
             commonStore.setConversationOrder([...commonStore.conversationOrder]);
             setTimeout(scrollToBottom);
@@ -746,7 +751,7 @@ const ChatPanel: FC = observer(() => {
                                   autoClose: 1000
                                 });
                             } else {
-                              toast(r.statusText + '\n' + (await r.text()), {
+                              toast('Failed to fetch - ' + r.status + ' - ' + r.statusText + ' - ' + (await r.text()), {
                                 type: 'error'
                               });
                             }

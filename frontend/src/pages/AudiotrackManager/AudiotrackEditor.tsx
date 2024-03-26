@@ -494,7 +494,7 @@ const AudiotrackEditor: FC<{ setPrompt: (prompt: string) => void }> = observer((
                         commonStore.setTracks(tracks);
                         refreshTracksTotalTime();
                       } else {
-                        toast(r.statusText + '\n' + (await r.text()), {
+                        toast('Failed to fetch - ' + r.status + ' - ' + r.statusText + ' - ' + (await r.text()), {
                           type: 'error'
                         });
                       }

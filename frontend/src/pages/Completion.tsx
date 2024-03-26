@@ -132,7 +132,7 @@ const CompletionPanel: FC = observer(() => {
         },
         async onopen(response) {
           if (response.status !== 200) {
-            toast(response.statusText + '\n' + (await response.text()), {
+            toast(response.status + ' - ' + response.statusText + ' - ' + (await response.text()), {
               type: 'error'
             });
           }
