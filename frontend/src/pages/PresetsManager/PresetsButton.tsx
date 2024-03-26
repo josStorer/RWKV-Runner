@@ -196,7 +196,8 @@ const ChatPresetEditor: FC<{
       maxWidth: '80vw',
       maxHeight: '80vh',
       width: '500px',
-      height: '100%'
+      height: '100%',
+      transform: 'unset' // override the style for the new version of @fluentui/react-components to avoid conflicts with react-beautiful-dnd
     }}>
       <DialogBody style={{ height: '100%', overflow: 'hidden' }}>
         <DialogContent className="flex flex-col gap-1 overflow-hidden">
@@ -421,7 +422,7 @@ export const PresetsButton: FC<{
       <ToolTipButton desc={t('Presets')} size={size} shape={shape} appearance={appearance}
         icon={<Accessibility28Regular />} />
     </DialogTrigger>
-    <DialogSurface style={{ paddingTop: 0, maxWidth: '90vw', width: 'fit-content' }}>
+    <DialogSurface style={{ paddingTop: 0, maxWidth: '90vw', width: 'fit-content', transform: 'unset' }}>
       <DialogBody>
         <DialogContent>
           <CustomToastContainer />

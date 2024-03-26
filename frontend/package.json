@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@fluentui/react-components": "^9.20.0",
+    "@fluentui/react-components": "^9.47.2",
     "@fluentui/react-icons": "^2.0.201",
     "@magenta/music": "^1.23.1",
     "@microsoft/fetch-event-source": "^2.0.1",

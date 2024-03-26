@@ -41,7 +41,7 @@ export const DialogButton: FC<{
         <Button className={className} icon={icon} size={size} shape={shape} appearance={appearance}>{text}</Button>
       }
     </DialogTrigger>
-    <DialogSurface>
+    <DialogSurface style={{ transform: 'unset' }}>
       <DialogBody>
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>

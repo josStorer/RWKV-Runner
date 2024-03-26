@@ -28,7 +28,7 @@ export const AudiotrackButton: FC<{
         {t('Open MIDI Input Audio Tracks')}
       </Button>
     </DialogTrigger>
-    <DialogSurface style={{ paddingTop: 0, maxWidth: '90vw', width: 'fit-content' }}>
+    <DialogSurface style={{ paddingTop: 0, maxWidth: '90vw', width: 'fit-content', transform: 'unset' }}>
       <DialogBody>
         <DialogContent className="overflow-hidden">
           <CustomToastContainer />
