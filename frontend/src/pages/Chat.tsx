@@ -41,7 +41,7 @@ import { OpenFileFolder, OpenOpenFileDialog, OpenSaveFileDialog } from '../../wa
 import {
   absPathAsset,
   bytesToReadable,
-  getServerRoot,
+  getReqUrl,
   newChatConversation,
   OpenFileDialog,
   setActivePreset,
@@ -475,7 +475,7 @@ const ChatPanel: FC = observer(() => {
   // if answerId is not null, override the answer with new response;
   // if startUuid is null, start generating api body messages from first message;
   // if endUuid is null, generate api body messages until last message;
-  const onSubmit = useCallback((message: string | null = null, answerId: string | null = null,
+  const onSubmit = useCallback(async (message: string | null = null, answerId: string | null = null,
     startUuid: string | null = null, endUuid: string | null = null, includeEndUuid: boolean = false) => {
     if (message) {
       const newId = uuid();
@@ -557,13 +557,15 @@ const ChatPanel: FC = observer(() => {
     };
     const chatSseController = new AbortController();
     chatSseControllers[answerId] = chatSseController;
+    const { url, headers } = await getReqUrl(port, '/v1/chat/completions', true);
     fetchEventSource( // https://api.openai.com/v1/chat/completions || http://127.0.0.1:${port}/v1/chat/completions
-      getServerRoot(port, true) + '/v1/chat/completions',
+      url,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${commonStore.settings.apiKey}`
+          Authorization: `Bearer ${commonStore.settings.apiKey}`,
+          ...headers
         },
         body: JSON.stringify({
           messages: messages.slice(-commonStore.chatParams.historyN),
@@ -727,8 +729,10 @@ const ChatPanel: FC = observer(() => {
                         const urlPath = `/file-to-text?file_name=${attachmentName}`;
                         const bodyForm = new FormData();
                         bodyForm.append('file_data', blob, attachmentName);
-                        fetch(getServerRoot(port) + urlPath, {
+                        const { url, headers } = await getReqUrl(port, urlPath);
+                        fetch(url, {
                           method: 'POST',
+                          headers,
                           body: bodyForm
                         }).then(async r => {
                             if (r.status === 200) {

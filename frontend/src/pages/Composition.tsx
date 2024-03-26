@@ -26,7 +26,7 @@ import {
   SaveFile,
   StartFile
 } from '../../wailsjs/go/backend_golang/App';
-import { getServerRoot, getSoundFont, toastWithButton } from '../utils';
+import { getReqUrl, getSoundFont, toastWithButton } from '../utils';
 import { CompositionParams } from '../types/composition';
 import { useMediaQuery } from 'usehooks-ts';
 import { AudiotrackButton } from './AudiotrackManager/AudiotrackButton';
@@ -135,7 +135,7 @@ const CompositionPanel: FC = observer(() => {
     }
   }, [commonStore.midiPorts]);
 
-  const generateNs = (autoPlay: boolean) => {
+  const generateNs = async (autoPlay: boolean) => {
     if (commonStore.getCurrentModelConfig().modelParameters.modelName.toLowerCase().includes('abc')) {
       import('abcjs').then(ABCJS => {
         ABCJS.renderAbc('abc-paper', commonStore.compositionParams.prompt, { responsive: 'resize' });
@@ -143,10 +143,12 @@ const CompositionPanel: FC = observer(() => {
       return;
     }
 
-    fetch(getServerRoot(port) + '/text-to-midi', {
+    const { url, headers } = await getReqUrl(port, '/text-to-midi');
+    fetch(url, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        ...headers
       },
       body: JSON.stringify({
         'text': commonStore.compositionParams.prompt.replaceAll(/<pad>|<start>|<end>/g, '').replaceAll('  ', ' ').trim()
@@ -175,7 +177,7 @@ const CompositionPanel: FC = observer(() => {
     });
   };
 
-  const onSubmit = (prompt: string) => {
+  const onSubmit = async (prompt: string) => {
     commonStore.setCompositionSubmittedPrompt(prompt);
 
     if (commonStore.status.status === ModelStatus.Offline && !commonStore.settings.apiUrl && commonStore.platform !== 'web') {
@@ -192,13 +194,15 @@ const CompositionPanel: FC = observer(() => {
       generateNs(commonStore.compositionParams.autoPlay);
     };
     compositionSseController = new AbortController();
+    const { url, headers } = await getReqUrl(port, '/v1/completions', true);
     fetchEventSource( // https://api.openai.com/v1/completions || http://127.0.0.1:${port}/v1/completions
-      getServerRoot(port, true) + '/v1/completions',
+      url,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${commonStore.settings.apiKey}`
+          Authorization: `Bearer ${commonStore.settings.apiKey}`,
+          ...headers
         },
         body: JSON.stringify({
           prompt,

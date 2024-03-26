@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { checkUpdate, toastWithButton } from '../utils';
 import { RestartApp } from '../../wailsjs/go/backend_golang/App';
 import { Language, Languages } from '../types/settings';
+import { toast } from 'react-toastify';
 
 export const GeneralSettings: FC = observer(() => {
   const { t } = useTranslation();
@@ -113,11 +114,15 @@ export const AdvancedGeneralSettings: FC = observer(() => {
                   commonStore.setSettings({
                     apiCompletionModelName: 'rwkv'
                   });
+              } else if (data.optionText === 'Ollama') {
+                toast(t('Don\'t forget to correctly fill in your Ollama API Chat Model Name.'),
+                  { type: 'info' });
               }
             }}>
             <Option value="">{t('Localhost')!}</Option>
             <Option value="https://rwkv.ai-creator.net/chntuned">RWKV</Option>
             <Option value="https://api.openai.com">OpenAI</Option>
+            <Option value="http://localhost:11434">Ollama</Option>
           </Dropdown>
         </div>
       } />

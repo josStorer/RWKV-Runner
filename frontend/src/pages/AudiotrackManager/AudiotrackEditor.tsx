@@ -32,7 +32,7 @@ import {
   flushMidiRecordingContent,
   getMidiRawContentMainInstrument,
   getMidiRawContentTime,
-  getServerRoot,
+  getReqUrl,
   OpenFileDialog,
   refreshTracksTotalTime
 } from '../../utils';
@@ -474,8 +474,13 @@ const AudiotrackEditor: FC<{ setPrompt: (prompt: string) => void }> = observer((
                 OpenFileDialog('*.mid').then(async blob => {
                   const bodyForm = new FormData();
                   bodyForm.append('file_data', blob);
-                  fetch(getServerRoot(commonStore.getCurrentModelConfig().apiParameters.apiPort) + '/midi-to-text', {
+                  const {
+                    url,
+                    headers
+                  } = await getReqUrl(commonStore.getCurrentModelConfig().apiParameters.apiPort, '/midi-to-text');
+                  fetch(url, {
                     method: 'POST',
+                    headers,
                     body: bodyForm
                   }).then(async r => {
                       if (r.status === 200) {

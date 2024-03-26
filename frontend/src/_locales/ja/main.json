@@ -353,5 +353,6 @@
   "The name used internally by the model when processing AI message, changing this value helps improve the role-playing effect.": "AIメッセージを処理する際にモデルが内部で使用する名前、この値を変更することで、役割演技の効果を向上させることができます。",
   "Inside the model, there is a default prompt to improve the model's handling of common issues, but it may degrade the role-playing effect. You can disable this option to achieve a better role-playing effect.": "モデル内部には、一般的な問題の処理を改善するためのデフォルトのプロンプトがありますが、役割演技の効果を低下させる可能性があります。このオプションを無効にすることで、より良い役割演技効果を得ることができます。",
   "Exit without saving": "保存せずに終了",
-  "Content has been changed, are you sure you want to exit without saving?": "コンテンツが変更されています、保存せずに終了してもよろしいですか？"
+  "Content has been changed, are you sure you want to exit without saving?": "コンテンツが変更されています、保存せずに終了してもよろしいですか？",
+  "Don't forget to correctly fill in your Ollama API Chat Model Name.": "Ollama APIチャットモデル名を正しく記入するのを忘れないでください。"
 }

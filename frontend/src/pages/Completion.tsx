@@ -14,7 +14,7 @@ import { ToolTipButton } from '../components/ToolTipButton';
 import { ArrowSync20Regular } from '@fluentui/react-icons';
 import { defaultPresets } from './defaultConfigs';
 import { CompletionParams, CompletionPreset } from '../types/completion';
-import { getServerRoot } from '../utils';
+import { getReqUrl } from '../utils';
 
 let completionSseController: AbortController | null = null;
 
@@ -68,7 +68,7 @@ const CompletionPanel: FC = observer(() => {
     });
   };
 
-  const onSubmit = (prompt: string) => {
+  const onSubmit = async (prompt: string) => {
     commonStore.setCompletionSubmittedPrompt(prompt);
 
     if (commonStore.status.status === ModelStatus.Offline && !commonStore.settings.apiUrl && commonStore.platform !== 'web') {
@@ -86,13 +86,15 @@ const CompletionPanel: FC = observer(() => {
       commonStore.setCompletionGenerating(false);
     };
     completionSseController = new AbortController();
+    const { url, headers } = await getReqUrl(port, '/v1/completions', true);
     fetchEventSource( // https://api.openai.com/v1/completions || http://127.0.0.1:${port}/v1/completions
-      getServerRoot(port, true) + '/v1/completions',
+      url,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${commonStore.settings.apiKey}`
+          Authorization: `Bearer ${commonStore.settings.apiKey}`,
+          ...headers
         },
         body: JSON.stringify({
           prompt,
