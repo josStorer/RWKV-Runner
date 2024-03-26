@@ -2,6 +2,7 @@ import {
   AddToDownloadList,
   DeleteFile,
   DepCheck,
+  GetProxyPort,
   InstallPyDep,
   ListDirFiles,
   OpenOpenFileDialog,
@@ -28,7 +29,7 @@ import logo from '../assets/images/logo.png';
 import { Preset } from '../types/presets';
 import { botName, Conversation, MessageType, Role, systemName, userName } from '../types/chat';
 import { v4 as uuid } from 'uuid';
-import { findLastIndex } from 'lodash-es';
+import { findLastIndex, throttle } from 'lodash-es';
 
 export type Cache = {
   version: string
@@ -223,17 +224,21 @@ export const getStrategy = (modelConfig: ModelConfig | undefined = undefined) =>
   return strategy;
 };
 
-export const saveConfigs = async () => {
-  const data: LocalConfig = {
-    modelSourceManifestList: commonStore.modelSourceManifestList,
-    currentModelConfigIndex: commonStore.currentModelConfigIndex,
-    modelConfigs: commonStore.modelConfigs,
-    settings: commonStore.settings,
-    dataProcessParams: commonStore.dataProcessParams,
-    loraFinetuneParams: commonStore.loraFinetuneParams
-  };
-  return SaveJson('config.json', data);
-};
+export const saveConfigs = throttle(async () => {
+    const data: LocalConfig = {
+      modelSourceManifestList: commonStore.modelSourceManifestList,
+      currentModelConfigIndex: commonStore.currentModelConfigIndex,
+      modelConfigs: commonStore.modelConfigs,
+      settings: commonStore.settings,
+      dataProcessParams: commonStore.dataProcessParams,
+      loraFinetuneParams: commonStore.loraFinetuneParams
+    };
+    return SaveJson('config.json', data);
+  }, 500,
+  {
+    leading: true,
+    trailing: true
+  });
 
 export const saveCache = async () => {
   const data: Cache = {
