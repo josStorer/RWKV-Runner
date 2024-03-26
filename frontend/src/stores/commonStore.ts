@@ -63,6 +63,7 @@ class CommonStore {
   monitorData: MonitorData | null = null;
   depComplete: boolean = false;
   platform: Platform = 'windows';
+  proxyPort: number = 0;
   lastModelName: string = '';
   // presets manager
   editingPreset: Preset | null = null;
@@ -321,6 +322,10 @@ class CommonStore {
 
   setPlatform(value: Platform) {
     this.platform = value;
+  }
+
+  setProxyPort(value: number) {
+    this.proxyPort = value;
   }
 
   setCurrentInput(value: string) {

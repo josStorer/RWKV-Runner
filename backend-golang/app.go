@@ -7,7 +7,11 @@ import (
 	"context"
 	"errors"
 	"io"
+	"log"
+	"net"
 	"net/http"
+	"net/http/httputil"
+	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -27,6 +31,7 @@ type App struct {
 	HasConfigData bool
 	ConfigData    map[string]any
 	Dev           bool
+	proxyPort     int
 	exDir         string
 	cmdPrefix     string
 }
@@ -34,6 +39,57 @@ type App struct {
 // NewApp creates a new App application struct
 func NewApp() *App {
 	return &App{}
+}
+
+func (a *App) newFetchProxy() {
+	go func() {
+		handler := func(w http.ResponseWriter, r *http.Request) {
+			if r.Method == "OPTIONS" {
+				w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+				w.Header().Set("Access-Control-Allow-Headers", "*")
+				w.Header().Set("Access-Control-Allow-Origin", "*")
+				return
+			}
+			proxy := &httputil.ReverseProxy{
+				ModifyResponse: func(res *http.Response) error {
+					res.Header.Set("Access-Control-Allow-Origin", "*")
+					return nil
+				},
+				Director: func(req *http.Request) {
+					realTarget := req.Header.Get("Real-Target")
+					if realTarget != "" {
+						target, err := url.Parse(realTarget)
+						if err != nil {
+							log.Printf("Error parsing target URL: %v\n", err)
+							return
+						}
+						req.Header.Set("Accept", "*/*")
+						req.Header.Del("Origin")
+						req.Header.Del("Referer")
+						req.Header.Del("Real-Target")
+						req.Header.Del("Sec-Fetch-Dest")
+						req.Header.Del("Sec-Fetch-Mode")
+						req.Header.Del("Sec-Fetch-Site")
+						req.URL.Scheme = target.Scheme
+						req.URL.Host = target.Host
+						req.URL.Path = target.Path
+						log.Println("Proxying to", realTarget)
+					} else {
+						log.Println("Real-Target header is missing")
+					}
+				},
+			}
+			proxy.ServeHTTP(w, r)
+		}
+		http.HandleFunc("/", handler)
+		listener, err := net.Listen("tcp", "127.0.0.1:0")
+		if err != nil {
+			return
+		}
+		a.proxyPort = listener.Addr().(*net.TCPAddr).Port
+
+		http.Serve(listener, nil)
+	}()
 }
 
 // startup is called when the app starts. The context is saved
@@ -76,6 +132,7 @@ func (a *App) OnStartup(ctx context.Context) {
 	a.midiLoop()
 	a.watchFs()
 	a.monitorHardware()
+	a.newFetchProxy()
 }
 
 func (a *App) OnBeforeClose(ctx context.Context) bool {
@@ -238,4 +295,8 @@ func (a *App) RestartApp() error {
 
 func (a *App) GetPlatform() string {
 	return runtime.GOOS
+}
+
+func (a *App) GetProxyPort() int {
+	return a.proxyPort
 }

@@ -32,6 +32,8 @@ export function GetAbsPath(arg1:string):Promise<string>;
 
 export function GetPlatform():Promise<string>;
 
+export function GetProxyPort():Promise<number>;
+
 export function GetPyError():Promise<string>;
 
 export function InstallPyDep(arg1:string,arg2:boolean):Promise<string>;

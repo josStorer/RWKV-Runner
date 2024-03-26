@@ -62,6 +62,10 @@ export function GetPlatform() {
   return window['go']['backend_golang']['App']['GetPlatform']();
 }
 
+export function GetProxyPort() {
+  return window['go']['backend_golang']['App']['GetProxyPort']();
+}
+
 export function GetPyError() {
   return window['go']['backend_golang']['App']['GetPyError']();
 }

@@ -310,6 +310,24 @@ export function bytesToReadable(size: number) {
   else return bytesToGb(size) + ' GB';
 }
 
+export async function getReqUrl(port: number, path: string, isCore: boolean = false): Promise<{
+  url: string,
+  headers: { [key: string]: string }
+}> {
+  const realUrl = getServerRoot(port, isCore) + path;
+  if (commonStore.platform === 'web')
+    return {
+      url: realUrl,
+      headers: {}
+    };
+  if (!commonStore.proxyPort)
+    await GetProxyPort().then(p => commonStore.setProxyPort(p));
+  return {
+    url: `http://127.0.0.1:${commonStore.proxyPort}`,
+    headers: { 'Real-Target': realUrl }
+  };
+}
+
 export function getServerRoot(defaultLocalPort: number, isCore: boolean = false) {
   const coreCustomApiUrl = commonStore.settings.coreApiUrl.trim().replace(/\/$/, '');
   if (isCore && coreCustomApiUrl)

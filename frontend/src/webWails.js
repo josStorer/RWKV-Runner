@@ -115,6 +115,12 @@ if (!window.go) {
   defineApp('ListDirFiles', async () => {
     return []
   })
+  defineApp('GetAbsPath', async (path) => {
+    return path
+  })
+  defineApp('GetProxyPort', async () => {
+    return 0
+  })
   defineApp('OpenOpenFileDialog', webOpenOpenFileDialog)
   defineApp('OpenSaveFileDialog', async (filterPattern, defaultFileName, savedContent) => {
     const saver = await import('file-saver')
