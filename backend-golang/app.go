@@ -58,6 +58,11 @@ func (a *App) newFetchProxy() {
 				Director: func(req *http.Request) {
 					realTarget := req.Header.Get("Real-Target")
 					if realTarget != "" {
+						realTarget, err := url.PathUnescape(realTarget)
+						if err != nil {
+							log.Printf("Error decoding target URL: %v\n", err)
+							return
+						}
 						target, err := url.Parse(realTarget)
 						if err != nil {
 							log.Printf("Error parsing target URL: %v\n", err)
@@ -73,6 +78,7 @@ func (a *App) newFetchProxy() {
 						req.URL.Scheme = target.Scheme
 						req.URL.Host = target.Host
 						req.URL.Path = target.Path
+						req.URL.RawQuery = url.PathEscape(target.RawQuery)
 						log.Println("Proxying to", realTarget)
 					} else {
 						log.Println("Real-Target header is missing")
