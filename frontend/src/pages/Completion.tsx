@@ -80,6 +80,11 @@ const CompletionPanel: FC = observer(() => {
     prompt += params.injectStart.replaceAll('\\n', '\n');
 
     let answer = '';
+    let finished = false;
+    const finish = () => {
+      finished = true;
+      commonStore.setCompletionGenerating(false);
+    };
     completionSseController = new AbortController();
     fetchEventSource( // https://api.openai.com/v1/completions || http://127.0.0.1:${port}/v1/completions
       getServerRoot(port, true) + '/v1/completions',
@@ -103,8 +108,8 @@ const CompletionPanel: FC = observer(() => {
         signal: completionSseController?.signal,
         onmessage(e) {
           scrollToBottom();
-          if (e.data.trim() === '[DONE]') {
-            commonStore.setCompletionGenerating(false);
+          if (!finished && e.data.trim() === '[DONE]') {
+            finish();
             return;
           }
           let data;
@@ -117,6 +122,10 @@ const CompletionPanel: FC = observer(() => {
           if (data.model)
             commonStore.setLastModelName(data.model);
           if (data.choices && Array.isArray(data.choices) && data.choices.length > 0) {
+            if (!finished && data.choices[0]?.finish_reason) {
+              finish();
+              return;
+            }
             answer += data.choices[0]?.text || data.choices[0]?.delta?.content || '';
             setPrompt(prompt + answer.replace(/\s+$/, '') + params.injectEnd.replaceAll('\\n', '\n'));
           }

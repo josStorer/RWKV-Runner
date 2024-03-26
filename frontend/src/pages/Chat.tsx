@@ -545,6 +545,16 @@ const ChatPanel: FC = observer(() => {
     commonStore.setConversationOrder(commonStore.conversationOrder);
     setTimeout(scrollToBottom);
     let answer = '';
+    let finished = false;
+    const finish = () => {
+      finished = true;
+      if (answerId! in chatSseControllers)
+        delete chatSseControllers[answerId!];
+      commonStore.conversation[answerId!].done = true;
+      commonStore.conversation[answerId!].content = commonStore.conversation[answerId!].content.trim();
+      commonStore.setConversation(commonStore.conversation);
+      commonStore.setConversationOrder([...commonStore.conversationOrder]);
+    };
     const chatSseController = new AbortController();
     chatSseControllers[answerId] = chatSseController;
     fetchEventSource( // https://api.openai.com/v1/chat/completions || http://127.0.0.1:${port}/v1/chat/completions
@@ -572,13 +582,8 @@ const ChatPanel: FC = observer(() => {
         signal: chatSseController?.signal,
         onmessage(e) {
           scrollToBottom();
-          if (e.data.trim() === '[DONE]') {
-            if (answerId! in chatSseControllers)
-              delete chatSseControllers[answerId!];
-            commonStore.conversation[answerId!].done = true;
-            commonStore.conversation[answerId!].content = commonStore.conversation[answerId!].content.trim();
-            commonStore.setConversation(commonStore.conversation);
-            commonStore.setConversationOrder([...commonStore.conversationOrder]);
+          if (!finished && e.data.trim() === '[DONE]') {
+            finish();
             return;
           }
           let data;
@@ -591,6 +596,10 @@ const ChatPanel: FC = observer(() => {
           if (data.model)
             commonStore.setLastModelName(data.model);
           if (data.choices && Array.isArray(data.choices) && data.choices.length > 0) {
+            if (!finished && data.choices[0]?.finish_reason) {
+              finish();
+              return;
+            }
             answer += data.choices[0]?.delta?.content || '';
             commonStore.conversation[answerId!].content = answer;
             commonStore.setConversation(commonStore.conversation);

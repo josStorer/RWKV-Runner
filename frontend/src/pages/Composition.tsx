@@ -185,6 +185,12 @@ const CompositionPanel: FC = observer(() => {
     }
 
     let answer = '';
+    let finished = false;
+    const finish = () => {
+      finished = true;
+      commonStore.setCompositionGenerating(false);
+      generateNs(commonStore.compositionParams.autoPlay);
+    };
     compositionSseController = new AbortController();
     fetchEventSource( // https://api.openai.com/v1/completions || http://127.0.0.1:${port}/v1/completions
       getServerRoot(port, true) + '/v1/completions',
@@ -205,9 +211,8 @@ const CompositionPanel: FC = observer(() => {
         signal: compositionSseController?.signal,
         onmessage(e) {
           scrollToBottom();
-          if (e.data.trim() === '[DONE]') {
-            commonStore.setCompositionGenerating(false);
-            generateNs(commonStore.compositionParams.autoPlay);
+          if (!finished && e.data.trim() === '[DONE]') {
+            finish();
             return;
           }
           let data;
@@ -220,6 +225,10 @@ const CompositionPanel: FC = observer(() => {
           if (data.model)
             commonStore.setLastModelName(data.model);
           if (data.choices && Array.isArray(data.choices) && data.choices.length > 0) {
+            if (!finished && data.choices[0]?.finish_reason) {
+              finish();
+              return;
+            }
             answer += data.choices[0]?.text || data.choices[0]?.delta?.content || '';
             setPrompt(prompt + answer.replace(/\s+$/, ''));
           }
