@@ -83,7 +83,7 @@ const App: FC = observer(() => {
             ))}
           </TabList>
         </div>
-        <div className="h-full w-full p-2 box-border overflow-y-hidden">
+        <div className="h-full w-full py-2 pr-2 box-border overflow-y-hidden">
           <Routes>
             {pages.map(({ path, element }, index) => (
               <Route key={`${path}-${index}`} path={path} element={<LazyImportComponent lazyChildren={element} />} />

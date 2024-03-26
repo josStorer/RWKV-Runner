@@ -16,6 +16,7 @@ export async function startup() {
   await GetPlatform().then(p => commonStore.setPlatform(p as Platform));
 
   if (commonStore.platform !== 'web') {
+    document.body.style.setProperty('overflow', 'hidden');
     downloadProgramFiles();
     EventsOn('downloadList', (data) => {
       if (data)
