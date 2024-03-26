@@ -94,7 +94,8 @@ English | [简体中文](README_ZH.md) | [日本語](README_JA.md)
 - Built-in model conversion tool.
 - Built-in download management and remote model inspection.
 - Built-in one-click LoRA Finetune. (Windows Only)
-- Can also be used as an OpenAI ChatGPT and GPT-Playground client. (Fill in the API URL and API Key in Settings page)
+- Can also be used as an OpenAI ChatGPT, GPT-Playground, Ollama and more clients. (Fill in the API URL and API Key in
+  Settings page)
 - Multilingual localization.
 - Theme switching.
 - Automatic updates.

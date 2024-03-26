@@ -89,8 +89,8 @@
 - 内蔵モデル変換ツール
 - ダウンロード管理とリモートモデル検査機能内蔵
 - 内蔵のLoRA微調整機能を搭載しています (Windowsのみ)
-- このプログラムは、OpenAI ChatGPTとGPT Playgroundのクライアントとしても使用できます（設定ページで `API URL` と `API Key`
-  を入力してください）
+- このプログラムは、OpenAI ChatGPT、GPT Playground、Ollama などのクライアントとしても使用できます（設定ページで `API URL`
+  と `API Key` を入力してください）
 - 多言語ローカライズ
 - テーマ切り替え
 - 自動アップデート
