@@ -651,7 +651,7 @@ const ChatPanel: FC = observer(() => {
           <DialogButton tooltip={t('Clear')}
             icon={<Delete28Regular />}
             size={mq ? 'large' : 'small'} shape="circular" appearance="subtle" title={t('Clear')}
-            contentText={t('Are you sure you want to clear the conversation? It cannot be undone.')}
+            content={t('Are you sure you want to clear the conversation? It cannot be undone.')}
             onConfirm={() => {
               if (generating) {
                 for (const id in chatSseControllers) {

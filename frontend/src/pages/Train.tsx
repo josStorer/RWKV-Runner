@@ -391,7 +391,7 @@ const LoraFinetune: FC = observer(() => {
                     setDataParams({ dataPath: data.value });
                   }} />
                 <DialogButton text={t('Help')} title={t('Help')} markdown
-                  contentText={t('The data path should be a directory or a file in jsonl format (more formats will be supported in the future).\n\n' +
+                  content={t('The data path should be a directory or a file in jsonl format (more formats will be supported in the future).\n\n' +
                     'When you provide a directory path, all the txt files within that directory will be automatically converted into training data. ' +
                     'This is commonly used for large-scale training in writing, code generation, or knowledge bases.\n\n' +
                     'The jsonl format file can be referenced at https://github.com/josStorer/RWKV-Runner/blob/master/finetune/data/sample.jsonl.\n' +

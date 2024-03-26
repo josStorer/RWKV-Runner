@@ -16,20 +16,28 @@ import { LazyImportComponent } from './LazyImportComponent';
 const MarkdownRender = React.lazy(() => import('./MarkdownRender'));
 
 export const DialogButton: FC<{
-  text?: string | null
+  text?: string | null,
   icon?: ReactElement,
   tooltip?: string | null,
   className?: string,
   title: string,
-  contentText: string,
+  content?: string | ReactElement | null
   markdown?: boolean,
   onConfirm?: () => void,
   size?: 'small' | 'medium' | 'large',
   shape?: 'rounded' | 'circular' | 'square',
   appearance?: 'secondary' | 'primary' | 'outline' | 'subtle' | 'transparent',
+  cancelButton?: boolean,
+  confirmButton?: boolean,
+  cancelButtonText?: string,
+  confirmButtonText?: string,
 }> = ({
-  text, icon, tooltip, className, title, contentText, markdown,
-  onConfirm, size, shape, appearance
+  text, icon, tooltip, className, title, content, markdown,
+  onConfirm, size, shape, appearance,
+  cancelButton = true,
+  confirmButton = true,
+  cancelButtonText = 'Cancel',
+  confirmButtonText = 'Confirm'
 }) => {
   const { t } = useTranslation();
 
@@ -48,19 +56,24 @@ export const DialogButton: FC<{
           {
             markdown ?
               <LazyImportComponent lazyChildren={MarkdownRender}>
-                {contentText}
+                {content}
               </LazyImportComponent> :
-              contentText
+              content
           }
         </DialogContent>
         <DialogActions>
-          <DialogTrigger disableButtonEnhancement>
-            <Button appearance="secondary">{t('Cancel')}</Button>
-          </DialogTrigger>
-          <DialogTrigger disableButtonEnhancement>
-            <Button appearance="primary" onClick={onConfirm}>{t('Confirm')}
-            </Button>
-          </DialogTrigger>
+          {cancelButton && (
+            <DialogTrigger disableButtonEnhancement>
+              <Button appearance="secondary">{t(cancelButtonText)}</Button>
+            </DialogTrigger>
+          )}
+          {confirmButton && (
+            <DialogTrigger disableButtonEnhancement>
+              <Button appearance="primary" onClick={onConfirm}>
+                {t(confirmButtonText)}
+              </Button>
+            </DialogTrigger>
+          )}
         </DialogActions>
       </DialogBody>
     </DialogSurface>

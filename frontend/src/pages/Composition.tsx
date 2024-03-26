@@ -387,7 +387,7 @@ const CompositionPanel: FC = observer(() => {
               onSubmit(commonStore.compositionSubmittedPrompt);
             }} />
             <DialogButton className="grow" text={t('Reset')} title={t('Reset')}
-              contentText={t('Are you sure you want to reset this page? It cannot be undone.')}
+              content={t('Are you sure you want to reset this page? It cannot be undone.')}
               onConfirm={() => {
                 const isABC = commonStore.getCurrentModelConfig().modelParameters.modelName.toLowerCase().includes('abc');
                 const defaultPrompt = isABC ? defaultCompositionABCPrompt : defaultCompositionPrompt;

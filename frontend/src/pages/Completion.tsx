@@ -284,7 +284,7 @@ const CompletionPanel: FC = observer(() => {
             onSubmit(commonStore.completionSubmittedPrompt);
           }} />
           <DialogButton className="grow" text={t('Reset')} title={t('Reset')}
-            contentText={t('Are you sure you want to reset this page? It cannot be undone.')}
+            content={t('Are you sure you want to reset this page? It cannot be undone.')}
             onConfirm={() => {
               setPreset(defaultPresets.find((preset) => preset.name === name)!);
             }} />
