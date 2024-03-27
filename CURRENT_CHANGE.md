@@ -1,20 +1,7 @@
 ## Changes
 
-### Features
-
-- make gate and out trainable (https://github.com/JL-er/RWKV-LORA/commit/834aea0f543b84eedb7cdd222672c06ca37aeacd)
-- new chat template for /chat/completions api (better system support)
-- add system role support for preset
-- proxied fetch support (for custom api url)
-
-### Improvements
-
-- improve preset editor
-- better compatibility for custom api (ollama etc.)
-  ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/2fe21753-3954-4593-a282-70a6bd990af5)
-- throttling saveConfigs
-- improve error messages
-- other details
+- avoid program lag caused by frequent triggering of read/write operations due to Linux file system notification
+- improve styles
 
 ## Install
 
