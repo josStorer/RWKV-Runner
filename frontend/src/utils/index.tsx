@@ -61,8 +61,7 @@ export async function refreshBuiltInModels(readCache: boolean = false) {
   else cache.models = manifest.models.slice();
 
   commonStore.setModelSourceList(cache.models);
-  await saveCache().catch(() => {
-  });
+  saveCache();
   return cache;
 }
 
@@ -120,8 +119,7 @@ export async function refreshLocalModels(cache: {
   commonStore.setModelSourceList(cache.models);
   if (initUnfinishedModels)
     initLastUnfinishedModelDownloads();
-  await saveCache().catch(() => {
-  });
+  saveCache();
 }
 
 function initLastUnfinishedModelDownloads() {
@@ -240,14 +238,18 @@ export const saveConfigs = throttle(async () => {
     trailing: true
   });
 
-export const saveCache = async () => {
-  const data: Cache = {
-    version: manifest.version,
-    models: commonStore.modelSourceList,
-    depComplete: commonStore.depComplete
-  };
-  return SaveJson('cache.json', data);
-};
+export const saveCache = throttle(async () => {
+    const data: Cache = {
+      version: manifest.version,
+      models: commonStore.modelSourceList,
+      depComplete: commonStore.depComplete
+    };
+    return SaveJson('cache.json', data);
+  }, 1000,
+  {
+    leading: true,
+    trailing: true
+  });
 
 export const savePresets = async () => {
   return SaveJson('presets.json', commonStore.presets);

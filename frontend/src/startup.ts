@@ -9,6 +9,7 @@ import { t } from 'i18next';
 import { Preset } from './types/presets';
 import { toast } from 'react-toastify';
 import { MidiMessage, MidiPort } from './types/composition';
+import { throttle } from 'lodash-es';
 
 export async function startup() {
   initPresets();
@@ -103,7 +104,7 @@ async function initPresets() {
 }
 
 async function initLoraModels() {
-  const refreshLoraModels = () => {
+  const refreshLoraModels = throttle(() => {
     ListDirFiles('lora-models').then((data) => {
       if (!data) return;
       const loraModels = [];
@@ -114,7 +115,7 @@ async function initLoraModels() {
       }
       commonStore.setLoraModels(loraModels);
     });
-  };
+  }, 2000);
 
   refreshLoraModels();
   EventsOn('fsnotify', (data: string) => {
@@ -124,9 +125,12 @@ async function initLoraModels() {
 }
 
 async function initLocalModelsNotify() {
+  const throttleRefreshLocalModels = throttle(() => {
+    refreshLocalModels({ models: commonStore.modelSourceList }, false); //TODO fix bug that only add models
+  }, 2000);
   EventsOn('fsnotify', (data: string) => {
     if (data.includes('models') && !data.includes('lora-models'))
-      refreshLocalModels({ models: commonStore.modelSourceList }, false); //TODO fix bug that only add models
+      throttleRefreshLocalModels();
   });
 }
 
