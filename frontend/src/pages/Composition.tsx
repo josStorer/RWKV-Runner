@@ -214,8 +214,9 @@ const CompositionPanel: FC = observer(() => {
         }),
         signal: compositionSseController?.signal,
         onmessage(e) {
+          if (finished) return;
           scrollToBottom();
-          if (!finished && e.data.trim() === '[DONE]') {
+          if (e.data.trim() === '[DONE]') {
             finish();
             return;
           }
@@ -229,7 +230,7 @@ const CompositionPanel: FC = observer(() => {
           if (data.model)
             commonStore.setLastModelName(data.model);
           if (data.choices && Array.isArray(data.choices) && data.choices.length > 0) {
-            if (!finished && data.choices[0]?.finish_reason) {
+            if (data.choices[0]?.finish_reason) {
               finish();
               return;
             }
