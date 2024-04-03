@@ -1,7 +1,6 @@
 ## Changes
 
-- avoid program lag caused by frequent triggering of read/write operations due to Linux file system notification
-- improve styles
+- bump webgpu mode (https://github.com/Ai00-X/ai00_server) (#321)
 
 ## Install
 
