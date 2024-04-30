@@ -599,14 +599,15 @@ const ChatPanel: FC = observer(() => {
           if (data.model)
             commonStore.setLastModelName(data.model);
           if (data.choices && Array.isArray(data.choices) && data.choices.length > 0) {
-            if (data.choices[0]?.finish_reason) {
-              finish();
-              return;
-            }
             answer += data.choices[0]?.delta?.content || '';
             commonStore.conversation[answerId!].content = answer;
             commonStore.setConversation(commonStore.conversation);
             commonStore.setConversationOrder([...commonStore.conversationOrder]);
+
+            if (data.choices[0]?.finish_reason) {
+              finish();
+              return;
+            }
           }
         },
         async onopen(response) {

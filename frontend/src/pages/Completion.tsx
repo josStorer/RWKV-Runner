@@ -125,12 +125,13 @@ const CompletionPanel: FC = observer(() => {
           if (data.model)
             commonStore.setLastModelName(data.model);
           if (data.choices && Array.isArray(data.choices) && data.choices.length > 0) {
+            answer += data.choices[0]?.text || data.choices[0]?.delta?.content || '';
+            setPrompt(prompt + answer.replace(/\s+$/, '') + params.injectEnd.replaceAll('\\n', '\n'));
+
             if (data.choices[0]?.finish_reason) {
               finish();
               return;
             }
-            answer += data.choices[0]?.text || data.choices[0]?.delta?.content || '';
-            setPrompt(prompt + answer.replace(/\s+$/, '') + params.injectEnd.replaceAll('\\n', '\n'));
           }
         },
         async onopen(response) {
