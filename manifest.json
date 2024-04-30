@@ -31,6 +31,7 @@
         "Official",
         "RWKV-6",
         "Global",
+        "Recommended",
         "CN",
         "JP"
       ]
@@ -53,7 +54,8 @@
         "Global",
         "CN",
         "JP"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-x060-World-3B-v2.1-20240417-ctx4096.pth",
@@ -92,10 +94,10 @@
         "Official",
         "RWKV-6",
         "Global",
-        "Recommended",
         "CN",
         "JP"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-5-World-0.1B-v1-20230803-ctx4096.pth",
@@ -208,7 +210,6 @@
         "Official",
         "RWKV-5",
         "Global",
-        "Recommended",
         "CN",
         "JP"
       ]
@@ -229,7 +230,6 @@
         "Official",
         "RWKV-5",
         "Global",
-        "Recommended",
         "CN",
         "JP"
       ]
@@ -309,8 +309,7 @@
         "Finetuned",
         "RWKV-5",
         "Global",
-        "Role Play",
-        "Recommended"
+        "Role Play"
       ],
       "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt"
     },
@@ -329,8 +328,7 @@
       "tags": [
         "Finetuned",
         "RWKV-5",
-        "Global",
-        "Recommended"
+        "Global"
       ],
       "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt"
     },
@@ -350,7 +348,26 @@
         "Finetuned",
         "RWKV-5",
         "Global",
-        "Recommended",
+        "CN",
+        "JP"
+      ]
+    },
+    {
+      "name": "Mobius-r5-chat-12b-8k-0426.pth",
+      "desc": {
+        "en": "RWKV-5 Mobius 12B Ctx8k",
+        "zh": "RWKV-5 Mobius 12B 8k上下文",
+        "ja": "RWKV-5 Mobius 12B 8kコンテキスト"
+      },
+      "size": 23157425346,
+      "SHA256": "b5304bdae6026c93ab5ab970edbc70cd35c2ed3b3ce4cd906996116681681b83",
+      "lastUpdated": "2024-04-27T09:03:39",
+      "url": "https://huggingface.co/TimeMobius/Mobius-RWKV-r5-chat-12B-8k/blob/main/Mobius-r5-chat-12b-8k-0426.pth",
+      "downloadUrl": "https://huggingface.co/TimeMobius/Mobius-RWKV-r5-chat-12B-8k/resolve/main/Mobius-r5-chat-12b-8k-0426.pth",
+      "tags": [
+        "Finetuned",
+        "RWKV-5",
+        "Global",
         "CN",
         "JP"
       ]
