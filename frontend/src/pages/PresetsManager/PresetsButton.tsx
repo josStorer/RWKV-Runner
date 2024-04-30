@@ -52,7 +52,7 @@ const defaultPreset: Preset = {
   stop: '',
   injectStart: '',
   injectEnd: '',
-  presystem: true,
+  presystem: false,
   userName: '',
   assistantName: ''
 };
@@ -275,7 +275,7 @@ const ChatPresetEditor: FC<{
                 <Labeled flex spaceBetween label={t('Insert default system prompt at the beginning')}
                   desc={t('Inside the model, there is a default prompt to improve the model\'s handling of common issues, but it may degrade the role-playing effect. You can disable this option to achieve a better role-playing effect.')}
                   content={
-                    <Switch checked={editingPreset.presystem === undefined ? true : editingPreset.presystem}
+                    <Switch checked={editingPreset.presystem === undefined ? false : editingPreset.presystem}
                       onChange={(e, data) => {
                         setEditingPreset({
                           presystem: data.checked

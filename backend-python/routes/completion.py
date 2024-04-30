@@ -57,7 +57,7 @@ class ChatCompletionBody(ModelConfigBody):
         None, description="Internal system name", min_length=1
     )
     presystem: bool = Field(
-        True, description="Whether to insert default system prompt at the beginning"
+        False, description="Whether to insert default system prompt at the beginning"
     )
 
     model_config = {

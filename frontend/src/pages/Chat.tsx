@@ -579,7 +579,7 @@ const ChatPanel: FC = observer(() => {
           penalty_decay: commonStore.chatParams.penaltyDecay === defaultPenaltyDecay ? undefined : commonStore.chatParams.penaltyDecay,
           user_name: commonStore.activePreset?.userName || undefined,
           assistant_name: commonStore.activePreset?.assistantName || undefined,
-          presystem: commonStore.activePreset?.presystem && undefined
+          presystem: commonStore.activePreset?.presystem || undefined
         }),
         signal: chatSseController?.signal,
         onmessage(e) {
