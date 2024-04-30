@@ -102,6 +102,7 @@ if __name__ == "__main__":
                 "time_mix_w2",
                 "time_decay_w1",
                 "time_decay_w2",
+                "lora.0",
             ],
         )
         print(f"Saved to {args.output}")

@@ -382,7 +382,7 @@ async def chat_completions(body: ChatCompletionBody, request: Request):
         body.stop.append(f"\n\n{user_code}")
         body.stop.append(f"\n\n{bot_code}")
     elif body.stop is None:
-        body.stop = default_stop
+        body.stop = default_stop + [f"\n\n{user_code}", f"\n\n{bot_code}"]
     # if not body.presystem:
     #     body.stop.append("\n\n")
 
