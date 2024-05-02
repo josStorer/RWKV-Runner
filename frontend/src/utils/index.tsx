@@ -322,7 +322,7 @@ export async function getReqUrl(port: number, path: string, isCore: boolean = fa
   headers: { [key: string]: string }
 }> {
   const realUrl = getServerRoot(port, isCore) + path;
-  if (commonStore.platform === 'web')
+  if (commonStore.platform === 'web' || realUrl.startsWith('https'))
     return {
       url: realUrl,
       headers: {}
