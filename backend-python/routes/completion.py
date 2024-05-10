@@ -4,6 +4,7 @@ from threading import Lock
 from typing import List, Union
 from enum import Enum
 import base64
+import time
 
 from fastapi import APIRouter, Request, status, HTTPException
 from sse_starlette.sse import EventSourceResponse
@@ -151,10 +152,13 @@ async def eval_rwkv(
             print(get_rwkv_config(model))
 
             response, prompt_tokens, completion_tokens = "", 0, 0
+            completion_start_time = None
             for response, delta, prompt_tokens, completion_tokens in model.generate(
                 prompt,
                 stop=stop,
             ):
+                if not completion_start_time:
+                    completion_start_time = time.time()
                 if await request.is_disconnected():
                     break
                 if stream:
@@ -186,6 +190,10 @@ async def eval_rwkv(
                     )
             # torch_gc()
             requests_num = requests_num - 1
+            completion_end_time = time.time()
+            tps = completion_tokens / (completion_end_time - completion_start_time)
+            print(f"Generation TPS: {tps:.2f}")
+
             if await request.is_disconnected():
                 print(f"{request.client} Stop Waiting")
                 quick_log(
