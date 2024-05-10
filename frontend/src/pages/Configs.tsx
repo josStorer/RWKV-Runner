@@ -268,50 +268,58 @@ const Configs: FC = observer(() => {
             title={t('Model Parameters')}
             content={
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                <Labeled label={t('Model')} content={
-                  <div className="flex gap-2 grow">
-                    <Select style={{ minWidth: 0 }} className="grow"
-                      value={selectedConfig.modelParameters.modelName}
-                      onChange={(e, data) => {
-                        const modelSource = commonStore.modelSourceList.find(item => item.name === data.value);
-                        if (modelSource?.customTokenizer)
-                          setSelectedConfigModelParams({
-                            modelName: data.value,
-                            useCustomTokenizer: true,
-                            customTokenizer: modelSource?.customTokenizer
-                          });
-                        else // prevent customTokenizer from being overwritten
-                          setSelectedConfigModelParams({
-                            modelName: data.value,
-                            useCustomTokenizer: false
-                          });
-                      }}>
-                      {!commonStore.modelSourceList.find(item => item.name === selectedConfig.modelParameters.modelName)?.isComplete
-                        && <option key={-1}
-                          value={selectedConfig.modelParameters.modelName}>{selectedConfig.modelParameters.modelName}
-                        </option>}
-                      {commonStore.modelSourceList.map((modelItem, index) =>
-                        modelItem.isComplete && <option key={index} value={modelItem.name}>{modelItem.name}</option>
-                      )}
-                    </Select>
-                    <ToolTipButton desc={t('Manage Models')} icon={<DataUsageSettings20Regular />} onClick={() => {
-                      navigate({ pathname: '/models' });
-                    }} />
+                <div className="sm:col-span-2">
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <div className="flex gap-2 items-center min-w-0 grow">
+                      <div className="shrink-0">
+                        {t('Model')}
+                      </div>
+                      <Select style={{ minWidth: 0 }} className="grow"
+                        value={selectedConfig.modelParameters.modelName}
+                        onChange={(e, data) => {
+                          const modelSource = commonStore.modelSourceList.find(item => item.name === data.value);
+                          if (modelSource?.customTokenizer)
+                            setSelectedConfigModelParams({
+                              modelName: data.value,
+                              useCustomTokenizer: true,
+                              customTokenizer: modelSource?.customTokenizer
+                            });
+                          else // prevent customTokenizer from being overwritten
+                            setSelectedConfigModelParams({
+                              modelName: data.value,
+                              useCustomTokenizer: false
+                            });
+                        }}>
+                        {!commonStore.modelSourceList.find(item => item.name === selectedConfig.modelParameters.modelName)?.isComplete
+                          && <option key={-1}
+                            value={selectedConfig.modelParameters.modelName}>{selectedConfig.modelParameters.modelName}
+                          </option>}
+                        {commonStore.modelSourceList.map((modelItem, index) =>
+                          modelItem.isComplete && <option key={index} value={modelItem.name}>{modelItem.name}</option>
+                        )}
+                      </Select>
+                      <ToolTipButton desc={t('Manage Models')} icon={<DataUsageSettings20Regular />} onClick={() => {
+                        navigate({ pathname: '/models' });
+                      }} />
+                    </div>
+                    {
+                      !selectedConfig.modelParameters.device.startsWith('WebGPU') ?
+                        (selectedConfig.modelParameters.device !== 'CPU (rwkv.cpp)' ?
+                          <ToolTipButton text={t('Convert')}
+                            className="shrink-0"
+                            desc={t('Convert model with these configs. Using a converted model will greatly improve the loading speed, but model parameters of the converted model cannot be modified.')}
+                            onClick={() => convertModel(selectedConfig, navigate)} /> :
+                          <ToolTipButton text={t('Convert To GGML Format')}
+                            className="shrink-0"
+                            desc=""
+                            onClick={() => convertToGGML(selectedConfig, navigate)} />)
+                        : <ToolTipButton text={t('Convert To Safe Tensors Format')}
+                          className="shrink-0"
+                          desc=""
+                          onClick={() => convertToSt(selectedConfig, navigate)} />
+                    }
                   </div>
-                } />
-                {
-                  !selectedConfig.modelParameters.device.startsWith('WebGPU') ?
-                    (selectedConfig.modelParameters.device !== 'CPU (rwkv.cpp)' ?
-                      <ToolTipButton text={t('Convert')}
-                        desc={t('Convert model with these configs. Using a converted model will greatly improve the loading speed, but model parameters of the converted model cannot be modified.')}
-                        onClick={() => convertModel(selectedConfig, navigate)} /> :
-                      <ToolTipButton text={t('Convert To GGML Format')}
-                        desc=""
-                        onClick={() => convertToGGML(selectedConfig, navigate)} />)
-                    : <ToolTipButton text={t('Convert To Safe Tensors Format')}
-                      desc=""
-                      onClick={() => convertToSt(selectedConfig, navigate)} />
-                }
+                </div>
                 <Labeled label={t('Strategy')} content={
                   <Dropdown style={{ minWidth: 0 }} className="grow" value={t(selectedConfig.modelParameters.device)!}
                     selectedOptions={[selectedConfig.modelParameters.device]}

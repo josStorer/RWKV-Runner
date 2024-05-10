@@ -436,7 +436,9 @@ const LoraFinetune: FC = observer(() => {
         content={
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <div className="flex gap-2 items-center">
-              {t('Base Model')}
+              <div className="shrink-0">
+                {t('Base Model')}
+              </div>
               <Select style={{ minWidth: 0 }} className="grow"
                 value={loraParams.baseModel}
                 onChange={(e, data) => {
