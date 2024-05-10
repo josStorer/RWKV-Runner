@@ -215,8 +215,12 @@ func (a *App) DepCheck(python string) error {
 
 func (a *App) InstallPyDep(python string, cnMirror bool) (string, error) {
 	var err error
+	torchWhlUrl := "torch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 --index-url https://download.pytorch.org/whl/cu117"
 	if python == "" {
 		python, err = GetPython()
+		if cnMirror && python == "py310/python.exe" {
+			torchWhlUrl = "https://mirrors.aliyun.com/pytorch-wheels/cu117/torch-1.13.1+cu117-cp310-cp310-win_amd64.whl"
+		}
 		if runtime.GOOS == "windows" {
 			python = `"%CD%/` + python + `"`
 		}
@@ -227,12 +231,8 @@ func (a *App) InstallPyDep(python string, cnMirror bool) (string, error) {
 
 	if runtime.GOOS == "windows" {
 		ChangeFileLine("./py310/python310._pth", 3, "Lib\\site-packages")
-		torchIndexUrl := "https://download.pytorch.org/whl/cu117"
-		if cnMirror {
-			torchIndexUrl = "https://mirrors.aliyun.com/pytorch-wheels/cu117"
-		}
 		installScript := python + " ./backend-python/get-pip.py -i https://mirrors.aliyun.com/pypi/simple --no-warn-script-location\n" +
-			python + " -m pip install torch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 --index-url " + torchIndexUrl + " --no-warn-script-location\n" +
+			python + " -m pip install " + torchWhlUrl + " --no-warn-script-location\n" +
 			python + " -m pip install -r ./backend-python/requirements.txt -i https://mirrors.aliyun.com/pypi/simple --no-warn-script-location\n" +
 			"exit"
 		if !cnMirror {
