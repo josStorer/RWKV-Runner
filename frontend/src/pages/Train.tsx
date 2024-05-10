@@ -116,9 +116,9 @@ const loraFinetuneParametersOptions: Array<[key: keyof LoraFinetuneParameters, t
   ['loraR', 'number', 'LoRA R'],
   ['loraAlpha', 'number', 'LoRA Alpha'],
   ['loraDropout', 'number', 'LoRA Dropout'],
-  ['beta1', 'any', ''],
-  ['preFfn', 'boolean', 'Pre-FFN'],
-  ['headQk', 'boolean', 'Head QK']
+  ['beta1', 'any', '']
+  // ['preFfn', 'boolean', 'Pre-FFN'],
+  // ['headQk', 'boolean', 'Head QK']
 ];
 
 const showError = (e: any) => {
@@ -304,7 +304,7 @@ const LoraFinetune: FC = observer(() => {
           `--ctx_len ${ctxLen} --epoch_steps ${loraParams.epochSteps} --epoch_count ${loraParams.epochCount} ` +
           `--epoch_begin ${loraParams.epochBegin} --epoch_save ${loraParams.epochSave} ` +
           `--micro_bsz ${loraParams.microBsz} --accumulate_grad_batches ${loraParams.accumGradBatches} ` +
-          `--pre_ffn ${loraParams.preFfn ? '1' : '0'} --head_qk ${loraParams.headQk ? '1' : '0'} --lr_init ${loraParams.lrInit} --lr_final ${loraParams.lrFinal} ` +
+          `--pre_ffn ${loraParams.preFfn ? '0' : '0'} --head_qk ${loraParams.headQk ? '0' : '0'} --lr_init ${loraParams.lrInit} --lr_final ${loraParams.lrFinal} ` +
           `--warmup_steps ${loraParams.warmupSteps} ` +
           `--beta1 ${loraParams.beta1} --beta2 ${loraParams.beta2} --adam_eps ${loraParams.adamEps} ` +
           `--devices ${loraParams.devices} --precision ${loraParams.precision} ` +
