@@ -354,5 +354,10 @@
   "Inside the model, there is a default prompt to improve the model's handling of common issues, but it may degrade the role-playing effect. You can disable this option to achieve a better role-playing effect.": "模型内部有一个默认提示来改善模型处理常规问题的效果, 但它可能会让角色扮演的效果变差, 你可以关闭此选项来获得更好的角色扮演效果",
   "Exit without saving": "退出而不保存",
   "Content has been changed, are you sure you want to exit without saving?": "内容已经被修改, 你确定要退出而不保存吗?",
-  "Don't forget to correctly fill in your Ollama API Chat Model Name.": "不要忘记正确填写你的Ollama API 聊天模型名"
+  "Don't forget to correctly fill in your Ollama API Chat Model Name.": "不要忘记正确填写你的Ollama API 聊天模型名",
+  "State-tuned Model": "State微调模型",
+  "See More": "查看更多",
+  "State Model": "State模型",
+  "State model mismatch": "State模型不匹配",
+  "File format of the model or state model not supported": "模型或state模型的文件格式不支持"
 }

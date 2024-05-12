@@ -7,6 +7,7 @@ export type ApiParameters = {
   frequencyPenalty: number;
   penaltyDecay?: number;
   globalPenalty?: boolean;
+  stateModel?: string;
 }
 export type Device = 'CPU' | 'CPU (rwkv.cpp)' | 'CUDA' | 'CUDA-Beta' | 'WebGPU' | 'WebGPU (Python)' | 'MPS' | 'Custom';
 export type Precision = 'fp16' | 'int8' | 'fp32' | 'nf4' | 'Q5_1';

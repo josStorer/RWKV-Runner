@@ -65,6 +65,7 @@ class CommonStore {
   platform: Platform = 'windows';
   proxyPort: number = 0;
   lastModelName: string = '';
+  stateModels: string[] = [];
   // presets manager
   editingPreset: Preset | null = null;
   presets: Preset[] = [];
@@ -408,6 +409,10 @@ class CommonStore {
 
   setLoraModels(value: string[]) {
     this.loraModels = value;
+  }
+
+  setStateModels(value: string[]) {
+    this.stateModels = value;
   }
 
   setAttachmentUploading(value: boolean) {

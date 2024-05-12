@@ -176,6 +176,19 @@ def reset_state():
     return "success"
 
 
+def force_reset_state():
+    global trie, dtrie
+
+    if trie is None:
+        return
+
+    import cyac
+
+    trie = cyac.Trie()
+    dtrie = {}
+    gc.collect()
+
+
 class LongestPrefixStateBody(BaseModel):
     prompt: str
 

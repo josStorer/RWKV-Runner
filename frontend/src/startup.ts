@@ -1,6 +1,14 @@
 import commonStore, { MonitorData, Platform } from './stores/commonStore';
 import { FileExists, GetPlatform, ListDirFiles, ReadJson } from '../wailsjs/go/backend_golang/App';
-import { Cache, checkUpdate, downloadProgramFiles, LocalConfig, refreshLocalModels, refreshModels } from './utils';
+import {
+  bytesToMb,
+  Cache,
+  checkUpdate,
+  downloadProgramFiles,
+  LocalConfig,
+  refreshLocalModels,
+  refreshModels
+} from './utils';
 import { getStatus } from './apis';
 import { EventsOn, WindowSetTitle } from '../wailsjs/runtime';
 import manifest from '../../manifest.json';
@@ -29,6 +37,7 @@ export async function startup() {
     });
     initLocalModelsNotify();
     initLoraModels();
+    initStateModels();
     initHardwareMonitor();
     initMidi();
   }
@@ -124,12 +133,42 @@ async function initLoraModels() {
   });
 }
 
+async function initStateModels() {
+  const refreshStateModels = throttle(async () => {
+    const stateModels = await ListDirFiles('state-models').then((data) => {
+      if (!data) return [];
+      const stateModels = [];
+      for (const f of data) {
+        if (!f.isDir && f.name.endsWith('.pth')) {
+          stateModels.push('state-models/' + f.name);
+        }
+      }
+      return stateModels;
+    });
+    await ListDirFiles('models').then((data) => {
+      if (!data) return;
+      for (const f of data) {
+        if (!f.isDir && f.name.endsWith('.pth') && Number(bytesToMb(f.size)) < 200) {
+          stateModels.push('models/' + f.name);
+        }
+      }
+    });
+    commonStore.setStateModels(stateModels);
+  }, 2000);
+
+  refreshStateModels();
+  EventsOn('fsnotify', (data: string) => {
+    if ((data.includes('models') && !data.includes('lora-models')) || data.includes('state-models'))
+      refreshStateModels();
+  });
+}
+
 async function initLocalModelsNotify() {
   const throttleRefreshLocalModels = throttle(() => {
     refreshLocalModels({ models: commonStore.modelSourceList }, false); //TODO fix bug that only add models
   }, 2000);
   EventsOn('fsnotify', (data: string) => {
-    if (data.includes('models') && !data.includes('lora-models'))
+    if (data.includes('models') && !data.includes('lora-models') && !data.includes('state-models'))
       throttleRefreshLocalModels();
   });
 }

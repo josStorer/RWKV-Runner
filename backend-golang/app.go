@@ -125,6 +125,7 @@ func (a *App) OnStartup(ctx context.Context) {
 	os.Chmod(a.exDir+"backend-rust/web-rwkv-converter", 0777)
 	os.Mkdir(a.exDir+"models", os.ModePerm)
 	os.Mkdir(a.exDir+"lora-models", os.ModePerm)
+	os.Mkdir(a.exDir+"state-models", os.ModePerm)
 	os.Mkdir(a.exDir+"finetune/json2binidx_tool/data", os.ModePerm)
 	trainLogPath := "lora-models/train_log.txt"
 	if !a.FileExists(trainLogPath) {
@@ -151,8 +152,9 @@ func (a *App) OnBeforeClose(ctx context.Context) bool {
 func (a *App) watchFs() {
 	watcher, err := fsnotify.NewWatcher()
 	if err == nil {
-		watcher.Add(a.exDir + "./lora-models")
 		watcher.Add(a.exDir + "./models")
+		watcher.Add(a.exDir + "./lora-models")
+		watcher.Add(a.exDir + "./state-models")
 		go func() {
 			for {
 				select {

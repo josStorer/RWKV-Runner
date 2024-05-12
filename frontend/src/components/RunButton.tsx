@@ -214,7 +214,18 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
                 presence_penalty: modelConfig.apiParameters.presencePenalty,
                 frequency_penalty: modelConfig.apiParameters.frequencyPenalty,
                 penalty_decay: modelConfig.apiParameters.penaltyDecay,
-                global_penalty: modelConfig.apiParameters.globalPenalty
+                global_penalty: modelConfig.apiParameters.globalPenalty,
+                state: modelConfig.apiParameters.stateModel
+              }).then(async r => {
+                if (r.status !== 200) {
+                  const error = await r.text();
+                  if (error.includes('state shape mismatch'))
+                    toast(t('State model mismatch'), { type: 'error' });
+                  else if (error.includes('file format of the model or state model not supported'))
+                    toast(t('File format of the model or state model not supported'), { type: 'error' });
+                  else
+                    toast(error, { type: 'error' });
+                }
               });
             }
 

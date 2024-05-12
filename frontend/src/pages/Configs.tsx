@@ -7,11 +7,13 @@ import {
   Dropdown,
   Input,
   Label,
+  Link,
   Option,
   PresenceBadge,
   Select,
   Switch,
-  Text
+  Text,
+  Tooltip
 } from '@fluentui/react-components';
 import { AddCircle20Regular, DataUsageSettings20Regular, Delete20Regular, Save20Regular } from '@fluentui/react-icons';
 import React, { FC, useCallback, useEffect, useRef } from 'react';
@@ -27,7 +29,7 @@ import { Page } from '../components/Page';
 import { useNavigate } from 'react-router';
 import { RunButton } from '../components/RunButton';
 import { updateConfig } from '../apis';
-import { getStrategy } from '../utils';
+import { getStrategy, isDynamicStateSupported } from '../utils';
 import { useTranslation } from 'react-i18next';
 import strategyImg from '../assets/images/strategy.jpg';
 import strategyZhImg from '../assets/images/strategy_zh.jpg';
@@ -36,6 +38,7 @@ import { useMediaQuery } from 'usehooks-ts';
 import { ApiParameters, Device, ModelParameters, Precision } from '../types/configs';
 import { convertModel, convertToGGML, convertToSt } from '../utils/convert-model';
 import { defaultPenaltyDecay } from './defaultConfigs';
+import { BrowserOpenURL } from '../../wailsjs/runtime';
 
 const ConfigSelector: FC<{
   selectedIndex: number,
@@ -112,6 +115,8 @@ const Configs: FC = observer(() => {
 
   const onClickSave = () => {
     commonStore.setModelConfig(selectedIndex, selectedConfig);
+    // When clicking RunButton in Configs page, updateConfig will be called twice,
+    // because there are also RunButton in other pages, and the calls to updateConfig in both places are necessary.
     updateConfig({
       max_tokens: selectedConfig.apiParameters.maxResponseToken,
       temperature: selectedConfig.apiParameters.temperature,
@@ -119,7 +124,18 @@ const Configs: FC = observer(() => {
       presence_penalty: selectedConfig.apiParameters.presencePenalty,
       frequency_penalty: selectedConfig.apiParameters.frequencyPenalty,
       penalty_decay: selectedConfig.apiParameters.penaltyDecay,
-      global_penalty: selectedConfig.apiParameters.globalPenalty
+      global_penalty: selectedConfig.apiParameters.globalPenalty,
+      state: selectedConfig.apiParameters.stateModel
+    }).then(async r => {
+      if (r.status !== 200) {
+        const error = await r.text();
+        if (error.includes('state shape mismatch'))
+          toast(t('State model mismatch'), { type: 'error' });
+        else if (error.includes('file format of the model or state model not supported'))
+          toast(t('File format of the model or state model not supported'), { type: 'error' });
+        else
+          toast(error, { type: 'error' });
+      }
     });
     toast(t('Config Saved'), { autoClose: 300, type: 'success' });
   };
@@ -200,6 +216,34 @@ const Configs: FC = observer(() => {
                         });
                       }} />
                   } />
+                {isDynamicStateSupported(selectedConfig) &&
+                  <div className="sm:col-span-2 flex gap-2 items-center min-w-0">
+                    <Tooltip content={<div>
+                      {t('State-tuned Model')}, {t('See More')}: <Link
+                      onClick={() => BrowserOpenURL('https://github.com/BlinkDL/RWKV-LM#state-tuning-tuning-the-initial-state-zero-inference-overhead')}>{'https://github.com/BlinkDL/RWKV-LM#state-tuning-tuning-the-initial-state-zero-inference-overhead'}
+                    </Link>
+                    </div>} showDelay={0} hideDelay={0}
+                      relationship="description">
+                      <div className="shrink-0">
+                        {t('State Model') + ' *'}
+                      </div>
+                    </Tooltip>
+                    <Select style={{ minWidth: 0 }} className="grow"
+                      value={selectedConfig.apiParameters.stateModel}
+                      onChange={(e, data) => {
+                        setSelectedConfigApiParams({
+                          stateModel: data.value
+                        });
+                      }}>
+                      <option key={-1} value={''}>
+                        {t('None')}
+                      </option>
+                      {commonStore.stateModels.map((modelName, index) =>
+                        <option key={index} value={modelName}>{modelName}</option>
+                      )}
+                    </Select>
+                  </div>
+                }
                 <Accordion className="sm:col-span-2" collapsible
                   openItems={!commonStore.apiParamsCollapsed && 'advanced'}
                   onToggle={(e, data) => {

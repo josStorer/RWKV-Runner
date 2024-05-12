@@ -677,3 +677,10 @@ export function newChatConversation() {
   };
   return { pushMessage, saveConversation };
 }
+
+export function isDynamicStateSupported(modelConfig: ModelConfig) {
+  return modelConfig.modelParameters.device === 'CUDA' ||
+    modelConfig.modelParameters.device === 'CPU' ||
+    modelConfig.modelParameters.device === 'Custom' ||
+    modelConfig.modelParameters.device === 'MPS';
+}
