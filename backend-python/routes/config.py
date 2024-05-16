@@ -120,7 +120,9 @@ def update_config(body: ModelConfigBody):
         model_config = ModelConfigBody()
         global_var.set(global_var.Model_Config, model_config)
     merge_model(model_config, body)
-    exception = load_rwkv_state(global_var.get(global_var.Model), model_config.state)
+    exception = load_rwkv_state(
+        global_var.get(global_var.Model), model_config.state, True
+    )
     if exception is not None:
         raise exception
     print("Updated Model Config:", model_config)
