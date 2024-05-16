@@ -191,7 +191,10 @@ async def eval_rwkv(
             # torch_gc()
             requests_num = requests_num - 1
             completion_end_time = time.time()
-            tps = completion_tokens / (completion_end_time - completion_start_time)
+            completion_interval = completion_end_time - completion_start_time
+            tps = 0
+            if completion_interval > 0:
+                tps = completion_tokens / completion_interval
             print(f"Generation TPS: {tps:.2f}")
 
             if await request.is_disconnected():

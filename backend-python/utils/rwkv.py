@@ -257,7 +257,10 @@ class AbstractRWKV(ABC):
                 self.fix_tokens(self.pipeline.encode(delta_prompt))
             )
             prompt_end_time = time.time()
-            tps = prompt_token_len / (prompt_end_time - prompt_start_time)
+            prompt_interval = prompt_end_time - prompt_start_time
+            tps = 0
+            if prompt_interval > 0:
+                tps = prompt_token_len / prompt_interval
             print(f"Prompt Prefill TPS: {tps:.2f}", end=" ", flush=True)
             try:
                 state_cache.add_state(
