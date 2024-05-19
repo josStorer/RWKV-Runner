@@ -2,7 +2,7 @@ import { getDocument, GlobalWorkerOptions, PDFDocumentProxy } from 'pdfjs-dist';
 import { TextItem } from 'pdfjs-dist/types/src/display/api';
 
 export function webOpenOpenFileDialog(filterPattern: string, fnStartLoading: Function | undefined): Promise<{
-  blob: Blob,
+  blob: File,
   content?: string
 }> {
   return new Promise((resolve, reject) => {
@@ -17,7 +17,7 @@ export function webOpenOpenFileDialog(filterPattern: string, fnStartLoading: Fun
 
     input.onchange = async e => {
       // @ts-ignore
-      const file: Blob = e.target?.files[0];
+      const file: File = e.target?.files[0];
       if (fnStartLoading && typeof fnStartLoading === 'function')
         fnStartLoading();
       if (!GlobalWorkerOptions.workerSrc && file.type === 'application/pdf')
