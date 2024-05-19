@@ -16,8 +16,8 @@ export function webOpenOpenFileDialog(filterPattern: string, fnStartLoading: Fun
     .replaceAll(';', ',');
 
     input.onchange = async e => {
-      // @ts-ignore
-      const file: File = e.target?.files[0];
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (!file) return
       if (fnStartLoading && typeof fnStartLoading === 'function')
         fnStartLoading();
       if (!GlobalWorkerOptions.workerSrc && file.type === 'application/pdf')
