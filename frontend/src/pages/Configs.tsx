@@ -115,28 +115,31 @@ const Configs: FC = observer(() => {
 
   const onClickSave = () => {
     commonStore.setModelConfig(selectedIndex, selectedConfig);
-    // When clicking RunButton in Configs page, updateConfig will be called twice,
-    // because there are also RunButton in other pages, and the calls to updateConfig in both places are necessary.
-    updateConfig({
-      max_tokens: selectedConfig.apiParameters.maxResponseToken,
-      temperature: selectedConfig.apiParameters.temperature,
-      top_p: selectedConfig.apiParameters.topP,
-      presence_penalty: selectedConfig.apiParameters.presencePenalty,
-      frequency_penalty: selectedConfig.apiParameters.frequencyPenalty,
-      penalty_decay: selectedConfig.apiParameters.penaltyDecay,
-      global_penalty: selectedConfig.apiParameters.globalPenalty,
-      state: selectedConfig.apiParameters.stateModel
-    }).then(async r => {
-      if (r.status !== 200) {
-        const error = await r.text();
-        if (error.includes('state shape mismatch'))
-          toast(t('State model mismatch'), { type: 'error' });
-        else if (error.includes('file format of the model or state model not supported'))
-          toast(t('File format of the model or state model not supported'), { type: 'error' });
-        else
-          toast(error, { type: 'error' });
-      }
-    });
+    const webgpu = selectedConfig.modelParameters.device === 'WebGPU';
+    if (!webgpu) {
+      // When clicking RunButton in Configs page, updateConfig will be called twice,
+      // because there are also RunButton in other pages, and the calls to updateConfig in both places are necessary.
+      updateConfig({
+        max_tokens: selectedConfig.apiParameters.maxResponseToken,
+        temperature: selectedConfig.apiParameters.temperature,
+        top_p: selectedConfig.apiParameters.topP,
+        presence_penalty: selectedConfig.apiParameters.presencePenalty,
+        frequency_penalty: selectedConfig.apiParameters.frequencyPenalty,
+        penalty_decay: selectedConfig.apiParameters.penaltyDecay,
+        global_penalty: selectedConfig.apiParameters.globalPenalty,
+        state: selectedConfig.apiParameters.stateModel
+      }).then(async r => {
+        if (r.status !== 200) {
+          const error = await r.text();
+          if (error.includes('state shape mismatch'))
+            toast(t('State model mismatch'), { type: 'error' });
+          else if (error.includes('file format of the model or state model not supported'))
+            toast(t('File format of the model or state model not supported'), { type: 'error' });
+          else
+            toast(error, { type: 'error' });
+        }
+      });
+    }
     toast(t('Config Saved'), { autoClose: 300, type: 'success' });
   };
 
