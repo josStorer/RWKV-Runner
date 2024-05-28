@@ -71,7 +71,6 @@ jobs:
           rm ./backend-python/rwkv_pip/wkv_cuda.pyd
           rm ./backend-python/rwkv_pip/rwkv5.pyd
           rm ./backend-python/rwkv_pip/rwkv6.pyd
-          rm ./backend-python/rwkv_pip/beta/wkv_cuda.pyd
           rm ./backend-python/get-pip.py
           rm ./backend-python/rwkv_pip/cpp/librwkv.dylib
           rm ./backend-python/rwkv_pip/cpp/rwkv.dll
@@ -100,7 +99,6 @@ jobs:
           rm ./backend-python/rwkv_pip/wkv_cuda.pyd
           rm ./backend-python/rwkv_pip/rwkv5.pyd
           rm ./backend-python/rwkv_pip/rwkv6.pyd
-          rm ./backend-python/rwkv_pip/beta/wkv_cuda.pyd
           rm ./backend-python/get-pip.py
           rm ./backend-python/rwkv_pip/cpp/rwkv.dll
           rm ./backend-python/rwkv_pip/cpp/librwkv.so
