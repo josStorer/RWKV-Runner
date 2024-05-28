@@ -13,13 +13,6 @@ except ModuleNotFoundError:
 
 class RWKV:
     def __init__(self, model_path: str, strategy: str = None):
-        self.info = wrp.peek_info(model_path)
-        self.w = {}  # fake weight
-        self.w["emb.weight"] = [0] * self.info.num_vocab
-        self.version = str(self.info.version).lower()
-        self.wrp = getattr(wrp, self.version)
-        self.version = float(self.version.replace("v", ""))
-
         layer = (
             int(s.lstrip("layer"))
             for s in strategy.split()
@@ -33,21 +26,25 @@ class RWKV:
             for s in s.split(",")
             if s.startswith("chunk")
         )
+        self.token_chunk_size = next(chunk_size, 32)
 
         args = {
-            "file": model_path,
-            "turbo": True,
+            "path": model_path,
             "quant": next(layer, 31) if "i8" in strategy else 0,
             "quant_nf4": next(layer, 26) if "i4" in strategy else 0,
-            "token_chunk_size": next(chunk_size, 32),
-            "lora": None,
         }
-        self.model = self.wrp.Model(**args)
+        self.model = wrp.Model(**args)
+        self.info = self.model.info()
+        self.w = {}  # fake weight
+        self.w["emb.weight"] = [0] * self.info.num_vocab
+        self.version = str(self.info.version).lower()
+        self.version = float(self.version.lower().replace("v", ""))
 
     def forward(self, tokens: List[int], state: Union[Any, None] = None):
-        if type(state).__name__ == "BackedState":  # memory state
-            gpu_state = self.wrp.ModelState(self.model, 1)
-            gpu_state.load(state)
-        else:
-            gpu_state = state
-        return self.wrp.run_one(self.model, tokens, gpu_state)
+        if state is None:
+            self.model.clear_state()
+        elif type(state).__name__ == "State_Cpu":
+            self.model.load_state(state)
+        logits = self.model.run(tokens, self.token_chunk_size)
+        ret_state = "State_Gpu"
+        return logits, ret_state
