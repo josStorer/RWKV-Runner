@@ -617,7 +617,6 @@ def get_model_path(model_path: str) -> str:
 def RWKV(model: str, strategy: str, tokenizer: Union[str, None]) -> AbstractRWKV:
     model_path = get_model_path(model)
 
-    rwkv_beta = global_var.get(global_var.Args).rwkv_beta
     rwkv_cpp = getattr(global_var.get(global_var.Args), "rwkv.cpp")
     webgpu = global_var.get(global_var.Args).webgpu
 
@@ -625,12 +624,7 @@ def RWKV(model: str, strategy: str, tokenizer: Union[str, None]) -> AbstractRWKV
         os.environ["RWKV_RESCALE_LAYER"] = "999"
 
     # dynamic import to make RWKV_CUDA_ON work
-    if rwkv_beta:
-        print("Using rwkv-beta")
-        from rwkv_pip.beta.model import (
-            RWKV as Model,
-        )
-    elif rwkv_cpp:
+    if rwkv_cpp:
         print("Using rwkv.cpp, strategy is ignored")
         from rwkv_pip.cpp.model import (
             RWKV as Model,

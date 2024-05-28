@@ -28,7 +28,7 @@ func (a *App) StartServer(python string, port int, host string, webui bool, rwkv
 		args = append(args, "--webui")
 	}
 	if rwkvBeta {
-		args = append(args, "--rwkv-beta")
+		// args = append(args, "--rwkv-beta")
 	}
 	if rwkvcpp {
 		args = append(args, "--rwkv.cpp")
