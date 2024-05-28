@@ -1,6 +1,7 @@
 torch
 torchvision
 torchaudio
+setuptools==69.5.1
 rwkv==0.8.26
 langchain==0.0.322
 fastapi==0.109.1
