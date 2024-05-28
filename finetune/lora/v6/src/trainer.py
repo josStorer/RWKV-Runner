@@ -4,6 +4,8 @@ from torch.utils.data import DataLoader
 import pytorch_lightning as pl
 from pytorch_lightning.utilities import rank_zero_info, rank_zero_only
 from .model import LORA_CONFIG
+import re
+import numpy as np
 
 
 def my_save(args, trainer, dd, ff):
@@ -21,10 +23,7 @@ def my_save(args, trainer, dd, ff):
             f" aws s3 mv {fff} s3://rwkv-world/{aa}-{fn} --quiet", shell=True
         )
     else:
-        if "deepspeed_stage_3" in args.strategy:
-            trainer.save_checkpoint(ff, weights_only=True)
-        else:
-            torch.save(dd, ff)
+        torch.save(dd, ff)
 
 
 class train_callback(pl.Callback):
@@ -181,6 +180,30 @@ class train_callback(pl.Callback):
                         to_save_dict,
                         f"{args.proj_dir}/rwkv-final.pth",
                     )
+
+        if args.LISA and (batch_idx + 1) % args.lisa_k == 0:
+            pl_module.requires_grad_(False)
+            select_layers = np.random.choice(
+                range(args.n_layer), args.lisa_r, replace=False
+            )
+
+            for name, module in pl_module.named_modules():
+                for pname, param in module.named_parameters():
+                    if (
+                        "emb" in pname
+                        or "head" in pname
+                        or ".ln" in pname
+                        or "time" in pname
+                    ):
+                        param.requires_grad = True
+                    elif "ln_out" in pname:
+                        param.requires_grad = True
+                    match = re.search(r"\d+", pname)
+                    if match:
+                        number = int(match.group())
+                        if number in select_layers:
+                            param.requires_grad = True
+                break
         # if args.batch_save==batch_idx :
         #     to_save_dict = pl_module.state_dict()
         #     for name, state in to_save_dict.items():
@@ -229,12 +252,22 @@ class train_callback(pl.Callback):
                         if "img" in name:
                             to_save_dict[name] = state
 
+                if args.state_tune or args.train_type == "state":
+                    lora_dict = {}
+                    for name, state in to_save_dict.items():
+                        if "state" in name:
+                            lora_dict[name] = state
+                    to_save_dict = lora_dict
+
                 if args.lora:
                     enable_time_finetune = "time" in LORA_CONFIG["parts"]
                     enable_ln_finetune = "ln" in LORA_CONFIG["parts"]
                     lora_dict = {}
                     for name, state in to_save_dict.items():
-                        if "img" in name:
+                        if len(args.load_model) == 0:
+                            if "emb" in name or "head" in name or "ln" in name:
+                                lora_dict[name] = state
+                        if args.emb and "emb" in name:
                             lora_dict[name] = state
                         if (
                             ".lora_" in name

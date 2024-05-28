@@ -1,3 +1,7 @@
-torch==2.1.2
+torch==2.2.0
 pytorch_lightning==1.9.5
 deepspeed==0.12.6
+bitsandbytes==0.43.1
+einops==0.8.0
+triton==2.2.0
+transformers==4.41.1
