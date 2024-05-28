@@ -167,9 +167,9 @@ class CommonStore {
     adamEps: '1e-8',
     devices: 1,
     precision: 'bf16',
-    gradCp: false,
-    loraR: 8,
-    loraAlpha: 32,
+    gradCp: true,
+    loraR: 64,
+    loraAlpha: 192,
     loraDropout: 0.01,
     loraLoad: ''
   };
