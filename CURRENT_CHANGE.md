@@ -1,17 +1,23 @@
-## Deprecations
+## v1.8.4
+
+- fix f05a4a, __init__.py is not embedded
+
+## v1.8.3
+
+### Deprecations
 
 - rwkv-beta is deprecated
 
-## Upgrades
+### Upgrades
 
 - bump webgpu(python) (https://github.com/cryscan/web-rwkv-py)
 - sync https://github.com/JL-er/RWKV-PEFT (LoRA)
 
-## Improvements
+### Improvements
 
 - improve default LoRA fine-tune params
 
-## Fixes
+### Fixes
 
 - fix #342, #345: cannot import name 'packaging' from 'pkg_resources'
 - fix the huge error prompt that pops up when running in webgpu mode
