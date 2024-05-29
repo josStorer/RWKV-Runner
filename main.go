@@ -54,7 +54,7 @@ var py embed.FS
 //go:embed backend-rust
 var webgpu embed.FS
 
-//go:embed finetune
+//go:embed all:finetune
 var finetune embed.FS
 
 //go:embed midi
