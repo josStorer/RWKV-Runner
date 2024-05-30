@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://github.com/josStorer/RWKV-Runner/assets/13366013/d24834b0-265d-45f5-93c0-fac1e19562af">
+    <img src="https://github.com/josStorer/RWKV-Runner/assets/13366013/65c46133-7506-4b54-b64f-fe49f188afa7">
 </p>
 
 <h1 align="center">RWKV Runner</h1>
@@ -248,13 +248,13 @@ computer keyboard as MIDI input.
 
 ### Homepage
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/c9b9cdd0-63f9-4319-9f74-5bf5d7df5a67)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/c1923ed8-22f7-48b4-a274-e215e27a8e01)
 
 ### Chat
 
 ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/80009872-528f-4932-aeb2-f724fa892e7c)
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/e98c9038-3323-47b0-8edb-d639fafd37b2)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/de8d3fa7-c31f-4941-a22b-ded785427ac0)
 
 ### Completion
 

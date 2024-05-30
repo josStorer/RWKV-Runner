@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://github.com/josStorer/RWKV-Runner/assets/13366013/d24834b0-265d-45f5-93c0-fac1e19562af">
+    <img src="https://github.com/josStorer/RWKV-Runner/assets/13366013/65c46133-7506-4b54-b64f-fe49f188afa7">
 </p>
 
 <h1 align="center">RWKV Runner</h1>
@@ -226,13 +226,13 @@ for i in np.argsort(embeddings_cos_sim)[::-1]:
 
 ### 主页
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/cd82674e-3ee3-4175-bd9c-a11d45437327)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/3265b11a-ab19-4e19-bfea-fc687f59aaf9)
 
 ### 聊天
 
 ![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/9570e73b-dca2-4316-9e92-09961f3c48c4)
 
-![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/54bb0e2b-cdc4-4ea0-8d16-9beaf57c232c)
+![image](https://github.com/josStorer/RWKV-Runner/assets/13366013/162fce43-8568-4850-a6af-ab60af988da6)
 
 ### 续写
 
