@@ -353,6 +353,27 @@
       "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt"
     },
     {
+      "name": "Mobius-r6-chat-CHNtuned-12b-16k-v5.5.pth",
+      "desc": {
+        "en": "RWKV-6 Mobius 12B Ctx16k",
+        "zh": "RWKV-6 Mobius 12B 16k上下文",
+        "ja": "RWKV-6 Mobius 12B 16kコンテキスト"
+      },
+      "size": 23304952860,
+      "SHA256": "25e56f54fff3feddee1c23a098f5556a9afd0f922c8f7e1db3cf22ef6dfdfde4",
+      "lastUpdated": "2024-06-14T15:59:52",
+      "url": "https://hf-mirror.com/TimeMobius/Mobius-RWKV-r6-12B/blob/main/Mobius-r6-chat-CHNtuned-12b-16k-v5.5.pth",
+      "downloadUrl": "https://hf-mirror.com/TimeMobius/Mobius-RWKV-r6-12B/resolve/main/Mobius-r6-chat-CHNtuned-12b-16k-v5.5.pth",
+      "tags": [
+        "Finetuned",
+        "RWKV-6",
+        "Global",
+        "Recommended",
+        "CN",
+        "JP"
+      ]
+    },
+    {
       "name": "Mobius-r5-chat-12b-128k.pth",
       "desc": {
         "en": "RWKV-5 Mobius 12B Ctx128k",
