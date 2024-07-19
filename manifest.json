@@ -121,6 +121,27 @@
       ]
     },
     {
+      "name": "RWKV-x060-World-14B-v2.1-20240719-ctx4096.pth",
+      "desc": {
+        "en": "RWKV-6 Global Languages 14B v2.1",
+        "zh": "RWKV-6 全球语言 14B v2.1",
+        "ja": "RWKV-6 グローバル言語 14B v2.1"
+      },
+      "size": 28138429796,
+      "SHA256": "b65ad980b70833dbfab88c6894784cb0772ae15bd8850f23e7bc10334e785c06",
+      "lastUpdated": "2024-07-18T23:23:39",
+      "url": "https://huggingface.co/BlinkDL/rwkv-6-world/blob/main/RWKV-x060-World-14B-v2.1-20240719-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-6-world/resolve/main/RWKV-x060-World-14B-v2.1-20240719-ctx4096.pth",
+      "tags": [
+        "Official",
+        "RWKV-6",
+        "Global",
+        "Recommended",
+        "CN",
+        "JP"
+      ]
+    },
+    {
       "name": "RWKV-5-World-0.1B-v1-20230803-ctx4096.pth",
       "desc": {
         "en": "RWKV-5 Global Languages 0.1B v1",
