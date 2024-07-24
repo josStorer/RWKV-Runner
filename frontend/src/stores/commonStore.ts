@@ -42,11 +42,14 @@ export type Status = {
   device_name: string;
 }
 
+export type GpuType = 'Nvidia' | 'Amd' | 'Intel'
+
 export type MonitorData = {
+  gpuType: GpuType,
+  gpuName: String
   usedMemory: number;
   totalMemory: number;
   gpuUsage: number;
-  gpuPower: number;
   usedVram: number;
   totalVram: number;
 }
