@@ -311,9 +311,9 @@ const LoraFinetune: FC = observer(() => {
           `--grad_cp ${loraParams.gradCp ? '1' : '0'} ` +
           `--lora_r ${loraParams.loraR} --lora_alpha ${loraParams.loraAlpha} --lora_dropout ${loraParams.loraDropout}`).catch(showError);
       }).catch(e => {
+        WindowShow();
         const msg = e.message || e;
         if (msg === 'ubuntu not found') {
-          WindowShow();
           toastWithButton(t('Ubuntu is not installed, do you want to install it?'), t('Install Ubuntu'), () => {
             WslInstallUbuntu().then(() => {
               WindowShow();
@@ -321,8 +321,10 @@ const LoraFinetune: FC = observer(() => {
                 type: 'info',
                 autoClose: 10000
               });
-            });
+            }).catch(showError);
           });
+        } else {
+          showError(msg);
         }
       });
     }).catch(e => {
