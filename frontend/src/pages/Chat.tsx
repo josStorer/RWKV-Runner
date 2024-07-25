@@ -135,6 +135,8 @@ const ChatMessageItem: FC<{
   let avatarImg: string | undefined;
   if (commonStore.activePreset && messageItem.sender === botName) {
     avatarImg = absPathAsset(commonStore.activePreset.avatarImg);
+  } else if (commonStore.activePreset && messageItem.sender === userName) {
+    avatarImg = commonStore.activePreset.userAvatarImg && absPathAsset(commonStore.activePreset.userAvatarImg);
   } else if (messageItem.avatarImg) {
     avatarImg = messageItem.avatarImg;
   }

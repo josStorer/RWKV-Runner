@@ -10,6 +10,7 @@ export type Preset = {
   sourceUrl: string,
   desc: string,
   avatarImg: string,
+  userAvatarImg?: string,
   type: PresetType,
   // chat
   welcomeMessage: string,

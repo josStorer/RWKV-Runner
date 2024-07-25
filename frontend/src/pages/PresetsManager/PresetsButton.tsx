@@ -311,11 +311,19 @@ const ChatPresetEditor: FC<{
                       });
                     }} />
                   } />
-                <Labeled flex breakline label={t('Avatar Url')}
+                <Labeled flex breakline label={t('Assistant Avatar Url')}
                   content={
                     <Input value={editingPreset.avatarImg} onChange={(e, data) => {
                       setEditingPreset({
                         avatarImg: data.value
+                      });
+                    }} />
+                  } />
+                <Labeled flex breakline label={t('User Avatar Url')}
+                  content={
+                    <Input value={editingPreset.userAvatarImg} onChange={(e, data) => {
+                      setEditingPreset({
+                        userAvatarImg: data.value
                       });
                     }} />
                   } />
