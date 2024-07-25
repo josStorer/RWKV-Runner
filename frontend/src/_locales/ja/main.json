@@ -359,5 +359,8 @@
   "See More": "もっと見る",
   "State Model": "Stateモデル",
   "State model mismatch": "Stateモデルの不一致",
-  "File format of the model or state model not supported": "モデルまたはStateモデルのファイル形式がサポートされていません"
+  "File format of the model or state model not supported": "モデルまたはStateモデルのファイル形式がサポートされていません",
+  "Note: You are using an English state": "注意: あなたは英語のstateを使用しています",
+  "Note: You are using a Chinese state": "注意: あなたは中国語のstateを使用しています",
+  "Note: You are using a Japanese state": "注意: あなたは日本語のstateを使用しています"
 }

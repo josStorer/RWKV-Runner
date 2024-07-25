@@ -359,5 +359,8 @@
   "See More": "查看更多",
   "State Model": "State模型",
   "State model mismatch": "State模型不匹配",
-  "File format of the model or state model not supported": "模型或state模型的文件格式不支持"
+  "File format of the model or state model not supported": "模型或state模型的文件格式不支持",
+  "Note: You are using an English state": "注意: 你正在使用一个英文state",
+  "Note: You are using a Chinese state": "注意: 你正在使用一个中文state",
+  "Note: You are using a Japanese state": "注意: 你正在使用一个日文state"
 }

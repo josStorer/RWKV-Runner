@@ -1,4 +1,6 @@
 import commonStore, { Status } from '../stores/commonStore';
+import { toast } from 'react-toastify';
+import { TFunction } from 'i18next';
 
 export const readRoot = async () => {
   const port = commonStore.getCurrentModelConfig().apiParameters.apiPort;
@@ -25,7 +27,27 @@ export const switchModel = async (body: any) => {
   });
 };
 
-export const updateConfig = async (body: any) => {
+export const updateConfig = async (t: TFunction<'translation', undefined, 'translation'>, body: any) => {
+  if (body.state) {
+    const stateName = body.state.toLowerCase();
+    if (commonStore.settings.language !== 'zh' && (stateName.includes('chn') || stateName.includes('chinese'))) {
+      toast(t('Note: You are using a Chinese state'), {
+        type: 'warning',
+        toastId: 'state_warning'
+      });
+    } else if (commonStore.settings.language !== 'dev' && (stateName.includes('eng') || stateName.includes('english'))) {
+      toast(t('Note: You are using an English state'), {
+        type: 'warning',
+        toastId: 'state_warning'
+      });
+    } else if (commonStore.settings.language !== 'ja' && (stateName.includes('jpn') || stateName.includes('japanese'))) {
+      toast(t('Note: You are using a Japanese state'), {
+        type: 'warning',
+        toastId: 'state_warning'
+      });
+    }
+  }
+
   const port = commonStore.getCurrentModelConfig().apiParameters.apiPort;
   return fetch(`http://127.0.0.1:${port}/update-config`, {
     method: 'POST',

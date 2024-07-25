@@ -119,7 +119,7 @@ const Configs: FC = observer(() => {
     if (!webgpu) {
       // When clicking RunButton in Configs page, updateConfig will be called twice,
       // because there are also RunButton in other pages, and the calls to updateConfig in both places are necessary.
-      updateConfig({
+      updateConfig(t, {
         max_tokens: selectedConfig.apiParameters.maxResponseToken,
         temperature: selectedConfig.apiParameters.temperature,
         top_p: selectedConfig.apiParameters.topP,

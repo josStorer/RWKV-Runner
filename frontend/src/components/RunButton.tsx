@@ -207,7 +207,7 @@ export const RunButton: FC<{ onClickRun?: MouseEventHandler, iconMode?: boolean 
             commonStore.setStatus({ status: ModelStatus.Loading });
             const loadingId = toast(t('Loading Model'), { type: 'info', autoClose: false });
             if (!webgpu) {
-              updateConfig({
+              updateConfig(t, {
                 max_tokens: modelConfig.apiParameters.maxResponseToken,
                 temperature: modelConfig.apiParameters.temperature,
                 top_p: modelConfig.apiParameters.topP,
