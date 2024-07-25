@@ -8,16 +8,16 @@ endif
 
 build-windows:
 	@echo ---- build for windows
-	wails build -ldflags '-s -w -extldflags "-static"' -platform windows/amd64
+	wails build -ldflags '-s -w -extldflags "-static"' -platform windows/amd64 -devtools
 	upx -9 --lzma ./build/bin/RWKV-Runner.exe
 
 build-macos:
 	@echo ---- build for macos
-	wails build -ldflags '-s -w' -platform darwin/universal
+	wails build -ldflags '-s -w' -platform darwin/universal -devtools
 
 build-linux:
 	@echo ---- build for linux
-	wails build -ldflags '-s -w' -platform linux/amd64
+	wails build -ldflags '-s -w' -platform linux/amd64 -devtools
 	upx -9 --lzma ./build/bin/RWKV-Runner
 
 build-web:
