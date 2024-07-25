@@ -1,26 +1,23 @@
-## v1.8.4
+## Changes
 
-- fix f05a4a, __init__.py is not embedded
+### Features
 
-## v1.8.3
-
-### Deprecations
-
-- rwkv-beta is deprecated
+- allow the use of the devtools (Ctrl/Cmd+Shift+F12)
+- allow custom user avatar image of presets
 
 ### Upgrades
 
 - bump webgpu(python) (https://github.com/cryscan/web-rwkv-py)
-- sync https://github.com/JL-er/RWKV-PEFT (LoRA)
+- bump rwkv.cpp (rwkv6 support) (https://github.com/RWKV/rwkv.cpp)
 
 ### Improvements
 
-- improve default LoRA fine-tune params
+- improve prompts
+- improve error notifications during fine-tuning
 
 ### Fixes
 
-- fix #342, #345: cannot import name 'packaging' from 'pkg_resources'
-- fix the huge error prompt that pops up when running in webgpu mode
+- fix: #353, numpy2.0 error when fine-tuning
 
 ## Install
 
