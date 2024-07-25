@@ -109,13 +109,12 @@ func (a *App) OnStartup(ctx context.Context) {
 	if err == nil {
 		if runtime.GOOS == "darwin" {
 			a.exDir = filepath.Dir(ex) + "/../../../"
-			a.cmdPrefix = "cd " + a.exDir + " && "
 		} else {
 			a.exDir = filepath.Dir(ex) + "/"
-			a.cmdPrefix = "cd " + a.exDir + " && "
 		}
+		a.cmdPrefix = "cd " + a.exDir + " && "
 		if a.Dev {
-			a.exDir = ""
+			a.exDir = a.exDir + "../../"
 		} else {
 			os.Chdir(a.exDir)
 		}

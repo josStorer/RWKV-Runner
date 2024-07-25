@@ -1,6 +1,6 @@
 module rwkv-runner
 
-go 1.20
+go 1.22
 
 require (
 	github.com/cavaliergopher/grab/v3 v3.0.1

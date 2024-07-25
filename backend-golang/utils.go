@@ -140,22 +140,17 @@ func CopyEmbed(efs embed.FS) error {
 	return err
 }
 
-func GetPython() (string, error) {
+func GetPython(a *App) (string, error) {
 	switch platform := runtime.GOOS; platform {
 	case "windows":
-		ex, err := os.Executable()
+		pyexe := a.exDir + "py310/python.exe"
+		_, err := os.Stat(pyexe)
 		if err != nil {
-			return "", err
-		}
-		exDir := filepath.Dir(ex) + "/"
-		pyexe := exDir + "py310/python.exe"
-		_, err = os.Stat(pyexe)
-		if err != nil {
-			_, err := os.Stat(exDir + "python-3.10.11-embed-amd64.zip")
+			_, err := os.Stat(a.exDir + "python-3.10.11-embed-amd64.zip")
 			if err != nil {
 				return "", errors.New("python zip not found")
 			} else {
-				err := Unzip(exDir+"python-3.10.11-embed-amd64.zip", exDir+"py310")
+				err := Unzip(a.exDir+"python-3.10.11-embed-amd64.zip", a.exDir+"py310")
 				if err != nil {
 					return "", errors.New("failed to unzip python")
 				} else {

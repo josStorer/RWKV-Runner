@@ -18,7 +18,7 @@ func (a *App) StartServer(python string, port int, host string, webui bool, rwkv
 		return "", err
 	}
 	if python == "" {
-		python, err = GetPython()
+		python, err = GetPython(a)
 	}
 	if err != nil {
 		return "", err
@@ -65,7 +65,7 @@ func (a *App) ConvertModel(python string, modelPath string, strategy string, out
 		return "", err
 	}
 	if python == "" {
-		python, err = GetPython()
+		python, err = GetPython(a)
 	}
 	if err != nil {
 		return "", err
@@ -98,7 +98,7 @@ func (a *App) ConvertSafetensorsWithPython(python string, modelPath string, outP
 		return "", err
 	}
 	if python == "" {
-		python, err = GetPython()
+		python, err = GetPython(a)
 	}
 	if err != nil {
 		return "", err
@@ -113,7 +113,7 @@ func (a *App) ConvertGGML(python string, modelPath string, outPath string, Q51 b
 		return "", err
 	}
 	if python == "" {
-		python, err = GetPython()
+		python, err = GetPython(a)
 	}
 	if err != nil {
 		return "", err
@@ -132,7 +132,7 @@ func (a *App) ConvertData(python string, input string, outputPrefix string, voca
 		return "", err
 	}
 	if python == "" {
-		python, err = GetPython()
+		python, err = GetPython(a)
 	}
 	if err != nil {
 		return "", err
@@ -185,7 +185,7 @@ func (a *App) MergeLora(python string, useGpu bool, loraAlpha int, baseModel str
 		return "", err
 	}
 	if python == "" {
-		python, err = GetPython()
+		python, err = GetPython(a)
 	}
 	if err != nil {
 		return "", err
@@ -201,7 +201,7 @@ func (a *App) MergeLora(python string, useGpu bool, loraAlpha int, baseModel str
 func (a *App) DepCheck(python string) error {
 	var err error
 	if python == "" {
-		python, err = GetPython()
+		python, err = GetPython(a)
 	}
 	if err != nil {
 		return err
@@ -217,7 +217,7 @@ func (a *App) InstallPyDep(python string, cnMirror bool) (string, error) {
 	var err error
 	torchWhlUrl := "torch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 --index-url https://download.pytorch.org/whl/cu117"
 	if python == "" {
-		python, err = GetPython()
+		python, err = GetPython(a)
 		if cnMirror && python == "py310/python.exe" {
 			torchWhlUrl = "https://mirrors.aliyun.com/pytorch-wheels/cu117/torch-1.13.1+cu117-cp310-cp310-win_amd64.whl"
 		}
