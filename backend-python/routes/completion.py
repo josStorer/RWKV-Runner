@@ -366,6 +366,9 @@ def chat_template(
     return completion_text
 
 
+# WIP: This part of the code is under development
+
+
 @router.post("/v1/chat/completions", tags=["Completions"])
 @router.post("/chat/completions", tags=["Completions"])
 async def chat_completions(body: ChatCompletionBody, request: Request):
@@ -375,6 +378,9 @@ async def chat_completions(body: ChatCompletionBody, request: Request):
 
     if body.messages is None or body.messages == []:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "messages not found")
+    
+    if body.messages[-1].role == "assistant":
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, detail="invalid role")
 
     interface = model.interface
     user = model.user if body.user_name is None else body.user_name
@@ -410,7 +416,9 @@ async def chat_completions(body: ChatCompletionBody, request: Request):
             ).__anext__()
         except StopAsyncIteration:
             return None
-
+        
+        
+# End of WIP
 
 @router.post("/v1/completions", tags=["Completions"])
 @router.post("/completions", tags=["Completions"])
