@@ -242,23 +242,30 @@ async def eval_rwkv(
                 )
                 yield "[DONE]"
             else:
-                if isinstance(body, ChatCompletionBody) and hasattr(body, "tools"):
+                if isinstance(body, ChatCompletionBody):
                     yield{
                         "id": "",
                         "object": "chat.completion",
                         "created": int(time.time()),
                         "model": model.name,
                         "choices": [
-                            {
-                                "index": 0,
-                                "message": {
-                                    "role": Role.Assistant.value,
-                                    "content": response,
-                                    "tools_calls": "Coming Soon", # TODO: Implement it!
-                                },
-                                "logprobs": None,
-                                "finish_reason": "tools_calls",
-                            }
+                            (
+                                {
+                                    "index": 0,
+                                    "message": {
+                                        "role": Role.Assistant.value,
+                                        "content": response,
+                                        "tools_calls": "Coming Soon", # TODO: Implement it!
+                                    },
+                                    "logprobs": None,
+                                    "finish_reason": "tools_calls",
+                                } if isinstance(body.tools, List)
+                                else {                  # body is None
+                                    "text": response,
+                                    "index": 0,
+                                    "finish_reason": "stop",
+                                }
+                            )
                         ],
                         "usage": {
                             "prompt_tokens": prompt_tokens,
@@ -266,9 +273,9 @@ async def eval_rwkv(
                             "total_tokens": prompt_tokens + completion_tokens,
                         },
                     }
-                else: # !isinstance(body, ChatCompletionBody) and hasattr(body, "tools")
+                else: # !isinstance(body, ChatCompletionBody)
                     yield {
-                        "object": "chat.completion" if chat_mode else "text_completion",
+                        "object": "text_completion",
                         # "response": response,
                         "model": model.name,
                         "usage": {
@@ -277,22 +284,14 @@ async def eval_rwkv(
                             "total_tokens": prompt_tokens + completion_tokens,
                         },
                         "choices": [
-                            (
-                                {
-                                    "message": {
-                                        "role": Role.Assistant.value,
-                                        "content": response,
-                                    },
-                                    "index": 0,
-                                    "finish_reason": "stop",
-                                }
-                                if chat_mode
-                                else {
-                                    "text": response,
-                                    "index": 0,
-                                    "finish_reason": "stop",
-                                }
-                            )
+                            {
+                                "message": {
+                                    "role": Role.Assistant.value,
+                                    "content": response,
+                                },
+                                "index": 0,
+                                "finish_reason": "stop",
+                            }
                         ],
                     }
 
