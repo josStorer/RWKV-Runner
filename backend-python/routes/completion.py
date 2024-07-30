@@ -1,7 +1,7 @@
 import asyncio
 import json
 from threading import Lock
-from typing import List, Union
+from typing import List, Union, Literal
 from enum import Enum
 import base64
 import time
@@ -10,6 +10,12 @@ from fastapi import APIRouter, Request, status, HTTPException
 from sse_starlette.sse import EventSourceResponse
 from pydantic import BaseModel, Field
 import tiktoken
+
+from routes.schema import (
+    ChatCompletionMessageParam,
+    ChatCompletionToolParam,
+    ChatCompletionNamedToolChoiceParam,
+)
 from utils.rwkv import *
 from utils.log import quick_log
 import global_var
@@ -21,12 +27,7 @@ class Role(Enum):
     User = "user"
     Assistant = "assistant"
     System = "system"
-
-
-class Message(BaseModel):
-    role: Role
-    content: str = Field(min_length=0)
-    raw: bool = Field(False, description="Whether to treat content as raw text")
+    Tool = "tool"
 
 
 default_stop = [
@@ -44,10 +45,14 @@ default_stop = [
 
 
 class ChatCompletionBody(ModelConfigBody):
-    messages: Union[List[Message], None]
+    messages: Union[List[ChatCompletionMessageParam], None]
     model: Union[str, None] = "rwkv"
     stream: bool = False
     stop: Union[str, List[str], None] = default_stop
+    tools: Union[List[ChatCompletionToolParam], None] = None
+    tool_choice: Union[
+        Literal["none", "auto", "required"], ChatCompletionNamedToolChoiceParam
+    ] = "auto"
     user_name: Union[str, None] = Field(
         None, description="Internal user name", min_length=1
     )
@@ -352,6 +357,7 @@ def chat_template(
         )
 
     system = "System" if body.system_name is None else body.system_name
+    tool = "Obersavtion"
     for message in body.messages:
         append_message: str = ""
         if message.role == Role.User:
@@ -360,13 +366,12 @@ def chat_template(
             append_message = f"{bot}{interface} " + message.content
         elif message.role == Role.System:
             append_message = f"{system}{interface} " + message.content
+        elif message.role == Role.Tool:
+            append_message = f"{tool}{interface} " + message.content
         completion_text += append_message + "\n\n"
     completion_text += f"{bot}{interface}"
 
     return completion_text
-
-
-# WIP: This part of the code is under development
 
 
 @router.post("/v1/chat/completions", tags=["Completions"])
@@ -378,9 +383,6 @@ async def chat_completions(body: ChatCompletionBody, request: Request):
 
     if body.messages is None or body.messages == []:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "messages not found")
-    
-    if body.messages[-1].role == "assistant":
-        raise HTTPException(status.HTTP_400_BAD_REQUEST, detail="invalid role")
 
     interface = model.interface
     user = model.user if body.user_name is None else body.user_name
@@ -403,6 +405,24 @@ async def chat_completions(body: ChatCompletionBody, request: Request):
     # if not body.presystem:
     #     body.stop.append("\n\n")
 
+    if body.tool_choice != "none" and body.tools is not None and len(body.tools) > 0:
+        return await chat_with_tools(model, body, request, completion_text)
+    else:
+        return await chat(model, body, request, completion_text)
+
+
+async def chat_with_tools(
+    model: TextRWKV, body: ChatCompletionBody, request: Request, completion_text: str
+):
+    completion_text = "tools system\n\n" + completion_text  # TODO tools
+    response = await chat(model, body, request, completion_text)
+    # TODO response = postprocess_response(response, ...)
+    return response
+
+
+async def chat(
+    model: TextRWKV, body: ChatCompletionBody, request: Request, completion_text: str
+):
     if body.stream:
         return EventSourceResponse(
             eval_rwkv(
@@ -416,9 +436,7 @@ async def chat_completions(body: ChatCompletionBody, request: Request):
             ).__anext__()
         except StopAsyncIteration:
             return None
-        
-        
-# End of WIP
+
 
 @router.post("/v1/completions", tags=["Completions"])
 @router.post("/completions", tags=["Completions"])
