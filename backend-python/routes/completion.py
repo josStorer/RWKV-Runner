@@ -121,7 +121,7 @@ requests_num = 0
 async def eval_rwkv(
     model: AbstractRWKV,
     request: Request,
-    body: ModelConfigBody,
+    body: ModelConfigBody | ChatCompletionBody,
     prompt: str,
     stream: bool,
     stop: Union[str, List[str], None],
@@ -242,34 +242,59 @@ async def eval_rwkv(
                 )
                 yield "[DONE]"
             else:
-                yield {
-                    "object": "chat.completion" if chat_mode else "text_completion",
-                    # "response": response,
-                    "model": model.name,
-                    "usage": {
-                        "prompt_tokens": prompt_tokens,
-                        "completion_tokens": completion_tokens,
-                        "total_tokens": prompt_tokens + completion_tokens,
-                    },
-                    "choices": [
-                        (
+                if isinstance(body, ChatCompletionBody) and hasattr(body, "tools"):
+                    yield{
+                        "id": "",
+                        "object": "chat.completion",
+                        "created": int(time.time()),
+                        "model": model.name,
+                        "choices": [
                             {
+                                "index": 0,
                                 "message": {
                                     "role": Role.Assistant.value,
                                     "content": response,
+                                    "tools_calls": "Coming Soon", # TODO: Implement it!
                                 },
-                                "index": 0,
-                                "finish_reason": "stop",
+                                "logprobs": None,
+                                "finish_reason": "tools_calls",
                             }
-                            if chat_mode
-                            else {
-                                "text": response,
-                                "index": 0,
-                                "finish_reason": "stop",
-                            }
-                        )
-                    ],
-                }
+                        ],
+                        "usage": {
+                            "prompt_tokens": prompt_tokens,
+                            "completion_tokens": completion_tokens,
+                            "total_tokens": prompt_tokens + completion_tokens,
+                        },
+                    }
+                else: # !isinstance(body, ChatCompletionBody) and hasattr(body, "tools")
+                    yield {
+                        "object": "chat.completion" if chat_mode else "text_completion",
+                        # "response": response,
+                        "model": model.name,
+                        "usage": {
+                            "prompt_tokens": prompt_tokens,
+                            "completion_tokens": completion_tokens,
+                            "total_tokens": prompt_tokens + completion_tokens,
+                        },
+                        "choices": [
+                            (
+                                {
+                                    "message": {
+                                        "role": Role.Assistant.value,
+                                        "content": response,
+                                    },
+                                    "index": 0,
+                                    "finish_reason": "stop",
+                                }
+                                if chat_mode
+                                else {
+                                    "text": response,
+                                    "index": 0,
+                                    "finish_reason": "stop",
+                                }
+                            )
+                        ],
+                    }
 
 
 def chat_template_old(
@@ -360,13 +385,13 @@ def chat_template(
     tool = "Obersavtion"
     for message in body.messages:
         append_message: str = ""
-        if message.role == Role.User:
+        if message.role == Role.User.value:
             append_message = f"{user}{interface} " + message.content
-        elif message.role == Role.Assistant:
+        elif message.role == Role.Assistant.value:
             append_message = f"{bot}{interface} " + message.content
-        elif message.role == Role.System:
+        elif message.role == Role.System.value:
             append_message = f"{system}{interface} " + message.content
-        elif message.role == Role.Tool:
+        elif message.role == Role.Tool.value:
             append_message = f"{tool}{interface} " + message.content
         completion_text += append_message + "\n\n"
     completion_text += f"{bot}{interface}"
