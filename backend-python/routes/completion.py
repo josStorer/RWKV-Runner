@@ -266,9 +266,13 @@ async def eval_rwkv(
                                     "logprobs": None,
                                     "finish_reason": "tool_calls",
                                 } if isinstance(body.tools, List)
-                                else {                  # body is None
-                                    "text": response,
+                                else {      # body.tools is None
                                     "index": 0,
+                                    "message": {
+                                        "role": Role.Assistant.value,
+                                        "content": response,
+                                    },
+                                    "logprobs": None,
                                     "finish_reason": "stop",
                                 }
                             )
@@ -289,16 +293,9 @@ async def eval_rwkv(
                             "completion_tokens": completion_tokens,
                             "total_tokens": prompt_tokens + completion_tokens,
                         },
-                        "choices": [
-                            {
-                                "message": {
-                                    "role": Role.Assistant.value,
-                                    "content": response,
-                                },
-                                "index": 0,
-                                "finish_reason": "stop",
-                            }
-                        ],
+                        "text": response,
+                        "index": 0,
+                        "finish_reason": "stop",
                     }
 
 
@@ -388,21 +385,23 @@ def chat_template(
 
     system = "System" if body.system_name is None else body.system_name
     tool = "Obersavtion"
-    for message in body.messages:
+    for i in range(len(body.messages)):
         append_message: str = ""
-        if message.role == Role.User.value:
-            append_message = f"{user}{interface} " + message.content
-        elif message.role == Role.Assistant.value:
-            append_message = f"{bot}{interface} " + message.content
-        elif message.role == Role.System.value:
-            append_message = f"{system}{interface} " + message.content
-        elif message.role == Role.Tool.value:
-            append_message = f"{tool}{interface} " + message.content
+        message = body.messages[i]
+        match message.role:
+            case Role.User.value:
+                append_message = f"{user}{interface} " + message.content
+            case Role.Assistant.value if i + 1 < len(body.messages):
+                if body.messages[i + 1].role == Role.Tool.value:
+                    continue # Function call respones null content, skip
+            case Role.Assistant.value:
+                append_message = f"{bot}{interface} " + message.content
+            case Role.System.value:
+                append_message = f"{system}{interface} " + message.content
+            case Role.Tool.value:
+                append_message = f"{tool}{interface} " + message.content     
         completion_text += append_message + "\n\n"
     completion_text += f"{bot}{interface}"
-
-    # TODO add function call pre-process section
-
     return completion_text
 
 
@@ -452,7 +451,8 @@ async def chat_with_tools(
     if tools_text == "[]":
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "unecepted tools input")
     
-    # Prompts
+    # TODO Modify Function Call Prompts
+    # Function Call Prompts
     tools_text = \
 f"""\
 {system}{interface} there is a function list, you should chose one function which can resolve user's requirement,\
@@ -463,7 +463,7 @@ User: <content>
 Assistant: {{"name": "<name of the function you chose>", "arguments": '{{"<pram1>": "<arg1>", "<pram2>": "<arg2>", ...}}'}}
 """
 
-    completion_text = tools_text + completion_text # TODO Tools
+    completion_text = tools_text + completion_text
     response = await chat(model, body, request, completion_text)
     # TODO response = postprocess_response(response, ...)
     return response
