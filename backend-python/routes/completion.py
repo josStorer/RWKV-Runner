@@ -255,10 +255,16 @@ async def eval_rwkv(
                                     "message": {
                                         "role": Role.Assistant.value,
                                         "content": None,
-                                        "tools_calls": ast.literal_eval(response),
+                                        "tool_calls": [
+                                            {
+                                                "id": "",
+                                                "type": "function",
+                                                "function": ast.literal_eval(response)
+                                            }
+                                        ],
                                     },
                                     "logprobs": None,
-                                    "finish_reason": "tools_calls",
+                                    "finish_reason": "tool_calls",
                                 } if isinstance(body.tools, List)
                                 else {                  # body is None
                                     "text": response,
@@ -454,7 +460,7 @@ then fill the name and arguments.
 function list: {tools_text}
 e.g.:
 User: <content>
-Assistant: {{"name": "<name of the function you chose>", "arguments": {{"<pram1>": "<arg1>", "<pram2>": "<arg2>", ...}}}}
+Assistant: {{"name": "<name of the function you chose>", "arguments": '{{"<pram1>": "<arg1>", "<pram2>": "<arg2>", ...}}'}}
 """
 
     completion_text = tools_text + completion_text # TODO Tools
