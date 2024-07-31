@@ -4,7 +4,7 @@ from threading import Lock
 from typing import List, Union, Literal
 from enum import Enum
 import base64
-import time
+import time, ast
 
 from fastapi import APIRouter, Request, status, HTTPException
 from sse_starlette.sse import EventSourceResponse
@@ -241,7 +241,7 @@ async def eval_rwkv(
                     }
                 )
                 yield "[DONE]"
-            else:
+            else: # !stream
                 if isinstance(body, ChatCompletionBody):
                     yield{
                         "id": "",
@@ -254,8 +254,8 @@ async def eval_rwkv(
                                     "index": 0,
                                     "message": {
                                         "role": Role.Assistant.value,
-                                        "content": response,
-                                        "tools_calls": "Coming Soon", # TODO: Implement it!
+                                        "content": None,
+                                        "tools_calls": ast.literal_eval(response),
                                     },
                                     "logprobs": None,
                                     "finish_reason": "tools_calls",
@@ -395,6 +395,8 @@ def chat_template(
         completion_text += append_message + "\n\n"
     completion_text += f"{bot}{interface}"
 
+    # TODO add function call pre-process section
+
     return completion_text
 
 
@@ -438,7 +440,24 @@ async def chat_completions(body: ChatCompletionBody, request: Request):
 async def chat_with_tools(
     model: TextRWKV, body: ChatCompletionBody, request: Request, completion_text: str
 ):
-    completion_text = "tools system\n\n" + completion_text  # TODO tools
+    system = "System" if body.system_name is None else body.system_name
+    interface = model.interface
+    tools_text = str((await request.json())["tools"])
+    if tools_text == "[]":
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "unecepted tools input")
+    
+    # Prompts
+    tools_text = \
+f"""\
+{system}{interface} there is a function list, you should chose one function which can resolve user's requirement,\
+then fill the name and arguments.
+function list: {tools_text}
+e.g.:
+User: <content>
+Assistant: {{"name": "<name of the function you chose>", "arguments": {{"<pram1>": "<arg1>", "<pram2>": "<arg2>", ...}}}}
+"""
+
+    completion_text = tools_text + completion_text # TODO Tools
     response = await chat(model, body, request, completion_text)
     # TODO response = postprocess_response(response, ...)
     return response
