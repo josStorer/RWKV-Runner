@@ -422,9 +422,6 @@ async def chat_with_tools(
     system = "System" if body.system_name is None else body.system_name
     interface = model.interface
     tools_text = str((await request.json())["tools"])
-    # TODO: check whether input checking is needed
-    if tools_text == "[]":
-        raise HTTPException(status.HTTP_400_BAD_REQUEST, "unecepted tools input")
     
     # Function Call Prompts
     tools_text = \
@@ -461,10 +458,9 @@ def postprocess_response(response: dict):
                 }
             )
     
-    # TODO check whether analysis one choice only
     response["choices"][0]["message"]["tool_calls"] = tool_calls
     response["choices"][0]["message"]["content"] = None
-    response["choices"][0]["lgprobs"] = None
+    response["choices"][0]["logprobs"] = None
     response["choices"][0]["finish_reason"] = "tool_calls"
             
     return response
