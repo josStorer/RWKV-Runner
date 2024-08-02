@@ -4,7 +4,7 @@ from threading import Lock
 from typing import List, Union, Literal
 from enum import Enum
 import base64
-import time, ast
+import time, re, random, string
 
 from fastapi import APIRouter, Request, status, HTTPException
 from sse_starlette.sse import EventSourceResponse
@@ -242,61 +242,35 @@ async def eval_rwkv(
                 )
                 yield "[DONE]"
             else: # !stream
-                if isinstance(body, ChatCompletionBody):
-                    yield{
-                        "id": "",
-                        "object": "chat.completion",
-                        "created": int(time.time()),
-                        "model": model.name,
-                        "choices": [
-                            (
-                                {
-                                    "index": 0,
-                                    "message": {
-                                        "role": Role.Assistant.value,
-                                        "content": None,
-                                        "tool_calls": [
-                                            {
-                                                "id": "",
-                                                "type": "function",
-                                                "function": ast.literal_eval(response)
-                                            }
-                                        ],
-                                    },
-                                    "logprobs": None,
-                                    "finish_reason": "tool_calls",
-                                } if isinstance(body.tools, List)
-                                else {      # body.tools is None
-                                    "index": 0,
-                                    "message": {
-                                        "role": Role.Assistant.value,
-                                        "content": response,
-                                    },
-                                    "logprobs": None,
-                                    "finish_reason": "stop",
-                                }
-                            )
-                        ],
-                        "usage": {
-                            "prompt_tokens": prompt_tokens,
-                            "completion_tokens": completion_tokens,
-                            "total_tokens": prompt_tokens + completion_tokens,
-                        },
-                    }
-                else: # !isinstance(body, ChatCompletionBody)
-                    yield {
-                        "object": "text_completion",
-                        # "response": response,
-                        "model": model.name,
-                        "usage": {
-                            "prompt_tokens": prompt_tokens,
-                            "completion_tokens": completion_tokens,
-                            "total_tokens": prompt_tokens + completion_tokens,
-                        },
-                        "text": response,
-                        "index": 0,
-                        "finish_reason": "stop",
-                    }
+                yield {
+                    "id": "",
+                    "object": "chat.completion" if chat_mode else "text_completion",
+                    "created": int(time.time()),
+                    "model": model.name,
+                    "choices": [
+                        (
+                            {
+                                "message": {
+                                    "role": Role.Assistant.value,
+                                    "content": response,
+                                },
+                                "index": 0,
+                                "finish_reason": "stop",
+                            }
+                            if chat_mode
+                            else {
+                                "text": response,
+                                "index": 0,
+                                "finish_reason": "stop",
+                            }
+                        )
+                    ],
+                    "usage": {
+                        "prompt_tokens": prompt_tokens,
+                        "completion_tokens": completion_tokens,
+                        "total_tokens": prompt_tokens + completion_tokens,
+                    },
+                }
 
 
 def chat_template_old(
@@ -448,26 +422,52 @@ async def chat_with_tools(
     system = "System" if body.system_name is None else body.system_name
     interface = model.interface
     tools_text = str((await request.json())["tools"])
+    # TODO: check whether input checking is needed
     if tools_text == "[]":
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "unecepted tools input")
     
-    # TODO Modify Function Call Prompts
     # Function Call Prompts
     tools_text = \
 f"""\
-{system}{interface} there is a function list, you should chose one function which can resolve user's requirement,\
-then fill the name and arguments.
-function list: {tools_text}
-e.g.:
-User: <content>
-Assistant: {{"name": "<name of the function you chose>", "arguments": '{{"<pram1>": "<arg1>", "<pram2>": "<arg2>", ...}}'}}
+{system}{interface} You are a helpful assistant with access to the following functions. Use them if required {tools_text}
 """
 
     completion_text = tools_text + completion_text
     response = await chat(model, body, request, completion_text)
-    # TODO response = postprocess_response(response, ...)
+    response = postprocess_response(response)
     return response
 
+def postprocess_response(response: dict):
+    # TODO check whether error raising is needed
+    REGEX_BLOCKS = r'```[\w]*(.*?)```'
+    REGEX_FUNCTIONS = r'(\w+)*\('
+    REGEX_ARGS = r'"([^"]+)"\s*=\s*"([^"]+)"'
+
+    tool_calls = []
+    blocks = re.findall(REGEX_BLOCKS, response["choices"][0]["message"]["content"], re.DOTALL)
+    for block in blocks:
+        functions = block.strip().split('\n')
+        for function in functions:
+            name = re.search(REGEX_FUNCTIONS, function).group(1)
+            arguments = json.dumps(dict(re.findall(REGEX_ARGS, function)))
+            tool_calls.append(
+                {
+                    "id": "call_" + "".join(random.sample(string.ascii_letters + string.digits, 24)),
+                    "type": "function",
+                    "function": {
+                        "name": name,
+                        "arguments": arguments,
+                    }
+                }
+            )
+    
+    # TODO check whether analysis one choice only
+    response["choices"][0]["message"]["tool_calls"] = tool_calls
+    response["choices"][0]["message"]["content"] = None
+    response["choices"][0]["lgprobs"] = None
+    response["choices"][0]["finish_reason"] = "tool_calls"
+            
+    return response
 
 async def chat(
     model: TextRWKV, body: ChatCompletionBody, request: Request, completion_text: str
