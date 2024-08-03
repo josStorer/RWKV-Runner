@@ -359,17 +359,16 @@ def chat_template(
 
     system = "System" if body.system_name is None else body.system_name
     tool = "Obersavtion"
-    for i in range(len(body.messages)):
+    for message in body.messages:
         append_message: str = ""
-        message = body.messages[i]
         match message.role:
             case Role.User.value:
                 append_message = f"{user}{interface} " + message.content
-            case Role.Assistant.value if i + 1 < len(body.messages):
-                if body.messages[i + 1].role == Role.Tool.value:
-                    continue # Function call respones null content, skip
             case Role.Assistant.value:
-                append_message = f"{bot}{interface} " + message.content
+                if message.content is None:
+                    continue
+                else:
+                    append_message = f"{bot}{interface} " + message.content
             case Role.System.value:
                 append_message = f"{system}{interface} " + message.content
             case Role.Tool.value:
@@ -421,7 +420,20 @@ async def chat_with_tools(
 ):
     system = "System" if body.system_name is None else body.system_name
     interface = model.interface
-    tools_text = str((await request.json())["tools"])
+    tools = []
+    for tool in body.tools:
+        tools.append(
+            {
+                "name": tool.function.name,
+                "description": tool.function.description,
+                "parameters": {
+                    "type": tool.function.parameters["type"],
+                    "properties": tool.function.parameters["properties"],
+                    "required": tool.function.parameters["required"],
+                }
+            }
+        )
+    tools_text = str(tools)
     
     # Function Call Prompts
     tools_text = \
