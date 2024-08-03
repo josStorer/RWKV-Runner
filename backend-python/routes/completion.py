@@ -436,27 +436,23 @@ f"""\
 
 def postprocess_response(response: dict):
     # TODO check whether error raising is needed
-    REGEX_BLOCKS = r'```[\w]*(.*?)```'
-    REGEX_FUNCTIONS = r'(\w+)*\('
+    REGEX_BLOCKS = r'([\w]+)[\s]*```[\w]*(.*?)```'
     REGEX_ARGS = r'"([^"]+)"\s*=\s*"([^"]+)"'
 
-    tool_calls = []
-    blocks = re.findall(REGEX_BLOCKS, response["choices"][0]["message"]["content"], re.DOTALL)
-    for block in blocks:
-        functions = block.strip().split('\n')
-        for function in functions:
-            name = re.search(REGEX_FUNCTIONS, function).group(1)
-            arguments = json.dumps(dict(re.findall(REGEX_ARGS, function)))
-            tool_calls.append(
-                {
-                    "id": "call_" + "".join(random.sample(string.ascii_letters + string.digits, 24)),
-                    "type": "function",
-                    "function": {
-                        "name": name,
-                        "arguments": arguments,
-                    }
-                }
-            )
+    name = re.search(REGEX_BLOCKS, response["choices"][0]["message"]["content"], re.DOTALL).group(1)
+    function = re.search(REGEX_BLOCKS, response["choices"][0]["message"]["content"], re.DOTALL).group(2).strip()  
+    arguments = json.dumps(dict(re.findall(REGEX_ARGS, function)))
+
+    tool_calls = [
+        {
+            "id": "call_" + "".join(random.sample(string.ascii_letters + string.digits, 24)),
+            "type": "function",
+            "function": {
+                "name": name,
+                "arguments": arguments,
+            }
+        }
+    ]
     
     response["choices"][0]["message"]["tool_calls"] = tool_calls
     response["choices"][0]["message"]["content"] = None
@@ -464,6 +460,40 @@ def postprocess_response(response: dict):
     response["choices"][0]["finish_reason"] = "tool_calls"
             
     return response
+
+# -----------------------------------
+# @Description: (reserved) post process multi-function-call responses
+# -----------------------------------
+# def postprocess_response(response: dict):
+#     REGEX_BLOCKS = r'```[\w]*(.*?)```'
+#     REGEX_FUNCTIONS = r'(\w+)*\('
+#     REGEX_ARGS = r'"([^"]+)"\s*=\s*"([^"]+)"'
+
+#     tool_calls = []
+#     blocks = re.findall(REGEX_BLOCKS, response["choices"][0]["message"]["content"], re.DOTALL)
+#     for block in blocks:
+#         functions = block.strip().split('\n')
+#         for function in functions:
+#             name = re.search(REGEX_FUNCTIONS, function).group(1)
+#             arguments = json.dumps(dict(re.findall(REGEX_ARGS, function)))
+#             tool_calls.append(
+#                 {
+#                     "id": "call_" + "".join(random.sample(string.ascii_letters + string.digits, 24)),
+#                     "type": "function",
+#                     "function": {
+#                         "name": name,
+#                         "arguments": arguments,
+#                     }
+#                 }
+#             )
+    
+#     response["choices"][0]["message"]["tool_calls"] = tool_calls
+#     response["choices"][0]["message"]["content"] = None
+#     response["choices"][0]["logprobs"] = None
+#     response["choices"][0]["finish_reason"] = "tool_calls"
+            
+#     return response
+
 
 async def chat(
     model: TextRWKV, body: ChatCompletionBody, request: Request, completion_text: str
