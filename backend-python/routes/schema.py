@@ -1,6 +1,7 @@
 ﻿from pydantic import BaseModel, Field
 from typing import Literal, Optional, Union, List, Dict
 
+
 class ChatCompletionMessageToolCallParamFunction(BaseModel):
     arguments: str = Field(
         description="""
@@ -20,6 +21,7 @@ class ChatCompletionMessageToolCallParam(BaseModel):
     )
     type: Literal["function"]
 
+
 class ChatCompletionSystemMessageParam(BaseModel):
     content: str
     role: Literal["system"]
@@ -32,6 +34,7 @@ class ChatCompletionUserMessageParam(BaseModel):
     role: Literal["user"]
     name: Optional[str] = None
     raw: bool = Field(False, description="Whether to treat content as raw text")
+
 
 class ChatCompletionAssistantMessageParam(BaseModel):
     content: Optional[str] = None

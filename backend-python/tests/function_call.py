@@ -30,7 +30,7 @@ def run_conversation():
     messages = [
         {
             "role": "user",
-            "content": "What's the weather like in San Francisco, Tokyo, and Paris?",
+            "content": "What's the weather like in Paris?",
         }
     ]
     tools = [

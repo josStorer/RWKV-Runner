@@ -1,29 +1,31 @@
 ﻿import re
 
+
 def postprocess_response(s):
-    REGEX_BLOCKS = r'([\w]+)[\s]*```[\w]*(.*?)```'
+    REGEX_BLOCKS = r"([\w]+)[\s]*```[\w]*(.*?)```"
     REGEX_ARGS = r'"([^"]+)"\s*=\s*"([^"]+)"'
 
     name = re.search(REGEX_BLOCKS, s, re.DOTALL).group(1)
-    function = re.search(REGEX_BLOCKS, s, re.DOTALL).group(2).strip()  
+    function = re.search(REGEX_BLOCKS, s, re.DOTALL).group(2).strip()
     arguments = dict(re.findall(REGEX_ARGS, function))
 
     print(f"Name:\n{name}")
     print(f"Function:\n{function}")
     print(f"arguments:\n{arguments}")
     print()
-            
+
     return
 
+
 def postprocess_response_reserved(s):
-    REGEX_BLOCKS = r'```[\w]*(.*?)```'
-    REGEX_FUNCTIONS = r'(\w+)*\('
+    REGEX_BLOCKS = r"```[\w]*(.*?)```"
+    REGEX_FUNCTIONS = r"(\w+)*\("
     REGEX_ARGS = r'"([^"]+)"\s*=\s*"([^"]+)"'
 
     blocks = re.findall(REGEX_BLOCKS, s, re.DOTALL)
     print(f"Blocks:\n{blocks}")
     for block in blocks:
-        functions = block.strip().split('\n')
+        functions = block.strip().split("\n")
         print(f"Functions:\n{functions}")
         print()
         for function in functions:
@@ -34,10 +36,11 @@ def postprocess_response_reserved(s):
             print(name)
             print(arguments)
             print()
-            
+
     return
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     str = """
     some texts
     some texts

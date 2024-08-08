@@ -7,6 +7,7 @@ import base64
 import time, re, random, string
 
 from fastapi import APIRouter, Request, status, HTTPException
+from fastapi.encoders import jsonable_encoder
 from sse_starlette.sse import EventSourceResponse
 from pydantic import BaseModel, Field
 import tiktoken
@@ -41,6 +42,7 @@ default_stop = [
     "\n\nA",
     "\n\nBot",
     "\n\nAlice",
+    "\n\nObservation",
 ]
 
 
@@ -241,7 +243,7 @@ async def eval_rwkv(
                     }
                 )
                 yield "[DONE]"
-            else: # !stream
+            else:  # !stream
                 yield {
                     "id": "",
                     "object": "chat.completion" if chat_mode else "text_completion",
@@ -366,13 +368,24 @@ def chat_template(
                 append_message = f"{user}{interface} " + message.content
             case Role.Assistant.value:
                 if message.content is None:
-                    continue
+                    if message.tool_calls and len(message.tool_calls) > 0:
+                        name = message.tool_calls[0].function.name
+                        arguments = json.loads(message.tool_calls[0].function.arguments)
+                        arguments = ", ".join(
+                            [f'"{k}"="{v}"' for k, v in arguments.items()]
+                        )
+                        append_message = (
+                            f"{bot}{interface} "
+                            + f"{name}\n```python\ntool_call({arguments})\n```"
+                        )
+                    else:
+                        continue
                 else:
                     append_message = f"{bot}{interface} " + message.content
             case Role.System.value:
                 append_message = f"{system}{interface} " + message.content
             case Role.Tool.value:
-                append_message = f"{tool}{interface} " + message.content     
+                append_message = f"{tool}{interface} " + message.content
         completion_text += append_message + "\n\n"
     completion_text += f"{bot}{interface}"
     return completion_text
@@ -420,58 +433,54 @@ async def chat_with_tools(
 ):
     system = "System" if body.system_name is None else body.system_name
     interface = model.interface
-    tools = []
-    for tool in body.tools:
-        tools.append(
-            {
-                "name": tool.function.name,
-                "description": tool.function.description,
-                "parameters": {
-                    "type": tool.function.parameters["type"],
-                    "properties": tool.function.parameters["properties"],
-                    "required": tool.function.parameters["required"],
-                }
-            }
-        )
-    tools_text = str(tools)
-    
+    tools = [tool.function for tool in body.tools]
+    tools_text = json.dumps(jsonable_encoder(tools), indent=2)
+
     # Function Call Prompts
-    tools_text = \
-f"""\
-{system}{interface} You are a helpful assistant with access to the following functions. Use them if required {tools_text}
+    tools_text = f"""\
+{system}{interface} You are a helpful assistant with access to the following functions. Use them if required -{tools_text}
 """
 
-    completion_text = tools_text + completion_text
+    completion_text = tools_text + "\n" + completion_text
     response = await chat(model, body, request, completion_text)
     response = postprocess_response(response)
     return response
 
+
 def postprocess_response(response: dict):
     # TODO check whether error raising is needed
-    REGEX_BLOCKS = r'([\w]+)[\s]*```[\w]*(.*?)```'
-    REGEX_ARGS = r'"([^"]+)"\s*=\s*"([^"]+)"'
+    REGEX_BLOCKS = r"([\w]+)[\s]*```[\w\s]*tool_call(.*?)\n*```"
+    REGEX_ARGS = r'[\'"]([^\'"]+)[\'"]\s*=\s*[\'"]([^\'"]+)[\'"]'
 
-    name = re.search(REGEX_BLOCKS, response["choices"][0]["message"]["content"], re.DOTALL).group(1)
-    function = re.search(REGEX_BLOCKS, response["choices"][0]["message"]["content"], re.DOTALL).group(2).strip()  
+    regex_match = re.search(
+        REGEX_BLOCKS, response["choices"][0]["message"]["content"], re.DOTALL
+    )
+    if regex_match is None:
+        return response
+
+    name = regex_match.group(1)
+    function = regex_match.group(2).strip()
     arguments = json.dumps(dict(re.findall(REGEX_ARGS, function)))
 
     tool_calls = [
         {
-            "id": "call_" + "".join(random.sample(string.ascii_letters + string.digits, 24)),
+            "id": "call_"
+            + "".join(random.sample(string.ascii_letters + string.digits, 24)),
             "type": "function",
             "function": {
                 "name": name,
                 "arguments": arguments,
-            }
+            },
         }
     ]
-    
+
     response["choices"][0]["message"]["tool_calls"] = tool_calls
     response["choices"][0]["message"]["content"] = None
     response["choices"][0]["logprobs"] = None
     response["choices"][0]["finish_reason"] = "tool_calls"
-            
+
     return response
+
 
 # -----------------------------------
 # @Description: (reserved) post process multi-function-call responses
@@ -498,12 +507,12 @@ def postprocess_response(response: dict):
 #                     }
 #                 }
 #             )
-    
+
 #     response["choices"][0]["message"]["tool_calls"] = tool_calls
 #     response["choices"][0]["message"]["content"] = None
 #     response["choices"][0]["logprobs"] = None
 #     response["choices"][0]["finish_reason"] = "tool_calls"
-            
+
 #     return response
 
 
