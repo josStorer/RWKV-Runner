@@ -4,7 +4,7 @@ from threading import Lock
 from typing import List, Union, Literal
 from enum import Enum
 import base64
-import time, re, random, string, ast
+import time, re, random, string
 
 from fastapi import APIRouter, Request, status, HTTPException
 from fastapi.encoders import jsonable_encoder
@@ -469,7 +469,7 @@ async def async_generator_stream_respose(
     while True:
         try:
             response = await anext(gen)  # Generate a delta response
-            if response == '[DONE]':
+            if response == "[DONE]":
                 continue
         except StopAsyncIteration:
             # Too few inference result
