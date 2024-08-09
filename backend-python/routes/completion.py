@@ -4,7 +4,7 @@ from threading import Lock
 from typing import List, Union, Literal
 from enum import Enum
 import base64
-import time, re, random, string
+import time, re, random, string, ast
 
 from fastapi import APIRouter, Request, status, HTTPException
 from fastapi.encoders import jsonable_encoder
@@ -444,34 +444,169 @@ async def chat_with_tools(
     completion_text = tools_text + "\n" + completion_text
 
     if body.stream:
-        response = stream_response_gen(model, body, request, completion_text)
+        response = async_generator_stream_respose(model, body, request, completion_text)
         return EventSourceResponse(response)
     else:
         response = await chat(model, body, request, completion_text)
         response = postprocess_response(response)
         return response
 
-async def stream_response_gen(
+
+async def async_generator_stream_respose(
     model: TextRWKV, body: ChatCompletionBody, request: Request, completion_text: str
 ):
+    # NOTE: There is none of existing failure analysis.
+
+    # Initialization
     gen = eval_rwkv(
         model, request, body, completion_text, body.stream, body.stop, True
-    ) # Get Asnyc Generator Handle
+    )  # Get an asnyc generator handle
+    content: str = ""
+    flag_is_function_call_confirmed = False
+    flag_is_common_confirmed = False
+
+    # Loop, there is only one existing endpoint.
     while True:
         try:
-            response = await anext(gen)
-            """
-            Code Here
-            """
-            yield response
+            response = await anext(gen)  # Generate a delta response
+            if response == '[DONE]':
+                continue
         except StopAsyncIteration:
-            break
-    yield None
-            
+            # Too few inference result
+            if not flag_is_function_call_confirmed and not flag_is_common_confirmed:
+                response_decoded["choices"][0]["delta"]["content"] = content
+                yield json.dumps(response_decoded)
+            break  # The EXPECTED endpoint of the loop and the function
+
+        if flag_is_common_confirmed:
+            yield response
+            continue
+
+        # Post process response
+        response_decoded = json.loads(response)  # Decode string
+        if response_decoded["choices"][0]["delta"] == {}:
+            continue
+        content += response_decoded["choices"][0]["delta"]["content"]
+
+        if flag_is_function_call_confirmed:
+            content = f"{{{content.strip()[1:-1]}}}"
+            content = content.replace("=", ":")
+            # content = content.replace(r'"', r"\"") # XXX: Check whether to reserve.
+            response_decoded["choices"][0]["delta"]["content"] = None
+            response_decoded["choices"][0]["delta"] = {
+                "arguments": [
+                    {
+                        "index": 0,
+                        "id": "call_"
+                        + "".join(
+                            random.sample(string.ascii_letters + string.digits, 24)
+                        ),
+                        "type": "function",
+                        "function": {
+                            "name": name,
+                            "arguments": content,
+                        },
+                    }
+                ]
+            }
+            yield json.dumps(response_decoded)
+            continue
+
+        if not flag_is_common_confirmed and not flag_is_common_confirmed:
+            """
+            # Unconfirmed Response, check content field by the followings:
+            # Up to 4 line feeds:                                       Common Response.
+            # Up to 40 characters:                                      Common Response.
+            # Up to 30 charaters under markdown code block unclosed:    Common Response.
+            # Feild "```Functionname\ntool_call(...)```" detected:      Function Call Response.
+            #                                                           - There will be 2 responses generated.
+            # Default:                                                  Unsure Response.
+            #                                                           - Recheck with the next delta.content feild added.
+            """
+            # Constant
+            LIMIT_LINE_FEEDS = 4
+            LIMIT_CHARACTERS = 40
+            LIMIT_BLOCKS_CHARACTERS = 30
+            REGEX_BLOCKS = r"([\w]+)[\s]*```[\w\s]*tool_call(.*?)\n*```"
+            REGEX_BLOCKS_HEADERS = r"([\w]+)[\s]*```[\w\s]*(tool_call)\("
+
+            # Regex
+            feild_function_call_block: re.Match | None = re.search(
+                REGEX_BLOCKS, content
+            )
+            feild_function_call_head: re.Match | None = re.search(
+                REGEX_BLOCKS_HEADERS, content
+            )
+
+            # Confirm Common Response
+            if (
+                content.count("\n") > LIMIT_LINE_FEEDS
+                and feild_function_call_head is None
+            ) or (len(content) > LIMIT_CHARACTERS and feild_function_call_head is None):
+                flag_is_common_confirmed = True
+                response_decoded["choices"][0]["delta"]["content"] = content
+                yield json.dumps(response_decoded)
+                del response_decoded
+                del content
+                continue
+
+            # Confirm Common Response
+            if isinstance(feild_function_call_head, re.Match):
+                if (
+                    len(content[feild_function_call_head.end(2) :])
+                    > LIMIT_BLOCKS_CHARACTERS
+                    and feild_function_call_block is None
+                ):
+                    flag_is_common_confirmed = True
+                    response_decoded["choices"][0]["delta"]["content"] = content
+                    yield json.dumps(response_decoded)
+                    del response_decoded
+                    del content
+                    continue
+
+            # Confirm Function call Response
+            if feild_function_call_block is not None:
+                flag_is_function_call_confirmed = True
+
+                # Generate a blank content response
+                response_decoded["choices"][0]["delta"]["assistant"] = (
+                    model.bot if body.assistant_name is None else body.assistant_name
+                )
+                response_decoded["choices"][0]["delta"]["content"] = None
+                yield json.dumps(response_decoded)
+
+                # Generate a function call details response
+                name = feild_function_call_head.group(1)
+                del response_decoded["choices"][0]["delta"]["assistant"]
+                del response_decoded["choices"][0]["delta"]["content"]
+                response_decoded["choices"][0]["delta"] = {
+                    "tool_calls": [
+                        {
+                            "id": "call_"
+                            + "".join(
+                                random.sample(string.ascii_letters + string.digits, 24)
+                            ),
+                            "type": "function",
+                            "function": {
+                                "name": name,
+                                "arguments": "",
+                            },
+                        }
+                    ]
+                }
+                yield json.dumps(response_decoded)
+
+                # Reset content buffer
+                content = feild_function_call_block.group(2)
+                continue
+
+        # Default: Unsure Response
+        continue
+        # End of loop body
 
 
 def postprocess_response(response: dict):
-    # TODO check whether error raising is needed
+    # NOTE: There is none of existing failure analysis.
     REGEX_BLOCKS = r"([\w]+)[\s]*```[\w\s]*tool_call(.*?)\n*```"
     REGEX_ARGS = r'[\'"]([^\'"]+)[\'"]\s*=\s*[\'"]([^\'"]+)[\'"]'
 
