@@ -442,9 +442,32 @@ async def chat_with_tools(
 """
 
     completion_text = tools_text + "\n" + completion_text
-    response = await chat(model, body, request, completion_text)
-    response = postprocess_response(response)
-    return response
+
+    if body.stream:
+        response = stream_response_gen(model, body, request, completion_text)
+        return EventSourceResponse(response)
+    else:
+        response = await chat(model, body, request, completion_text)
+        response = postprocess_response(response)
+        return response
+
+async def stream_response_gen(
+    model: TextRWKV, body: ChatCompletionBody, request: Request, completion_text: str
+):
+    gen = eval_rwkv(
+        model, request, body, completion_text, body.stream, body.stop, True
+    ) # Get Asnyc Generator Handle
+    while True:
+        try:
+            response = await anext(gen)
+            """
+            Code Here
+            """
+            yield response
+        except StopAsyncIteration:
+            break
+    yield None
+            
 
 
 def postprocess_response(response: dict):
