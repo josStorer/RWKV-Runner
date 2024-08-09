@@ -56,7 +56,7 @@ for chunk in response:
     collected_chunks.append(chunk)  # save the event response
     chunk_message = chunk.choices[0].delta.content  # extract the message
     collected_messages.append(chunk_message)  # save the message
-    print(chunk_message)
+    print(chunk_message, end='')
 
 print()
 print(f"Full response received {chunk_time:.2f} seconds after request")
