@@ -462,14 +462,32 @@ async def async_generator_stream_respose(
         model, request, body, completion_text, body.stream, body.stop, True
     )  # Get an asnyc generator handle
     content: str = ""
+    function_id: str = "call_" + "".join(
+        random.sample(string.ascii_letters + string.digits, 24)
+    )
     flag_is_function_call_confirmed = False
     flag_is_common_confirmed = False
 
     # Loop, there is only one existing endpoint.
+    done = False
+    stack_keyword_pairs = [["```", "```"], ["(", ")"], ['"', '"'], ["'", "'"]]
     while True:
+        if done:
+            yield json.dumps(
+                {
+                    "object": "chat.completion.chunk",
+                    "model": model.name,
+                    "choices": [
+                        {"index": 0, "delta": {}, "finish_reason": "tool_calls"}
+                    ],
+                }
+            )
+            yield "[DONE]"
+
         try:
             response = await anext(gen)  # Generate a delta response
             if response == "[DONE]":
+                done = True
                 continue
         except StopAsyncIteration:
             # Too few inference result
@@ -486,25 +504,58 @@ async def async_generator_stream_respose(
         response_decoded = json.loads(response)  # Decode string
         if response_decoded["choices"][0]["delta"] == {}:
             continue
-        content += response_decoded["choices"][0]["delta"]["content"]
+        delta_content = response_decoded["choices"][0]["delta"]["content"]
+        content += delta_content
 
         if flag_is_function_call_confirmed:
-            content = f"{{{content.strip()[1:-1]}}}"
-            content = content.replace("=", ":")
+            if "\n\n" in content:
+                done = True
+                continue
+
+            for pair in stack_keyword_pairs:
+                if done:
+                    break
+                for keyword in pair:
+                    if keyword in delta_content:
+                        stack.append(keyword)
+                        if (
+                            pair[0] in stack
+                            and pair[1] in stack
+                            and stack.index(pair[0]) < stack.index(pair[1])
+                        ):
+                            stack.remove(pair[0])
+                            stack.remove(pair[1])
+                            if "(" not in stack and ")" not in stack:
+                                done = True
+                                response_decoded["choices"][0]["delta"] = {
+                                    "tool_calls": [
+                                        {
+                                            "index": 0,
+                                            "function": {
+                                                "arguments": (
+                                                    '"'
+                                                    if delta_content.startswith('"')
+                                                    else ""
+                                                )
+                                                + "}",
+                                            },
+                                        }
+                                    ]
+                                }
+                                yield json.dumps(response_decoded)
+                                break
+            if done:
+                continue
+
+            delta_content = delta_content.replace("=", ":")
             # content = content.replace(r'"', r"\"") # XXX: Check whether to reserve.
             response_decoded["choices"][0]["delta"]["content"] = None
             response_decoded["choices"][0]["delta"] = {
-                "arguments": [
+                "tool_calls": [
                     {
                         "index": 0,
-                        "id": "call_"
-                        + "".join(
-                            random.sample(string.ascii_letters + string.digits, 24)
-                        ),
-                        "type": "function",
                         "function": {
-                            "name": name,
-                            "arguments": content,
+                            "arguments": delta_content,
                         },
                     }
                 ]
@@ -525,24 +576,24 @@ async def async_generator_stream_respose(
             """
             # Constant
             LIMIT_LINE_FEEDS = 4
-            LIMIT_CHARACTERS = 40
-            LIMIT_BLOCKS_CHARACTERS = 30
-            REGEX_BLOCKS = r"([\w]+)[\s]*```[\w\s]*tool_call(.*?)\n*```"
-            REGEX_BLOCKS_HEADERS = r"([\w]+)[\s]*```[\w\s]*(tool_call)\("
+            LIMIT_CHARACTERS = 60
+            LIMIT_FUNCTION_NAME_CHARACTERS = 44
+            REGEX_BLOCKS_HEADERS = r"([\w]+)[\s]*```[\w\s]*tool_call\("
 
             # Regex
-            feild_function_call_block: re.Match | None = re.search(
-                REGEX_BLOCKS, content
-            )
-            feild_function_call_head: re.Match | None = re.search(
+            regex_match_function_call_head: re.Match | None = re.search(
                 REGEX_BLOCKS_HEADERS, content
             )
 
             # Confirm Common Response
-            if (
-                content.count("\n") > LIMIT_LINE_FEEDS
-                and feild_function_call_head is None
-            ) or (len(content) > LIMIT_CHARACTERS and feild_function_call_head is None):
+            if regex_match_function_call_head is None and (
+                content.count("\n") >= LIMIT_LINE_FEEDS
+                or len(content) > LIMIT_CHARACTERS
+                or (
+                    len(content) > LIMIT_FUNCTION_NAME_CHARACTERS
+                    and "```" not in content
+                )
+            ):
                 flag_is_common_confirmed = True
                 response_decoded["choices"][0]["delta"]["content"] = content
                 yield json.dumps(response_decoded)
@@ -550,42 +601,25 @@ async def async_generator_stream_respose(
                 del content
                 continue
 
-            # Confirm Common Response
-            if isinstance(feild_function_call_head, re.Match):
-                if (
-                    len(content[feild_function_call_head.end(2) :])
-                    > LIMIT_BLOCKS_CHARACTERS
-                    and feild_function_call_block is None
-                ):
-                    flag_is_common_confirmed = True
-                    response_decoded["choices"][0]["delta"]["content"] = content
-                    yield json.dumps(response_decoded)
-                    del response_decoded
-                    del content
-                    continue
-
             # Confirm Function call Response
-            if feild_function_call_block is not None:
+            if regex_match_function_call_head is not None:
                 flag_is_function_call_confirmed = True
+                stack = ["```", "("]
 
                 # Generate a blank content response
-                response_decoded["choices"][0]["delta"]["assistant"] = (
-                    model.bot if body.assistant_name is None else body.assistant_name
-                )
+                response_decoded["choices"][0]["delta"]["role"] = "assistant"
                 response_decoded["choices"][0]["delta"]["content"] = None
                 yield json.dumps(response_decoded)
 
                 # Generate a function call details response
-                name = feild_function_call_head.group(1)
-                del response_decoded["choices"][0]["delta"]["assistant"]
+                name = regex_match_function_call_head.group(1)
+                del response_decoded["choices"][0]["delta"]["role"]
                 del response_decoded["choices"][0]["delta"]["content"]
                 response_decoded["choices"][0]["delta"] = {
                     "tool_calls": [
                         {
-                            "id": "call_"
-                            + "".join(
-                                random.sample(string.ascii_letters + string.digits, 24)
-                            ),
+                            "index": 0,
+                            "id": function_id,
                             "type": "function",
                             "function": {
                                 "name": name,
@@ -595,9 +629,21 @@ async def async_generator_stream_respose(
                     ]
                 }
                 yield json.dumps(response_decoded)
+                response_decoded["choices"][0]["delta"] = {
+                    "tool_calls": [
+                        {
+                            "index": 0,
+                            "function": {
+                                "arguments": "{"
+                                + ('"' if delta_content.endswith('"') else ""),
+                            },
+                        }
+                    ]
+                }
+                yield json.dumps(response_decoded)
 
                 # Reset content buffer
-                content = feild_function_call_block.group(2)
+                # content = feild_function_call_block.group(2)
                 continue
 
         # Default: Unsure Response
