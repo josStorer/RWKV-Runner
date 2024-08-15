@@ -567,8 +567,8 @@ async def async_generator_stream_respose(
             """
             # Unconfirmed Response, check content field by the followings:
             # Up to 4 line feeds:                                       Common Response.
-            # Up to 40 characters:                                      Common Response.
-            # Up to 30 charaters under markdown code block unclosed:    Common Response.
+            # Up to 60 characters:                                      Common Response.
+            # Up to 44 charaters under markdown code block unclosed:    Common Response.
             # Feild "```Functionname\ntool_call(...)```" detected:      Function Call Response.
             #                                                           - There will be 2 responses generated.
             # Default:                                                  Unsure Response.
