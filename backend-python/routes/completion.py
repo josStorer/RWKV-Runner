@@ -1,15 +1,22 @@
 import asyncio
 import json
 from threading import Lock
-from typing import List, Union
+from typing import List, Union, Literal
 from enum import Enum
 import base64
-import time
+import time, re, random, string
 
 from fastapi import APIRouter, Request, status, HTTPException
+from fastapi.encoders import jsonable_encoder
 from sse_starlette.sse import EventSourceResponse
 from pydantic import BaseModel, Field
 import tiktoken
+
+from routes.schema import (
+    ChatCompletionMessageParam,
+    ChatCompletionToolParam,
+    ChatCompletionNamedToolChoiceParam,
+)
 from utils.rwkv import *
 from utils.log import quick_log
 import global_var
@@ -21,12 +28,7 @@ class Role(Enum):
     User = "user"
     Assistant = "assistant"
     System = "system"
-
-
-class Message(BaseModel):
-    role: Role
-    content: str = Field(min_length=0)
-    raw: bool = Field(False, description="Whether to treat content as raw text")
+    Tool = "tool"
 
 
 default_stop = [
@@ -40,14 +42,19 @@ default_stop = [
     "\n\nA",
     "\n\nBot",
     "\n\nAlice",
+    "\n\nObservation",
 ]
 
 
 class ChatCompletionBody(ModelConfigBody):
-    messages: Union[List[Message], None]
+    messages: Union[List[ChatCompletionMessageParam], None]
     model: Union[str, None] = "rwkv"
     stream: bool = False
     stop: Union[str, List[str], None] = default_stop
+    tools: Union[List[ChatCompletionToolParam], None] = None
+    tool_choice: Union[
+        Literal["none", "auto", "required"], ChatCompletionNamedToolChoiceParam
+    ] = "auto"
     user_name: Union[str, None] = Field(
         None, description="Internal user name", min_length=1
     )
@@ -116,7 +123,7 @@ requests_num = 0
 async def eval_rwkv(
     model: AbstractRWKV,
     request: Request,
-    body: ModelConfigBody,
+    body: ModelConfigBody | ChatCompletionBody,
     prompt: str,
     stream: bool,
     stop: Union[str, List[str], None],
@@ -236,16 +243,12 @@ async def eval_rwkv(
                     }
                 )
                 yield "[DONE]"
-            else:
+            else:  # !stream
                 yield {
+                    "id": "",
                     "object": "chat.completion" if chat_mode else "text_completion",
-                    # "response": response,
+                    "created": int(time.time()),
                     "model": model.name,
-                    "usage": {
-                        "prompt_tokens": prompt_tokens,
-                        "completion_tokens": completion_tokens,
-                        "total_tokens": prompt_tokens + completion_tokens,
-                    },
                     "choices": [
                         (
                             {
@@ -264,6 +267,11 @@ async def eval_rwkv(
                             }
                         )
                     ],
+                    "usage": {
+                        "prompt_tokens": prompt_tokens,
+                        "completion_tokens": completion_tokens,
+                        "total_tokens": prompt_tokens + completion_tokens,
+                    },
                 }
 
 
@@ -352,17 +360,34 @@ def chat_template(
         )
 
     system = "System" if body.system_name is None else body.system_name
+    tool = "Obersavtion"
     for message in body.messages:
         append_message: str = ""
-        if message.role == Role.User:
-            append_message = f"{user}{interface} " + message.content
-        elif message.role == Role.Assistant:
-            append_message = f"{bot}{interface} " + message.content
-        elif message.role == Role.System:
-            append_message = f"{system}{interface} " + message.content
+        match message.role:
+            case Role.User.value:
+                append_message = f"{user}{interface} " + message.content
+            case Role.Assistant.value:
+                if message.content is None:
+                    if message.tool_calls and len(message.tool_calls) > 0:
+                        name = message.tool_calls[0].function.name
+                        arguments = json.loads(message.tool_calls[0].function.arguments)
+                        arguments = ", ".join(
+                            [f'"{k}"="{v}"' for k, v in arguments.items()]
+                        )
+                        append_message = (
+                            f"{bot}{interface} "
+                            + f"{name}\n```python\ntool_call({arguments})\n```"
+                        )
+                    else:
+                        continue
+                else:
+                    append_message = f"{bot}{interface} " + message.content
+            case Role.System.value:
+                append_message = f"{system}{interface} " + message.content
+            case Role.Tool.value:
+                append_message = f"{tool}{interface} " + message.content
         completion_text += append_message + "\n\n"
     completion_text += f"{bot}{interface}"
-
     return completion_text
 
 
@@ -397,6 +422,307 @@ async def chat_completions(body: ChatCompletionBody, request: Request):
     # if not body.presystem:
     #     body.stop.append("\n\n")
 
+    if body.tool_choice != "none" and body.tools is not None and len(body.tools) > 0:
+        return await chat_with_tools(model, body, request, completion_text)
+    else:
+        return await chat(model, body, request, completion_text)
+
+
+async def chat_with_tools(
+    model: TextRWKV, body: ChatCompletionBody, request: Request, completion_text: str
+):
+    system = "System" if body.system_name is None else body.system_name
+    interface = model.interface
+    tools = [tool.function for tool in body.tools]
+    tools_text = json.dumps(jsonable_encoder(tools), indent=2)
+
+    # Function Call Prompts
+    tools_text = f"""\
+{system}{interface} You are a helpful assistant with access to the following functions. Use them if required -{tools_text}
+"""
+
+    completion_text = tools_text + "\n" + completion_text
+
+    if body.stream:
+        response = async_generator_stream_respose(model, body, request, completion_text)
+        return EventSourceResponse(response)
+    else:
+        response = await chat(model, body, request, completion_text)
+        response = postprocess_response(response)
+        return response
+
+
+async def async_generator_stream_respose(
+    model: TextRWKV, body: ChatCompletionBody, request: Request, completion_text: str
+):
+    # NOTE: There is none of existing failure analysis.
+
+    # Initialization
+    gen = eval_rwkv(
+        model, request, body, completion_text, body.stream, body.stop, True
+    )  # Get an asnyc generator handle
+    content: str = ""
+    function_id: str = "call_" + "".join(
+        random.sample(string.ascii_letters + string.digits, 24)
+    )
+    flag_is_function_call_confirmed = False
+    flag_is_common_confirmed = False
+
+    # Loop, there is only one existing endpoint.
+    done = False
+    stack_keyword_pairs = [["```", "```"], ["(", ")"], ['"', '"'], ["'", "'"]]
+    while True:
+        if done:
+            yield json.dumps(
+                {
+                    "object": "chat.completion.chunk",
+                    "model": model.name,
+                    "choices": [
+                        {"index": 0, "delta": {}, "finish_reason": "tool_calls"}
+                    ],
+                }
+            )
+            yield "[DONE]"
+
+        try:
+            response = await anext(gen)  # Generate a delta response
+            if response == "[DONE]":
+                done = True
+                continue
+        except StopAsyncIteration:
+            # Too few inference result
+            if not flag_is_function_call_confirmed and not flag_is_common_confirmed:
+                response_decoded["choices"][0]["delta"]["content"] = content
+                yield json.dumps(response_decoded)
+            break  # The EXPECTED endpoint of the loop and the function
+
+        if flag_is_common_confirmed:
+            yield response
+            continue
+
+        # Post process response
+        response_decoded = json.loads(response)  # Decode string
+        if response_decoded["choices"][0]["delta"] == {}:
+            continue
+        delta_content = response_decoded["choices"][0]["delta"]["content"]
+        content += delta_content
+
+        if flag_is_function_call_confirmed:
+            if "\n\n" in content:
+                done = True
+                continue
+
+            for pair in stack_keyword_pairs:
+                if done:
+                    break
+                for keyword in pair:
+                    if keyword in delta_content:
+                        stack.append(keyword)
+                        if (
+                            pair[0] in stack
+                            and pair[1] in stack
+                            and stack.index(pair[0]) < stack.index(pair[1])
+                        ):
+                            stack.remove(pair[0])
+                            stack.remove(pair[1])
+                            if "(" not in stack and ")" not in stack:
+                                done = True
+                                response_decoded["choices"][0]["delta"] = {
+                                    "tool_calls": [
+                                        {
+                                            "index": 0,
+                                            "function": {
+                                                "arguments": (
+                                                    '"'
+                                                    if delta_content.startswith('"')
+                                                    else ""
+                                                )
+                                                + "}",
+                                            },
+                                        }
+                                    ]
+                                }
+                                yield json.dumps(response_decoded)
+                                break
+            if done:
+                continue
+
+            delta_content = delta_content.replace("=", ":")
+            # content = content.replace(r'"', r"\"") # XXX: Check whether to reserve.
+            response_decoded["choices"][0]["delta"]["content"] = None
+            response_decoded["choices"][0]["delta"] = {
+                "tool_calls": [
+                    {
+                        "index": 0,
+                        "function": {
+                            "arguments": delta_content,
+                        },
+                    }
+                ]
+            }
+            yield json.dumps(response_decoded)
+            continue
+
+        if not flag_is_common_confirmed and not flag_is_common_confirmed:
+            """
+            # Unconfirmed Response, check content field by the followings:
+            # Up to 4 line feeds:                                       Common Response.
+            # Up to 60 characters:                                      Common Response.
+            # Up to 44 charaters under markdown code block unclosed:    Common Response.
+            # Feild "```Functionname\ntool_call(...)```" detected:      Function Call Response.
+            #                                                           - There will be 2 responses generated.
+            # Default:                                                  Unsure Response.
+            #                                                           - Recheck with the next delta.content feild added.
+            """
+            # Constant
+            LIMIT_LINE_FEEDS = 4
+            LIMIT_CHARACTERS = 60
+            LIMIT_FUNCTION_NAME_CHARACTERS = 44
+            REGEX_BLOCKS_HEADERS = r"([\w]+)[\s]*```[\w\s]*tool_call\("
+
+            # Regex
+            regex_match_function_call_head: re.Match | None = re.search(
+                REGEX_BLOCKS_HEADERS, content
+            )
+
+            # Confirm Common Response
+            if regex_match_function_call_head is None and (
+                content.count("\n") >= LIMIT_LINE_FEEDS
+                or len(content) > LIMIT_CHARACTERS
+                or (
+                    len(content) > LIMIT_FUNCTION_NAME_CHARACTERS
+                    and "```" not in content
+                )
+            ):
+                flag_is_common_confirmed = True
+                response_decoded["choices"][0]["delta"]["content"] = content
+                yield json.dumps(response_decoded)
+                del response_decoded
+                del content
+                continue
+
+            # Confirm Function call Response
+            if regex_match_function_call_head is not None:
+                flag_is_function_call_confirmed = True
+                stack = ["```", "("]
+
+                # Generate a blank content response
+                response_decoded["choices"][0]["delta"]["role"] = "assistant"
+                response_decoded["choices"][0]["delta"]["content"] = None
+                yield json.dumps(response_decoded)
+
+                # Generate a function call details response
+                name = regex_match_function_call_head.group(1)
+                del response_decoded["choices"][0]["delta"]["role"]
+                del response_decoded["choices"][0]["delta"]["content"]
+                response_decoded["choices"][0]["delta"] = {
+                    "tool_calls": [
+                        {
+                            "index": 0,
+                            "id": function_id,
+                            "type": "function",
+                            "function": {
+                                "name": name,
+                                "arguments": "",
+                            },
+                        }
+                    ]
+                }
+                yield json.dumps(response_decoded)
+                response_decoded["choices"][0]["delta"] = {
+                    "tool_calls": [
+                        {
+                            "index": 0,
+                            "function": {
+                                "arguments": "{"
+                                + ('"' if delta_content.endswith('"') else ""),
+                            },
+                        }
+                    ]
+                }
+                yield json.dumps(response_decoded)
+
+                # Reset content buffer
+                # content = feild_function_call_block.group(2)
+                continue
+
+        # Default: Unsure Response
+        continue
+        # End of loop body
+
+
+def postprocess_response(response: dict):
+    # NOTE: There is none of existing failure analysis.
+    REGEX_BLOCKS = r"([\w]+)[\s]*```[\w\s]*tool_call(.*?)\n*```"
+    REGEX_ARGS = r'[\'"]([^\'"]+)[\'"]\s*=\s*[\'"]([^\'"]+)[\'"]'
+
+    regex_match = re.search(
+        REGEX_BLOCKS, response["choices"][0]["message"]["content"], re.DOTALL
+    )
+    if regex_match is None:
+        return response
+
+    name = regex_match.group(1)
+    function = regex_match.group(2).strip()
+    arguments = json.dumps(dict(re.findall(REGEX_ARGS, function)))
+
+    tool_calls = [
+        {
+            "id": "call_"
+            + "".join(random.sample(string.ascii_letters + string.digits, 24)),
+            "type": "function",
+            "function": {
+                "name": name,
+                "arguments": arguments,
+            },
+        }
+    ]
+
+    response["choices"][0]["message"]["tool_calls"] = tool_calls
+    response["choices"][0]["message"]["content"] = None
+    response["choices"][0]["logprobs"] = None
+    response["choices"][0]["finish_reason"] = "tool_calls"
+
+    return response
+
+
+# -----------------------------------
+# @Description: (reserved) post process multi-function-call responses
+# -----------------------------------
+# def postprocess_response(response: dict):
+#     REGEX_BLOCKS = r'```[\w]*(.*?)```'
+#     REGEX_FUNCTIONS = r'(\w+)*\('
+#     REGEX_ARGS = r'"([^"]+)"\s*=\s*"([^"]+)"'
+
+#     tool_calls = []
+#     blocks = re.findall(REGEX_BLOCKS, response["choices"][0]["message"]["content"], re.DOTALL)
+#     for block in blocks:
+#         functions = block.strip().split('\n')
+#         for function in functions:
+#             name = re.search(REGEX_FUNCTIONS, function).group(1)
+#             arguments = json.dumps(dict(re.findall(REGEX_ARGS, function)))
+#             tool_calls.append(
+#                 {
+#                     "id": "call_" + "".join(random.sample(string.ascii_letters + string.digits, 24)),
+#                     "type": "function",
+#                     "function": {
+#                         "name": name,
+#                         "arguments": arguments,
+#                     }
+#                 }
+#             )
+
+#     response["choices"][0]["message"]["tool_calls"] = tool_calls
+#     response["choices"][0]["message"]["content"] = None
+#     response["choices"][0]["logprobs"] = None
+#     response["choices"][0]["finish_reason"] = "tool_calls"
+
+#     return response
+
+
+async def chat(
+    model: TextRWKV, body: ChatCompletionBody, request: Request, completion_text: str
+):
     if body.stream:
         return EventSourceResponse(
             eval_rwkv(
