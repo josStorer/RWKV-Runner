@@ -1,7 +1,14 @@
 {
-    "[python]": {
-        "editor.defaultFormatter": "ms-python.black-formatter"
-    },
-    "python.formatting.provider": "none",
-    "editor.formatOnSave": true
+  "prettier.configPath": "./frontend/prettier.config.js",
+  "prettier.prettierPath": "./frontend/node_modules/prettier",
+  "prettier.requireConfig": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[go]": {
+    "editor.defaultFormatter": "golang.go"
+  },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
+  "python.formatting.provider": "none",
+  "editor.formatOnSave": true
 }
