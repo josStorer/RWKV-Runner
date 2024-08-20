@@ -74,12 +74,13 @@ midi-player {
 }
 
 midi-visualizer {
-  $instrument-colors: #007bff, #20c997, #dc3545, #6610f2, #ffc107, #e83e8c, #17a2b8, #fd7e14, #28a745;
+  $instrument-colors: #007bff, #20c997, #dc3545, #6610f2, #ffc107, #e83e8c,
+    #17a2b8, #fd7e14, #28a745;
 
   svg {
     @for $i from 0 to 200 {
       $color: nth($instrument-colors, ($i % length($instrument-colors)) + 1);
-      rect.note[data-instrument="#{$i}"] {
+      rect.note[data-instrument='#{$i}'] {
         fill: $color;
       }
     }

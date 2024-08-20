@@ -1,9 +1,9 @@
-import zhHans from './zh-hans/main.json';
-import ja from './ja/main.json';
+import ja from './ja/main.json'
+import zhHans from './zh-hans/main.json'
 
 export const resources = {
   zh: {
-    translation: zhHans
+    translation: zhHans,
   },
   // de: {
   //   translation: de,
@@ -21,8 +21,8 @@ export const resources = {
   //   translation: it,
   // },
   ja: {
-    translation: ja
-  }
+    translation: ja,
+  },
   // ko: {
   //   translation: ko,
   // },
@@ -35,4 +35,4 @@ export const resources = {
   // zhHant: {
   //   translation: zhHant,
   // },
-};
+}

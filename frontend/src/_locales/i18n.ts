@@ -1,9 +1,11 @@
-import i18n, { changeLanguage } from 'i18next';
-import { resources } from './resources';
-import { getUserLanguage } from '../utils';
+import i18n, { changeLanguage } from 'i18next'
+import { getUserLanguage } from '../utils'
+import { resources } from './resources'
 
-i18n.init({
-  resources
-}).then(() => {
-  changeLanguage(getUserLanguage());
-});
+i18n
+  .init({
+    resources,
+  })
+  .then(() => {
+    changeLanguage(getUserLanguage())
+  })
