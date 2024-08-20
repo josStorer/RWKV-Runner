@@ -1,0 +1,5 @@
+# Ignore artifacts:
+build/
+coverage
+wailsjs/
+node_modules/
