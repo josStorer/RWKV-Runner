@@ -24,8 +24,8 @@ export function webOpenOpenFileDialog(
       if (fnStartLoading && typeof fnStartLoading === 'function')
         fnStartLoading()
       if (!GlobalWorkerOptions.workerSrc && file.type === 'application/pdf')
-        // @ts-ignore
         GlobalWorkerOptions.workerSrc = await import(
+          // @ts-ignore
           'pdfjs-dist/build/pdf.worker.min.mjs'
         )
       if (file.type === 'text/plain') {
