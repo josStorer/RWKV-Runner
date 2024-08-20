@@ -56,42 +56,29 @@ const markdownElements = [
   's',
   'a',
   'pre',
-  'cite'
+  'cite',
 ]
 
-const markdownPseudoElements = [
-  '::marker',
-  '::before',
-  '::after'
-]
+const markdownPseudoElements = ['::marker', '::before', '::after']
 
-const tableElements = [
-  'table',
-  'tr',
-  'td',
-  'th',
-  'thead',
-  'tbody',
-  'tfoot'
-]
+const tableElements = ['table', 'tr', 'td', 'th', 'thead', 'tbody', 'tfoot']
 
 const proseStyles = {
-  color: 'inherit'
+  color: 'inherit',
 }
 
 const tableProseStyles = {
   ...proseStyles,
   borderWidth: 'thin',
-  borderColor: '#d2d2d5'
+  borderColor: '#d2d2d5',
 }
 
 const elementsStyles = markdownElements.reduce((acc, element) => {
   let styles = proseStyles
-  if (tableElements.includes(element))
-    styles = tableProseStyles
+  if (tableElements.includes(element)) styles = tableProseStyles
 
   acc[element] = styles
-  markdownPseudoElements.forEach(pseudo => {
+  markdownPseudoElements.forEach((pseudo) => {
     acc[element + pseudo] = styles
   })
   return acc
@@ -99,10 +86,7 @@ const elementsStyles = markdownElements.reduce((acc, element) => {
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    './index.html',
-    './src/**/*.{js,ts,jsx,tsx}'
-  ],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       typography: {
@@ -110,12 +94,11 @@ export default {
           css: {
             color: 'inherit',
             fontSize: 'inherit',
-            ...elementsStyles
-          }
-        }
-      }
-    }
+            ...elementsStyles,
+          },
+        },
+      },
+    },
   },
-  plugins: [require('@tailwindcss/typography')]
+  plugins: [require('@tailwindcss/typography')],
 }
-

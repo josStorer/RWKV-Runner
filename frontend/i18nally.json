@@ -81,9 +81,7 @@
     }
   ],
   "ignores": {
-    "valuesInProject": [
-      "use strict"
-    ],
+    "valuesInProject": ["use strict"],
     "valuesInFile": {},
     "filesInProject": [],
     "unignoredFunctionNames": [],

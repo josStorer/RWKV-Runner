@@ -1,37 +1,45 @@
-import 'katex/dist/katex.min.css';
-import ReactMarkdown from 'react-markdown';
-import rehypeRaw from 'rehype-raw';
-import rehypeHighlight from 'rehype-highlight';
-import rehypeKatex from 'rehype-katex';
-import remarkMath from 'remark-math';
-import remarkGfm from 'remark-gfm';
-import remarkBreaks from 'remark-breaks';
-import { FC } from 'react';
-import { ReactMarkdownOptions } from 'react-markdown/lib/react-markdown';
-import { BrowserOpenURL } from '../../wailsjs/runtime';
+import 'katex/dist/katex.min.css'
+import { FC } from 'react'
+import ReactMarkdown from 'react-markdown'
+import { ReactMarkdownOptions } from 'react-markdown/lib/react-markdown'
+import rehypeHighlight from 'rehype-highlight'
+import rehypeKatex from 'rehype-katex'
+import rehypeRaw from 'rehype-raw'
+import remarkBreaks from 'remark-breaks'
+import remarkGfm from 'remark-gfm'
+import remarkMath from 'remark-math'
+import { BrowserOpenURL } from '../../wailsjs/runtime'
 
 const Hyperlink: FC<any> = ({ href, children }) => {
   return (
     <span
       style={{ color: '#8ab4f8', cursor: 'pointer' }}
       onClick={() => {
-        BrowserOpenURL(href);
+        BrowserOpenURL(href)
       }}
     >
       {/*@ts-ignore*/}
       {children}
     </span>
-  );
-};
+  )
+}
 
-const MarkdownRender: FC<ReactMarkdownOptions & { disabled?: boolean }> = (props) => {
+const MarkdownRender: FC<ReactMarkdownOptions & { disabled?: boolean }> = (
+  props
+) => {
   return (
-    <div dir="auto" className="prose markdown-body" style={{ maxWidth: '100%' }}>
-      {props.disabled ?
+    <div
+      dir="auto"
+      className="markdown-body prose"
+      style={{ maxWidth: '100%' }}
+    >
+      {props.disabled ? (
         <div style={{ whiteSpace: 'pre-wrap' }} className={props.className}>
           {props.children}
-        </div> :
-        <ReactMarkdown className={props.className}
+        </div>
+      ) : (
+        <ReactMarkdown
+          className={props.className}
           allowedElements={[
             'div',
             'p',
@@ -90,7 +98,7 @@ const MarkdownRender: FC<ReactMarkdownOptions & { disabled?: boolean }> = (props
             's',
             'a',
             'pre',
-            'cite'
+            'cite',
           ]}
           unwrapDisallowed={true}
           remarkPlugins={[remarkMath, remarkGfm, remarkBreaks]}
@@ -101,19 +109,19 @@ const MarkdownRender: FC<ReactMarkdownOptions & { disabled?: boolean }> = (props
               rehypeHighlight,
               {
                 detect: true,
-                ignoreMissing: true
-              }
-            ]
+                ignoreMissing: true,
+              },
+            ],
           ]}
           components={{
-            a: Hyperlink
+            a: Hyperlink,
           }}
         >
           {props.children}
         </ReactMarkdown>
-      }
+      )}
     </div>
-  );
-};
+  )
+}
 
-export default MarkdownRender;
+export default MarkdownRender

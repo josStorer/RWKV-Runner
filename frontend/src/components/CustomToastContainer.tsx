@@ -1,7 +1,7 @@
-import commonStore from '../stores/commonStore';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify'
+import commonStore from '../stores/commonStore'
 
-export const CustomToastContainer = () =>
+export const CustomToastContainer = () => (
   <ToastContainer
     style={{ width: '350px' }}
     position="top-center"
@@ -14,4 +14,5 @@ export const CustomToastContainer = () =>
     pauseOnFocusLoss={false}
     draggable={false}
     theme={commonStore.settings.darkMode ? 'dark' : 'light'}
-  />;
+  />
+)

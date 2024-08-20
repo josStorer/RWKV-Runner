@@ -1,42 +1,42 @@
-import { NoteSequence } from '@magenta/music/esm/protobuf';
+import { NoteSequence } from '@magenta/music/esm/protobuf'
 
-export const tracksMinimalTotalTime = 5000;
+export const tracksMinimalTotalTime = 5000
 
 export type CompositionParams = {
-  prompt: string,
-  maxResponseToken: number,
-  temperature: number,
-  topP: number,
-  autoPlay: boolean,
-  useLocalSoundFont: boolean,
-  externalPlay: boolean,
-  midi: ArrayBuffer | null,
-  ns: NoteSequence | null,
-  generationStartTime: number,
-  playOnlyGeneratedContent: boolean,
+  prompt: string
+  maxResponseToken: number
+  temperature: number
+  topP: number
+  autoPlay: boolean
+  useLocalSoundFont: boolean
+  externalPlay: boolean
+  midi: ArrayBuffer | null
+  ns: NoteSequence | null
+  generationStartTime: number
+  playOnlyGeneratedContent: boolean
 }
 export type Track = {
-  id: string;
-  mainInstrument: string;
-  content: string;
-  rawContent: MidiMessage[];
-  offsetTime: number;
-  contentTime: number;
-};
+  id: string
+  mainInstrument: string
+  content: string
+  rawContent: MidiMessage[]
+  offsetTime: number
+  contentTime: number
+}
 export type MidiPort = {
-  name: string;
+  name: string
 }
 
-export type MessageType = 'NoteOff' | 'NoteOn' | 'ElapsedTime' | 'ControlChange';
+export type MessageType = 'NoteOff' | 'NoteOn' | 'ElapsedTime' | 'ControlChange'
 
 export type MidiMessage = {
-  messageType: MessageType;
-  channel: number;
-  note: number;
-  velocity: number;
-  control: number;
-  value: number;
-  instrument: InstrumentType;
+  messageType: MessageType
+  channel: number
+  note: number
+  velocity: number
+  control: number
+  value: number
+  instrument: InstrumentType
 }
 
 export enum InstrumentType {
@@ -68,8 +68,8 @@ export const InstrumentTypeNameMap = [
   'Sax',
   'Flute',
   'Lead',
-  'Pad'
-];
+  'Pad',
+]
 
 export const InstrumentTypeTokenMap = [
   'pi',
@@ -84,5 +84,5 @@ export const InstrumentTypeTokenMap = [
   's',
   'f',
   'l',
-  'pa'
-];
+  'pa',
+]
