@@ -47,7 +47,8 @@ const iconModeButtonIcon: { [modelStatus: number]: ReactElement } = {
 export const RunButton: FC<{
   onClickRun?: MouseEventHandler
   iconMode?: boolean
-}> = observer(({ onClickRun, iconMode }) => {
+  size?: 'small' | 'medium' | 'large'
+}> = observer(({ onClickRun, iconMode, size }) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
 
@@ -467,8 +468,8 @@ export const RunButton: FC<{
       disabled={commonStore.status.status === ModelStatus.Starting}
       icon={iconModeButtonIcon[commonStore.status.status]}
       desc={t(mainButtonText[commonStore.status.status])}
-      size="small"
-      onClick={onClick}
+      size={size ?? 'small'}
+      onClick={onClick} 
     />
   ) : (
     <Button

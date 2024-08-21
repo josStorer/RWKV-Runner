@@ -29,6 +29,7 @@ import {
 } from '../../wailsjs/go/backend_golang/App'
 import { BrowserOpenURL } from '../../wailsjs/runtime'
 import { Page } from '../components/Page'
+import { RunButton } from '../components/RunButton'
 import { ToolTipButton } from '../components/ToolTipButton'
 import commonStore from '../stores/commonStore'
 import { ModelSourceItem } from '../types/models'
@@ -182,6 +183,7 @@ const columns: TableColumnDefinition<ModelSourceItem>[] = [
               />
             )}
             {/* 🚧 WIP: Add run button at here */}
+            <RunButton iconMode={true} size={'medium'} />
           </div>
         </TableCellLayout>
       )
