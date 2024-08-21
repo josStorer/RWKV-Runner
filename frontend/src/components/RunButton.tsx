@@ -43,6 +43,7 @@ const iconModeButtonIcon: { [modelStatus: number]: ReactElement } = {
   [ModelStatus.Working]: <Stop16Regular />,
 }
 
+// 🚧 WIP: Add new properties?
 export const RunButton: FC<{
   onClickRun?: MouseEventHandler
   iconMode?: boolean
