@@ -303,6 +303,9 @@ const Models: FC = observer(() => {
             ))}
           </div>
           <div className="flex grow overflow-hidden">
+            {/* 🚧 WIP: Use virtual List */}
+            {/* Plan to follow this documentation: https://react.fluentui.dev/?path=/docs/components-datagrid--docs#virtualization */}
+            {/* Plan to verify the performance by using multiple modelSourceList: [...modelSourceList,...modelSourceList,...modelSourceList,...,...modelSourceList] */}
             <DataGrid
               items={modelSourceList}
               columns={columns}
