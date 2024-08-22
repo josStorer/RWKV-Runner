@@ -1,116 +1,72 @@
-import { FC, useEffect, useRef, useState } from 'react'
-import { Tab, TabList } from '@fluentui/react-components'
+import { FC, ReactElement, useEffect, useRef, useState } from 'react'
+import { Button } from '@fluentui/react-components'
+import { ArrowRight20Regular } from '@fluentui/react-icons'
 import { observer } from 'mobx-react-lite'
-import { useLocation, useNavigate } from 'react-router'
-import { pages as clientPages } from '../pages'
 import commonStore from '../stores/commonStore'
 
 export const MobileFloatingNavigator: FC<{
   autoHideDelay?: number
-}> = observer(({ autoHideDelay = 3000 }) => {
-  const navigate = useNavigate()
-  const location = useLocation()
-
+  topTabList: ReactElement
+  bottomTabList: ReactElement
+}> = observer(({ autoHideDelay = 3000, topTabList, bottomTabList }) => {
   const useDarkMode = commonStore.settings.darkMode
-
-  const isWeb = commonStore.platform === 'web'
-  if (!isWeb) return <></>
-
-  const [expanded, setExpaned] = useState(false)
-
-  const pages = clientPages.filter((page) => {
-    return !['/configs', '/models', '/downloads', '/train', '/about'].some(
-      (path) => page.path === path
-    )
-  })
-
+  const [expanded, setExpanded] = useState(true)
   const ref = useRef<HTMLDivElement>(null)
+  const timeout = useRef(autoHideDelay)
 
   useEffect(() => {
-    if (!expanded) return
-    const timer = setTimeout(() => {
-      setExpaned(false)
-      if (ref.current) {
-        const elements = ref.current.querySelectorAll<HTMLElement>('*')
-        elements.forEach((el) => el.blur())
+    const timer = setInterval(() => {
+      if (expanded) {
+        timeout.current -= 100
+        if (timeout.current <= 0) {
+          setExpanded(false)
+        }
       }
-    }, autoHideDelay)
-    return () => clearTimeout(timer)
-  }, [expanded])
-
-  const [currentPath, setCurrentPath] = useState(pages[0].path)
-
-  useEffect(() => setCurrentPath(location.pathname), [location])
-
-  const selectTab = (selectedPath: unknown) => {
-    if (!expanded) {
-      setExpaned(true)
-      return
+    }, 100)
+    return () => {
+      clearInterval(timer)
     }
+  }, [])
 
-    if (typeof selectedPath === 'string') {
-      navigate({ pathname: selectedPath })
+  useEffect(() => {
+    const listener = (e: UIEvent) => {
+      if (ref.current) {
+        if (ref.current.contains(e.target as Node)) {
+          setExpanded(true)
+          timeout.current = autoHideDelay
+        } else {
+          setExpanded(false)
+        }
+      }
     }
-  }
+    document.addEventListener('mousedown', listener)
+    document.addEventListener('touchstart', listener)
+    return () => {
+      document.removeEventListener('mousedown', listener)
+      document.removeEventListener('touchstart', listener)
+    }
+  }, [])
 
   return (
     <div
       ref={ref}
       className={
-        'pointer-events-none absolute ml-2 flex h-screen w-10 flex-col items-center justify-center'
+        'absolute ml-2 flex h-screen w-10 flex-col items-center justify-center'
       }
     >
       <div
-        className={`pr pointer-events-auto z-50 flex flex-col rounded-md border border-black ${useDarkMode ? 'border-opacity-50' : 'border-opacity-30'} ${useDarkMode ? 'bg-black' : 'bg-white'} ${useDarkMode ? 'bg-opacity-10' : 'bg-opacity-30'} ${expanded ? 'pl-1' : 'p-0'} backdrop-blur`}
+        className={`z-[1000] rounded-md border border-black ${useDarkMode ? 'border-opacity-50' : 'border-opacity-30'} ${useDarkMode ? 'bg-black' : 'bg-white'} ${useDarkMode ? 'bg-opacity-10' : 'bg-opacity-30'} backdrop-blur`}
         style={{ transformOrigin: 'top center' }}
       >
-        <TabList
-          size="large"
-          appearance="subtle"
-          selectedValue={expanded ? currentPath : null}
-          onTabSelect={(_, { value }) => selectTab(value)}
-          vertical
-        >
-          {pages
-            .filter((page) => page.top)
-            .map(({ path, icon }, index) => {
-              if (expanded || (!expanded && currentPath === path)) {
-                return (
-                  <Tab
-                    className={`${expanded ? '' : ''}`}
-                    icon={icon}
-                    key={`${path}-${index}`}
-                    value={path}
-                  />
-                )
-              }
-              return null
-            })}
-        </TabList>
-        {expanded && <div className="mr-1 h-px bg-gray-500"></div>}
-        <TabList
-          size="large"
-          appearance="subtle"
-          selectedValue={expanded ? currentPath : null}
-          onTabSelect={(_, { value }) => selectTab(value)}
-          vertical
-        >
-          {pages
-            .filter((page) => !page.top)
-            .map(({ path, icon }, index) => {
-              if (expanded || (!expanded && currentPath === path)) {
-                return (
-                  <Tab
-                    className={`${expanded ? '' : ''}`}
-                    icon={icon}
-                    key={`${path}-${index}`}
-                    value={path}
-                  />
-                )
-              }
-              return null
-            })}
-        </TabList>
+        {expanded ? (
+          <div className="flex flex-col">
+            {topTabList}
+            <div className="mr-1 h-px bg-gray-500"></div>
+            {bottomTabList}
+          </div>
+        ) : (
+          <Button icon={<ArrowRight20Regular />} appearance="subtle"></Button>
+        )}
       </div>
     </div>
   )

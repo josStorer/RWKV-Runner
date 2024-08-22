@@ -70,6 +70,41 @@ const App: FC = observer(() => {
 
   useEffect(() => setPath(location.pathname), [location])
 
+  const topTabList = (
+    <TabList
+      size="large"
+      appearance="subtle"
+      selectedValue={path}
+      onTabSelect={(_, { value }) => selectTab(value)}
+      vertical
+    >
+      {pages
+        .filter((page) => page.top)
+        .map(({ label, path, icon }, index) => (
+          <Tab icon={icon} key={`${path}-${index}`} value={path}>
+            {mq && t(label)}
+          </Tab>
+        ))}
+    </TabList>
+  )
+  const bottomTabList = (
+    <TabList
+      size="large"
+      appearance="subtle"
+      selectedValue={path}
+      onTabSelect={(_, { value }) => selectTab(value)}
+      vertical
+    >
+      {pages
+        .filter((page) => !page.top)
+        .map(({ label, path, icon }, index) => (
+          <Tab icon={icon} key={`${path}-${index}`} value={path}>
+            {mq && t(label)}
+          </Tab>
+        ))}
+    </TabList>
+  )
+
   return (
     <FluentProvider
       theme={commonStore.settings.darkMode ? webDarkTheme : webLightTheme}
@@ -77,39 +112,14 @@ const App: FC = observer(() => {
     >
       <div className="flex h-screen">
         {useMobileStyle ? (
-          <MobileFloatingNavigator />
+          <MobileFloatingNavigator
+            topTabList={topTabList}
+            bottomTabList={bottomTabList}
+          />
         ) : (
           <div className="flex w-16 flex-col justify-between p-2 sm:w-48">
-            <TabList
-              size="large"
-              appearance="subtle"
-              selectedValue={path}
-              onTabSelect={(_, { value }) => selectTab(value)}
-              vertical
-            >
-              {pages
-                .filter((page) => page.top)
-                .map(({ label, path, icon }, index) => (
-                  <Tab icon={icon} key={`${path}-${index}`} value={path}>
-                    {mq && t(label)}
-                  </Tab>
-                ))}
-            </TabList>
-            <TabList
-              size="large"
-              appearance="subtle"
-              selectedValue={path}
-              onTabSelect={(_, { value }) => selectTab(value)}
-              vertical
-            >
-              {pages
-                .filter((page) => !page.top)
-                .map(({ label, path, icon }, index) => (
-                  <Tab icon={icon} key={`${path}-${index}`} value={path}>
-                    {mq && t(label)}
-                  </Tab>
-                ))}
-            </TabList>
+            {topTabList}
+            {bottomTabList}
           </div>
         )}
         <div
