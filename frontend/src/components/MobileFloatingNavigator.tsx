@@ -1,6 +1,7 @@
 import { FC, ReactElement, useEffect, useRef, useState } from 'react'
 import { Button } from '@fluentui/react-components'
 import { ArrowRight20Regular } from '@fluentui/react-icons'
+import classNames from 'classnames'
 import { observer } from 'mobx-react-lite'
 import commonStore from '../stores/commonStore'
 
@@ -50,12 +51,28 @@ export const MobileFloatingNavigator: FC<{
   return (
     <div
       ref={ref}
-      className={
-        'absolute ml-2 flex h-screen w-10 flex-col items-center justify-center'
-      }
+      className={classNames(
+        'absolute',
+        'ml-2',
+        'flex',
+        'h-screen',
+        'w-10',
+        'flex-col',
+        'items-center',
+        'justify-center'
+      )}
     >
       <div
-        className={`z-[1000] rounded-md border border-black ${useDarkMode ? 'border-opacity-50' : 'border-opacity-30'} ${useDarkMode ? 'bg-black' : 'bg-white'} ${useDarkMode ? 'bg-opacity-10' : 'bg-opacity-30'} backdrop-blur`}
+        className={classNames(
+          'backdrop-blur',
+          'border',
+          'border-black',
+          'rounded-md',
+          'z-[1000]',
+          useDarkMode ? 'bg-black' : 'bg-white',
+          useDarkMode ? 'bg-opacity-10' : 'bg-opacity-30',
+          useDarkMode ? 'border-opacity-50' : 'border-opacity-30'
+        )}
         style={{ transformOrigin: 'top center' }}
       >
         {expanded ? (
