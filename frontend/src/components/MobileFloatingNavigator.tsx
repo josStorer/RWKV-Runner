@@ -48,42 +48,64 @@ export const MobileFloatingNavigator: FC<{
     }
   }, [])
 
+  const contentRef = useRef<HTMLDivElement>(null)
+  const [height, setHeight] = useState(0)
+
+  useEffect(() => {
+    const updateHeight = () => {
+      setHeight(contentRef.current?.scrollHeight || 0)
+    }
+    const observer = new ResizeObserver(updateHeight)
+    observer.observe(contentRef.current!)
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <div
       ref={ref}
       className={classNames(
         'absolute',
-        'ml-2',
         'flex',
-        'h-screen',
-        'w-10',
         'flex-col',
+        'h-screen',
         'items-center',
-        'justify-center'
+        'justify-center',
+        'ml-2',
+        'w-10'
       )}
     >
       <div
+        style={{ height: `${height + 2}px` }}
         className={classNames(
           'backdrop-blur',
           'border',
           'border-black',
+          'duration-500',
+          'ease-in-out"',
+          'overflow-hidden',
+          'overflow-hidden',
           'rounded-md',
-          'z-[1000]',
+          'transition-all',
+          'z-[10000]',
           useDarkMode ? 'bg-black' : 'bg-white',
           useDarkMode ? 'bg-opacity-10' : 'bg-opacity-30',
           useDarkMode ? 'border-opacity-50' : 'border-opacity-30'
         )}
-        style={{ transformOrigin: 'top center' }}
       >
-        {expanded ? (
-          <div className="flex flex-col">
-            {topTabList}
-            <div className="mr-1 h-px bg-gray-500"></div>
-            {bottomTabList}
-          </div>
-        ) : (
-          <Button icon={<ArrowRight20Regular />} appearance="subtle"></Button>
-        )}
+        <div
+          ref={contentRef}
+          className={classNames('flex', 'flex-col', 'justify-center')}
+        >
+          {expanded ? (
+            <>
+              {topTabList}
+              <div className="ml-1 mr-1 h-px bg-gray-500"></div>
+              {bottomTabList}
+            </>
+          ) : (
+            <Button icon={<ArrowRight20Regular />} appearance="subtle"></Button>
+          )}
+        </div>
       </div>
     </div>
   )
