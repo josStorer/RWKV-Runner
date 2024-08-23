@@ -17,13 +17,12 @@ export const MobileFloatingNavigator: FC<{
 
   useEffect(() => {
     const timer = setInterval(() => {
-      if (expanded) {
-        timeout.current -= 100
-        if (timeout.current <= 0) {
-          setExpanded(false)
-        }
+      if (timeout.current > 0) {
+        timeout.current -= 300
+      } else {
+        setExpanded(false)
       }
-    }, 100)
+    }, 300)
     return () => {
       clearInterval(timer)
     }
@@ -33,7 +32,6 @@ export const MobileFloatingNavigator: FC<{
     const listener = (e: UIEvent) => {
       if (ref.current) {
         if (ref.current.contains(e.target as Node)) {
-          setExpanded(true)
           timeout.current = autoHideDelay
         } else {
           setExpanded(false)
@@ -83,7 +81,6 @@ export const MobileFloatingNavigator: FC<{
           'duration-500',
           'ease-in-out"',
           'overflow-hidden',
-          'overflow-hidden',
           'rounded-md',
           'transition-all',
           'z-[10000]',
@@ -103,7 +100,11 @@ export const MobileFloatingNavigator: FC<{
               {bottomTabList}
             </>
           ) : (
-            <Button icon={<ArrowRight20Regular />} appearance="subtle"></Button>
+            <Button
+              icon={<ArrowRight20Regular />}
+              appearance="subtle"
+              onClick={() => setExpanded(true)}
+            ></Button>
           )}
         </div>
       </div>

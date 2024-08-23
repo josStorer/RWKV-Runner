@@ -48,8 +48,7 @@ const App: FC = observer(() => {
   const mq = useMediaQuery('(min-width: 640px)')
 
   const isWeb = commonStore.platform === 'web'
-  const screenWidthSmallerThan640 =
-    useMediaQuery('(min-width: 640px)') === false
+  const screenWidthSmallerThan640 = !mq
   const useMobileStyle = isWeb && screenWidthSmallerThan640
 
   const pages = isWeb
@@ -62,6 +61,7 @@ const App: FC = observer(() => {
     : clientPages
 
   const [path, setPath] = useState<string>(pages[0].path)
+  const isHome = path === '/'
 
   const selectTab = (selectedPath: unknown) =>
     typeof selectedPath === 'string'
@@ -112,10 +112,14 @@ const App: FC = observer(() => {
     >
       <div className="flex h-screen">
         {useMobileStyle ? (
-          <MobileFloatingNavigator
-            topTabList={topTabList}
-            bottomTabList={bottomTabList}
-          />
+          !isHome ? (
+            <MobileFloatingNavigator
+              topTabList={topTabList}
+              bottomTabList={bottomTabList}
+            />
+          ) : (
+            <></>
+          )
         ) : (
           <div className="flex w-16 flex-col justify-between p-2 sm:w-48">
             {topTabList}
