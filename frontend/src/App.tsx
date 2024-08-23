@@ -37,6 +37,7 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router'
 import { useMediaQuery } from 'usehooks-ts'
 import { CustomToastContainer } from './components/CustomToastContainer'
 import { LazyImportComponent } from './components/LazyImportComponent'
+import { MobileFloatingNavigator } from './components/MobileFloatingNavigator'
 import { pages as clientPages } from './pages'
 import commonStore from './stores/commonStore'
 
@@ -45,17 +46,22 @@ const App: FC = observer(() => {
   const navigate = useNavigate()
   const location = useLocation()
   const mq = useMediaQuery('(min-width: 640px)')
-  const pages =
-    commonStore.platform === 'web'
-      ? clientPages.filter(
-          (page) =>
-            !['/configs', '/models', '/downloads', '/train', '/about'].some(
-              (path) => page.path === path
-            )
-        )
-      : clientPages
+
+  const isWeb = commonStore.platform === 'web'
+  const screenWidthSmallerThan640 = !mq
+  const useMobileStyle = isWeb && screenWidthSmallerThan640
+
+  const pages = isWeb
+    ? clientPages.filter(
+        (page) =>
+          !['/configs', '/models', '/downloads', '/train', '/about'].some(
+            (path) => page.path === path
+          )
+      )
+    : clientPages
 
   const [path, setPath] = useState<string>(pages[0].path)
+  const isHome = path === '/'
 
   const selectTab = (selectedPath: unknown) =>
     typeof selectedPath === 'string'
@@ -64,45 +70,68 @@ const App: FC = observer(() => {
 
   useEffect(() => setPath(location.pathname), [location])
 
+  const topTabList = (
+    <TabList
+      size="large"
+      appearance="subtle"
+      selectedValue={path}
+      onTabSelect={(_, { value }) => selectTab(value)}
+      vertical
+    >
+      {pages
+        .filter((page) => page.top)
+        .map(({ label, path, icon }, index) => (
+          <Tab icon={icon} key={`${path}-${index}`} value={path}>
+            {mq && t(label)}
+          </Tab>
+        ))}
+    </TabList>
+  )
+  const bottomTabList = (
+    <TabList
+      size="large"
+      appearance="subtle"
+      selectedValue={path}
+      onTabSelect={(_, { value }) => selectTab(value)}
+      vertical
+    >
+      {pages
+        .filter((page) => !page.top)
+        .map(({ label, path, icon }, index) => (
+          <Tab icon={icon} key={`${path}-${index}`} value={path}>
+            {mq && t(label)}
+          </Tab>
+        ))}
+    </TabList>
+  )
+
   return (
     <FluentProvider
       theme={commonStore.settings.darkMode ? webDarkTheme : webLightTheme}
       data-theme={commonStore.settings.darkMode ? 'dark' : 'light'}
     >
       <div className="flex h-screen">
-        <div className="flex w-16 flex-col justify-between p-2 sm:w-48">
-          <TabList
-            size="large"
-            appearance="subtle"
-            selectedValue={path}
-            onTabSelect={(_, { value }) => selectTab(value)}
-            vertical
-          >
-            {pages
-              .filter((page) => page.top)
-              .map(({ label, path, icon }, index) => (
-                <Tab icon={icon} key={`${path}-${index}`} value={path}>
-                  {mq && t(label)}
-                </Tab>
-              ))}
-          </TabList>
-          <TabList
-            size="large"
-            appearance="subtle"
-            selectedValue={path}
-            onTabSelect={(_, { value }) => selectTab(value)}
-            vertical
-          >
-            {pages
-              .filter((page) => !page.top)
-              .map(({ label, path, icon }, index) => (
-                <Tab icon={icon} key={`${path}-${index}`} value={path}>
-                  {mq && t(label)}
-                </Tab>
-              ))}
-          </TabList>
-        </div>
-        <div className="box-border h-full w-full overflow-y-hidden py-2 pr-2">
+        {useMobileStyle ? (
+          !isHome ? (
+            <MobileFloatingNavigator
+              topTabList={topTabList}
+              bottomTabList={bottomTabList}
+            />
+          ) : (
+            <></>
+          )
+        ) : (
+          <div className="flex w-16 flex-col justify-between p-2 sm:w-48">
+            {topTabList}
+            {bottomTabList}
+          </div>
+        )}
+        <div
+          className={
+            'box-border h-full w-full overflow-y-hidden py-2 pr-2' +
+            (useMobileStyle ? ' pl-2' : '')
+          }
+        >
           <Routes>
             {pages.map(({ path, element }, index) => (
               <Route
