@@ -945,11 +945,11 @@ const ChatPanel: FC = observer(() => {
             <ChatMessageItem key={uuid} uuid={uuid} onSubmit={onSubmit} />
           ))}
         </div>
-        <div className={classnames('flex items-end', mq ? 'gap-2' : '')}>
+        <div className={classnames('flex items-end gap-2')}>
           <DialogButton
             tooltip={t('Clear')}
             icon={<Delete28Regular />}
-            size={mq ? 'large' : 'small'}
+            size={'large'}
             shape="circular"
             appearance="subtle"
             title={t('Clear')}
@@ -1146,7 +1146,7 @@ const ChatPanel: FC = observer(() => {
             icon={
               generating ? <RecordStop28Regular /> : <ArrowCircleUp28Regular />
             }
-            size={mq ? 'large' : 'small'}
+            size={'large'}
             shape="circular"
             appearance="subtle"
             onClick={(e) => {
