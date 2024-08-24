@@ -8,7 +8,7 @@ endif
 
 build-windows:
 	@echo ---- build for windows
-	wails build -ldflags '-s -w -extldflags "-static"' -platform windows/amd64 -devtools -obfuscated -garbleargs="-tiny" -upx -upxflags "-9 --lzma"
+	wails build -ldflags '-s -w -extldflags "-static"' -platform windows/amd64 -devtools -obfuscated -garbleargs="-tiny" -upx -upxflags "-9 --lzma" -nsis
 
 build-macos:
 	@echo ---- build for macos

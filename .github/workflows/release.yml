@@ -51,6 +51,9 @@ jobs:
       - uses: crazy-max/ghaction-chocolatey@v3
         with:
           args: install upx
+      - uses: crazy-max/ghaction-chocolatey@v3
+        with:
+          args: install nsis
       - run: |
           Start-BitsTransfer https://github.com/josStorer/ai00_rwkv_server/releases/latest/download/webgpu_server_windows_x86_64.exe ./backend-rust/webgpu_server.exe
           Start-BitsTransfer https://github.com/josStorer/web-rwkv-converter/releases/latest/download/web-rwkv-converter_windows_x86_64.exe ./backend-rust/web-rwkv-converter.exe
@@ -72,7 +75,9 @@ jobs:
           make
           Rename-Item -Path "build/bin/RWKV-Runner.exe" -NewName "RWKV-Runner_windows_x64.exe"
 
-      - run: gh release upload ${{github.ref_name}} build/bin/RWKV-Runner_windows_x64.exe
+      - run: |
+          gh release upload ${{github.ref_name}} build/bin/RWKV-Runner_windows_x64.exe
+          gh release upload ${{github.ref_name}} build/bin/RWKV-Runner-amd64-installer.exe
 
   linux:
     runs-on: ubuntu-20.04
