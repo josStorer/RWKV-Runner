@@ -9,5 +9,11 @@
   "author": {
     "name": "josc146",
     "email": "josStorer@outlook.com"
+  },
+  "Info": {
+    "companyName": "RWKV-Runner",
+    "productName": "RWKV-Runner",
+    "productVersion": "1.0.0",
+    "copyright": "Copyright © 2023 RWKV-Runner"
   }
 }
