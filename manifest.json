@@ -383,8 +383,8 @@
       "size": 23304952860,
       "SHA256": "25e56f54fff3feddee1c23a098f5556a9afd0f922c8f7e1db3cf22ef6dfdfde4",
       "lastUpdated": "2024-06-14T15:59:52",
-      "url": "https://hf-mirror.com/TimeMobius/Mobius-RWKV-r6-12B/blob/main/Mobius-r6-chat-CHNtuned-12b-16k-v5.5.pth",
-      "downloadUrl": "https://hf-mirror.com/TimeMobius/Mobius-RWKV-r6-12B/resolve/main/Mobius-r6-chat-CHNtuned-12b-16k-v5.5.pth",
+      "url": "https://huggingface.co/TimeMobius/Mobius-RWKV-r6-12B/blob/main/Mobius-r6-chat-CHNtuned-12b-16k-v5.5.pth",
+      "downloadUrl": "https://huggingface.co/TimeMobius/Mobius-RWKV-r6-12B/resolve/main/Mobius-r6-chat-CHNtuned-12b-16k-v5.5.pth",
       "tags": [
         "Finetuned",
         "RWKV-6",
