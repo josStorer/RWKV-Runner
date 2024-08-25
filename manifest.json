@@ -175,7 +175,8 @@
         "Official",
         "RWKV-5",
         "Global"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-5-World-1B5-v2-20231025-ctx4096.pth",
@@ -195,7 +196,8 @@
         "Global",
         "CN",
         "JP"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-5-1B5-one-state-slim.pth",
@@ -215,7 +217,8 @@
         "Global",
         "Role Play"
       ],
-      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt"
+      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt",
+      "hide": true
     },
     {
       "name": "RWKV-5-1B5-one-state-slim-novel-tuned.pth",
@@ -234,7 +237,8 @@
         "RWKV-5",
         "Global"
       ],
-      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt"
+      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt",
+      "hide": true
     },
     {
       "name": "RWKV-5-World-3B-v2-20231113-ctx4096.pth",
@@ -254,7 +258,8 @@
         "Global",
         "CN",
         "JP"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-5-World-3B-v2-20231118-ctx16k.pth",
@@ -274,7 +279,8 @@
         "Global",
         "CN",
         "JP"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-5-World-7B-v2-20240128-ctx4096.pth",
@@ -294,7 +300,8 @@
         "Global",
         "CN",
         "JP"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "rwkv-v5-7B-0.4-long-ctx-16k.pth",
@@ -313,7 +320,8 @@
         "RWKV-5",
         "Global"
       ],
-      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt"
+      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt",
+      "hide": true
     },
     {
       "name": "rwkv-v5.2-7B-horror-16k.pth",
@@ -332,7 +340,8 @@
         "RWKV-5",
         "Global"
       ],
-      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt"
+      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt",
+      "hide": true
     },
     {
       "name": "rwkv_v5.2_7B_role_play_16k.pth",
@@ -352,7 +361,8 @@
         "Global",
         "Role Play"
       ],
-      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt"
+      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt",
+      "hide": true
     },
     {
       "name": "RWKV-5-12B-one-state-chat-16k.pth",
@@ -371,7 +381,8 @@
         "RWKV-5",
         "Global"
       ],
-      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt"
+      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt",
+      "hide": true
     },
     {
       "name": "Mobius-r6-chat-CHNtuned-12b-16k-v5.5.pth",
@@ -412,7 +423,8 @@
         "Global",
         "CN",
         "JP"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "Mobius-r5-chat-12b-8k-0426.pth",
@@ -432,7 +444,8 @@
         "Global",
         "CN",
         "JP"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-4-World-CHNtuned-0.1B-v1-20230617-ctx4096.pth",
@@ -450,7 +463,8 @@
         "Official",
         "RWKV-4",
         "CN"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-4-World-0.1B-v1-20230520-ctx4096.pth",
@@ -468,7 +482,8 @@
         "Official",
         "RWKV-4",
         "Global"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-4-World-CHNtuned-0.4B-v1-20230618-ctx4096.pth",
@@ -486,7 +501,8 @@
         "Official",
         "RWKV-4",
         "CN"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-4-World-0.4B-v1-20230529-ctx4096.pth",
@@ -504,7 +520,8 @@
         "Official",
         "RWKV-4",
         "Global"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-4-World-CHNtuned-1.5B-v1-20230620-ctx4096.pth",
@@ -522,7 +539,8 @@
         "Official",
         "RWKV-4",
         "CN"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-4-World-1.5B-v1-OnlyForTest_57%_trained-20230529-ctx4096.pth",
@@ -584,7 +602,8 @@
         "Official",
         "RWKV-4",
         "Global"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-for-mobile-4-world-1.5B-20230906-ctx16k.pth",
@@ -603,7 +622,8 @@
         "RWKV-4",
         "Global"
       ],
-      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt"
+      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt",
+      "hide": true
     },
     {
       "name": "RWKV-4-World-3B-v1-OnlyForTest_35%_trained-20230529-ctx4096.pth",
@@ -673,7 +693,8 @@
         "Official",
         "RWKV-4",
         "Global"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-4-World-CHNtuned-3B-v1-20230625-ctx4096.pth",
@@ -691,7 +712,8 @@
         "Official",
         "RWKV-4",
         "CN"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-4-World-7B-v1-OnlyForTest_30%_trained-20230529-ctx4096.pth",
@@ -787,7 +809,8 @@
         "Official",
         "RWKV-4",
         "Global"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-claude-4-World-7B-20230805-ctx65k.pth",
@@ -805,7 +828,8 @@
         "Finetuned",
         "RWKV-4",
         "Global"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-toolformer-translation-japanese-chinese-english-7B-World-20230815-ctx128k.pth",
@@ -823,7 +847,8 @@
         "Finetuned",
         "RWKV-4",
         "Global"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-code-4-World-7B-20230820-ctx32k.pth",
@@ -841,7 +866,8 @@
         "Finetuned",
         "RWKV-4",
         "Global"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "wizard-rwkv-4-world-ctx32k.pth",
@@ -859,7 +885,8 @@
         "Finetuned",
         "RWKV-4",
         "Global"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-7B-world-one.pth",
@@ -878,7 +905,8 @@
         "RWKV-4",
         "Global"
       ],
-      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt"
+      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt",
+      "hide": true
     },
     {
       "name": "rwkv-world-one-novel-cot-ultrachat-novel-instructions.pth",
@@ -897,7 +925,8 @@
         "RWKV-4",
         "Global"
       ],
-      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt"
+      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt",
+      "hide": true
     },
     {
       "name": "RWKV-world-novel-one-state-ultrachat-cot-tuned-Role-play-65k.pth",
@@ -917,7 +946,8 @@
         "Global",
         "Role Play"
       ],
-      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt"
+      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt",
+      "hide": true
     },
     {
       "name": "RWKV-4-7B-world-one-novel-tuned-65k.pth",
@@ -936,7 +966,8 @@
         "RWKV-4",
         "CN"
       ],
-      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt"
+      "customTokenizer": "backend-python/rwkv_pip/rwkv_vocab_v20230424_special_token.txt",
+      "hide": true
     },
     {
       "name": "RWKV-4-World-CHNtuned-7B-v1-20230709-ctx4096.pth",
@@ -954,7 +985,8 @@
         "Official",
         "RWKV-4",
         "CN"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "Readflow-RWKV-4-World-CHNtuned-7B-v1-20230709-ctx32k.pth",
@@ -972,7 +1004,8 @@
         "Finetuned",
         "RWKV-4",
         "CN"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "novel-RWKV-4-World-CHNtuned-7B-v1-20230709-ctx32k.pth",
@@ -990,7 +1023,8 @@
         "Finetuned",
         "RWKV-4",
         "CN"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "chatgal-RWKV-4-World-CHNtuned-7B-v1-20230709-ctx32k-1000.pth",
@@ -1008,7 +1042,8 @@
         "Finetuned",
         "RWKV-4",
         "CN"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "chatgal-RWKV-4-World-CHNtuned-7B-v1-20230709-ctx32k-500.pth",
@@ -1026,7 +1061,8 @@
         "Finetuned",
         "RWKV-4",
         "CN"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-4-World-JPNtuned-7B-v1-20230718-ctx4096.pth",
@@ -1044,7 +1080,8 @@
         "Official",
         "RWKV-4",
         "JP"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-novel-4-World-7B-20230810-ctx128k.pth",
@@ -1062,7 +1099,8 @@
         "Finetuned",
         "RWKV-4",
         "Global"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-4-Novel-7B-v1-ChnEng-ChnPro-20230410-ctx4096.pth",
@@ -1080,7 +1118,8 @@
         "RWKV-4",
         "Raven",
         "Global"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-4-Novel-3B-v1-ChnEng-20230412-ctx4096.pth",
@@ -1098,7 +1137,8 @@
         "RWKV-4",
         "Raven",
         "Global"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-4-Novel-7B-v1-ChnEng-20230426-ctx8192.pth",
@@ -1116,7 +1156,8 @@
         "RWKV-4",
         "Raven",
         "Global"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-4-Novel-3B-v1-Chn-20230412-ctx4096.pth",
@@ -1134,7 +1175,8 @@
         "RWKV-4",
         "Raven",
         "Global"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-4-Novel-7B-v1-Chn-20230426-ctx8192.pth",
@@ -1152,7 +1194,8 @@
         "RWKV-4",
         "Raven",
         "Global"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-4-Raven-1B5-v11-Eng99%-Other1%-20230425-ctx4096.pth",
@@ -1187,7 +1230,8 @@
         "Official",
         "RWKV-4",
         "Raven"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-4-Raven-3B-v11-Eng99%-Other1%-20230425-ctx4096.pth",
@@ -1222,7 +1266,8 @@
         "Official",
         "RWKV-4",
         "Raven"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-4-Raven-3B-v11-Eng49%-Chn49%-Jpn1%-Other1%-20230429-ctx4096.pth",
@@ -1259,7 +1304,8 @@
         "RWKV-4",
         "Raven",
         "CN"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-4-Raven-7B-v11x-Eng99%-Other1%-20230429-ctx8192.pth",
@@ -1294,7 +1340,8 @@
         "Official",
         "RWKV-4",
         "Raven"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-4-Raven-7B-v10x-Eng49%-Chn50%-Other1%-20230423-ctx4096.pth",
@@ -1350,7 +1397,8 @@
         "RWKV-4",
         "Raven",
         "CN"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-4-Raven-14B-v11x-Eng99%-Other1%-20230501-ctx8192.pth",
@@ -1385,7 +1433,8 @@
         "Official",
         "RWKV-4",
         "Raven"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-4-MIDI-120M-v1-20230714-ctx4096.pth",
