@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'usehooks-ts'
 import commonStore, { ModelStatus } from '../stores/commonStore'
-import { ConfigSelector } from './ConfigSelector'
+import { ActionSelector } from './ActionSelector'
 import { RunButton } from './RunButton'
 
 const statusText = {
@@ -44,7 +44,7 @@ export const WorkHeader: FC = observer(() => {
           <Text size={100}>{commonStore.lastModelName}</Text>
         )}
         <div className="flex items-center gap-2">
-          <ConfigSelector size="small" />
+          <ActionSelector />
           <RunButton iconMode />
         </div>
       </div>
