@@ -62,6 +62,10 @@ export function GetAbsPath(arg1) {
   return window['go']['backend_golang']['App']['GetAbsPath'](arg1);
 }
 
+export function GetCmds() {
+  return window['go']['backend_golang']['App']['GetCmds']();
+}
+
 export function GetPlatform() {
   return window['go']['backend_golang']['App']['GetPlatform']();
 }
@@ -80,6 +84,10 @@ export function InstallPyDep(arg1, arg2) {
 
 export function IsPortAvailable(arg1) {
   return window['go']['backend_golang']['App']['IsPortAvailable'](arg1);
+}
+
+export function KillCmd(arg1) {
+  return window['go']['backend_golang']['App']['KillCmd'](arg1);
 }
 
 export function ListDirFiles(arg1) {
