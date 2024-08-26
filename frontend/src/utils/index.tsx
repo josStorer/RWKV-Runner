@@ -11,8 +11,10 @@ import {
   CmdInteractive,
   DeleteFile,
   DepCheck,
+  GetCmds,
   GetProxyPort,
   InstallPyDep,
+  KillCmd,
   ListDirFiles,
   OpenOpenFileDialog,
   ReadFileInfo,
@@ -918,12 +920,23 @@ export function isDynamicStateSupported(modelConfig: ModelConfig) {
   )
 }
 
+// It is recommended to use the stop function returned by cmdInteractive to terminate the cmd.
+// If this function is used to terminate the cmd, it will still trigger the onFinish event normally.
+export async function stopCmd(eventId: string) {
+  return KillCmd(eventId)
+}
+
+// return the key-value pairs of cmd eventId and args
+export async function getCmds() {
+  return GetCmds()
+}
+
 export function cmdInteractive(
   cmdArgs: string[],
   onOutput: (output: string) => Promise<void>,
   onFinish: () => Promise<void>,
   onError: (e: string) => Promise<void>
-): { stop: () => void } {
+): { stop: () => void; eventId: string } {
   const eventId = uuid()
   let finished = false
   let stopped = false
@@ -944,9 +957,9 @@ export function cmdInteractive(
     setTimeout(() => {
       if (!finished) {
         stopped = true
-        EventsEmit(eventId + '-stop')
+        stopCmd(eventId)
       }
     }, 100)
   }
-  return { stop } //TODO input
+  return { stop, eventId } //TODO input
 }

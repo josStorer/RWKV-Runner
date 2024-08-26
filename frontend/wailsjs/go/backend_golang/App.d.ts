@@ -32,6 +32,8 @@ export function FileExists(arg1:string):Promise<boolean>;
 
 export function GetAbsPath(arg1:string):Promise<string>;
 
+export function GetCmds():Promise<{[key: string]: Array<string>}>;
+
 export function GetPlatform():Promise<string>;
 
 export function GetProxyPort():Promise<number>;
@@ -41,6 +43,8 @@ export function GetPyError():Promise<string>;
 export function InstallPyDep(arg1:string,arg2:boolean):Promise<string>;
 
 export function IsPortAvailable(arg1:number):Promise<boolean>;
+
+export function KillCmd(arg1:string):Promise<void>;
 
 export function ListDirFiles(arg1:string):Promise<Array<backend_golang.FileInfo>>;
 
