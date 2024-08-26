@@ -9,6 +9,7 @@ import { v4 as uuid } from 'uuid'
 import manifest from '../../../manifest.json'
 import {
   AddToDownloadList,
+  CmdInteractive,
   DeleteFile,
   DepCheck,
   GetProxyPort,
@@ -22,8 +23,10 @@ import {
 } from '../../wailsjs/go/backend_golang/App'
 import {
   BrowserOpenURL,
+  EventsEmit,
   EventsOff,
   EventsOn,
+  EventsOnce,
   WindowShow,
 } from '../../wailsjs/runtime'
 import logo from '../assets/images/logo.png'
@@ -914,4 +917,37 @@ export function isDynamicStateSupported(modelConfig: ModelConfig) {
     modelConfig.modelParameters.device === 'Custom' ||
     modelConfig.modelParameters.device === 'MPS'
   )
+}
+
+export function cmdInteractive(
+  cmdArgs: string[],
+  onOutput: (output: string) => Promise<void>,
+  onFinish: () => Promise<void>,
+  onError: (e: string) => Promise<void>
+): { stop: () => void } {
+  const eventId = uuid()
+  let finished = false
+  let stopped = false
+  const unregisterOutput = EventsOn(eventId + '-output', (output) => {
+    onOutput(output)
+  })
+  const unregisterFinish = EventsOnce(eventId + '-finish', () => {
+    finished = true
+    unregisterOutput()
+    if (!stopped) onFinish()
+  })
+  CmdInteractive(cmdArgs, eventId).catch((e) => {
+    unregisterOutput()
+    unregisterFinish()
+    onError(e)
+  })
+  const stop = () => {
+    setTimeout(() => {
+      if (!finished) {
+        stopped = true
+        EventsEmit(eventId + '-stop')
+      }
+    }, 100)
+  }
+  return { stop } //TODO input
 }
