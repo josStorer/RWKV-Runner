@@ -142,6 +142,120 @@
       ]
     },
     {
+      "name": "RWKV-x060-ChnNovel-1B-20240807-ctx4096.pth",
+      "desc": {
+        "en": "RWKV-6 Chinese Novel 1B5",
+        "zh": "RWKV-6 中文小说 1B5",
+        "ja": "RWKV-6 中国小説 1B5"
+      },
+      "size": 3199845649,
+      "SHA256": "98fbd7dfa8cb32dd77457f754a4a97975f68ca3ef73a8312e3e348b29c2d1188",
+      "lastUpdated": "2024-08-08T05:33:16",
+      "url": "https://huggingface.co/BlinkDL/rwkv-6-misc/blob/main/RWKV-x060-ChnNovel-1B-20240807-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-6-misc/resolve/main/RWKV-x060-ChnNovel-1B-20240807-ctx4096.pth",
+      "tags": [
+        "Official",
+        "RWKV-6",
+        "Finetuned",
+        "CN"
+      ]
+    },
+    {
+      "name": "RWKV-x060-ChnNovel-3B-20240807-ctx4096.pth",
+      "desc": {
+        "en": "RWKV-6 Chinese Novel 3B",
+        "zh": "RWKV-6 中文小说 3B",
+        "ja": "RWKV-6 中国小説 3B"
+      },
+      "size": 6199859229,
+      "SHA256": "ce8897c573e3a8bc8077153c1bac88984b7a74a488c1966c3676bbe1f2ae16e6",
+      "lastUpdated": "2024-08-08T05:33:16",
+      "url": "https://huggingface.co/BlinkDL/rwkv-6-misc/blob/main/RWKV-x060-ChnNovel-3B-20240807-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-6-misc/resolve/main/RWKV-x060-ChnNovel-3B-20240807-ctx4096.pth",
+      "tags": [
+        "Official",
+        "RWKV-6",
+        "Finetuned",
+        "CN"
+      ]
+    },
+    {
+      "name": "RWKV-x060-ChnNovel-7B-20240803-ctx4096.pth",
+      "desc": {
+        "en": "RWKV-6 Chinese Novel 7B",
+        "zh": "RWKV-6 中文小说 7B",
+        "ja": "RWKV-6 中国小説 7B"
+      },
+      "size": 15271627101,
+      "SHA256": "a9a1b0947c887c8fcda3454f3ced4ed7cc099e24c32606effb668a37a22fc83b",
+      "lastUpdated": "2024-08-03T03:56:57",
+      "url": "https://huggingface.co/BlinkDL/rwkv-6-misc/blob/main/RWKV-x060-ChnNovel-7B-20240803-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-6-misc/resolve/main/RWKV-x060-ChnNovel-7B-20240803-ctx4096.pth",
+      "tags": [
+        "Official",
+        "RWKV-6",
+        "Finetuned",
+        "CN"
+      ]
+    },
+    {
+      "name": "RWKV-x060-ChnNovel-14B-20240805-ctx4096.pth",
+      "desc": {
+        "en": "RWKV-6 Chinese Novel 14B",
+        "zh": "RWKV-6 中文小说 14B",
+        "ja": "RWKV-6 中国小説 14B"
+      },
+      "size": 28138429718,
+      "SHA256": "10000ec77c65c14992c2ceda49781149f88430fe7b30a2d4f40589e4a7baf490",
+      "lastUpdated": "2024-08-05T11:37:00",
+      "url": "https://huggingface.co/BlinkDL/rwkv-6-misc/blob/main/RWKV-x060-ChnNovel-14B-20240805-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-6-misc/resolve/main/RWKV-x060-ChnNovel-14B-20240805-ctx4096.pth",
+      "tags": [
+        "Official",
+        "RWKV-6",
+        "Finetuned",
+        "CN"
+      ]
+    },
+    {
+      "name": "RWKV-x060-Jpn-7B-20240816-ctx4096.pth",
+      "desc": {
+        "en": "RWKV-6 Enhanced Japanese 7B",
+        "zh": "RWKV-6 日文增强 7B",
+        "ja": "RWKV-6 日本語強化 7B"
+      },
+      "size": 15271627101,
+      "SHA256": "7824869dc3b3d15ac9fb40797f6a741e7f6031f8a7a821e3465c0aecddf51fa8",
+      "lastUpdated": "2024-08-16T15:50:08",
+      "url": "https://huggingface.co/BlinkDL/rwkv-6-misc/blob/main/RWKV-x060-Jpn-7B-20240816-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-6-misc/resolve/main/RWKV-x060-Jpn-7B-20240816-ctx4096.pth",
+      "tags": [
+        "Official",
+        "RWKV-6",
+        "Finetuned",
+        "JP"
+      ]
+    },
+    {
+      "name": "RWKV-x060-Jpn-14B-20240819-ctx4096.pth",
+      "desc": {
+        "en": "RWKV-6 Enhanced Japanese 14B",
+        "zh": "RWKV-6 日文增强 14B",
+        "ja": "RWKV-6 日本語強化 14B"
+      },
+      "size": 28138429782,
+      "SHA256": "c27c010185b37a6c31cba70e32a5337052221a1ca8e5675e4a6f5dfa73ce490d",
+      "lastUpdated": "2024-08-19T07:02:22",
+      "url": "https://huggingface.co/BlinkDL/rwkv-6-misc/blob/main/RWKV-x060-Jpn-14B-20240819-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-6-misc/resolve/main/RWKV-x060-Jpn-14B-20240819-ctx4096.pth",
+      "tags": [
+        "Official",
+        "RWKV-6",
+        "Finetuned",
+        "JP"
+      ]
+    },
+    {
       "name": "RWKV-5-World-0.1B-v1-20230803-ctx4096.pth",
       "desc": {
         "en": "RWKV-5 Global Languages 0.1B v1",
