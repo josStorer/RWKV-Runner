@@ -14,7 +14,7 @@ import (
 	"golang.org/x/text/transform"
 )
 
-func (a *App) CmdInteractive(args []string, uuid string) error {
+func (a *App) CmdInteractive(args []string, eventId string) error {
 	cmd := exec.Command(args[0], args[1:]...)
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
@@ -28,17 +28,17 @@ func (a *App) CmdInteractive(args []string, uuid string) error {
 	if err != nil {
 		return err
 	}
-	unregisterStop := wruntime.EventsOnce(a.ctx, uuid+"-stop", func(optionalData ...any) {
-		cmd.Process.Kill()
-	})
-	defer unregisterStop()
+	cmds[eventId] = args
+	cmdProcesses[eventId] = cmd.Process
 
 	reader := bufio.NewReader(stdout)
 	for {
 		line, _, err := reader.ReadLine()
 		if err != nil {
+			delete(cmds, eventId)
+			delete(cmdProcesses, eventId)
 			if err == io.EOF {
-				wruntime.EventsEmit(a.ctx, uuid+"-finish")
+				wruntime.EventsEmit(a.ctx, eventId+"-finish")
 				return nil
 			}
 			return err
@@ -49,6 +49,6 @@ func (a *App) CmdInteractive(args []string, uuid string) error {
 			line = line2
 		}
 		strLine := string(line)
-		wruntime.EventsEmit(a.ctx, uuid+"-output", strLine)
+		wruntime.EventsEmit(a.ctx, eventId+"-output", strLine)
 	}
 }

@@ -145,6 +145,9 @@ func (a *App) OnBeforeClose(ctx context.Context) bool {
 	if monitor != nil {
 		monitor.Process.Kill()
 	}
+	for id := range cmdProcesses {
+		a.KillCmd(id)
+	}
 	return false
 }
 
