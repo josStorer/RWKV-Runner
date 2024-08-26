@@ -1,9 +1,8 @@
-import { MouseEvent, useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Button, OverlayDrawer } from '@fluentui/react-components'
 import classNames from 'classnames'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
-import { CloseButton } from 'react-toastify/dist/components'
 import commonStore from '../stores/commonStore'
 
 export const BottomLogger = observer(() => {
