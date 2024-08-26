@@ -31,10 +31,12 @@ import {
   webDarkTheme,
   webLightTheme,
 } from '@fluentui/react-components'
+import classNames from 'classnames'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
 import { Route, Routes, useLocation, useNavigate } from 'react-router'
 import { useMediaQuery } from 'usehooks-ts'
+import { BottomLogger } from './components/BottomLogger'
 import { CustomToastContainer } from './components/CustomToastContainer'
 import { LazyImportComponent } from './components/LazyImportComponent'
 import { MobileFloatingNavigator } from './components/MobileFloatingNavigator'
@@ -126,21 +128,24 @@ const App: FC = observer(() => {
             {bottomTabList}
           </div>
         )}
-        <div
-          className={
-            'box-border h-full w-full overflow-y-hidden py-2 pr-2' +
-            (useMobileStyle ? ' pl-2' : '')
-          }
-        >
-          <Routes>
-            {pages.map(({ path, element }, index) => (
-              <Route
-                key={`${path}-${index}`}
-                path={path}
-                element={<LazyImportComponent lazyChildren={element} />}
-              />
-            ))}
-          </Routes>
+        <div className={classNames('flex w-full flex-col')}>
+          <div
+            className={
+              'box-border h-full w-full overflow-y-hidden py-2 pr-2' +
+              (useMobileStyle ? ' pl-2' : '')
+            }
+          >
+            <Routes>
+              {pages.map(({ path, element }, index) => (
+                <Route
+                  key={`${path}-${index}`}
+                  path={path}
+                  element={<LazyImportComponent lazyChildren={element} />}
+                />
+              ))}
+            </Routes>
+          </div>
+          {!isWeb && <BottomLogger />}
         </div>
       </div>
       <CustomToastContainer />
