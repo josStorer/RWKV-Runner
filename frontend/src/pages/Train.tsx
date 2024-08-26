@@ -385,7 +385,10 @@ const LoraFinetune: FC = observer(() => {
           .catch((e) => {
             WindowShow()
             const msg = e.message || e
-            if (msg === 'ubuntu not found') {
+            if (
+              msg === 'ubuntu not found' ||
+              msg.includes('could not obtain registered distros')
+            ) {
               toastWithButton(
                 t('Ubuntu is not installed, do you want to install it?'),
                 t('Install Ubuntu'),
