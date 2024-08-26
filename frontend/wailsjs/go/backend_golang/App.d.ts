@@ -6,6 +6,8 @@ export function AddToDownloadList(arg1:string,arg2:string):Promise<void>;
 
 export function CloseMidiPort():Promise<void>;
 
+export function CmdInteractive(arg1:Array<string>,arg2:string):Promise<void>;
+
 export function ContinueDownload(arg1:string):Promise<void>;
 
 export function ConvertData(arg1:string,arg2:string,arg3:string,arg4:string):Promise<string>;
