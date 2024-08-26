@@ -10,6 +10,7 @@ require (
 	github.com/nyaosorg/go-windows-su v0.2.1
 	github.com/ubuntu/gowsl v0.0.0-20230615094051-94945650cc1e
 	github.com/wailsapp/wails/v2 v2.8.0
+	golang.org/x/text v0.14.0
 )
 
 require (
@@ -42,5 +43,4 @@ require (
 	golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1 // indirect
 	golang.org/x/net v0.20.0 // indirect
 	golang.org/x/sys v0.16.0 // indirect
-	golang.org/x/text v0.14.0 // indirect
 )

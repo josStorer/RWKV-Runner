@@ -10,6 +10,10 @@ export function CloseMidiPort() {
   return window['go']['backend_golang']['App']['CloseMidiPort']();
 }
 
+export function CmdInteractive(arg1, arg2) {
+  return window['go']['backend_golang']['App']['CmdInteractive'](arg1, arg2);
+}
+
 export function ContinueDownload(arg1) {
   return window['go']['backend_golang']['App']['ContinueDownload'](arg1);
 }
