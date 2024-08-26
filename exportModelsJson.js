@@ -31,3 +31,7 @@ document.querySelectorAll('.grid.h-10.grid-cols-12.place-content-center.gap-x-3.
 
   modelsJson.push(data)
 })
+
+setTimeout(() => {
+  console.log(JSON.stringify(modelsJson, null, 2))
+}, 500)
