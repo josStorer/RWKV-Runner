@@ -367,19 +367,16 @@ def chat_template(
         if message.role == Role.User.value:
             append_message = f"{user}{interface} " + message.content
         elif message.role == Role.Assistant.value:
-            if message.content is None:
-                if message.tool_calls and len(message.tool_calls) > 0:
-                    name = message.tool_calls[0].function.name
-                    arguments = json.loads(message.tool_calls[0].function.arguments)
-                    arguments = ", ".join(
-                        [f'"{k}"="{v}"' for k, v in arguments.items()]
-                    )
-                    append_message = (
-                        f"{bot}{interface} "
-                        + f"{name}\n```python\ntool_call({arguments})\n```"
-                    )
-                else:
-                    continue
+            if message.tool_calls and len(message.tool_calls) > 0:
+                name = message.tool_calls[0].function.name
+                arguments = json.loads(message.tool_calls[0].function.arguments)
+                arguments = ", ".join([f'"{k}"="{v}"' for k, v in arguments.items()])
+                append_message = (
+                    f"{bot}{interface} "
+                    + f"{name}\n```python\ntool_call({arguments})\n```"
+                )
+            elif message.content is None:
+                continue
             else:
                 append_message = f"{bot}{interface} " + message.content
         elif message.role == Role.System.value:
@@ -498,15 +495,37 @@ async def async_generator_stream_response_tool_call(
     stack_keyword_pairs = [["```", "```"], ["(", ")"], ['"', '"'], ["'", "'"]]
     while True:
         if done:
-            yield json.dumps(
-                {
-                    "object": "chat.completion.chunk",
-                    "model": model.name,
-                    "choices": [
-                        {"index": 0, "delta": {}, "finish_reason": "tool_calls"}
-                    ],
-                }
-            )
+            if not flag_is_common_confirmed and not flag_is_function_call_confirmed:
+                yield json.dumps(
+                    {
+                        "object": "chat.completion.chunk",
+                        "model": model.name,
+                        "choices": [
+                            {
+                                "index": 0,
+                                "delta": {"content": content},
+                                "finish_reason": None,
+                            }
+                        ],
+                    }
+                )
+                yield json.dumps(
+                    {
+                        "object": "chat.completion.chunk",
+                        "model": model.name,
+                        "choices": [{"index": 0, "delta": {}, "finish_reason": "stop"}],
+                    }
+                )
+            elif flag_is_function_call_confirmed:
+                yield json.dumps(
+                    {
+                        "object": "chat.completion.chunk",
+                        "model": model.name,
+                        "choices": [
+                            {"index": 0, "delta": {}, "finish_reason": "tool_calls"}
+                        ],
+                    }
+                )
             yield "[DONE]"
             break
 
@@ -603,7 +622,7 @@ async def async_generator_stream_response_tool_call(
             yield json.dumps(response_decoded)
             continue
 
-        if not flag_is_common_confirmed and not flag_is_common_confirmed:
+        if not flag_is_common_confirmed and not flag_is_function_call_confirmed:
             """
             # Unconfirmed Response, check content field by the followings:
             # Up to 4 line feeds:                                       Common Response.
@@ -635,7 +654,8 @@ async def async_generator_stream_response_tool_call(
                 )
             ):
                 flag_is_common_confirmed = True
-                yield response
+                response_decoded["choices"][0]["delta"]["content"] = content
+                yield json.dumps(response_decoded)
                 continue
 
             # Confirm Function call Response
