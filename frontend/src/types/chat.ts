@@ -14,6 +14,7 @@ export type Side = 'left' | 'right' | 'center'
 export type Color = 'neutral' | 'brand' | 'colorful'
 export type MessageItem = {
   sender: string
+  toolName?: string
   type: MessageType
   color: Color
   avatarImg?: string
@@ -25,10 +26,19 @@ export type MessageItem = {
 export type Conversation = {
   [uuid: string]: MessageItem
 }
-export type Role = 'assistant' | 'user' | 'system'
+export type Role = 'assistant' | 'user' | 'system' | 'tool'
 export type ConversationMessage = {
   role: Role
   content: string
+  tool_call_id?: string
+  tool_calls?: Array<{
+    id: string
+    type: 'function'
+    function: {
+      name: string
+      arguments: string
+    }
+  }>
 }
 export type Attachment = {
   name: string
@@ -38,4 +48,7 @@ export type Attachment = {
 export type ChatParams = Omit<ApiParameters, 'apiPort'> & {
   historyN: number
   markdown: boolean
+  functionCall: boolean
+  toolDefinition: string
+  toolReturn: string
 }

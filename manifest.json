@@ -516,8 +516,10 @@
         "Global",
         "Recommended",
         "CN",
-        "JP"
-      ]
+        "JP",
+        "Function Call"
+      ],
+      "functionCall": true
     },
     {
       "name": "Mobius-r5-chat-12b-128k.pth",

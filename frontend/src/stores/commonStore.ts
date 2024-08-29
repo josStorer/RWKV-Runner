@@ -100,6 +100,24 @@ class CommonStore {
     penaltyDecay: defaultPenaltyDecay,
     historyN: 0,
     markdown: true,
+    functionCall: false,
+    toolDefinition:
+      '{\n' +
+      '    "name": "get_current_weather",\n' +
+      '    "description": "Get the current weather in a given location",\n' +
+      '    "parameters": {\n' +
+      '        "type": "object",\n' +
+      '        "properties": {\n' +
+      '            "location": {\n' +
+      '                "type": "string",\n' +
+      '                "description": "The city and state, e.g. San Francisco, CA"\n' +
+      '            },\n' +
+      '            "unit": {"type": "string", "enum": ["celsius", "fahrenheit"]}\n' +
+      '        },\n' +
+      '        "required": ["location"]\n' +
+      '    }\n' +
+      '}',
+    toolReturn: '{"location": "Paris", "temperature": "22"}',
   }
   sidePanelCollapsed: boolean | 'auto' = 'auto'
   // completion

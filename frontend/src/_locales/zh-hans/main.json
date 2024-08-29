@@ -363,5 +363,11 @@
   "File format of the model or state model not supported": "模型或state模型的文件格式不支持",
   "Note: You are using an English state": "注意: 你正在使用一个英文state",
   "Note: You are using a Chinese state": "注意: 你正在使用一个中文state",
-  "Note: You are using a Japanese state": "注意: 你正在使用一个日文state"
+  "Note: You are using a Japanese state": "注意: 你正在使用一个日文state",
+  "What's the weather like in Paris?": "巴黎的天气怎么样?",
+  "Function Call": "函数调用",
+  "Tool Definition": "工具定义",
+  "Tool Return Value": "工具返回值",
+  "Tool Definition is not a valid JSON": "工具定义不是一个有效的JSON",
+  "Current selected model may not support function call": "当前选择的模型可能不支持函数调用"
 }
