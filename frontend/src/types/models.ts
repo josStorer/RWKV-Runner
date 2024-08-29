@@ -9,6 +9,7 @@ export type ModelSourceItem = {
   tags?: string[]
   customTokenizer?: string
   hide?: boolean
+  functionCall?: boolean
 
   lastUpdatedMs?: number
   isComplete?: boolean

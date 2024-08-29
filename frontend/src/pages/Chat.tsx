@@ -235,7 +235,13 @@ const ChatMessageItem: FC<{
                 messageItem.side === 'center'
               }
             >
-              {messageItem.content}
+              {messageItem.sender.startsWith('call_') || messageItem.toolName
+                ? messageItem.sender +
+                  ' - ' +
+                  messageItem.toolName +
+                  ': ' +
+                  messageItem.content
+                : messageItem.content}
             </MarkdownRender>
             {uuid in commonStore.attachments && (
               <div className="flex grow">
@@ -323,7 +329,7 @@ const SidePanel: FC = observer(() => {
   return (
     <div
       className={classnames(
-        'transition-width flex h-full flex-shrink-0 flex-col gap-1 duration-300 ease-in-out',
+        'transition-width flex h-full shrink-0 flex-col gap-1 duration-300 ease-in-out',
         commonStore.sidePanelCollapsed ? 'w-0' : mq ? 'w-64' : 'w-full',
         !commonStore.sidePanelCollapsed && 'ml-1'
       )}
@@ -527,7 +533,84 @@ const SidePanel: FC = observer(() => {
           />
         }
       />
+      <Labeled
+        flex
+        spaceBetween
+        label={t('Function Call')}
+        content={
+          <Switch
+            checked={params.functionCall}
+            onChange={(e, data) => {
+              commonStore.setChatParams({
+                functionCall: data.checked,
+              })
+              if (data.checked) {
+                if (commonStore.currentInput.trim() == '')
+                  commonStore.setCurrentInput(
+                    t("What's the weather like in Paris?")
+                  )
+                if (
+                  !commonStore.modelSourceList.find(
+                    (m) =>
+                      m.name ===
+                      commonStore.getCurrentModelConfig().modelParameters
+                        .modelName
+                  )?.functionCall
+                ) {
+                  toast(
+                    t('Current selected model may not support function call'),
+                    { type: 'warning' }
+                  )
+                }
+              } else {
+                if (
+                  commonStore.currentInput ==
+                  t("What's the weather like in Paris?")
+                )
+                  commonStore.setCurrentInput('')
+              }
+            }}
+          />
+        }
+      />
+      {params.functionCall && (
+        <div className="flex min-h-[180px] flex-col gap-1 overflow-y-auto overflow-x-hidden p-0.5">
+          <Labeled
+            flex
+            breakline
+            label={t('Tool Definition')}
+            content={
+              <Textarea
+                resize="vertical"
+                value={params.toolDefinition}
+                onChange={(e, data) => {
+                  commonStore.setChatParams({
+                    toolDefinition: data.value,
+                  })
+                }}
+              />
+            }
+          />
+          <Labeled
+            flex
+            breakline
+            label={t('Tool Return Value')}
+            content={
+              <Textarea
+                resize="vertical"
+                value={params.toolReturn}
+                onChange={(e, data) => {
+                  commonStore.setChatParams({
+                    toolReturn: data.value,
+                  })
+                }}
+              />
+            }
+          />
+        </div>
+      )}
       <Button
+        className="shrink-0"
         icon={<FolderOpenVerticalRegular />}
         onClick={() => {
           OpenFileDialog('*.txt;*.md').then(async (blob) => {
@@ -574,6 +657,7 @@ const SidePanel: FC = observer(() => {
         {t('Load Conversation')}
       </Button>
       <Button
+        className="shrink-0"
         icon={<SaveRegular />}
         onClick={() => {
           let savedContent: string = ''
@@ -752,26 +836,56 @@ const ChatPanel: FC = observer(() => {
             content: t('The file name is: ') + attachment.name,
           })
         }
-        if (
-          messageItem.done &&
-          messageItem.type === MessageType.Normal &&
-          messageItem.sender === userName
-        ) {
-          messages.push({ role: 'user', content: messageItem.content })
-        } else if (
-          messageItem.done &&
-          messageItem.type === MessageType.Normal &&
-          messageItem.sender === botName
-        ) {
-          messages.push({ role: 'assistant', content: messageItem.content })
-        } else if (
-          messageItem.done &&
-          messageItem.type === MessageType.Normal &&
-          messageItem.sender === systemName
-        ) {
-          messages.push({ role: 'system', content: messageItem.content })
+        if (messageItem.done && messageItem.type === MessageType.Normal) {
+          if (messageItem.sender === userName) {
+            messages.push({ role: 'user', content: messageItem.content })
+          } else if (messageItem.sender === botName) {
+            messages.push({ role: 'assistant', content: messageItem.content })
+          } else if (messageItem.sender === systemName) {
+            messages.push({ role: 'system', content: messageItem.content })
+          } else if (
+            messageItem.sender.startsWith('call_') ||
+            messageItem.toolName
+          ) {
+            messages.push({
+              role: 'assistant',
+              content: '',
+              tool_calls: [
+                {
+                  id: messageItem.sender,
+                  type: 'function',
+                  function: {
+                    name: messageItem.toolName || '',
+                    arguments: messageItem.content,
+                  },
+                },
+              ],
+            })
+            messages.push({
+              role: 'tool',
+              content: commonStore.chatParams.toolReturn,
+              tool_call_id: messageItem.sender,
+            })
+          }
         }
       })
+
+      let tool
+      let isToolCallAnswer = false
+      const useToolDefinition =
+        messages[messages.length - 1].role !== 'tool' &&
+        commonStore.chatParams.functionCall
+      if (useToolDefinition) {
+        try {
+          tool = JSON.parse(commonStore.chatParams.toolDefinition)
+        } catch (e: any) {
+          toast(
+            t('Tool Definition is not a valid JSON') + ': ' + e.toString(),
+            { type: 'error' }
+          )
+          return
+        }
+      }
 
       if (answerId === null) {
         answerId = uuid()
@@ -801,6 +915,13 @@ const ChatPanel: FC = observer(() => {
           commonStore.conversation[answerId!].content.trim()
         commonStore.setConversation(commonStore.conversation)
         commonStore.setConversationOrder([...commonStore.conversationOrder])
+
+        if (
+          commonStore.conversation[answerId!].sender.startsWith('call_') ||
+          commonStore.conversation[answerId!].toolName
+        ) {
+          onSubmit(null, null, null, answerId, true)
+        }
       }
       const chatSseController = new AbortController()
       chatSseControllers[answerId] = chatSseController
@@ -828,6 +949,14 @@ const ChatPanel: FC = observer(() => {
             top_p: commonStore.chatParams.topP,
             presence_penalty: commonStore.chatParams.presencePenalty,
             frequency_penalty: commonStore.chatParams.frequencyPenalty,
+            tools: useToolDefinition
+              ? [
+                  {
+                    type: 'function',
+                    function: tool,
+                  },
+                ]
+              : undefined,
             penalty_decay:
               commonStore.chatParams.penaltyDecay === defaultPenaltyDecay
                 ? undefined
@@ -858,7 +987,19 @@ const ChatPanel: FC = observer(() => {
               Array.isArray(data.choices) &&
               data.choices.length > 0
             ) {
-              answer += data.choices[0]?.delta?.content || ''
+              const tool_calls = data.choices[0]?.delta?.tool_calls
+              if (!isToolCallAnswer && tool_calls) {
+                isToolCallAnswer = true
+                commonStore.conversation[answerId!].sender = tool_calls[0]?.id
+                commonStore.conversation[answerId!].side = 'center'
+                commonStore.conversation[answerId!].toolName =
+                  tool_calls[0]?.function?.name
+              }
+
+              if (!isToolCallAnswer)
+                answer += data.choices[0]?.delta?.content || ''
+              else if (tool_calls)
+                answer += tool_calls[0]?.function?.arguments || ''
               commonStore.conversation[answerId!].content = answer
               commonStore.setConversation(commonStore.conversation)
               commonStore.setConversationOrder([

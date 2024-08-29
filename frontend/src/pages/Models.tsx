@@ -194,6 +194,7 @@ const getTags = () => {
       'Recommended',
       'Official',
       ...commonStore.modelSourceList
+        .filter((item) => !item.hide || item.isComplete)
         .map((item) => item.tags || [])
         .flat()
         .filter((i) => !i.includes('Other') && !i.includes('Local')),

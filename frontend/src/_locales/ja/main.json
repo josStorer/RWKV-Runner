@@ -363,5 +363,11 @@
   "File format of the model or state model not supported": "モデルまたはStateモデルのファイル形式がサポートされていません",
   "Note: You are using an English state": "注意: あなたは英語のstateを使用しています",
   "Note: You are using a Chinese state": "注意: あなたは中国語のstateを使用しています",
-  "Note: You are using a Japanese state": "注意: あなたは日本語のstateを使用しています"
+  "Note: You are using a Japanese state": "注意: あなたは日本語のstateを使用しています",
+  "What's the weather like in Paris?": "パリの天気はどうですか？",
+  "Function Call": "関数呼び出し",
+  "Tool Definition": "ツール定義",
+  "Tool Return Value": "ツールの戻り値",
+  "Tool Definition is not a valid JSON": "ツール定義が有効なJSONではありません",
+  "Current selected model may not support function call": "現在選択されているモデルは、関数呼び出しをサポートしていない可能性があります"
 }
