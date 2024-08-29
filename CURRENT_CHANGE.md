@@ -1,4 +1,8 @@
-## Changes
+## v1.8.7
+
+- withdrawing the obfuscated tiny package, as it caused some exceptions in the html webui
+
+## v1.8.6
 
 ### Features
 
