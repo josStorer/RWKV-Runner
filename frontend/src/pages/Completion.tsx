@@ -19,7 +19,7 @@ import { WorkHeader } from '../components/WorkHeader'
 import commonStore, { ModelStatus } from '../stores/commonStore'
 import { CompletionParams, CompletionPreset } from '../types/completion'
 import { getReqUrl } from '../utils'
-import { defaultPresets } from './defaultConfigs'
+import { defaultPenaltyDecay, defaultPresets } from './defaultConfigs'
 import { PresetsButton } from './PresetsManager/PresetsButton'
 
 let completionSseController: AbortController | null = null
@@ -119,6 +119,10 @@ const CompletionPanel: FC = observer(() => {
           presence_penalty: params.presencePenalty,
           frequency_penalty: params.frequencyPenalty,
           stop: params.stop.replaceAll('\\n', '\n') || undefined,
+          penalty_decay:
+            !params.penaltyDecay || params.penaltyDecay === defaultPenaltyDecay
+              ? undefined
+              : params.penaltyDecay,
         }),
         signal: completionSseController?.signal,
         onmessage(e) {
@@ -327,6 +331,33 @@ const CompletionPanel: FC = observer(() => {
                 onChange={(e, data) => {
                   setParams({
                     frequencyPenalty: data.value,
+                  })
+                }}
+              />
+            }
+          />
+          <Labeled
+            flex
+            breakline
+            label={
+              t('Penalty Decay') +
+              (!params.penaltyDecay ||
+              params.penaltyDecay === defaultPenaltyDecay
+                ? ` (${t('Default')})`
+                : '')
+            }
+            desc={t("If you don't know what it is, keep it default.")}
+            content={
+              <ValuedSlider
+                value={params.penaltyDecay || defaultPenaltyDecay}
+                min={0.99}
+                max={0.999}
+                step={0.001}
+                toFixed={3}
+                input
+                onChange={(e, data) => {
+                  setParams({
+                    penaltyDecay: data.value,
                   })
                 }}
               />
