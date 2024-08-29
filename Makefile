@@ -8,15 +8,15 @@ endif
 
 build-windows:
 	@echo ---- build for windows
-	wails build -ldflags '-s -w -extldflags "-static"' -platform windows/amd64 -devtools -obfuscated -garbleargs="-tiny" -upx -upxflags "-9 --lzma" -nsis
+	wails build -ldflags '-s -w -extldflags "-static"' -platform windows/amd64 -devtools -upx -upxflags "-9 --lzma" -nsis
 
 build-macos:
 	@echo ---- build for macos
-	wails build -ldflags '-s -w' -platform darwin/universal -devtools -obfuscated -garbleargs="-tiny"
+	wails build -ldflags '-s -w' -platform darwin/universal -devtools
 
 build-linux:
 	@echo ---- build for linux
-	wails build -ldflags '-s -w' -platform linux/amd64 -devtools -obfuscated -garbleargs="-tiny" -upx -upxflags "-9 --lzma"
+	wails build -ldflags '-s -w' -platform linux/amd64 -devtools -upx -upxflags "-9 --lzma"
 
 build-web:
 	@echo ---- build for web
