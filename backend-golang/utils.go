@@ -14,6 +14,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"runtime/debug"
 	"strconv"
 	"strings"
 	"syscall"
@@ -51,6 +52,14 @@ func CmdHelper(hideWindow bool, args ...string) (*exec.Cmd, error) {
 	cmd.SysProcAttr = &syscall.SysProcAttr{}
 	//go:custom_build windows cmd.SysProcAttr.HideWindow = hideWindow
 	return cmd, nil
+}
+
+func IsDebugMode() bool {
+	info, ok := debug.ReadBuildInfo()
+	// In Makefile, "-ldflags '-s -w'" is added in wails build phase.
+	containLinkerFlags := strings.Contains(info.String(), "-ldflags")
+	isDebugMode := ok && !containLinkerFlags
+	return isDebugMode
 }
 
 func Cmd(args ...string) (string, error) {
