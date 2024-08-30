@@ -439,7 +439,11 @@ const Settings: FC = observer(() => {
                         content={
                           <Input
                             className="grow"
-                            placeholder="./py310/python"
+                            placeholder={
+                              commonStore.platform == 'darwin'
+                                ? 'python3'
+                                : './py310/python'
+                            }
                             value={commonStore.settings.customPythonPath}
                             onChange={(e, data) => {
                               commonStore.setDepComplete(false)
