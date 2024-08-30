@@ -36,6 +36,7 @@ import { useTranslation } from 'react-i18next'
 import { Route, Routes, useLocation, useNavigate } from 'react-router'
 import { useMediaQuery } from 'usehooks-ts'
 import { CustomToastContainer } from './components/CustomToastContainer'
+import { DebugModeIndicator } from './components/DebugModeIndicator'
 import { LazyImportComponent } from './components/LazyImportComponent'
 import { MobileFloatingNavigator } from './components/MobileFloatingNavigator'
 import { pages as clientPages } from './pages'
@@ -144,6 +145,7 @@ const App: FC = observer(() => {
         </div>
       </div>
       <CustomToastContainer />
+      <DebugModeIndicator />
     </FluentProvider>
   )
 })
