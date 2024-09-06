@@ -21,5 +21,4 @@ startup().then(() => {
   )
 
   // force display the window
-  WindowShow()
 })

@@ -11,7 +11,6 @@ import (
 	backend "rwkv-runner/backend-golang"
 
 	"github.com/wailsapp/wails/v2"
-	wailsLogger "github.com/wailsapp/wails/v2/pkg/logger"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
 	"github.com/wailsapp/wails/v2/pkg/options/windows"
@@ -98,13 +97,6 @@ func main() {
 		app.HasConfigData = false
 	}
 
-	var logger wailsLogger.Logger
-	if app.Dev {
-		logger = wailsLogger.NewDefaultLogger()
-	} else {
-		logger = wailsLogger.NewFileLogger("crash.log")
-	}
-
 	// Create application with options
 	err = wails.Run(&options.App{
 		Title:                    "RWKV-Runner",
@@ -126,7 +118,6 @@ func main() {
 		Bind: []any{
 			app,
 		},
-		Logger: logger,
 	})
 
 	if err != nil {
