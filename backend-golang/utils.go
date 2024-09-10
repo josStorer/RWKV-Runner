@@ -14,10 +14,19 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"runtime/debug"
 	"strconv"
 	"strings"
 	"syscall"
 )
+
+func IsDebugMode() bool {
+	info, ok := debug.ReadBuildInfo()
+	// In Makefile, "-ldflags '-s -w'" is added in wails build phase.
+	containLinkerFlags := strings.Contains(info.String(), "-ldflags")
+	isDebugMode := ok && !containLinkerFlags
+	return isDebugMode
+}
 
 func CmdHelper(hideWindow bool, args ...string) (*exec.Cmd, error) {
 	if runtime.GOOS != "windows" {
@@ -70,7 +79,12 @@ func Cmd(args ...string) (string, error) {
 		if err != nil {
 			return "", err
 		}
-		exDir := filepath.Dir(ex) + "/../../../"
+		exDir := filepath.Dir(ex)
+		if IsDebugMode() {
+			exDir += "/../../../../../"
+		} else {
+			exDir += "/../../../"
+		}
 		cmd := exec.Command("osascript", "-e", `tell application "Terminal" to do script "`+"cd "+exDir+" && "+strings.Join(args, " ")+`"`)
 		err = cmd.Start()
 		if err != nil {
@@ -161,7 +175,7 @@ func GetPython(a *App) (string, error) {
 			return "py310/python.exe", nil
 		}
 	case "darwin":
-		return "python3", nil
+		return "/usr/local/bin/python3.10", nil
 	case "linux":
 		return "python3", nil
 	}
