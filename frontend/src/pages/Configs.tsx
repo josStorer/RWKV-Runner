@@ -11,7 +11,6 @@ import {
   AccordionHeader,
   AccordionItem,
   AccordionPanel,
-  Button,
   Checkbox,
   Dropdown,
   Input,
@@ -33,7 +32,6 @@ import {
   Delete20Regular,
   Save20Regular,
 } from '@fluentui/react-icons'
-import classNames from 'classnames'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
@@ -64,6 +62,7 @@ import {
   convertToGGML,
   convertToSt,
 } from '../utils/convert-model'
+import { AutoConfig } from './AutoConfig'
 import { defaultPenaltyDecay } from './defaultConfigs'
 
 const ConfigSelector: FC<{
@@ -911,153 +910,6 @@ const Configs: FC = observer(() => {
         </div>
       }
     />
-  )
-})
-
-type Functions = 'Chat' | 'Completion' | 'Composition' | 'Function Call'
-
-type CompositionMode = 'MIDI' | 'ABC'
-
-type HardwareType = 'GPU' | 'CPU'
-
-const AutoConfig: FC = observer(() => {
-  const { t } = useTranslation()
-  const [selectedFunction, setSelectedFunction] = useState<Functions>('Chat')
-  const [compositionMode, setCompositionMode] =
-    useState<CompositionMode>('MIDI')
-  const [hardwareType, setHardwareType] = useState<HardwareType>('GPU')
-
-  const platform = commonStore.platform
-
-  const {
-    gpuType,
-    gpuName,
-    usedMemory,
-    totalMemory,
-    gpuUsage,
-    usedVram,
-    totalVram,
-  } = commonStore.monitorData || {}
-
-  const isNvidia = ['Nvidia', 'NVIDIA', 'GeForce', 'RTX'].includes(
-    gpuType || ''
-  )
-
-  const info = {
-    platform,
-    gpuType,
-    gpuName,
-    usedMemory,
-    totalMemory,
-    gpuUsage,
-    usedVram,
-    totalVram,
-    isNvidia,
-  }
-
-  const functionSection = (
-    <div>
-      <div>
-        <Text>{t('Select the function you want to invoke')}</Text>
-      </div>
-      <div className={classNames('flex')}>
-        <Button
-          appearance={selectedFunction == 'Chat' ? 'primary' : 'secondary'}
-          onClick={() => setSelectedFunction('Chat')}
-        >
-          {t('Chat')}
-        </Button>
-        <Button
-          appearance={
-            selectedFunction == 'Completion' ? 'primary' : 'secondary'
-          }
-          onClick={() => setSelectedFunction('Completion')}
-        >
-          {t('Completion')}
-        </Button>
-        <Button
-          appearance={
-            selectedFunction == 'Composition' ? 'primary' : 'secondary'
-          }
-          onClick={() => setSelectedFunction('Composition')}
-        >
-          {t('Composition')}
-        </Button>
-        <Button
-          appearance={
-            selectedFunction == 'Function Call' ? 'primary' : 'secondary'
-          }
-          onClick={() => setSelectedFunction('Function Call')}
-        >
-          {t('Function Call')}
-        </Button>
-      </div>
-    </div>
-  )
-
-  const compositionModeSection = (
-    <div>
-      <Text>{t('Select composition mode:')}</Text>
-      <div className={classNames('flex')}>
-        <Button
-          appearance={compositionMode == 'MIDI' ? 'primary' : 'secondary'}
-          onClick={() => setCompositionMode('MIDI')}
-        >
-          {t('MIDI')}
-        </Button>
-        <Button
-          appearance={compositionMode == 'ABC' ? 'primary' : 'secondary'}
-          onClick={() => setCompositionMode('ABC')}
-        >
-          {t('ABC')}
-        </Button>
-      </div>
-    </div>
-  )
-
-  const hardwareSection = (
-    <div>
-      <Text>{t('Select GPU or CPU')}</Text>
-      <div>这里的注解应该怎么写呢？</div>
-      <div className={classNames('flex')}>
-        <Button
-          appearance={hardwareType == 'GPU' ? 'primary' : 'secondary'}
-          onClick={() => setHardwareType('GPU')}
-        >
-          {t('GPU')}
-        </Button>
-        <Button
-          appearance={hardwareType == 'CPU' ? 'primary' : 'secondary'}
-          onClick={() => setHardwareType('CPU')}
-        >
-          {t('CPU')}
-        </Button>
-      </div>
-    </div>
-  )
-
-  const debugInfo = (
-    <div className={classNames('flex flex-col gap-2')}>
-      <Text>{t('Debug Info')}</Text>
-      <Text>Platform: {platform}</Text>
-      <Text>GPU Type: {gpuType}</Text>
-      <Text>GPU Name: {gpuName}</Text>
-      <Text>Used Memory: {usedMemory}</Text>
-      <Text>Total Memory: {totalMemory}</Text>
-      <Text>GPU Usage: {gpuUsage}</Text>
-      <Text>Used VRAM: {usedVram}</Text>
-      <Text>Total VRAM: {totalVram}</Text>
-      <Text>Is Nvidia: {isNvidia ? 'Yes' : 'No'}</Text>
-    </div>
-  )
-
-  return (
-    <div>
-      {functionSection}
-      {selectedFunction == 'Composition' && compositionModeSection}
-      {hardwareSection}
-      {debugInfo}
-    </div>
   )
 })
 

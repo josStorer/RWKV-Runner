@@ -10,5 +10,6 @@
     "editor.defaultFormatter": "ms-python.black-formatter"
   },
   "python.formatting.provider": "none",
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "files.autoSave": "off",
 }

@@ -5,9 +5,9 @@ module.exports = {
   singleQuote: true,
   tabWidth: 2,
   trailingComma: 'es5',
-  // singleAttributePerLine: true,
-  // printWidth: 1000000,
-  // bracketSameLine: true,
+  singleAttributePerLine: true,
+  printWidth: 1000000,
+  bracketSameLine: true,
   importOrder: ['^(react/(.*)$)|^(react$)', '<THIRD_PARTY_MODULES>', '^[./]'],
   importOrderSeparation: false,
   importOrderSortSpecifiers: true,
@@ -15,5 +15,8 @@ module.exports = {
   importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
   importOrderMergeDuplicateImports: true,
   importOrderCombineTypeAndValueImports: true,
-  plugins: ['@ianvs/prettier-plugin-sort-imports', 'prettier-plugin-tailwindcss'],
+  plugins: [
+    '@ianvs/prettier-plugin-sort-imports',
+    'prettier-plugin-tailwindcss',
+  ],
 }
