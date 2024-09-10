@@ -163,7 +163,6 @@ const Configs: FC = observer(() => {
     commonStore.setModelConfig(selectedIndex, selectedConfig)
     const webgpu = selectedConfig.modelParameters.device === 'WebGPU'
     if (!webgpu) {
-      LogDebug('🔴 FUCK')
       // When clicking RunButton in Configs page, updateConfig will be called twice,
       // because there are also RunButton in other pages, and the calls to updateConfig in both places are necessary.
       updateConfig(t, {
