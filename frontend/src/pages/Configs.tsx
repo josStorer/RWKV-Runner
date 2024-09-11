@@ -37,7 +37,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 import { toast } from 'react-toastify'
 import { useMediaQuery } from 'usehooks-ts'
-import { BrowserOpenURL, LogDebug } from '../../wailsjs/runtime'
+import { BrowserOpenURL } from '../../wailsjs/runtime'
 import { updateConfig } from '../apis'
 import strategyZhImg from '../assets/images/strategy_zh.jpg'
 import strategyImg from '../assets/images/strategy.jpg'
@@ -82,7 +82,11 @@ const ConfigSelector: FC<{
       }}
     >
       {commonStore.modelConfigs.map((config, index) => (
-        <Option key={index} value={index.toString()} text={config.name}>
+        <Option
+          key={index}
+          value={index.toString()}
+          text={config.name}
+        >
           <div className="flex grow justify-between">
             {config.name}
             {commonStore.modelSourceList.find(
@@ -377,11 +381,17 @@ const Configs: FC = observer(() => {
                           })
                         }}
                       >
-                        <option key={-1} value={''}>
+                        <option
+                          key={-1}
+                          value={''}
+                        >
                           {t('None')}
                         </option>
                         {commonStore.stateModels.map((modelName, index) => (
-                          <option key={index} value={modelName}>
+                          <option
+                            key={index}
+                            value={modelName}
+                          >
                             {modelName}
                           </option>
                         ))}
@@ -400,7 +410,10 @@ const Configs: FC = observer(() => {
                     }}
                   >
                     <AccordionItem value="advanced">
-                      <AccordionHeader ref={advancedHeaderRef1} size="small">
+                      <AccordionHeader
+                        ref={advancedHeaderRef1}
+                        size="small"
+                      >
                         {t('Advanced')}
                       </AccordionHeader>
                       <AccordionPanel>
@@ -552,7 +565,10 @@ const Configs: FC = observer(() => {
                           {commonStore.modelSourceList.map(
                             (modelItem, index) =>
                               modelItem.isComplete && (
-                                <option key={index} value={modelItem.name}>
+                                <option
+                                  key={index}
+                                  value={modelItem.name}
+                                >
                                   {modelItem.name}
                                 </option>
                               )
@@ -840,7 +856,10 @@ const Configs: FC = observer(() => {
                       }}
                     >
                       <AccordionItem value="advanced">
-                        <AccordionHeader ref={advancedHeaderRef2} size="small">
+                        <AccordionHeader
+                          ref={advancedHeaderRef2}
+                          size="small"
+                        >
                           {t('Advanced')}
                         </AccordionHeader>
                         <AccordionPanel>
@@ -937,7 +956,10 @@ const PageConfigs: FC = () => {
         onTabSelect={selectTab}
       >
         {Object.entries(pages).map(([label]) => (
-          <Tab key={label} value={label}>
+          <Tab
+            key={label}
+            value={label}
+          >
             {t(label)}
           </Tab>
         ))}
