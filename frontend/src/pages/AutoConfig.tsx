@@ -4,6 +4,7 @@ import { CheckmarkCircleFilled, CircleRegular } from '@fluentui/react-icons'
 import classNames from 'classnames'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
+import { RunButton } from '../components/RunButton'
 import commonStore from '../stores/commonStore'
 import {
   CompositionMode,
@@ -107,6 +108,10 @@ export const AutoConfig: FC = observer(() => {
       setCpuOrGPU('CPU')
     }
   }, [selectedFunction])
+
+  const onStartButtonClick = () => {
+    console.log('onStartButtonClick')
+  }
 
   const finalReturn = (
     <div className={classNames('flex h-full flex-col overflow-y-auto')}>
@@ -278,7 +283,10 @@ export const AutoConfig: FC = observer(() => {
         <div>
           <div>{t('Have a fun')}</div>
           <div className={sectionContentClassName}>
-            <Button disabled={stepDisable[4]}>{t('Start')}</Button>
+            <RunButton
+              onClickRun={onStartButtonClick}
+              disabled={stepDisable[4]}
+            />
             <Checkbox
               disabled={stepDisable[4]}
               className="select-none"

@@ -32,13 +32,13 @@ const availableModelPairs: Record<Func, string[]> = {
 // 需求：
 // 1. ✅ 启动的时候依据剩余内存计算，然后如果依据总量计算， 理论上能运行更好的模型， 则会在启动时提示，资源占用，可运行XX模型
 // 2. ✅ 选cpu的时候，用内存计算，依据剩余内存，计算当前启动用的配置，依据总内存，计算当前可用的理论最佳配置
-// 3. 如果理论最佳比剩余内存算出来的更好，则提示用户
-// 4. 用cuda fp16时，customCuda总是true
-// 5. 显存满足这个，才用，其余都是WebGPU(nf4)
-// 6. 精度只有nf4 fp16两种策略考虑,就是CUDA fp16 customCuda true 以及WebGPU(Python) nf4
-// 7. tokenizer: undefined, deploy: false
+// 3. ✅ 如果理论最佳比剩余内存算出来的更好，则提示用户
+// 4. ✅ 用cuda fp16时，customCuda总是true
+// 5. ✅ 显存满足这个，才用，其余都是WebGPU(nf4)
+// 6. ✅ 精度只有nf4 fp16两种策略考虑,就是CUDA fp16 customCuda true 以及WebGPU(Python) nf4
+// 7. ✅ tokenizer: undefined, deploy: false
 // 8. ✅ switchModel
-// 9. strategy刚才对应的就是cuda fp16和fp16i4
+// 9. ✅ strategy刚才对应的就是cuda fp16和fp16i4
 // 10. ✅ 硬编码模型名数组，然后模型名去commonStore.modelSourceList取信息，可以得到模型尺寸
 // 11. ✅ 用户选CPU，那就只有rwkv.cpp with Q5_1， 如果是音乐模型，就是fp32
 // 12. ✅ fp16载入的消耗显存量，以文件尺寸+1.5GB为值
@@ -320,4 +320,64 @@ export type Resolution = {
   modelParameters?: ModelParameters
   calculateByPrecision: Precision
   usingGPU: boolean
+}
+
+const getStrategyForSwitchModelParameters = (param: ModelParameters) => {
+  const {
+    precision,
+    device,
+    useCustomCuda,
+    customStrategy,
+    tokenChunkSize,
+    quantizedLayers,
+    maxStoredLayers,
+    storedLayers,
+    modelName: modelNameParam,
+  } = param
+  const modelName = modelNameParam.toLowerCase()
+  const avoidOverflow =
+    precision !== 'fp32' &&
+    modelName.includes('world') &&
+    (modelName.includes('0.1b') ||
+      modelName.includes('0.4b') ||
+      modelName.includes('1.5b') ||
+      modelName.includes('1b5'))
+  let strategy = ''
+  switch (device) {
+    case 'CPU':
+      if (avoidOverflow) strategy = 'cpu fp32 *1 -> '
+      strategy += 'cpu '
+      strategy += precision === 'int8' ? 'fp32i8' : 'fp32'
+      break
+    case 'WebGPU':
+    case 'WebGPU (Python)':
+      strategy +=
+        precision === 'nf4'
+          ? 'fp16i4'
+          : precision === 'int8'
+            ? 'fp16i8'
+            : 'fp16'
+      if (quantizedLayers) strategy += ` layer${quantizedLayers}`
+      if (tokenChunkSize) strategy += ` chunk${tokenChunkSize}`
+      break
+    case 'CUDA':
+    case 'CUDA-Beta':
+      if (avoidOverflow)
+        strategy = useCustomCuda ? 'cuda fp16 *1 -> ' : 'cuda fp32 *1 -> '
+      strategy += 'cuda '
+      strategy +=
+        precision === 'int8' ? 'fp16i8' : precision === 'fp32' ? 'fp32' : 'fp16'
+      if (storedLayers < maxStoredLayers) strategy += ` *${storedLayers}+`
+      else strategy += ` -> cuda fp16 *1`
+      break
+    case 'MPS':
+      if (avoidOverflow) strategy = 'mps fp32 *1 -> '
+      strategy += 'mps '
+      strategy += precision === 'int8' ? 'fp32i8' : 'fp32'
+      break
+    case 'Custom':
+      strategy = customStrategy || ''
+      break
+  }
+  return strategy
 }
