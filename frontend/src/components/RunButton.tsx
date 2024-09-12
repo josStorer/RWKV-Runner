@@ -19,7 +19,7 @@ import {
   defaultCompositionPrompt,
 } from '../pages/defaultConfigs'
 import commonStore, { ModelStatus } from '../stores/commonStore'
-import { Precision } from '../types/configs'
+import { ModelConfig, Precision } from '../types/configs'
 import {
   checkDependencies,
   getHfDownloadUrl,
@@ -47,7 +47,8 @@ export const RunButton: FC<{
   onClickRun?: MouseEventHandler
   iconMode?: boolean
   disabled?: boolean
-}> = observer(({ onClickRun, iconMode, disabled }) => {
+  config?: ModelConfig | null
+}> = observer(({ onClickRun, iconMode, disabled, config }) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
 
@@ -55,7 +56,10 @@ export const RunButton: FC<{
     if (commonStore.status.status === ModelStatus.Offline) {
       commonStore.setStatus({ status: ModelStatus.Starting })
 
-      const modelConfig = commonStore.getCurrentModelConfig()
+      const modelConfig = config || commonStore.getCurrentModelConfig()
+
+      console.log(JSON.parse(JSON.stringify(modelConfig)))
+
       const webgpu = modelConfig.modelParameters.device === 'WebGPU'
       const webgpuPython =
         modelConfig.modelParameters.device === 'WebGPU (Python)'

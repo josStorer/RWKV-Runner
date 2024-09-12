@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
 import { RunButton } from '../components/RunButton'
-import commonStore from '../stores/commonStore'
+import { ModelConfig } from '../types/configs'
 import {
   CompositionMode,
   CPUOrGPU,
@@ -48,14 +48,6 @@ export const AutoConfig: FC = observer(() => {
     3: false,
     4: false,
   })
-
-  const [selectedIndex, setSelectedIndex] = useState(
-    commonStore.currentModelConfigIndex
-  )
-
-  const [selectedConfig, setSelectedConfig] = useState(
-    commonStore.modelConfigs[selectedIndex]
-  )
 
   const sectionClassName = classNames('flex')
   const sectionContentClassName = classNames('flex gap-2')
@@ -113,7 +105,22 @@ export const AutoConfig: FC = observer(() => {
     console.log('onStartButtonClick')
   }
 
-  const finalReturn = (
+  const [config, setConfig] = useState<ModelConfig | null>(null)
+
+  useEffect(() => {
+    if (
+      selectedResolutionIndex !== null &&
+      selectedResolutionIndex < resolutions.length
+    ) {
+      const resolution = resolutions[selectedResolutionIndex]
+      const modelConfig = resolution.modelConfig
+      if (modelConfig) {
+        setConfig(modelConfig)
+      }
+    }
+  }, [selectedResolutionIndex, resolutions])
+
+  return (
     <div className={classNames('flex h-full flex-col overflow-y-auto')}>
       <Button onClick={reset}>{t('Reset')}</Button>
       <div className={sectionClassName}>
@@ -229,7 +236,7 @@ export const AutoConfig: FC = observer(() => {
                 requirements,
                 usingGPU,
                 recommendLevel,
-                modelParameters,
+                modelConfig,
               } = item
 
               const requirement = requirements[calculateByPrecision]
@@ -266,7 +273,7 @@ export const AutoConfig: FC = observer(() => {
                       : t('Estimated RAM usage: ')}
                     {requirement?.toFixed(1) + 'GB'}
                     <div />
-                    {modelParameters?.device}
+                    {modelConfig?.modelParameters?.device}
                   </div>
                 </Button>
               )
@@ -285,17 +292,18 @@ export const AutoConfig: FC = observer(() => {
           <div className={sectionContentClassName}>
             <RunButton
               onClickRun={onStartButtonClick}
-              disabled={stepDisable[4]}
+              disabled={stepDisable[4] || !config}
+              config={config}
             />
             <Checkbox
-              disabled={stepDisable[4]}
+              disabled={stepDisable[4] || !config}
               className="select-none"
               size="large"
               label={t('Enable WebUI')}
-              checked={selectedConfig.enableWebUI}
+              checked={config?.enableWebUI}
               onChange={(_, data) => {
-                setSelectedConfig({
-                  ...selectedConfig,
+                setConfig({
+                  ...config!,
                   enableWebUI: data.checked as boolean,
                 })
               }}
@@ -305,8 +313,6 @@ export const AutoConfig: FC = observer(() => {
       </div>
     </div>
   )
-
-  return finalReturn
 })
 
 const Indicator: FC<{ index: number; done: boolean; last?: boolean }> = ({

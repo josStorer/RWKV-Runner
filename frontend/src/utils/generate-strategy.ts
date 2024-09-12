@@ -1,5 +1,5 @@
 import commonStore from '../stores/commonStore'
-import { ModelParameters, Precision } from '../types/configs'
+import { ModelConfig, ModelParameters, Precision } from '../types/configs'
 
 export type CompositionMode = 'MIDI' | 'ABC'
 
@@ -27,6 +27,26 @@ const availableModelPairs: Record<Func, string[]> = {
     'RWKV-5-ABC-82M-v1-20230901-ctx1024.pth',
   ],
   'Function Call': ['Mobius-r6-chat-CHNtuned-12b-16k-v5.5.pth'],
+}
+
+const sourceConfig: ModelConfig = {
+  name: '',
+  enableWebUI: false,
+  apiParameters: {
+    apiPort: 8080,
+    maxResponseToken: 4100,
+    temperature: 1,
+    topP: 0.3,
+    presencePenalty: 0,
+    frequencyPenalty: 1,
+  },
+  modelParameters: {
+    modelName: '',
+    device: 'WebGPU',
+    precision: 'nf4',
+    storedLayers: 41,
+    maxStoredLayers: 8,
+  },
 }
 
 // 需求：
@@ -108,7 +128,7 @@ export const generateStrategy = (
     const ramRequirement_fp32 = fileSizeInGB / 0.5 + 1.5
 
     return {
-      modelName: modelName.replace('.pth', ''),
+      modelName: modelName,
       fileSize: model!.size,
       available: true,
       recommendLevel: 0,
@@ -175,13 +195,13 @@ export const generateStrategy = (
         // ERROR?
       }
 
-      const newRes = {
+      const newRes: Resolution = {
         ...resolution,
         comments,
         available,
         recommendLevel,
         calculateByPrecision,
-        modelParameters,
+        modelConfig: { ...sourceConfig, modelParameters },
       }
       resolutions.push(newRes)
       continue
@@ -201,6 +221,7 @@ export const generateStrategy = (
         precision: calculateByPrecision,
         storedLayers: 41,
         maxStoredLayers: 8,
+        useCustomCuda: true,
       }
 
       if (availableVramGB && availableVramGB > limitation) {
@@ -219,13 +240,13 @@ export const generateStrategy = (
         // ERROR?
       }
 
-      const newRes = {
+      const newRes: Resolution = {
         ...resolution,
         comments,
         available,
         recommendLevel,
         calculateByPrecision,
-        modelParameters,
+        modelConfig: { ...sourceConfig, modelParameters },
         usingGPU: true,
       }
       resolutions.push(newRes)
@@ -261,13 +282,13 @@ export const generateStrategy = (
         // ERROR?
       }
 
-      const newRes = {
+      const newRes: Resolution = {
         ...resolution,
         comments,
         available,
         recommendLevel,
         calculateByPrecision,
-        modelParameters,
+        modelConfig: { ...sourceConfig, modelParameters },
         usingGPU: true,
       }
       resolutions.push(newRes)
@@ -317,67 +338,7 @@ export type Resolution = {
   // 注解，在开发阶段先不用格式化、本地化，等着需求进一步确定和明确了再说
   comments?: string
   available?: boolean
-  modelParameters?: ModelParameters
+  modelConfig?: ModelConfig
   calculateByPrecision: Precision
   usingGPU: boolean
-}
-
-const getStrategyForSwitchModelParameters = (param: ModelParameters) => {
-  const {
-    precision,
-    device,
-    useCustomCuda,
-    customStrategy,
-    tokenChunkSize,
-    quantizedLayers,
-    maxStoredLayers,
-    storedLayers,
-    modelName: modelNameParam,
-  } = param
-  const modelName = modelNameParam.toLowerCase()
-  const avoidOverflow =
-    precision !== 'fp32' &&
-    modelName.includes('world') &&
-    (modelName.includes('0.1b') ||
-      modelName.includes('0.4b') ||
-      modelName.includes('1.5b') ||
-      modelName.includes('1b5'))
-  let strategy = ''
-  switch (device) {
-    case 'CPU':
-      if (avoidOverflow) strategy = 'cpu fp32 *1 -> '
-      strategy += 'cpu '
-      strategy += precision === 'int8' ? 'fp32i8' : 'fp32'
-      break
-    case 'WebGPU':
-    case 'WebGPU (Python)':
-      strategy +=
-        precision === 'nf4'
-          ? 'fp16i4'
-          : precision === 'int8'
-            ? 'fp16i8'
-            : 'fp16'
-      if (quantizedLayers) strategy += ` layer${quantizedLayers}`
-      if (tokenChunkSize) strategy += ` chunk${tokenChunkSize}`
-      break
-    case 'CUDA':
-    case 'CUDA-Beta':
-      if (avoidOverflow)
-        strategy = useCustomCuda ? 'cuda fp16 *1 -> ' : 'cuda fp32 *1 -> '
-      strategy += 'cuda '
-      strategy +=
-        precision === 'int8' ? 'fp16i8' : precision === 'fp32' ? 'fp32' : 'fp16'
-      if (storedLayers < maxStoredLayers) strategy += ` *${storedLayers}+`
-      else strategy += ` -> cuda fp16 *1`
-      break
-    case 'MPS':
-      if (avoidOverflow) strategy = 'mps fp32 *1 -> '
-      strategy += 'mps '
-      strategy += precision === 'int8' ? 'fp32i8' : 'fp32'
-      break
-    case 'Custom':
-      strategy = customStrategy || ''
-      break
-  }
-  return strategy
 }
