@@ -6,7 +6,6 @@ module.exports = {
   tabWidth: 2,
   trailingComma: 'es5',
   singleAttributePerLine: true,
-  // bracketSameLine: true,
   importOrder: ['^(react/(.*)$)|^(react$)', '<THIRD_PARTY_MODULES>', '^[./]'],
   importOrderSeparation: false,
   importOrderSortSpecifiers: true,

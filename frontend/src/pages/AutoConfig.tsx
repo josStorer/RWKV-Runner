@@ -20,13 +20,16 @@ export const AutoConfig: FC = observer(() => {
   const [compositionMode, setCompositionMode] =
     useState<CompositionMode>('MIDI')
   const [cpuOrGPU, setCpuOrGPU] = useState<CPUOrGPU | null>(null)
-  const [modelIndex, setModelIndex] = useState<number | null>(null)
+
+  const [selectedResolutionIndex, setSelectedResolutionIndex] = useState<
+    number | null
+  >(null)
 
   const reset = () => {
     setSelectedFunction(null)
     setCompositionMode('MIDI')
     setCpuOrGPU(null)
-    setModelIndex(null)
+    setSelectedResolutionIndex(null)
   }
 
   const [stepDisable, setStepDisable] = useState({
@@ -60,7 +63,7 @@ export const AutoConfig: FC = observer(() => {
     const step0Done = selectedFunction != null
     const step1Done = compositionMode != null && step0Done
     const step2Done = cpuOrGPU != null && step1Done
-    const step3Done = modelIndex != null && step2Done
+    const step3Done = selectedResolutionIndex != null && step2Done
     const step4Done = step3Done
     setStepDone({
       0: step0Done,
@@ -69,14 +72,18 @@ export const AutoConfig: FC = observer(() => {
       3: step3Done,
       4: step4Done,
     })
-  }, [selectedFunction, compositionMode, cpuOrGPU, modelIndex])
+  }, [selectedFunction, compositionMode, cpuOrGPU, selectedResolutionIndex])
+
+  useEffect(() => {
+    setSelectedResolutionIndex(null)
+  }, [selectedFunction, compositionMode, cpuOrGPU])
 
   useEffect(() => {
     const step0Disabled = false
     const step1Disabled = selectedFunction != 'Composition'
     const step2Disabled = selectedFunction == null
     const step3Disabled = cpuOrGPU == null
-    const step4Disabled = selectedIndex == null
+    const step4Disabled = selectedResolutionIndex == null
     setStepDisable({
       0: step0Disabled,
       1: step1Disabled,
@@ -84,11 +91,11 @@ export const AutoConfig: FC = observer(() => {
       3: step3Disabled,
       4: step4Disabled,
     })
-  }, [selectedFunction, compositionMode, cpuOrGPU, modelIndex])
+  }, [selectedFunction, compositionMode, cpuOrGPU, selectedResolutionIndex])
 
   const hideComposition = selectedFunction !== 'Composition'
 
-  const finalResult: Resolution[] = generateStrategy(
+  const resolutions: Resolution[] = generateStrategy(
     selectedFunction,
     compositionMode,
     cpuOrGPU
@@ -114,28 +121,32 @@ export const AutoConfig: FC = observer(() => {
           <div className={sectionContentClassName}>
             <Button
               appearance={selectedFunction == 'Chat' ? 'primary' : 'secondary'}
-              onClick={() => setSelectedFunction('Chat')}>
+              onClick={() => setSelectedFunction('Chat')}
+            >
               {t('Chat')}
             </Button>
             <Button
               appearance={
                 selectedFunction == 'Completion' ? 'primary' : 'secondary'
               }
-              onClick={() => setSelectedFunction('Completion')}>
+              onClick={() => setSelectedFunction('Completion')}
+            >
               {t('Completion')}
             </Button>
             <Button
               appearance={
                 selectedFunction == 'Composition' ? 'primary' : 'secondary'
               }
-              onClick={() => setSelectedFunction('Composition')}>
+              onClick={() => setSelectedFunction('Composition')}
+            >
               {t('Composition')}
             </Button>
             <Button
               appearance={
                 selectedFunction == 'Function Call' ? 'primary' : 'secondary'
               }
-              onClick={() => setSelectedFunction('Function Call')}>
+              onClick={() => setSelectedFunction('Function Call')}
+            >
               {t('Function Call')}
             </Button>
           </div>
@@ -144,7 +155,8 @@ export const AutoConfig: FC = observer(() => {
       <div
         className={
           sectionClassName + ' ' + classNames({ hidden: hideComposition })
-        }>
+        }
+      >
         <Indicator
           index={1}
           done={stepDone[1]}
@@ -155,13 +167,15 @@ export const AutoConfig: FC = observer(() => {
             <Button
               appearance={compositionMode == 'MIDI' ? 'primary' : 'secondary'}
               disabled={stepDisable[1]}
-              onClick={() => setCompositionMode('MIDI')}>
+              onClick={() => setCompositionMode('MIDI')}
+            >
               {t('MIDI')}
             </Button>
             <Button
               appearance={compositionMode == 'ABC' ? 'primary' : 'secondary'}
               disabled={stepDisable[1]}
-              onClick={() => setCompositionMode('ABC')}>
+              onClick={() => setCompositionMode('ABC')}
+            >
               {t('ABC')}
             </Button>
           </div>
@@ -178,13 +192,15 @@ export const AutoConfig: FC = observer(() => {
             <Button
               appearance={cpuOrGPU == 'GPU' ? 'primary' : 'secondary'}
               disabled={stepDisable[2] || selectedFunction === 'Composition'}
-              onClick={() => setCpuOrGPU('GPU')}>
+              onClick={() => setCpuOrGPU('GPU')}
+            >
               {t('GPU (Recommended)')}
             </Button>
             <Button
               appearance={cpuOrGPU == 'CPU' ? 'primary' : 'secondary'}
               disabled={stepDisable[2]}
-              onClick={() => setCpuOrGPU('CPU')}>
+              onClick={() => setCpuOrGPU('CPU')}
+            >
               {t('CPU')}
             </Button>
           </div>
@@ -198,21 +214,55 @@ export const AutoConfig: FC = observer(() => {
         <div>
           <div>{t('Choose the model and strategy you wants to use')}</div>
           <div
-            className={sectionContentClassName + ' ' + classNames('flex-wrap')}>
-            {finalResult.map((item, index) => {
-              const { recommendLevel, comments, modelName } = item
+            className={sectionContentClassName + ' ' + classNames('flex-wrap')}
+          >
+            {resolutions.map((item, index) => {
+              const {
+                comments,
+                modelName,
+                calculateByPrecision,
+                requirements,
+                usingGPU,
+                recommendLevel,
+                modelParameters,
+              } = item
+
+              const requirement = requirements[calculateByPrecision]
+
               return (
                 <Button
+                  appearance={
+                    selectedResolutionIndex === index ? 'primary' : 'secondary'
+                  }
                   key={index}
-                  disabled={stepDisable[3]}
+                  disabled={stepDisable[3] || recommendLevel <= -2}
                   className={classNames(
-                    'flex h-40 w-52 flex-col items-stretch rounded-sm border bg-transparent p-0 shadow-md'
-                  )}>
+                    'flex w-52 flex-col items-stretch rounded-sm p-0 text-left shadow-md'
+                  )}
+                  onClick={() => setSelectedResolutionIndex(index)}
+                >
                   <div className={classNames('text-lg font-semibold')}>
                     {modelName}
                   </div>
                   <div className={classNames('h-1')} />
-                  <div className={classNames('overflow-clip')}>{comments}</div>
+                  <div
+                    className={classNames('overflow-clip text-left text-xs')}
+                  >
+                    {comments}
+                  </div>
+                  <div className={classNames('h-1')} />
+                  <div className={classNames('text-xs')}>
+                    {usingGPU ? 'GPU' : 'CPU'}
+                    <div />
+                    {calculateByPrecision}
+                    <div />
+                    {usingGPU
+                      ? t('Estimated VRAM usage: ')
+                      : t('Estimated RAM usage: ')}
+                    {requirement?.toFixed(1) + 'GB'}
+                    <div />
+                    {modelParameters?.device}
+                  </div>
                 </Button>
               )
             })}

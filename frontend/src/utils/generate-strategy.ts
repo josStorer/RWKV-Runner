@@ -1,66 +1,6 @@
 import commonStore from '../stores/commonStore'
 import { ModelParameters, Precision } from '../types/configs'
 
-const getStrategyForSwitchModelParameters = (param: ModelParameters) => {
-  const {
-    precision,
-    device,
-    useCustomCuda,
-    customStrategy,
-    tokenChunkSize,
-    quantizedLayers,
-    maxStoredLayers,
-    storedLayers,
-    modelName: modelNameParam,
-  } = param
-  const modelName = modelNameParam.toLowerCase()
-  const avoidOverflow =
-    precision !== 'fp32' &&
-    modelName.includes('world') &&
-    (modelName.includes('0.1b') ||
-      modelName.includes('0.4b') ||
-      modelName.includes('1.5b') ||
-      modelName.includes('1b5'))
-  let strategy = ''
-  switch (device) {
-    case 'CPU':
-      if (avoidOverflow) strategy = 'cpu fp32 *1 -> '
-      strategy += 'cpu '
-      strategy += precision === 'int8' ? 'fp32i8' : 'fp32'
-      break
-    case 'WebGPU':
-    case 'WebGPU (Python)':
-      strategy +=
-        precision === 'nf4'
-          ? 'fp16i4'
-          : precision === 'int8'
-            ? 'fp16i8'
-            : 'fp16'
-      if (quantizedLayers) strategy += ` layer${quantizedLayers}`
-      if (tokenChunkSize) strategy += ` chunk${tokenChunkSize}`
-      break
-    case 'CUDA':
-    case 'CUDA-Beta':
-      if (avoidOverflow)
-        strategy = useCustomCuda ? 'cuda fp16 *1 -> ' : 'cuda fp32 *1 -> '
-      strategy += 'cuda '
-      strategy +=
-        precision === 'int8' ? 'fp16i8' : precision === 'fp32' ? 'fp32' : 'fp16'
-      if (storedLayers < maxStoredLayers) strategy += ` *${storedLayers}+`
-      else strategy += ` -> cuda fp16 *1`
-      break
-    case 'MPS':
-      if (avoidOverflow) strategy = 'mps fp32 *1 -> '
-      strategy += 'mps '
-      strategy += precision === 'int8' ? 'fp32i8' : 'fp32'
-      break
-    case 'Custom':
-      strategy = customStrategy || ''
-      break
-  }
-  return strategy
-}
-
 export type CompositionMode = 'MIDI' | 'ABC'
 
 export type CPUOrGPU = 'GPU' | 'CPU'
@@ -90,8 +30,8 @@ const availableModelPairs: Record<Func, string[]> = {
 }
 
 // 需求：
-// 1. 启动的时候依据剩余内存计算，然后如果依据总量计算， 理论上能运行更好的模型， 则会在启动时提示，资源占用，可运行XX模型
-// 2. 选cpu的时候，用内存计算，依据剩余内存，计算当前启动用的配置，依据总内存，计算当前可用的理论最佳配置
+// 1. ✅ 启动的时候依据剩余内存计算，然后如果依据总量计算， 理论上能运行更好的模型， 则会在启动时提示，资源占用，可运行XX模型
+// 2. ✅ 选cpu的时候，用内存计算，依据剩余内存，计算当前启动用的配置，依据总内存，计算当前可用的理论最佳配置
 // 3. 如果理论最佳比剩余内存算出来的更好，则提示用户
 // 4. 用cuda fp16时，customCuda总是true
 // 5. 显存满足这个，才用，其余都是WebGPU(nf4)
@@ -100,7 +40,7 @@ const availableModelPairs: Record<Func, string[]> = {
 // 8. ✅ switchModel
 // 9. strategy刚才对应的就是cuda fp16和fp16i4
 // 10. ✅ 硬编码模型名数组，然后模型名去commonStore.modelSourceList取信息，可以得到模型尺寸
-// 11. 用户选CPU，那就只有rwkv.cpp with Q5_1， 如果是音乐模型，就是fp32
+// 11. ✅ 用户选CPU，那就只有rwkv.cpp with Q5_1， 如果是音乐模型，就是fp32
 // 12. ✅ fp16载入的消耗显存量，以文件尺寸+1.5GB为值
 // 13. ✅ int8以文件尺寸一半+1.5GB
 
@@ -126,32 +66,23 @@ export const generateStrategy = (
 
   const {
     gpuType,
-    gpuName,
     usedMemory: usedMemoryGB,
     totalMemory: totalMemoryGB,
-    gpuUsage,
     usedVram: usedVramMB,
     totalVram: totalVramMB,
   } = commonStore.monitorData || {}
-
-  console.log({
-    gpuType,
-    gpuName,
-    usedMemory: usedMemoryGB,
-    totalMemory: totalMemoryGB,
-    gpuUsage,
-    usedVramMB,
-    totalVramMB,
-  })
 
   const availableMemoryGB =
     totalMemoryGB !== undefined && usedMemoryGB !== undefined
       ? totalMemoryGB - usedMemoryGB
       : undefined
 
-  const availableVramMB =
-    totalVramMB !== undefined && usedVramMB !== undefined
-      ? totalVramMB - usedVramMB
+  const totalVramGB = totalVramMB !== undefined ? totalVramMB / 1024 : undefined
+  const usedVramGB = usedVramMB !== undefined ? usedVramMB / 1024 : undefined
+
+  const availableVramGB =
+    totalVramGB !== undefined && usedVramGB !== undefined
+      ? totalVramGB - usedVramGB
       : undefined
 
   let resolutions: Resolution[] = []
@@ -163,7 +94,6 @@ export const generateStrategy = (
       modelName.includes(compositionMode)
     )
   }
-  console.log({ availableModels })
 
   const resolutionSource: Resolution[] = availableModels.map((modelName) => {
     const model = commonStore.modelSourceList.find(
@@ -182,6 +112,8 @@ export const generateStrategy = (
       fileSize: model!.size,
       available: true,
       recommendLevel: 0,
+      usingGPU: false,
+      calculateByPrecision: 'nf4',
       requirements: {
         fp16: ramRequirement_fp16,
         int8: ramRequirement_int8,
@@ -194,6 +126,16 @@ export const generateStrategy = (
 
   const cudaAvailable = gpuType == 'Nvidia'
 
+  const commentRAMFailed = '获取内存状态错误'
+  const commentVRAMFailed = '获取显存状态错误'
+  const commentEasy = '您的硬件可以轻松运行此配置'
+  const commentRecommanded = '⭐我们推荐你运行此配置'
+  const commentRAMOccupy =
+    '⚠你的硬件理论上足够运行此配置，但由于资源占用，目前不建议使用，考虑释放内存占用后，再运行此配置'
+  const commentVRAMOccupy =
+    '⚠你的硬件理论上足够运行此配置，但由于资源占用，目前不建议使用，考虑释放显存占用后，再运行此配置'
+  const commentNotAvailable = '❌您的硬件无法运行此配置'
+
   for (let i = 0; i < resolutionSource.length; i++) {
     const resolution = resolutionSource[i]
 
@@ -202,27 +144,45 @@ export const generateStrategy = (
         func === 'Composition'
           ? resolution.requirements.fp32
           : resolution.requirements.Q5_1
-      let comments = '获取内存状态错误'
+
+      let calculateByPrecision: Precision =
+        func === 'Composition' ? 'fp32' : 'Q5_1'
+      let comments = commentRAMFailed
       let available = true
       let recommendLevel = -1
 
+      let modelParameters: ModelParameters = {
+        modelName: resolution.modelName,
+        device: func === 'Composition' ? 'CPU' : 'CPU (rwkv.cpp)',
+        precision: calculateByPrecision,
+        storedLayers: 41,
+        maxStoredLayers: 8,
+      }
+
       if (availableMemoryGB && availableMemoryGB > limitation) {
         available = true
-        comments = '您的硬件可以轻松运行此模型'
+        comments = commentEasy
         recommendLevel = 1
       } else if (totalMemoryGB && totalMemoryGB >= limitation) {
         available = true
-        comments = '可以，资源占用，不建议使用，释放'
+        comments = commentRAMOccupy
         recommendLevel = -1
       } else if (totalMemoryGB && totalMemoryGB < limitation) {
         available = false
-        comments = '您的硬件无法运行此模型'
+        comments = commentNotAvailable
         recommendLevel = -2
       } else {
         // ERROR?
       }
 
-      const newRes = { ...resolution, comments, available, recommendLevel }
+      const newRes = {
+        ...resolution,
+        comments,
+        available,
+        recommendLevel,
+        calculateByPrecision,
+        modelParameters,
+      }
       resolutions.push(newRes)
       continue
     }
@@ -230,59 +190,116 @@ export const generateStrategy = (
     if (cudaAvailable && userSelectGPU) {
       const limitation = resolution.requirements.fp16
 
-      let comments = '获取显存状态错误'
+      let comments = commentVRAMFailed
       let available = true
       let recommendLevel = -1
+      let calculateByPrecision: Precision = 'fp16'
 
-      if (availableMemoryGB && availableMemoryGB > limitation) {
+      let modelParameters: ModelParameters = {
+        modelName: resolution.modelName,
+        device: 'CUDA',
+        precision: calculateByPrecision,
+        storedLayers: 41,
+        maxStoredLayers: 8,
+      }
+
+      if (availableVramGB && availableVramGB > limitation) {
         available = true
-        comments = '您的硬件可以轻松运行此模型'
+        comments = commentEasy
         recommendLevel = 1
-      } else if (totalMemoryGB && totalMemoryGB >= limitation) {
+      } else if (totalVramGB && totalVramGB >= limitation) {
         available = true
-        comments = '可以，资源占用，不建议使用，释放'
+        comments = commentVRAMOccupy
         recommendLevel = -1
-      } else if (totalMemoryGB && totalMemoryGB < limitation) {
+      } else if (totalVramGB && totalVramGB < limitation) {
         available = false
-        comments = '您的硬件无法运行此模型'
+        comments = commentNotAvailable
         recommendLevel = -2
       } else {
         // ERROR?
       }
 
-      const newRes = { ...resolution, comments, available, recommendLevel }
+      const newRes = {
+        ...resolution,
+        comments,
+        available,
+        recommendLevel,
+        calculateByPrecision,
+        modelParameters,
+        usingGPU: true,
+      }
       resolutions.push(newRes)
-      continue
     }
 
     if (userSelectGPU) {
       const limitation = resolution.requirements.nf4
-
-      let comments = '获取显存状态错误'
+      let comments = commentVRAMFailed
       let available = true
       let recommendLevel = -1
+      let calculateByPrecision: Precision = 'nf4'
 
-      if (availableMemoryGB && availableMemoryGB > limitation) {
+      let modelParameters: ModelParameters = {
+        modelName: resolution.modelName,
+        device: 'WebGPU (Python)',
+        precision: calculateByPrecision,
+        storedLayers: 41,
+        maxStoredLayers: 8,
+      }
+      if (availableVramGB && availableVramGB > limitation) {
         available = true
-        comments = '您的硬件可以轻松运行此模型'
+        comments = commentEasy
         recommendLevel = 1
-      } else if (totalMemoryGB && totalMemoryGB >= limitation) {
+      } else if (totalVramGB && totalVramGB >= limitation) {
         available = true
-        comments = '可以，资源占用，不建议使用，释放'
+        comments = commentVRAMOccupy
         recommendLevel = -1
-      } else if (totalMemoryGB && totalMemoryGB < limitation) {
+      } else if (totalVramGB && totalVramGB < limitation) {
         available = false
-        comments = '您的硬件无法运行此模型'
+        comments = commentNotAvailable
         recommendLevel = -2
       } else {
         // ERROR?
       }
 
-      const newRes = { ...resolution, comments, available, recommendLevel }
+      const newRes = {
+        ...resolution,
+        comments,
+        available,
+        recommendLevel,
+        calculateByPrecision,
+        modelParameters,
+        usingGPU: true,
+      }
       resolutions.push(newRes)
       continue
     }
   }
+
+  // Find best resolution
+  const bestResolutions: { [key in string]: Resolution } = {}
+  for (let i = 0; i < resolutions.length; i++) {
+    const resolution = resolutions[i]
+    const recommendLevel = resolution.recommendLevel
+    if (recommendLevel <= 0) continue
+    const k =
+      resolution.calculateByPrecision + (resolution.usingGPU ? 'gpu' : 'cpu')
+    const currentBest = bestResolutions[k]
+    if (currentBest) {
+      if (
+        resolution.requirements[resolution.calculateByPrecision] >
+        currentBest.requirements[currentBest.calculateByPrecision]
+      ) {
+        bestResolutions[k] = resolution
+      }
+    } else {
+      bestResolutions[k] = resolution
+    }
+  }
+
+  Object.values(bestResolutions).forEach((resolution) => {
+    resolution.recommendLevel = 2
+    resolution.comments = commentRecommanded
+  })
 
   resolutions.sort((a, b) => b.recommendLevel - a.recommendLevel)
 
@@ -301,5 +318,6 @@ export type Resolution = {
   comments?: string
   available?: boolean
   modelParameters?: ModelParameters
-  calculateByPrecision?: Precision
+  calculateByPrecision: Precision
+  usingGPU: boolean
 }
