@@ -25,6 +25,7 @@ const Downloads: FC = observer(() => {
   useEffect(() => {
     if (finishedModelsLen > 0)
       refreshLocalModels({ models: commonStore.modelSourceList }, false)
+    console.log('finishedModelsLen:', finishedModelsLen)
   }, [finishedModelsLen])
 
   let displayList = commonStore.downloadList.slice()
@@ -61,10 +62,7 @@ const Downloads: FC = observer(() => {
               downloadDetails = `${bytesToGb(status.transferred) + 'GB'}/${bytesToGb(status.size) + 'GB'}`
 
             return (
-              <div
-                className="flex flex-col gap-1"
-                key={index}
-              >
+              <div className="flex flex-col gap-1" key={index}>
                 <Field
                   label={`${status.downloading ? t('Downloading') + ': ' : ''}${status.name}`}
                   validationMessage={`${downloadProgress} - ${downloadDetails} - ${downloadSpeed} - ${status.url}`}

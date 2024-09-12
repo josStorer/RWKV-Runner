@@ -5,7 +5,6 @@ module.exports = {
   singleQuote: true,
   tabWidth: 2,
   trailingComma: 'es5',
-  singleAttributePerLine: true,
   importOrder: ['^(react/(.*)$)|^(react$)', '<THIRD_PARTY_MODULES>', '^[./]'],
   importOrderSeparation: false,
   importOrderSortSpecifiers: true,
