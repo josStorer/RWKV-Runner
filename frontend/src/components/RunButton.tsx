@@ -58,8 +58,6 @@ export const RunButton: FC<{
 
       const modelConfig = config || commonStore.getCurrentModelConfig()
 
-      console.log(JSON.parse(JSON.stringify(modelConfig)))
-
       const webgpu = modelConfig.modelParameters.device === 'WebGPU'
       const webgpuPython =
         modelConfig.modelParameters.device === 'WebGPU (Python)'
