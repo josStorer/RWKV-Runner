@@ -237,6 +237,9 @@ export const RunButton: FC<{
           })
         else toast(t('Error') + ' - ' + errMsg, { type: 'error' })
       })
+      setTimeout(WindowShow, 1000)
+      setTimeout(WindowShow, 2000)
+      setTimeout(WindowShow, 3000)
 
       let timeoutCount = 6
       let loading = false
