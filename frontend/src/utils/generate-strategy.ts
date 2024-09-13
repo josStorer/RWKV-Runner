@@ -7,6 +7,14 @@ export type CPUOrGPU = 'GPU' | 'CPU'
 
 export type Func = 'Chat' | 'Completion' | 'Composition' | 'Function Call'
 
+enum RecommendLevel {
+  Recommended = 2,
+  Easy = 1,
+  Unknown = 0,
+  Occupy = -1,
+  NotAvailable = -2,
+}
+
 /** Hard-coded model name map */
 const availableModelPairs: Record<Func, string[]> = {
   Chat: [
@@ -49,31 +57,6 @@ const sourceConfig: ModelConfig = {
   },
 }
 
-// 需求：
-// 1. ✅ 启动的时候依据剩余内存计算，然后如果依据总量计算， 理论上能运行更好的模型， 则会在启动时提示，资源占用，可运行XX模型
-// 2. ✅ 选cpu的时候，用内存计算，依据剩余内存，计算当前启动用的配置，依据总内存，计算当前可用的理论最佳配置
-// 3. ✅ 如果理论最佳比剩余内存算出来的更好，则提示用户
-// 4. ✅ 用cuda fp16时，customCuda总是true
-// 5. ✅ 显存满足这个，才用，其余都是WebGPU(nf4)
-// 6. ✅ 精度只有nf4 fp16两种策略考虑,就是CUDA fp16 customCuda true 以及WebGPU(Python) nf4
-// 7. ✅ tokenizer: undefined, deploy: false
-// 8. ✅ switchModel
-// 9. ✅ strategy刚才对应的就是cuda fp16和fp16i4
-// 10. ✅ 硬编码模型名数组，然后模型名去commonStore.modelSourceList取信息，可以得到模型尺寸
-// 11. ✅ 用户选CPU，那就只有rwkv.cpp with Q5_1， 如果是音乐模型，就是fp32
-// 12. ✅ fp16载入的消耗显存量，以文件尺寸+1.5GB为值
-// 13. ✅ int8以文件尺寸一半+1.5GB
-
-// 关于显存占用推断问题
-// 假设有当下的情况
-// windows / ram 16gb, vram 8gb / ram 2gb available / vram 7gb available
-// user choice: GPU, webgpu, need 4gb vram
-// 根据奇奇的测试，模型要先过 ram 再到 vram
-// 我的理解是 windows / macOS 上都有虚拟内存，所以，ram 2gb available 不会限制 4gb 的 model 的加载
-// 但是到了 linux 上
-// 经奇奇测试，加载 4gb 的模型时，如果 ram 2gb available，那么进程会被中断，导致模型无法加载
-// 这个还影响我们的模型选择吗？
-
 export const generateStrategy = (
   func?: Func | null,
   compositionMode?: CompositionMode | null,
@@ -107,7 +90,6 @@ export const generateStrategy = (
 
   let resolutions: Resolution[] = []
 
-  // get
   let availableModels = func ? availableModelPairs[func] : []
   if (compositionMode && func === 'Composition') {
     availableModels = availableModels.filter((modelName) =>
@@ -131,7 +113,7 @@ export const generateStrategy = (
       modelName: modelName,
       fileSize: model!.size,
       available: true,
-      recommendLevel: 0,
+      recommendLevel: RecommendLevel.Unknown,
       usingGPU: false,
       calculateByPrecision: 'nf4',
       requirements: {
@@ -195,7 +177,7 @@ export const generateStrategy = (
         // ERROR?
       }
 
-      const newRes: Resolution = {
+      const newResolution: Resolution = {
         ...resolution,
         comments,
         available,
@@ -203,7 +185,7 @@ export const generateStrategy = (
         calculateByPrecision,
         modelConfig: { ...sourceConfig, modelParameters },
       }
-      resolutions.push(newRes)
+      resolutions.push(newResolution)
       continue
     }
 
@@ -240,7 +222,7 @@ export const generateStrategy = (
         // ERROR?
       }
 
-      const newRes: Resolution = {
+      const newResolution: Resolution = {
         ...resolution,
         comments,
         available,
@@ -249,7 +231,7 @@ export const generateStrategy = (
         modelConfig: { ...sourceConfig, modelParameters },
         usingGPU: true,
       }
-      resolutions.push(newRes)
+      resolutions.push(newResolution)
     }
 
     if (userSelectGPU) {
@@ -282,7 +264,7 @@ export const generateStrategy = (
         // ERROR?
       }
 
-      const newRes: Resolution = {
+      const newResolution: Resolution = {
         ...resolution,
         comments,
         available,
@@ -291,7 +273,7 @@ export const generateStrategy = (
         modelConfig: { ...sourceConfig, modelParameters },
         usingGPU: true,
       }
-      resolutions.push(newRes)
+      resolutions.push(newResolution)
       continue
     }
   }
@@ -329,13 +311,14 @@ export const generateStrategy = (
 
 export type Resolution = {
   modelName: string
+  /** in bytes */
   fileSize: number
+  /** GB for precision */
   requirements: {
     [key in Precision]: number
   }
   // for sorting and auto selecion
-  recommendLevel: number
-  // 注解，在开发阶段先不用格式化、本地化，等着需求进一步确定和明确了再说
+  recommendLevel: RecommendLevel
   comments?: string
   available?: boolean
   modelConfig?: ModelConfig
