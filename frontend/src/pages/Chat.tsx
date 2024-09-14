@@ -625,7 +625,7 @@ const ChatPanel: FC = observer(() => {
     commonStore.setSidePanelCollapsed(!mq)
   const currentConfig = commonStore.getCurrentModelConfig()
   const apiParams = currentConfig.apiParameters
-  const port = apiParams.apiPort
+  const port = commonStore.autoConfigPort || apiParams.apiPort
   const generating: boolean = Object.keys(chatSseControllers).length > 0
 
   useEffect(() => {

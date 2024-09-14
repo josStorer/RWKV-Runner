@@ -47,7 +47,7 @@ const CompositionPanel: FC = observer(() => {
   const mq = useMediaQuery('(min-width: 640px)')
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const modelConfig = commonStore.getCurrentModelConfig()
-  const port = modelConfig.apiParameters.apiPort
+  const port = commonStore.autoConfigPort || modelConfig.apiParameters.apiPort
   const isABC = modelConfig.modelParameters.modelName
     .toLowerCase()
     .includes('abc')
