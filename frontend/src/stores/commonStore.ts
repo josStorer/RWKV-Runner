@@ -155,6 +155,7 @@ class CommonStore {
   recordingContent: string = '' // used to improve performance of midiMessageHandler, and I'm too lazy to maintain an ID dictionary for this (although that would be better for realtime effects)
   recordingRawContent: MidiMessage[] = []
   // configs
+  autoConfigPort?: number
   currentModelConfigIndex: number = 0
   modelConfigs: ModelConfig[] = []
   apiParamsCollapsed: boolean = true
@@ -228,6 +229,10 @@ class CommonStore {
 
   constructor() {
     makeAutoObservable(this)
+  }
+
+  setAutoConfigPort(port?: number) {
+    this.autoConfigPort = port
   }
 
   getCurrentModelConfig = () => {
