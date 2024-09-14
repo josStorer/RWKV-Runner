@@ -25,7 +25,9 @@ const badgeStatus: { [modelStatus: number]: PresenceBadgeStatus } = {
 export const WorkHeader: FC = observer(() => {
   const { t } = useTranslation()
   const mq = useMediaQuery('(min-width: 640px)')
-  const port = commonStore.getCurrentModelConfig().apiParameters.apiPort
+  const port =
+    commonStore.autoConfigPort ||
+    commonStore.getCurrentModelConfig().apiParameters.apiPort
 
   return commonStore.platform === 'web' ? (
     <div />

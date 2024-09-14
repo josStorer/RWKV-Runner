@@ -15,7 +15,11 @@ import {
   defaultModelConfigs,
   defaultModelConfigsMac,
 } from './pages/defaultConfigs'
-import commonStore, { MonitorData, Platform } from './stores/commonStore'
+import commonStore, {
+  ModelStatus,
+  MonitorData,
+  Platform,
+} from './stores/commonStore'
 import { MidiMessage, MidiPort } from './types/composition'
 import { Preset } from './types/presets'
 import {
@@ -62,6 +66,14 @@ export async function startup() {
     getStatus(1000).then((status) => {
       // depends on config api port
       if (status) commonStore.setStatus(status)
+      else {
+        getStatus(1000, 8000).then((status) => {
+          if (status && status.status === ModelStatus.Working) {
+            commonStore.setStatus(status)
+            commonStore.setAutoConfigPort(8000)
+          }
+        })
+      }
     })
   }
 }

@@ -15,6 +15,7 @@ import {
   GetCmds,
   GetProxyPort,
   InstallPyDep,
+  IsPortAvailable,
   KillCmd,
   ListDirFiles,
   OpenOpenFileDialog,
@@ -910,6 +911,16 @@ export function newChatConversation() {
     commonStore.setConversationOrder(conversationOrder)
   }
   return { pushMessage, saveConversation }
+}
+
+export async function getAvailablePort(
+  maxRetry: number = 8,
+  startPort: number = 8000
+) {
+  for (let i = 0; i < maxRetry; i++) {
+    if (await IsPortAvailable(startPort + i)) return startPort + i
+  }
+  throw new Error('Max retry exceeded')
 }
 
 export function isDynamicStateSupported(modelConfig: ModelConfig) {

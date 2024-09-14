@@ -1,4 +1,11 @@
-import React, { FC, useCallback, useEffect, useRef } from 'react'
+import React, {
+  FC,
+  ReactElement,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import {
   Accordion,
   AccordionHeader,
@@ -12,7 +19,10 @@ import {
   Option,
   PresenceBadge,
   Select,
+  SelectTabEventHandler,
   Switch,
+  Tab,
+  TabList,
   Text,
   Tooltip,
 } from '@fluentui/react-components'
@@ -52,6 +62,7 @@ import {
   convertToGGML,
   convertToSt,
 } from '../utils/convert-model'
+import { AutoConfig } from './AutoConfig'
 import { defaultPenaltyDecay } from './defaultConfigs'
 
 const ConfigSelector: FC<{
@@ -83,6 +94,10 @@ const ConfigSelector: FC<{
     </Dropdown>
   )
 })
+
+type ConfigNavigationItem = {
+  element: ReactElement
+}
 
 const Configs: FC = observer(() => {
   const { t } = useTranslation()
@@ -897,4 +912,39 @@ const Configs: FC = observer(() => {
   )
 })
 
-export default Configs
+const pages: { [label: string]: ConfigNavigationItem } = {
+  'Auto Config': {
+    element: <AutoConfig />,
+  },
+  Configs: {
+    element: <Configs />,
+  },
+}
+
+const PageConfigs: FC = () => {
+  const { t } = useTranslation()
+  const [tab, setTab] = useState('Auto Config')
+
+  const selectTab: SelectTabEventHandler = (e, data) =>
+    typeof data.value === 'string' ? setTab(data.value) : null
+
+  return (
+    <div className="flex h-full w-full flex-col gap-2">
+      <TabList
+        size="small"
+        appearance="subtle"
+        selectedValue={tab}
+        onTabSelect={selectTab}
+      >
+        {Object.entries(pages).map(([label]) => (
+          <Tab key={label} value={label}>
+            {t(label)}
+          </Tab>
+        ))}
+      </TabList>
+      <div className="grow overflow-hidden">{pages[tab].element}</div>
+    </div>
+  )
+}
+
+export default PageConfigs
