@@ -22,6 +22,7 @@ import commonStore, { ModelStatus } from '../stores/commonStore'
 import { ModelConfig, Precision } from '../types/configs'
 import {
   checkDependencies,
+  getAvailablePort,
   getHfDownloadUrl,
   getStrategy,
   toastWithButton,
@@ -197,10 +198,18 @@ export const RunButton: FC<{
         return
       }
 
-      const port = modelConfig.apiParameters.apiPort
+      let port = modelConfig.apiParameters.apiPort
+      if (config) {
+        try {
+          port = await getAvailablePort()
+        } catch (e) {
+          toast(t('Failed to find available port'), { type: 'error' })
+          return
+        }
+      }
 
       if (!(await IsPortAvailable(port))) {
-        await exit(1000).catch(() => {})
+        await exit(1000, port).catch(() => {})
         if (!(await IsPortAvailable(port))) {
           toast(
             t(
@@ -242,13 +251,13 @@ export const RunButton: FC<{
       let timeoutCount = 6
       let loading = false
       const intervalId = setInterval(() => {
-        readRoot()
+        readRoot(port)
           .then(async (r) => {
             if (r.ok && !loading) {
               loading = true
               clearInterval(intervalId)
               if (!webgpu) {
-                await getStatus().then((status) => {
+                await getStatus(undefined, port).then((status) => {
                   if (status) commonStore.setStatus(status)
                 })
               }
@@ -258,16 +267,21 @@ export const RunButton: FC<{
                 autoClose: false,
               })
               if (!webgpu) {
-                updateConfig(t, {
-                  max_tokens: modelConfig.apiParameters.maxResponseToken,
-                  temperature: modelConfig.apiParameters.temperature,
-                  top_p: modelConfig.apiParameters.topP,
-                  presence_penalty: modelConfig.apiParameters.presencePenalty,
-                  frequency_penalty: modelConfig.apiParameters.frequencyPenalty,
-                  penalty_decay: modelConfig.apiParameters.penaltyDecay,
-                  global_penalty: modelConfig.apiParameters.globalPenalty,
-                  state: modelConfig.apiParameters.stateModel,
-                }).then(async (r) => {
+                updateConfig(
+                  t,
+                  {
+                    max_tokens: modelConfig.apiParameters.maxResponseToken,
+                    temperature: modelConfig.apiParameters.temperature,
+                    top_p: modelConfig.apiParameters.topP,
+                    presence_penalty: modelConfig.apiParameters.presencePenalty,
+                    frequency_penalty:
+                      modelConfig.apiParameters.frequencyPenalty,
+                    penalty_decay: modelConfig.apiParameters.penaltyDecay,
+                    global_penalty: modelConfig.apiParameters.globalPenalty,
+                    state: modelConfig.apiParameters.stateModel,
+                  },
+                  port
+                ).then(async (r) => {
                   if (r.status !== 200) {
                     const error = await r.text()
                     if (error.includes('state shape mismatch'))
@@ -324,18 +338,22 @@ export const RunButton: FC<{
                 }
               }
 
-              switchModel({
-                model: modelPath,
-                strategy: strategy,
-                tokenizer: modelConfig.modelParameters.useCustomTokenizer
-                  ? modelConfig.modelParameters.customTokenizer
-                  : undefined,
-                customCuda: customCudaFile !== '',
-                deploy: modelConfig.enableWebUI,
-              })
+              switchModel(
+                {
+                  model: modelPath,
+                  strategy: strategy,
+                  tokenizer: modelConfig.modelParameters.useCustomTokenizer
+                    ? modelConfig.modelParameters.customTokenizer
+                    : undefined,
+                  customCuda: customCudaFile !== '',
+                  deploy: modelConfig.enableWebUI,
+                },
+                port
+              )
                 .then(async (r) => {
                   if (r.ok) {
                     commonStore.setStatus({ status: ModelStatus.Working })
+                    if (config) commonStore.setAutoConfigPort(port)
                     let buttonNameMap = {
                       novel: 'Completion',
                       abc: 'Composition',
@@ -439,7 +457,7 @@ export const RunButton: FC<{
       }, 1000)
     } else {
       commonStore.setStatus({ status: ModelStatus.Offline })
-      exit().then((r) => {
+      exit(undefined, commonStore.autoConfigPort || undefined).then((r) => {
         if (r.status === 403)
           if (commonStore.platform !== 'linux')
             toast(
@@ -456,6 +474,7 @@ export const RunButton: FC<{
               { type: 'info' }
             )
       })
+      commonStore.setAutoConfigPort(undefined)
     }
   }
 

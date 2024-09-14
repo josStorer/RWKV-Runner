@@ -681,7 +681,9 @@ const AudiotrackEditor: FC<{ setPrompt: (prompt: string) => void }> = observer(
                     const bodyForm = new FormData()
                     bodyForm.append('file_data', blob)
                     const { url, headers } = await getReqUrl(
-                      commonStore.getCurrentModelConfig().apiParameters.apiPort,
+                      commonStore.autoConfigPort ||
+                        commonStore.getCurrentModelConfig().apiParameters
+                          .apiPort,
                       '/midi-to-text'
                     )
                     fetch(url, {
