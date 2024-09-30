@@ -11,4 +11,5 @@
   },
   "python.formatting.provider": "none",
   "editor.formatOnSave": true,
+  "files.autoSave": "off"
 }
