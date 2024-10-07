@@ -4,7 +4,6 @@ package backend_golang
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"os"
 	"os/exec"
 	"runtime"
@@ -38,8 +37,6 @@ func (a *App) StartServer(python string, port int, host string, webui bool, rwkv
 		args = append(args, "--webgpu")
 	}
 	args = append(args, "--port", strconv.Itoa(port), "--host", host)
-	fmt.Println("✅ Starting server with args:")
-	fmt.Println(args)
 	return "", a.CmdInteractive(args, "StartServer")
 }
 

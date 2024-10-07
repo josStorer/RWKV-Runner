@@ -18,8 +18,6 @@ import (
 )
 
 func (a *App) CmdInteractive(args []string, taskName string) error {
-	fmt.Println("🚧✅ CmdInteractive", args, taskName)
-
 	currentTime := time.Now().UnixMilli()
 	threadID := taskName + "_" + strconv.FormatInt(currentTime, 10)
 
