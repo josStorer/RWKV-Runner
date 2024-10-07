@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router'
 import manifest from '../../../manifest.json'
 import { BrowserOpenURL } from '../../wailsjs/runtime'
 import banner from '../assets/images/banner.jpg'
-import { ConfigSelector } from '../components/ConfigSelector'
+import { ActionSelector } from '../components/ActionSelector'
 import { LazyImportComponent } from '../components/LazyImportComponent'
 import { ResetConfigsButton } from '../components/ResetConfigsButton'
 import { RunButton } from '../components/RunButton'
@@ -160,7 +160,7 @@ const Home: FC = observer(() => {
         <div className="bottom-2 right-2 flex flex-row-reverse sm:fixed">
           <div className="flex gap-3">
             <ResetConfigsButton />
-            <ConfigSelector />
+            <ActionSelector />
             <RunButton />
           </div>
         </div>
