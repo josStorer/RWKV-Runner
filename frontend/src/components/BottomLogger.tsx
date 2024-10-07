@@ -106,7 +106,7 @@ export const BottomLogger = observer(() => {
       {/* TODO: change style */}
       {/* TODO: Watch from backend */}
       <Button appearance="secondary" size="small" onClick={onClickBottomButton}>
-        {t('Open logger')}
+        {t('Open Terminal')}
       </Button>
     </div>
   )
