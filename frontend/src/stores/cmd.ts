@@ -1,4 +1,4 @@
-import { observable } from 'mobx'
+import { makeAutoObservable, observable } from 'mobx'
 import { EventsOn } from '../../wailsjs/runtime/runtime'
 
 interface Task {
@@ -12,20 +12,23 @@ class CmdStore {
 
   taskMap = observable.map<string, Task>({})
 
-  constructor() {}
+  constructor() {
+    makeAutoObservable(this)
+  }
 
   registerEvent() {
     this.handle = EventsOn('cmd_event', this._onCmdEvent)
   }
 
+  clearLines() {
+    this.taskMap.clear()
+  }
+
   _onCmdEvent = (...event: any) => {
-    console.log('🚀 _onCmdEvent', event)
-    // taskName_timestamp
     const threadID = event[0]
     const taskName = threadID.split('_')[0]
     const timestamp = threadID.split('_')[1]
     const strLine = event[1]
-    console.log('🚀 _onCmdEvent', strLine)
     const task = this.taskMap.get(taskName)
     if (task) {
       task.lines.push(strLine)

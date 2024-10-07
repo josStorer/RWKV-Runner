@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Button, OverlayDrawer } from '@fluentui/react-components'
 import classNames from 'classnames'
+import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
+import { GetCmds, KillCmd } from '../../wailsjs/go/backend_golang/App'
 import cmdStore from '../stores/cmd'
 import commonStore from '../stores/commonStore'
 
@@ -16,16 +19,46 @@ export const BottomLogger = observer(() => {
   }, [])
 
   const taskMap = cmdStore.taskMap
-  console.log('Raw taskMap data:', Array.from(taskMap.entries()))
 
   const scrollRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    // Scroll to the bottom when items array changes
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+  const rawMap = toJS(taskMap)
+  const firstKey = rawMap.keys().next().value
+  const currentTask = rawMap.get(firstKey)
+  const taskName = currentTask?.name
+  const timestamp = currentTask?.timestamp
+  const lines = currentTask?.lines ?? []
+
+  const scrollToBottom = () => {
+    const current = scrollRef.current
+    if (current) {
+      current.scrollTo({
+        top: current.scrollHeight,
+        behavior: 'smooth',
+      })
     }
-  }, [taskMap])
+  }
+
+  const clearLines = () => {
+    cmdStore.clearLines()
+  }
+
+  const copyLines = () => {
+    const text = lines.join('\n')
+    navigator.clipboard.writeText(text)
+    toast(t('Copied to clipboard'), { type: 'success' })
+  }
+
+  const endCurrentTask = async () => {
+    const cmds = await GetCmds()
+    const firstKey = Object.keys(cmds)[0]
+    await KillCmd(firstKey)
+    cmdStore.clearLines()
+  }
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [lines])
 
   return (
     <div className={classNames('flex', 'justify-center', 'pb-2')}>
@@ -41,8 +74,6 @@ export const BottomLogger = observer(() => {
             className={classNames(
               'flex-1',
               'm-3',
-              // TODO: Why backdrop-blur is not working at there?
-              'backdrop-blur',
               'rounded-xl',
               'border-stone-500',
               'border',
@@ -53,8 +84,28 @@ export const BottomLogger = observer(() => {
               isDark ? 'bg-black' : 'bg-white'
             )}
           >
-            <div className={classNames('flex', 'justify-end')}>
-              {/* TODO: Where is "Close" icon in "fluentui/react-icons"? */}
+            <div
+              className={classNames('flex', 'justify-start', 'items-center')}
+            >
+              {taskName && (
+                <>
+                  <div className={classNames('mr-2')}>{'Task Name:'}</div>
+                  <div className={classNames('')}>{taskName}</div>
+                  <div className={classNames('ml-4 mr-2')}>{'Task ID:'}</div>
+                  <div className={classNames('')}>{timestamp}</div>
+                  <div className={classNames('w-2')} />
+                  <Button onClick={endCurrentTask}>{t('End Task')}</Button>
+                </>
+              )}
+              <div className={classNames('flex-1')} />
+              {lines.length > 0 && (
+                <>
+                  <Button onClick={copyLines}>{t('Copy')}</Button>
+                  <div className={classNames('w-2')} />
+                  <Button onClick={clearLines}>{t('Clear')}</Button>
+                  <div className={classNames('w-2')} />
+                </>
+              )}
               <Button
                 onClick={() => {
                   setIsOpen(false)
@@ -70,28 +121,25 @@ export const BottomLogger = observer(() => {
                 'overflow-y-auto',
                 'flex',
                 'flex-nowrap',
-                'flex-col'
+                'flex-col',
+                'mt-1'
               )}
             >
-              {Array.from(taskMap.keys()).map((key: string) => {
-                const task = taskMap.get(key)
-                const lines = task?.lines
-                return lines?.map((line, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className={classNames(
-                        'w-full',
-                        'font-mono',
-                        'whitespace-pre-wrap',
-                        'text-[8px]'
-                      )}
-                      style={{ overflowWrap: 'anywhere' }}
-                    >
-                      {line}
-                    </div>
-                  )
-                })
+              {lines.map((line, index) => {
+                return (
+                  <div
+                    key={index + line}
+                    className={classNames(
+                      'w-full',
+                      'font-mono',
+                      'whitespace-pre-wrap',
+                      'text-[8px]'
+                    )}
+                    style={{ overflowWrap: 'anywhere' }}
+                  >
+                    {line}
+                  </div>
+                )
               })}
             </div>
 
@@ -103,11 +151,15 @@ export const BottomLogger = observer(() => {
         </div>
       </OverlayDrawer>
 
-      {/* TODO: change style */}
-      {/* TODO: Watch from backend */}
-      <Button appearance="secondary" size="small" onClick={onClickBottomButton}>
-        {t('Open Terminal')}
-      </Button>
+      {lines.length > 0 && (
+        <Button
+          appearance="secondary"
+          size="small"
+          onClick={onClickBottomButton}
+        >
+          {t('Open Console')}
+        </Button>
+      )}
     </div>
   )
 })
