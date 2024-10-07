@@ -71,7 +71,7 @@ export const convertModel = async (
         else
           toast(`${t('Convert Failed')} - ${e.message || e}`, { type: 'error' })
       })
-    // setTimeout(WindowShow, 1000)
+    setTimeout(WindowShow, 1000)
   } else {
     toast(`${t('Model Not Found')} - ${modelPath}`, { type: 'error' })
   }
@@ -126,7 +126,7 @@ export const convertToSt = async (
         else
           toast(`${t('Convert Failed')} - ${e.message || e}`, { type: 'error' })
       })
-    // setTimeout(WindowShow, 1000)
+    setTimeout(WindowShow, 1000)
   } else {
     toast(`${t('Model Not Found')} - ${modelPath}`, { type: 'error' })
   }
@@ -176,7 +176,7 @@ export const convertToGGML = async (
         else
           toast(`${t('Convert Failed')} - ${e.message || e}`, { type: 'error' })
       })
-    // setTimeout(WindowShow, 1000)
+    setTimeout(WindowShow, 1000)
   } else {
     toast(`${t('Model Not Found')} - ${modelPath}`, { type: 'error' })
   }

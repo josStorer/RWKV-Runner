@@ -7,6 +7,7 @@ import { HashRouter } from 'react-router-dom'
 import App from './App'
 import { startup } from './startup'
 import './_locales/i18n-react'
+import { WindowShow } from '../wailsjs/runtime'
 
 startup().then(() => {
   const container = document.getElementById('root')
@@ -20,4 +21,5 @@ startup().then(() => {
   )
 
   // force display the window
+  WindowShow()
 })

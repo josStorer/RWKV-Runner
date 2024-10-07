@@ -601,6 +601,7 @@ export const checkDependencies = async (navigate: NavigateFunction) => {
     let depErrorMsg = ''
     await DepCheck(commonStore.settings.customPythonPath).catch((e) => {
       depErrorMsg = e.message || e
+      WindowShow()
       if (depErrorMsg === 'python zip not found') {
         toastWithButton(
           t('Python target not found, would you like to download it?'),
@@ -652,7 +653,7 @@ export const checkDependencies = async (navigate: NavigateFunction) => {
                   const errMsg = e.message || e
                   toast(t('Error') + ' - ' + errMsg, { type: 'error' })
                 })
-                // setTimeout(WindowShow, 1000)
+                setTimeout(WindowShow, 1000)
               },
               {
                 autoClose: 8000,

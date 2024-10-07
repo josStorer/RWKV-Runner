@@ -383,6 +383,7 @@ const LoraFinetune: FC = observer(() => {
             ).catch(showError)
           })
           .catch((e) => {
+            WindowShow()
             const msg = e.message || e
             if (msg === 'ubuntu not found') {
               toastWithButton(
@@ -391,6 +392,7 @@ const LoraFinetune: FC = observer(() => {
                 () => {
                   WslInstallUbuntu()
                     .then(() => {
+                      WindowShow()
                       toast(
                         t(
                           'Please install Ubuntu using Microsoft Store, after installation click the Open button in Microsoft Store and then click the Train button'
@@ -413,12 +415,14 @@ const LoraFinetune: FC = observer(() => {
         const msg = e.message || e
 
         const enableWsl = (forceMode: boolean) => {
+          WindowShow()
           toastWithButton(
             t('WSL is not enabled, do you want to enable it?'),
             t('Enable WSL'),
             () => {
               WslEnable(forceMode)
                 .then(() => {
+                  WindowShow()
                   toast(
                     t(
                       'After installation, please restart your computer to enable WSL'
