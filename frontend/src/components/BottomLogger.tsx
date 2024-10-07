@@ -16,7 +16,7 @@ export const BottomLogger = observer(() => {
   }, [])
 
   const taskMap = cmdStore.taskMap
-  console.log('taskMap', taskMap)
+  console.log('Raw taskMap data:', Array.from(taskMap.entries()))
 
   const scrollRef = useRef<HTMLDivElement>(null)
 

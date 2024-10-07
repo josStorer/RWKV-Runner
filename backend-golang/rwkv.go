@@ -12,7 +12,7 @@ import (
 	"strings"
 )
 
-func (a *App) StartServer(chainId string, python string, port int, host string, webui bool, rwkvBeta bool, rwkvcpp bool, webgpu bool) (string, error) {
+func (a *App) StartServer(python string, port int, host string, webui bool, rwkvBeta bool, rwkvcpp bool, webgpu bool) (string, error) {
 	execFile := "./backend-python/main.py"
 	_, err := os.Stat(execFile)
 	if err != nil {
@@ -43,7 +43,7 @@ func (a *App) StartServer(chainId string, python string, port int, host string, 
 	return "", a.CmdInteractive(args, "StartServer")
 }
 
-func (a *App) StartWebGPUServer(chainId string, port int, host string) (string, error) {
+func (a *App) StartWebGPUServer(port int, host string) (string, error) {
 	var execFile string
 	execFiles := []string{"./backend-rust/webgpu_server", "./backend-rust/webgpu_server.exe"}
 	for _, file := range execFiles {
@@ -61,7 +61,7 @@ func (a *App) StartWebGPUServer(chainId string, port int, host string) (string, 
 	return "", a.CmdInteractive(args, "StartWebGPUServer")
 }
 
-func (a *App) ConvertModel(chainId string, python string, modelPath string, strategy string, outPath string) (string, error) {
+func (a *App) ConvertModel(python string, modelPath string, strategy string, outPath string) (string, error) {
 	execFile := "./backend-python/convert_model.py"
 	_, err := os.Stat(execFile)
 	if err != nil {
@@ -77,7 +77,7 @@ func (a *App) ConvertModel(chainId string, python string, modelPath string, stra
 	return "", a.CmdInteractive(args, "ConvertModel")
 }
 
-func (a *App) ConvertSafetensors(chainId string, modelPath string, outPath string) (string, error) {
+func (a *App) ConvertSafetensors(modelPath string, outPath string) (string, error) {
 	var execFile string
 	execFiles := []string{"./backend-rust/web-rwkv-converter", "./backend-rust/web-rwkv-converter.exe"}
 	for _, file := range execFiles {
@@ -95,7 +95,7 @@ func (a *App) ConvertSafetensors(chainId string, modelPath string, outPath strin
 	return "", a.CmdInteractive(args, "ConvertSafetensors")
 }
 
-func (a *App) ConvertSafetensorsWithPython(chainId string, python string, modelPath string, outPath string) (string, error) {
+func (a *App) ConvertSafetensorsWithPython(python string, modelPath string, outPath string) (string, error) {
 	execFile := "./backend-python/convert_safetensors.py"
 	_, err := os.Stat(execFile)
 	if err != nil {
@@ -110,7 +110,7 @@ func (a *App) ConvertSafetensorsWithPython(chainId string, python string, modelP
 	return "", a.CmdInteractive([]string{python, execFile, "--input", modelPath, "--output", outPath}, "ConvertSafetensorsWithPython")
 }
 
-func (a *App) ConvertGGML(chainId string, python string, modelPath string, outPath string, Q51 bool) (string, error) {
+func (a *App) ConvertGGML(python string, modelPath string, outPath string, Q51 bool) (string, error) {
 	execFile := "./backend-python/convert_pytorch_to_ggml.py"
 	_, err := os.Stat(execFile)
 	if err != nil {
@@ -129,7 +129,7 @@ func (a *App) ConvertGGML(chainId string, python string, modelPath string, outPa
 	return "", a.CmdInteractive([]string{python, execFile, modelPath, outPath, dataType}, "ConvertGGML")
 }
 
-func (a *App) ConvertData(chainId string, python string, input string, outputPrefix string, vocab string) (string, error) {
+func (a *App) ConvertData(python string, input string, outputPrefix string, vocab string) (string, error) {
 	execFile := "./finetune/json2binidx_tool/tools/preprocess_data.py"
 	_, err := os.Stat(execFile)
 	if err != nil {
@@ -182,7 +182,7 @@ func (a *App) ConvertData(chainId string, python string, input string, outputPre
 		"--tokenizer-type", tokenizerType, "--dataset-impl", "mmap", "--append-eod"}, "ConvertData")
 }
 
-func (a *App) MergeLora(chainId string, python string, useGpu bool, loraAlpha int, baseModel string, loraPath string, outputPath string) (string, error) {
+func (a *App) MergeLora(python string, useGpu bool, loraAlpha int, baseModel string, loraPath string, outputPath string) (string, error) {
 	execFile := "./finetune/lora/merge_lora.py"
 	_, err := os.Stat(execFile)
 	if err != nil {
@@ -202,7 +202,7 @@ func (a *App) MergeLora(chainId string, python string, useGpu bool, loraAlpha in
 	return "", a.CmdInteractive(args, "MergeLora")
 }
 
-func (a *App) DepCheck(chainId string, python string) error {
+func (a *App) DepCheck(python string) error {
 	var err error
 	if python == "" {
 		python, err = GetPython(a)
@@ -217,7 +217,7 @@ func (a *App) DepCheck(chainId string, python string) error {
 	return nil
 }
 
-func (a *App) InstallPyDep(chainId string, python string, cnMirror bool) (string, error) {
+func (a *App) InstallPyDep(python string, cnMirror bool) (string, error) {
 	var err error
 	torchWhlUrl := "torch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 --index-url https://download.pytorch.org/whl/cu117"
 	if python == "" {
@@ -256,7 +256,7 @@ func (a *App) InstallPyDep(chainId string, python string, cnMirror bool) (string
 	}
 }
 
-func (a *App) GetPyError(chainId string) string {
+func (a *App) GetPyError() string {
 	content, err := os.ReadFile("./error.txt")
 	if err != nil {
 		return ""
