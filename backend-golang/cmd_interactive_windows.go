@@ -5,7 +5,6 @@ package backend_golang
 import (
 	"bufio"
 	"bytes"
-	"fmt"
 	"io"
 	"os/exec"
 	"strconv"
