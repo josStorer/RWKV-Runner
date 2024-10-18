@@ -15,7 +15,7 @@ import {
 import { Page } from '../components/Page'
 import { ToolTipButton } from '../components/ToolTipButton'
 import commonStore from '../stores/commonStore'
-import { bytesToGb, bytesToKb, bytesToMb, refreshLocalModels } from '../utils'
+import { bytesToGb, bytesToKb, bytesToMb, refreshLocalModels, formatTime } from '../utils'
 
 const Downloads: FC = observer(() => {
   const { t } = useTranslation()
@@ -61,11 +61,22 @@ const Downloads: FC = observer(() => {
             else
               downloadDetails = `${bytesToGb(status.transferred) + 'GB'}/${bytesToGb(status.size) + 'GB'}`
 
+            let estimatedTime = ''
+            if (status.downloading && status.speed > 0) {
+              const remainingBytes = status.size - status.transferred
+              const remainingSeconds = remainingBytes / status.speed
+              estimatedTime = formatTime(remainingSeconds)
+            } else if (!status.downloading && !status.done && status.speed > 0) {
+              const remainingBytes = status.size - status.transferred
+              const remainingSeconds = remainingBytes / status.speed
+              estimatedTime = formatTime(remainingSeconds)
+            }
+
             return (
               <div className="flex flex-col gap-1" key={index}>
                 <Field
                   label={`${status.downloading ? t('Downloading') + ': ' : ''}${status.name}`}
-                  validationMessage={`${downloadProgress} - ${downloadDetails} - ${downloadSpeed} - ${status.url}`}
+                  validationMessage={`${downloadProgress} - ${downloadDetails} - ${downloadSpeed} - ${estimatedTime || ''} - ${status.url}`}
                   validationState={status.done ? 'success' : 'none'}
                 >
                   <div className="flex items-center gap-2">

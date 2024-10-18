@@ -405,6 +405,20 @@ export function bytesToKb(size: number) {
   return (size / 1024).toFixed(2)
 }
 
+export function formatTime(seconds: number): string {
+  if (seconds < 0) seconds = 0
+  const h = Math.floor(seconds / 3600)
+  const m = Math.floor((seconds % 3600) / 60)
+  const s = Math.floor(seconds % 60)
+  if (h > 0) {
+    return `${h}h ${m}m ${s}s`
+  } else if (m > 0) {
+    return `${m}m ${s}s`
+  } else {
+    return `${s}s`
+  }
+}
+
 export function bytesToReadable(size: number) {
   if (size < 1024) return size + ' B'
   else if (size < 1024 * 1024) return bytesToKb(size) + ' KB'
