@@ -6,9 +6,14 @@ else
 build: build-linux
 endif
 
+windows_build = wails build -ldflags '-s -w -extldflags "-static"' -platform windows/amd64 -devtools -upx -upxflags "-9 --lzma"
+
 build-windows:
 	@echo ---- build for windows
-	wails build -ldflags '-s -w -extldflags "-static"' -platform windows/amd64 -devtools -upx -upxflags "-9 --lzma" -nsis
+	$(windows_build) -nsis
+
+debug:
+	$(windows_build) -windowsconsole
 
 build-macos:
 	@echo ---- build for macos
