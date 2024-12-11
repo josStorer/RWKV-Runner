@@ -16,6 +16,26 @@
   ],
   "models": [
     {
+      "name": "RWKV-x070-World-0.1B-v2.8-20241210-ctx4096.pth",
+      "desc": {
+        "en": "RWKV-7 Global Languages 0.1B v2.8",
+        "zh": "RWKV-7 全球语言 0.1B v2.8",
+        "ja": "RWKV-7 グローバル言語 0.1B v2.8"
+      },
+      "size": 382195690,
+      "SHA256": "60c98129b9529963bff2c164b8ab4bd17c19332ae06dc2dcae32aa3a3739295a",
+      "lastUpdated": "2024-12-10T13:03:29",
+      "url": "https://huggingface.co/BlinkDL/rwkv-7-world/blob/main/RWKV-x070-World-0.1B-v2.8-20241210-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-7-world/resolve/main/RWKV-x070-World-0.1B-v2.8-20241210-ctx4096.pth",
+      "tags": [
+        "Official",
+        "RWKV-7",
+        "Global",
+        "CN",
+        "JP"
+      ]
+    },
+    {
       "name": "RWKV-x060-World-1B6-v2.1-20240328-ctx4096.pth",
       "desc": {
         "en": "RWKV-6 Global Languages 1.6B v2.1",
@@ -100,6 +120,27 @@
       "hide": true
     },
     {
+      "name": "RWKV-x060-World-7B-v3-20241112-ctx4096.pth",
+      "desc": {
+        "en": "RWKV-6 Global Languages 7B v3",
+        "zh": "RWKV-6 全球语言 7B v3",
+        "ja": "RWKV-6 グローバル言語 7B v3"
+      },
+      "size": 15271627549,
+      "SHA256": "ad2809d8f49d14711dee58541226d9a2c9a46e9cbc0b19279f031721ecf87906",
+      "lastUpdated": "2024-11-12T13:01:06",
+      "url": "https://huggingface.co/BlinkDL/rwkv-6-world/blob/main/RWKV-x060-World-7B-v3-20241112-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-6-world/resolve/main/RWKV-x060-World-7B-v3-20241112-ctx4096.pth",
+      "tags": [
+        "Official",
+        "RWKV-6",
+        "Global",
+        "Recommended",
+        "CN",
+        "JP"
+      ]
+    },
+    {
       "name": "RWKV-x060-World-7B-v2.1-20240507-ctx4096.pth",
       "desc": {
         "en": "RWKV-6 Global Languages 7B v2.1",
@@ -118,7 +159,8 @@
         "Recommended",
         "CN",
         "JP"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-x060-World-14B-v2.1-20240719-ctx4096.pth",
