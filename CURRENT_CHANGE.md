@@ -1,6 +1,9 @@
 ## Changes
 
-- potential crash fix (#396)
+- rwkv7 support (CPU and CUDA Mode only)
+
+Note: If you encounter WebView2 crash issues, please try opening the Windows Settings, click on Apps, search for
+WebView2, click Modify -> Repair to update your WebView2 runtime.
 
 ## Install
 
