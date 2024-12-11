@@ -642,6 +642,16 @@ def RWKV(model: str, strategy: str, tokenizer: Union[str, None]) -> AbstractRWKV
 
     filename, _ = os.path.splitext(os.path.basename(model_path))
     model = Model(model_path, strategy)
+    if model.version == 7:
+        import sys
+
+        sys.modules.pop("rwkv_pip.model")
+        os.environ["RWKV_V7_ON"] = "1"
+        from rwkv_pip.model import (
+            RWKV as Model,
+        )
+
+        model = Model(model_path, strategy)
     if not tokenizer:
         tokenizer = get_tokenizer(len(model.w["emb.weight"]))
     pipeline = PIPELINE(model, tokenizer)

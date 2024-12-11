@@ -201,7 +201,10 @@ async def eval_rwkv(
             # torch_gc()
             requests_num = requests_num - 1
             completion_end_time = time.time()
-            completion_interval = completion_end_time - completion_start_time
+            if completion_start_time is not None:
+                completion_interval = completion_end_time - completion_start_time
+            else:
+                completion_interval = 0
             tps = 0
             if completion_interval > 0:
                 tps = completion_tokens / completion_interval
