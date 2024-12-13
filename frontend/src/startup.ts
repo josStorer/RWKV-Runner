@@ -1,3 +1,4 @@
+import { compare } from 'compare-versions'
 import { t } from 'i18next'
 import { throttle } from 'lodash-es'
 import { toast } from 'react-toastify'
@@ -72,7 +73,7 @@ async function initRemoteText() {
   )
     .then((r) => r.json())
     .then((data) => {
-      if (data.version >= manifest.version) {
+      if (compare(data.version, manifest.version, '>=')) {
         if (data.introduction) commonStore.setIntroduction(data.introduction)
         if (data.about) commonStore.setAbout(data.about)
       }

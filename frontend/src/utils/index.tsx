@@ -1,4 +1,5 @@
 import { Button } from '@fluentui/react-components'
+import { compare } from 'compare-versions'
 import { t } from 'i18next'
 import { findLastIndex, throttle } from 'lodash-es'
 import { NavigateFunction } from 'react-router'
@@ -468,7 +469,7 @@ export async function checkUpdate(notifyEvenLatest: boolean = false) {
         r.json().then((data) => {
           if (data.tag_name) {
             const versionTag = data.tag_name
-            if (versionTag.replace('v', '') > manifest.version) {
+            if (compare(versionTag.replace('v', ''), manifest.version, '>')) {
               const verifyUrl = !commonStore.settings.giteeUpdatesSource
                 ? `https://api.github.com/repos/josstorer/RWKV-Runner/releases/tags/${versionTag}`
                 : `https://gitee.com/api/v5/repos/josc146/RWKV-Runner/releases/tags/${versionTag}`
