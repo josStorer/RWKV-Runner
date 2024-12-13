@@ -453,7 +453,10 @@ class TextRWKV(AbstractRWKV):
         out[self.END_OF_LINE] += newline_adj  # adjust \n probability
 
         if self.model_tokens[-1] in self.AVOID_REPEAT_TOKENS:
-            out[self.model_tokens[-1]] = -999999999
+            try:
+                out[self.model_tokens[-1]] = -999999999
+            except:
+                out[self.model_tokens[-1]] = -65504
         return out, token_len
 
     def delta_postprocess(self, delta: str) -> str:
