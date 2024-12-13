@@ -1003,7 +1003,7 @@ class RWKV(MyModule):
                         if len(w[x].shape) > 1:
                             if w[x].shape[1] > 1:
                                 self.version = max(5.2, self.version)
-                    else:
+                    elif "att.r_k" in x:
                         self.version = 7
                         prxxx(f"Model detected: v{self.version:.1f}")
                         return
