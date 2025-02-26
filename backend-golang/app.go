@@ -75,6 +75,7 @@ func (a *App) newFetchProxy() {
 						req.Header.Del("Sec-Fetch-Dest")
 						req.Header.Del("Sec-Fetch-Mode")
 						req.Header.Del("Sec-Fetch-Site")
+						req.Host = target.Host
 						req.URL.Scheme = target.Scheme
 						req.URL.Host = target.Host
 						req.URL.Path = target.Path
