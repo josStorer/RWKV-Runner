@@ -15,6 +15,7 @@ import {
   defaultModelConfigs,
   defaultModelConfigsMac,
 } from './pages/defaultConfigs'
+import cmdStore from './stores/cmd'
 import commonStore, {
   ModelStatus,
   MonitorData,
@@ -52,6 +53,7 @@ export async function startup() {
     initStateModels()
     initHardwareMonitor()
     initMidi()
+    cmdStore.registerEvent()
   }
 
   await initConfig()
