@@ -9,8 +9,6 @@ import {
   AddToDownloadList,
   FileExists,
   IsPortAvailable,
-  StartServer,
-  StartWebGPUServer,
 } from '../../wailsjs/go/backend_golang/App'
 import { WindowShow } from '../../wailsjs/runtime'
 import { exit, getStatus, readRoot, switchModel, updateConfig } from '../apis'
@@ -18,6 +16,7 @@ import {
   defaultCompositionABCPrompt,
   defaultCompositionPrompt,
 } from '../pages/defaultConfigs'
+import cmdTaskChainStore from '../stores/cmdTaskChainStore'
 import commonStore, { ModelStatus } from '../stores/commonStore'
 import { ModelConfig, Precision } from '../types/configs'
 import {
@@ -28,6 +27,7 @@ import {
   toastWithButton,
 } from '../utils'
 import { convertToGGML, convertToSt } from '../utils/convert-model'
+import { startServer, startWebGPUServer } from '../utils/rwkv-task'
 import { ToolTipButton } from './ToolTipButton'
 
 const mainButtonText = {
@@ -222,21 +222,28 @@ export const RunButton: FC<{
         }
       }
 
-      const startServer = webgpu
+      const startServerInner = webgpu
         ? (_: string, port: number, host: string) =>
-            StartWebGPUServer(port, host)
-        : StartServer
+            startWebGPUServer(port, host)
+        : startServer
       const isUsingCudaBeta = modelConfig.modelParameters.device === 'CUDA-Beta'
 
-      startServer(
-        commonStore.settings.customPythonPath,
-        port,
-        commonStore.settings.host !== '127.0.0.1' ? '0.0.0.0' : '127.0.0.1',
-        !!modelConfig.enableWebUI,
-        isUsingCudaBeta,
-        cpp,
-        webgpuPython
-      ).catch((e) => {
+      const id = cmdTaskChainStore.newTaskChain('', [
+        {
+          name: t('启动服务器')!,
+          func: startServerInner,
+          args: [
+            commonStore.settings.customPythonPath,
+            port,
+            commonStore.settings.host !== '127.0.0.1' ? '0.0.0.0' : '127.0.0.1',
+            !!modelConfig.enableWebUI,
+            isUsingCudaBeta,
+            cpp,
+            webgpuPython,
+          ],
+        },
+      ])
+      cmdTaskChainStore.startTaskChain(id).catch((e) => {
         const errMsg = e.message || e
         if (errMsg.includes('path contains space'))
           toast(`${t('Error')} - ${t('File Path Cannot Contain Space')}`, {

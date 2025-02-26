@@ -4,21 +4,13 @@ import {backend_golang} from '../models';
 
 export function AddToDownloadList(arg1:string,arg2:string):Promise<void>;
 
+export function ChangeFileLine(arg1:string,arg2:number,arg3:string):Promise<void>;
+
 export function CloseMidiPort():Promise<void>;
 
 export function CmdInteractive(arg1:Array<string>,arg2:string):Promise<void>;
 
 export function ContinueDownload(arg1:string):Promise<void>;
-
-export function ConvertData(arg1:string,arg2:string,arg3:string,arg4:string):Promise<string>;
-
-export function ConvertGGML(arg1:string,arg2:string,arg3:string,arg4:boolean):Promise<string>;
-
-export function ConvertModel(arg1:string,arg2:string,arg3:string,arg4:string):Promise<string>;
-
-export function ConvertSafetensors(arg1:string,arg2:string):Promise<string>;
-
-export function ConvertSafetensorsWithPython(arg1:string,arg2:string,arg3:string):Promise<string>;
 
 export function CopyFile(arg1:string,arg2:string):Promise<void>;
 
@@ -40,15 +32,15 @@ export function GetProxyPort():Promise<number>;
 
 export function GetPyError():Promise<string>;
 
-export function InstallPyDep(arg1:string,arg2:boolean):Promise<string>;
+export function GetPython():Promise<string>;
+
+export function IsCmdRunning(arg1:string):Promise<boolean>;
 
 export function IsPortAvailable(arg1:number):Promise<boolean>;
 
 export function KillCmd(arg1:string):Promise<void>;
 
 export function ListDirFiles(arg1:string):Promise<Array<backend_golang.FileInfo>>;
-
-export function MergeLora(arg1:string,arg2:boolean,arg3:number,arg4:string,arg5:string,arg6:string):Promise<string>;
 
 export function OpenFileFolder(arg1:string):Promise<void>;
 
@@ -76,9 +68,7 @@ export function SaveJson(arg1:string,arg2:any):Promise<void>;
 
 export function StartFile(arg1:string):Promise<void>;
 
-export function StartServer(arg1:string,arg2:number,arg3:string,arg4:boolean,arg5:boolean,arg6:boolean,arg7:boolean):Promise<string>;
-
-export function StartWebGPUServer(arg1:number,arg2:string):Promise<string>;
+export function Unzip(arg1:string,arg2:string):Promise<void>;
 
 export function UpdateApp(arg1:string):Promise<boolean>;
 

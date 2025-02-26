@@ -32,10 +32,8 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 import { toast } from 'react-toastify'
 import {
-  ConvertData,
   FileExists,
   GetPyError,
-  MergeLora,
   OpenFileFolder,
   WslCommand,
   WslEnable,
@@ -49,6 +47,7 @@ import { DialogButton } from '../components/DialogButton'
 import { Labeled } from '../components/Labeled'
 import { Section } from '../components/Section'
 import { ToolTipButton } from '../components/ToolTipButton'
+import cmdTaskChainStore from '../stores/cmdTaskChainStore'
 import commonStore from '../stores/commonStore'
 import {
   DataProcessParameters,
@@ -57,6 +56,7 @@ import {
   TrainNavigationItem,
 } from '../types/train'
 import { checkDependencies, toastWithButton } from '../utils'
+import { convertData, mergeLora } from '../utils/rwkv-task'
 
 ChartJS.register(
   CategoryScale,
@@ -546,13 +546,21 @@ const LoraFinetune: FC = observer(() => {
                         .split(/[\/\\]/)
                         .pop()!
                         .split('.')[0]
-                    ConvertData(
-                      commonStore.settings.customPythonPath,
-                      dataParams.dataPath.replaceAll('\\', '/'),
-                      outputPrefix,
-                      dataParams.vocabPath
-                    )
-                      .then(async () => {
+                    const id = cmdTaskChainStore.newTaskChain('', [
+                      {
+                        name: t('转换数据')!,
+                        func: convertData,
+                        args: [
+                          commonStore.settings.customPythonPath,
+                          dataParams.dataPath.replaceAll('\\', '/'),
+                          outputPrefix,
+                          dataParams.vocabPath,
+                        ],
+                      },
+                    ])
+                    cmdTaskChainStore
+                      .startTaskChain(id)
+                      .then(async (success) => {
                         if (
                           !(await FileExists(
                             outputPrefix + '_text_document.idx'
@@ -642,16 +650,24 @@ const LoraFinetune: FC = observer(() => {
                   if (!ok) return
                   if (loraParams.loraLoad) {
                     const outputPath = `models/${loraParams.baseModel}-LoRA-${loraParams.loraLoad}`
-                    MergeLora(
-                      commonStore.settings.customPythonPath,
-                      !!commonStore.monitorData &&
-                        commonStore.monitorData.totalVram !== 0,
-                      loraParams.loraAlpha,
-                      'models/' + loraParams.baseModel,
-                      'lora-models/' + loraParams.loraLoad,
-                      outputPath
-                    )
-                      .then(async () => {
+                    const id = cmdTaskChainStore.newTaskChain('', [
+                      {
+                        name: t('合并模型')!,
+                        func: mergeLora,
+                        args: [
+                          commonStore.settings.customPythonPath,
+                          !!commonStore.monitorData &&
+                            commonStore.monitorData.totalVram !== 0,
+                          loraParams.loraAlpha,
+                          'models/' + loraParams.baseModel,
+                          'lora-models/' + loraParams.loraLoad,
+                          outputPath,
+                        ],
+                      },
+                    ])
+                    cmdTaskChainStore
+                      .startTaskChain(id)
+                      .then(async (success) => {
                         if (!(await FileExists(outputPath))) {
                           if (
                             commonStore.platform === 'windows' ||

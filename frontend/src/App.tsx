@@ -23,7 +23,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { FC, useEffect, useState } from 'react'
+import { FC, lazy, useEffect, useState } from 'react'
 import {
   FluentProvider,
   Tab,
@@ -36,7 +36,6 @@ import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
 import { Route, Routes, useLocation, useNavigate } from 'react-router'
 import { useMediaQuery } from 'usehooks-ts'
-import { BottomLogger } from './components/BottomLogger'
 import { CustomToastContainer } from './components/CustomToastContainer'
 import { DebugModeIndicator } from './components/DebugModeIndicator'
 import { LazyImportComponent } from './components/LazyImportComponent'
@@ -113,7 +112,7 @@ const App: FC = observer(() => {
       theme={commonStore.settings.darkMode ? webDarkTheme : webLightTheme}
       data-theme={commonStore.settings.darkMode ? 'dark' : 'light'}
     >
-      <div className="flex h-screen">
+      <div className="relative flex h-screen">
         {useMobileStyle ? (
           !isHome ? (
             <MobileFloatingNavigator
@@ -129,25 +128,30 @@ const App: FC = observer(() => {
             {bottomTabList}
           </div>
         )}
-        <div className={classNames('flex w-full flex-col')}>
-          <div
-            className={
-              'box-border h-full w-full overflow-y-hidden py-2 pr-2' +
-              (useMobileStyle ? ' pl-2' : '')
-            }
-          >
-            <Routes>
-              {pages.map(({ path, element }, index) => (
-                <Route
-                  key={`${path}-${index}`}
-                  path={path}
-                  element={<LazyImportComponent lazyChildren={element} />}
-                />
-              ))}
-            </Routes>
-          </div>
-          {!isWeb && <BottomLogger />}
+        <div
+          className={
+            'box-border h-full w-full overflow-y-hidden py-2 pr-2' +
+            (useMobileStyle ? ' pl-2' : '')
+          }
+        >
+          <Routes>
+            {pages.map(({ path, element }, index) => (
+              <Route
+                key={`${path}-${index}`}
+                path={path}
+                element={<LazyImportComponent lazyChildren={element} />}
+              />
+            ))}
+          </Routes>
         </div>
+        {!isWeb && (
+          <div className="absolute bottom-0">
+            <LazyImportComponent
+              lazyChildren={lazy(() => import('./components/BottomLogger'))}
+              disableFallback
+            />
+          </div>
+        )}
       </div>
       <CustomToastContainer />
       <DebugModeIndicator />

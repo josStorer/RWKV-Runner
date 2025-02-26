@@ -1,15 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Button, OverlayDrawer } from '@fluentui/react-components'
 import classNames from 'classnames'
-import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { GetCmds, KillCmd } from '../../wailsjs/go/backend_golang/App'
-import cmdStore from '../stores/cmd'
+import cmdTaskChainStore from '../stores/cmdTaskChainStore'
 import commonStore from '../stores/commonStore'
 
-export const BottomLogger = observer(() => {
+const BottomLogger = observer(() => {
   const [isOpen, setIsOpen] = useState(false)
   const { t } = useTranslation()
   const isDark = commonStore.settings.darkMode
@@ -18,16 +17,15 @@ export const BottomLogger = observer(() => {
     setIsOpen(true)
   }, [])
 
-  const taskMap = cmdStore.taskMap
+  const taskMap = cmdTaskChainStore.activeTaskChainId
+    ? cmdTaskChainStore.taskChainMap[cmdTaskChainStore.activeTaskChainId]
+    : null
 
   const scrollRef = useRef<HTMLDivElement>(null)
 
-  const rawMap = toJS(taskMap)
-  const firstKey = rawMap.keys().next().value
-  const currentTask = rawMap.get(firstKey)
-  const taskName = currentTask?.name
-  const timestamp = currentTask?.timestamp
-  const lines = currentTask?.lines ?? []
+  const taskName = taskMap?.name
+  const timestamp = taskMap?.createdAt
+  const lines = taskMap?.lines ?? []
 
   const scrollToBottom = () => {
     const current = scrollRef.current
@@ -37,10 +35,6 @@ export const BottomLogger = observer(() => {
         behavior: 'smooth',
       })
     }
-  }
-
-  const clearLines = () => {
-    cmdStore.clearLines()
   }
 
   const copyLines = () => {
@@ -53,7 +47,6 @@ export const BottomLogger = observer(() => {
     const cmds = await GetCmds()
     const firstKey = Object.keys(cmds)[0]
     await KillCmd(firstKey)
-    cmdStore.clearLines()
   }
 
   useEffect(() => {
@@ -101,8 +94,6 @@ export const BottomLogger = observer(() => {
               {lines.length > 0 && (
                 <>
                   <Button onClick={copyLines}>{t('Copy')}</Button>
-                  <div className={classNames('w-2')} />
-                  <Button onClick={clearLines}>{t('Clear')}</Button>
                   <div className={classNames('w-2')} />
                 </>
               )}
@@ -157,9 +148,11 @@ export const BottomLogger = observer(() => {
           size="small"
           onClick={onClickBottomButton}
         >
-          {t('Open Console')}
+          {t('打开控制台')}
         </Button>
       )}
     </div>
   )
 })
+
+export default BottomLogger

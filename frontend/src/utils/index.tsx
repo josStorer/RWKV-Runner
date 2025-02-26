@@ -14,7 +14,6 @@ import {
   DepCheck,
   GetCmds,
   GetProxyPort,
-  InstallPyDep,
   IsPortAvailable,
   KillCmd,
   ListDirFiles,
@@ -33,6 +32,7 @@ import {
   WindowShow,
 } from '../../wailsjs/runtime'
 import logo from '../assets/images/logo.png'
+import cmdTaskChainStore, { Task } from '../stores/cmdTaskChainStore'
 import commonStore, { ModelStatus } from '../stores/commonStore'
 import {
   botName,
@@ -53,6 +53,7 @@ import { ModelSourceItem } from '../types/models'
 import { Preset } from '../types/presets'
 import { Language, Languages, SettingsType } from '../types/settings'
 import { DataProcessParameters, LoraFinetuneParameters } from '../types/train'
+import { installPyDep } from './rwkv-task'
 
 export type Cache = {
   version: string
@@ -464,6 +465,10 @@ export function absPathAsset(path: string) {
   return path
 }
 
+export function readFile(path: string) {
+  return fetch(absPathAsset(path)).then((r) => r.blob())
+}
+
 export async function checkUpdate(notifyEvenLatest: boolean = false) {
   fetch(
     !commonStore.settings.giteeUpdatesSource
@@ -647,10 +652,17 @@ export const checkDependencies = async (navigate: NavigateFunction) => {
               ),
               t('Install'),
               () => {
-                InstallPyDep(
-                  commonStore.settings.customPythonPath,
-                  commonStore.settings.cnMirror
-                ).catch((e) => {
+                const id = cmdTaskChainStore.newTaskChain('', [
+                  {
+                    name: t('安装Python依赖')!,
+                    func: installPyDep,
+                    args: [
+                      commonStore.settings.customPythonPath,
+                      commonStore.settings.cnMirror,
+                    ],
+                  },
+                ])
+                cmdTaskChainStore.startTaskChain(id).catch((e) => {
                   const errMsg = e.message || e
                   toast(t('Error') + ' - ' + errMsg, { type: 'error' })
                 })

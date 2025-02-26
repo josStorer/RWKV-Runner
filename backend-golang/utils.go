@@ -154,7 +154,7 @@ func CopyEmbed(efs embed.FS) error {
 	return err
 }
 
-func GetPython(a *App) (string, error) {
+func (a *App) GetPython() (string, error) {
 	switch platform := runtime.GOOS; platform {
 	case "windows":
 		pyexe := a.exDir + "py310/python.exe"
@@ -164,7 +164,7 @@ func GetPython(a *App) (string, error) {
 			if err != nil {
 				return "", errors.New("python zip not found")
 			} else {
-				err := Unzip(a.exDir+"python-3.10.11-embed-amd64.zip", a.exDir+"py310")
+				err := a.Unzip(a.exDir+"python-3.10.11-embed-amd64.zip", a.exDir+"py310")
 				if err != nil {
 					return "", errors.New("failed to unzip python")
 				} else {
@@ -182,7 +182,7 @@ func GetPython(a *App) (string, error) {
 	return "", errors.New("unsupported OS")
 }
 
-func ChangeFileLine(filePath string, lineNumber int, newText string) error {
+func (a *App) ChangeFileLine(filePath string, lineNumber int, newText string) error {
 	file, err := os.OpenFile(filePath, os.O_RDWR, 0644)
 	if err != nil {
 		return err
@@ -215,7 +215,7 @@ func ChangeFileLine(filePath string, lineNumber int, newText string) error {
 }
 
 // https://gist.github.com/paulerickson/6d8650947ee4e3f3dbcc28fde10eaae7
-func Unzip(source, destination string) error {
+func (a *App) Unzip(source, destination string) error {
 	archive, err := zip.OpenReader(source)
 	if err != nil {
 		return err

@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"runtime/debug"
 	"strings"
 
 	backend "rwkv-runner/backend-golang"
@@ -71,7 +70,7 @@ func main() {
 	app := backend.NewApp()
 	app.Dev = true
 
-	if buildInfo, ok := debug.ReadBuildInfo(); !ok || strings.Contains(buildInfo.String(), "-ldflags") {
+	if !backend.IsDebugMode() {
 		app.Dev = false
 
 		backend.CopyEmbed(assets)

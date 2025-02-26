@@ -18,3 +18,8 @@ func (a *App) KillCmd(eventId string) error {
 	delete(cmdProcesses, eventId)
 	return cmd.Kill()
 }
+
+func (a *App) IsCmdRunning(eventId string) bool {
+	_, ok := cmds[eventId]
+	return ok
+}

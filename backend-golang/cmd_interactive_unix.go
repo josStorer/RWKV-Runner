@@ -6,18 +6,11 @@ import (
 	"bufio"
 	"io"
 	"os/exec"
-	"strconv"
-	"time"
 
 	wruntime "github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
-func (a *App) CmdInteractive(args []string, taskName string) error {
-	currentTime := time.Now().UnixMilli()
-	threadID := taskName + "_" + strconv.FormatInt(currentTime, 10)
-
-	wruntime.EventsEmit(a.ctx, "cmd_event")
-
+func (a *App) CmdInteractive(args []string, eventId string) error {
 	cmd := exec.Command(args[0], args[1:]...)
 
 	stdout, err := cmd.StdoutPipe()
@@ -33,22 +26,22 @@ func (a *App) CmdInteractive(args []string, taskName string) error {
 		return err
 	}
 
-	cmds[threadID] = args
-	cmdProcesses[threadID] = cmd.Process
+	cmds[eventId] = args
+	cmdProcesses[eventId] = cmd.Process
 	reader := bufio.NewReader(stdout)
 
 	for {
 		line, _, err := reader.ReadLine()
 		if err != nil {
-			delete(cmds, threadID)
-			delete(cmdProcesses, threadID)
+			delete(cmds, eventId)
+			delete(cmdProcesses, eventId)
 			if err == io.EOF {
-				wruntime.EventsEmit(a.ctx, "cmd_event", threadID)
+				wruntime.EventsEmit(a.ctx, eventId+"-finish")
 				return nil
 			}
 			return err
 		}
 		strLine := string(line)
-		wruntime.EventsEmit(a.ctx, "cmd_event", threadID, strLine)
+		wruntime.EventsEmit(a.ctx, eventId+"-output", strLine)
 	}
 }

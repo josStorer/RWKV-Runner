@@ -6,6 +6,10 @@ export function AddToDownloadList(arg1, arg2) {
   return window['go']['backend_golang']['App']['AddToDownloadList'](arg1, arg2);
 }
 
+export function ChangeFileLine(arg1, arg2, arg3) {
+  return window['go']['backend_golang']['App']['ChangeFileLine'](arg1, arg2, arg3);
+}
+
 export function CloseMidiPort() {
   return window['go']['backend_golang']['App']['CloseMidiPort']();
 }
@@ -16,26 +20,6 @@ export function CmdInteractive(arg1, arg2) {
 
 export function ContinueDownload(arg1) {
   return window['go']['backend_golang']['App']['ContinueDownload'](arg1);
-}
-
-export function ConvertData(arg1, arg2, arg3, arg4) {
-  return window['go']['backend_golang']['App']['ConvertData'](arg1, arg2, arg3, arg4);
-}
-
-export function ConvertGGML(arg1, arg2, arg3, arg4) {
-  return window['go']['backend_golang']['App']['ConvertGGML'](arg1, arg2, arg3, arg4);
-}
-
-export function ConvertModel(arg1, arg2, arg3, arg4) {
-  return window['go']['backend_golang']['App']['ConvertModel'](arg1, arg2, arg3, arg4);
-}
-
-export function ConvertSafetensors(arg1, arg2) {
-  return window['go']['backend_golang']['App']['ConvertSafetensors'](arg1, arg2);
-}
-
-export function ConvertSafetensorsWithPython(arg1, arg2, arg3) {
-  return window['go']['backend_golang']['App']['ConvertSafetensorsWithPython'](arg1, arg2, arg3);
 }
 
 export function CopyFile(arg1, arg2) {
@@ -78,8 +62,12 @@ export function GetPyError() {
   return window['go']['backend_golang']['App']['GetPyError']();
 }
 
-export function InstallPyDep(arg1, arg2) {
-  return window['go']['backend_golang']['App']['InstallPyDep'](arg1, arg2);
+export function GetPython() {
+  return window['go']['backend_golang']['App']['GetPython']();
+}
+
+export function IsCmdRunning(arg1) {
+  return window['go']['backend_golang']['App']['IsCmdRunning'](arg1);
 }
 
 export function IsPortAvailable(arg1) {
@@ -92,10 +80,6 @@ export function KillCmd(arg1) {
 
 export function ListDirFiles(arg1) {
   return window['go']['backend_golang']['App']['ListDirFiles'](arg1);
-}
-
-export function MergeLora(arg1, arg2, arg3, arg4, arg5, arg6) {
-  return window['go']['backend_golang']['App']['MergeLora'](arg1, arg2, arg3, arg4, arg5, arg6);
 }
 
 export function OpenFileFolder(arg1) {
@@ -150,12 +134,8 @@ export function StartFile(arg1) {
   return window['go']['backend_golang']['App']['StartFile'](arg1);
 }
 
-export function StartServer(arg1, arg2, arg3, arg4, arg5, arg6, arg7) {
-  return window['go']['backend_golang']['App']['StartServer'](arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-}
-
-export function StartWebGPUServer(arg1, arg2) {
-  return window['go']['backend_golang']['App']['StartWebGPUServer'](arg1, arg2);
+export function Unzip(arg1, arg2) {
+  return window['go']['backend_golang']['App']['Unzip'](arg1, arg2);
 }
 
 export function UpdateApp(arg1) {

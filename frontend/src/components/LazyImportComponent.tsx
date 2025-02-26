@@ -6,6 +6,7 @@ interface LazyImportComponentProps {
   lazyChildren: LazyExoticComponent<FC<any>>
   lazyProps?: any
   children?: ReactNode
+  disableFallback?: boolean
 }
 
 export const LazyImportComponent: FC<LazyImportComponentProps> = (props) => {
@@ -14,9 +15,11 @@ export const LazyImportComponent: FC<LazyImportComponentProps> = (props) => {
   return (
     <Suspense
       fallback={
-        <div className="flex h-full w-full items-center justify-center">
-          <Spinner size="huge" label={t('Loading...')} />
-        </div>
+        !props.disableFallback && (
+          <div className="flex h-full w-full items-center justify-center">
+            <Spinner size="huge" label={t('Loading...')} />
+          </div>
+        )
       }
     >
       <props.lazyChildren {...props.lazyProps}>
