@@ -37,7 +37,7 @@ func (a *App) StartServer(python string, port int, host string, webui bool, rwkv
 		args = append(args, "--webgpu")
 	}
 	args = append(args, "--port", strconv.Itoa(port), "--host", host)
-	return Cmd(args...)
+	return "", a.CmdInteractive(args, "StartServer")
 }
 
 func (a *App) StartWebGPUServer(port int, host string) (string, error) {
@@ -55,7 +55,7 @@ func (a *App) StartWebGPUServer(port int, host string) (string, error) {
 	}
 	args := []string{execFile}
 	args = append(args, "--port", strconv.Itoa(port), "--ip", host)
-	return Cmd(args...)
+	return "", a.CmdInteractive(args, "StartWebGPUServer")
 }
 
 func (a *App) ConvertModel(python string, modelPath string, strategy string, outPath string) (string, error) {
@@ -70,7 +70,8 @@ func (a *App) ConvertModel(python string, modelPath string, strategy string, out
 	if err != nil {
 		return "", err
 	}
-	return Cmd(python, execFile, "--in", modelPath, "--out", outPath, "--strategy", strategy)
+	args := []string{python, execFile, "--in", modelPath, "--out", outPath, "--strategy", strategy}
+	return "", a.CmdInteractive(args, "ConvertModel")
 }
 
 func (a *App) ConvertSafetensors(modelPath string, outPath string) (string, error) {
@@ -88,7 +89,7 @@ func (a *App) ConvertSafetensors(modelPath string, outPath string) (string, erro
 	}
 	args := []string{execFile}
 	args = append(args, "--input", modelPath, "--output", outPath)
-	return Cmd(args...)
+	return "", a.CmdInteractive(args, "ConvertSafetensors")
 }
 
 func (a *App) ConvertSafetensorsWithPython(python string, modelPath string, outPath string) (string, error) {
@@ -103,7 +104,7 @@ func (a *App) ConvertSafetensorsWithPython(python string, modelPath string, outP
 	if err != nil {
 		return "", err
 	}
-	return Cmd(python, execFile, "--input", modelPath, "--output", outPath)
+	return "", a.CmdInteractive([]string{python, execFile, "--input", modelPath, "--output", outPath}, "ConvertSafetensorsWithPython")
 }
 
 func (a *App) ConvertGGML(python string, modelPath string, outPath string, Q51 bool) (string, error) {
@@ -122,7 +123,7 @@ func (a *App) ConvertGGML(python string, modelPath string, outPath string, Q51 b
 	if Q51 {
 		dataType = "Q5_1"
 	}
-	return Cmd(python, execFile, modelPath, outPath, dataType)
+	return "", a.CmdInteractive([]string{python, execFile, modelPath, outPath, dataType}, "ConvertGGML")
 }
 
 func (a *App) ConvertData(python string, input string, outputPrefix string, vocab string) (string, error) {
@@ -174,8 +175,8 @@ func (a *App) ConvertData(python string, input string, outputPrefix string, voca
 		return "", err
 	}
 
-	return Cmd(python, execFile, "--input", input, "--output-prefix", outputPrefix, "--vocab", vocab,
-		"--tokenizer-type", tokenizerType, "--dataset-impl", "mmap", "--append-eod")
+	return "", a.CmdInteractive([]string{python, execFile, "--input", input, "--output-prefix", outputPrefix, "--vocab", vocab,
+		"--tokenizer-type", tokenizerType, "--dataset-impl", "mmap", "--append-eod"}, "ConvertData")
 }
 
 func (a *App) MergeLora(python string, useGpu bool, loraAlpha int, baseModel string, loraPath string, outputPath string) (string, error) {
@@ -195,7 +196,7 @@ func (a *App) MergeLora(python string, useGpu bool, loraAlpha int, baseModel str
 		args = append(args, "--use-gpu")
 	}
 	args = append(args, strconv.Itoa(loraAlpha), baseModel, loraPath, outputPath)
-	return Cmd(args...)
+	return "", a.CmdInteractive(args, "MergeLora")
 }
 
 func (a *App) DepCheck(python string) error {
@@ -242,13 +243,13 @@ func (a *App) InstallPyDep(python string, cnMirror bool) (string, error) {
 		if err != nil {
 			return "", err
 		}
-		return Cmd("install-py-dep.bat")
+		return "", a.CmdInteractive([]string{"./install-py-dep.bat"}, "InstallPyDep")
 	}
 
 	if cnMirror {
-		return Cmd(python, "-m", "pip", "install", "-r", "./backend-python/requirements_without_cyac.txt", "-i", "https://mirrors.aliyun.com/pypi/simple")
+		return "", a.CmdInteractive([]string{python, "-m", "pip", "install", "-r", "./backend-python/requirements_without_cyac.txt", "-i", "https://mirrors.aliyun.com/pypi/simple"}, "InstallPyDep")
 	} else {
-		return Cmd(python, "-m", "pip", "install", "-r", "./backend-python/requirements_without_cyac.txt")
+		return "", a.CmdInteractive([]string{python, "-m", "pip", "install", "-r", "./backend-python/requirements_without_cyac.txt"}, "InstallPyDep")
 	}
 }
 
