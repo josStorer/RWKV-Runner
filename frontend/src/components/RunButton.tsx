@@ -1,6 +1,7 @@
 import React, { FC, MouseEventHandler, ReactElement } from 'react'
 import { Button } from '@fluentui/react-components'
 import { Play16Regular, Stop16Regular } from '@fluentui/react-icons'
+import { t } from 'i18next'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
@@ -16,7 +17,7 @@ import {
   defaultCompositionABCPrompt,
   defaultCompositionPrompt,
 } from '../pages/defaultConfigs'
-import cmdTaskChainStore from '../stores/cmdTaskChainStore'
+import cmdTaskChainStore, { OutputHandler } from '../stores/cmdTaskChainStore'
 import commonStore, { ModelStatus } from '../stores/commonStore'
 import { ModelConfig, Precision } from '../types/configs'
 import {
@@ -27,7 +28,12 @@ import {
   toastWithButton,
 } from '../utils'
 import { convertToGGML, convertToSt } from '../utils/convert-model'
-import { startServer, startWebGPUServer } from '../utils/rwkv-task'
+import {
+  addToDownloadList,
+  ImmediateTaskResult,
+  startServer,
+  startWebGPUServer,
+} from '../utils/rwkv-task'
 import { ToolTipButton } from './ToolTipButton'
 
 const mainButtonText = {
@@ -42,6 +48,97 @@ const iconModeButtonIcon: { [modelStatus: number]: ReactElement } = {
   [ModelStatus.Starting]: <Stop16Regular />,
   [ModelStatus.Loading]: <Stop16Regular />,
   [ModelStatus.Working]: <Stop16Regular />,
+}
+
+const startWebGPUTaskChain = (modelName: string, modelConfig: ModelConfig) => {
+  const currentModelSource = commonStore.modelSourceList.find(
+    (item) => item.name === modelName
+  )
+  const modelPath = `${commonStore.settings.customModelsPath}/${modelName}`
+  const pthModelPath = modelPath.replace(/\.st|safetensors$/, '.pth')
+  const stModelPath1 = modelPath.replace(/\.pth$/, '.st')
+  const stModelPath2 = modelPath.replace(/\.pth$/, '.safetensors')
+
+  const startId = cmdTaskChainStore.newTaskChain(
+    '',
+    [
+      {
+        name: t('检查模型文件存在')!,
+        func: async (onOutput: OutputHandler) => {
+          if (
+            (!(await FileExists(pthModelPath)) ||
+              !currentModelSource?.isComplete) &&
+            !(await FileExists(stModelPath1)) &&
+            !(await FileExists(stModelPath2))
+          ) {
+            throw new Error(t('Model file not found') + ' ' + modelName)
+          }
+
+          onOutput(t('Model file exists'))
+          return ImmediateTaskResult
+        },
+        args: [],
+        jumpPredicate: (message: string, jumpTo: (jumpId: string) => void) => {
+          if (message.includes(t('Model file not found'))) {
+            jumpTo('download file')
+          }
+          return false
+        },
+      },
+      {
+        id: 'check model file format',
+        name: t('检查模型文件格式正确')!,
+        func: async (onOutput: OutputHandler) => {
+          if (
+            !(await FileExists(stModelPath1)) &&
+            !(await FileExists(stModelPath2))
+          ) {
+            throw new Error(
+              t('Please convert model to safe tensors format first') +
+                ' ' +
+                pthModelPath
+            )
+          }
+
+          onOutput(t('Model file format is correct'))
+          return ImmediateTaskResult
+        },
+        args: [],
+        jumpPredicate: (message: string, jumpTo: (jumpId: string) => void) => {
+          if (
+            message.includes(
+              t('Please convert model to safe tensors format first')
+            )
+          ) {
+            jumpTo('convert file')
+          }
+          return false
+        },
+      },
+    ],
+    [
+      {
+        id: 'download file',
+        name: t('下载文件')!,
+        func: async (onOutput: OutputHandler) => {
+          const downloadUrl = currentModelSource?.downloadUrl
+          if (downloadUrl) {
+            return addToDownloadList(
+              modelPath,
+              getHfDownloadUrl(downloadUrl),
+              onOutput
+            )
+          } else {
+            throw new Error(t('Can not find download url')!)
+          }
+        },
+        args: [],
+        jumpId: 'convert file',
+        refreshLine: true,
+      },
+    ]
+  )
+  return cmdTaskChainStore.startTaskChain(startId)
 }
 
 export const RunButton: FC<{
@@ -71,6 +168,20 @@ export const RunButton: FC<{
       } else {
         toast(t('Model Config Exception'), { type: 'error' })
         commonStore.setStatus({ status: ModelStatus.Offline })
+        return
+      }
+
+      if (webgpu) {
+        try {
+          await startWebGPUTaskChain(modelName, modelConfig)
+        } catch (e: any) {
+          toast(t('Failed to start WebGPU server') + ' - ' + (e.message || e), {
+            type: 'error',
+          })
+          commonStore.setStatus({ status: ModelStatus.Offline })
+          return
+        }
+        commonStore.setStatus({ status: ModelStatus.Working })
         return
       }
 

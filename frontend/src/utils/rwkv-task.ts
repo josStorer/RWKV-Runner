@@ -1,37 +1,156 @@
 import {
+  AddToDownloadList,
   ChangeFileLine,
   FileExists,
+  GetAbsPath,
   GetPython,
   ListDirFiles,
+  PauseDownload,
   ReadFileInfo,
   SaveFile,
 } from '../../wailsjs/go/backend_golang/App'
+import { EventsOn } from '../../wailsjs/runtime/runtime'
+import { OutputHandler } from '../stores/cmdTaskChainStore'
 import commonStore from '../stores/commonStore'
+import { DownloadStatus } from '../types/downloads'
 import { cmdInteractive, readFile } from './index'
 
 export interface TaskResult {
+  /** may be changed dynamically */
   stop: () => void
-  eventId: string
+  /** only cmdInteractive has eventId */
+  eventId?: string
+  /** if the task is stopped by an explicit action, return false, otherwise return true */
+  promise: Promise<boolean>
 }
 
-function createTask(
+export const ImmediateTaskResult: TaskResult = {
+  stop: () => {},
+  promise: Promise.resolve(true),
+}
+
+function createTaskTwoToOne(
+  taskResult: TaskResult,
   cmdArgs: string[],
-  onOutput?: (output: string) => void
-): Promise<TaskResult> {
-  return new Promise((resolve, reject) => {
-    const result = cmdInteractive(
-      cmdArgs,
-      async (output: string) => {
-        onOutput?.(output)
-      },
-      async () => {
-        resolve(result)
-      },
-      async (error: string) => {
-        reject(new Error(error))
-      }
-    )
+  onOutput?: OutputHandler
+): TaskResult {
+  taskResult.promise.then(() => {
+    const task2 = createTask(cmdArgs, onOutput)
+    taskResult.stop = task2.stop
+    taskResult.eventId = task2.eventId
+    return task2.promise
   })
+  return taskResult
+}
+
+export function createTaskMultiToOne(
+  cmdArgs: string[][],
+  onOutput?: OutputHandler
+): TaskResult {
+  if (cmdArgs.length < 2) {
+    throw new Error('length of cmdArgs must be at least 2')
+  }
+
+  let combinedTask = createTask(cmdArgs[0], onOutput)
+  for (let i = 1; i < cmdArgs.length; i++) {
+    combinedTask = createTaskTwoToOne(combinedTask, cmdArgs[i], onOutput)
+  }
+  return combinedTask
+}
+
+export function createTask(
+  cmdArgs: string[],
+  onOutput?: OutputHandler
+): TaskResult {
+  let resolve: (stopped: boolean) => void
+  let reject: (reason?: any) => void
+  const promise = new Promise<boolean>((r, j) => {
+    resolve = r
+    reject = j
+  })
+  const result = cmdInteractive(
+    cmdArgs,
+    async (output: string) => {
+      onOutput?.(output)
+    },
+    async (stopped: boolean) => {
+      resolve(!stopped)
+    },
+    async (error: string) => {
+      reject(new Error(error))
+    }
+  )
+
+  return {
+    stop: result.stop,
+    eventId: result.eventId,
+    promise,
+  }
+}
+
+export async function addToDownloadList(
+  path: string,
+  url: string,
+  onOutput: OutputHandler
+): Promise<TaskResult> {
+  let resolve: (stopped: boolean) => void
+  let reject: (reason?: any) => void
+  const promise = new Promise<boolean>((r, j) => {
+    resolve = r
+    reject = j
+  })
+
+  const absPath = await GetAbsPath(path)
+  const cancel = EventsOn(
+    'downloadList',
+    (data: DownloadStatus[] | undefined) => {
+      if (data) {
+        const status = data.find((status) => status.path === absPath)
+        if (status) {
+          if (status.done) {
+            cancel()
+            resolve(true)
+            onOutput(
+              'done: ' +
+                status.name +
+                ': ' +
+                status.progress.toFixed(2) +
+                '% ' +
+                JSON.stringify(status)
+            )
+          } else if (!status.downloading) {
+            cancel()
+            resolve(false)
+            onOutput(
+              'stopped: ' +
+                status.name +
+                ': ' +
+                status.progress.toFixed(2) +
+                '% ' +
+                JSON.stringify(status)
+            )
+          } else {
+            onOutput(
+              status.name +
+                ': ' +
+                status.progress.toFixed(2) +
+                '% ' +
+                JSON.stringify(status)
+            )
+          }
+        }
+      }
+    }
+  )
+
+  const stop = () => {
+    cancel()
+    PauseDownload(url)
+    resolve(false)
+  }
+
+  AddToDownloadList(path, url)
+  return { stop, promise }
 }
 
 export async function startServer(
@@ -42,7 +161,7 @@ export async function startServer(
   rwkvBeta: boolean,
   rwkvcpp: boolean,
   webgpu: boolean,
-  onOutput?: (output: string) => void
+  onOutput?: OutputHandler
 ): Promise<TaskResult> {
   const execFile = './backend-python/main.py'
   const exists = await FileExists(execFile)
@@ -65,7 +184,7 @@ export async function startServer(
 export async function startWebGPUServer(
   port: number,
   host: string,
-  onOutput?: (output: string) => void
+  onOutput?: OutputHandler
 ): Promise<TaskResult> {
   let execFile = ''
   const execFiles = [
@@ -94,7 +213,7 @@ export async function convertModel(
   modelPath: string,
   strategy: string,
   outPath: string,
-  onOutput?: (output: string) => void
+  onOutput?: OutputHandler
 ): Promise<TaskResult> {
   const execFile = './backend-python/convert_model.py'
   const exists = await FileExists(execFile)
@@ -121,7 +240,7 @@ export async function convertModel(
 export async function convertSafetensors(
   modelPath: string,
   outPath: string,
-  onOutput?: (output: string) => void
+  onOutput?: OutputHandler
 ): Promise<TaskResult> {
   let execFile = ''
   const execFiles = [
@@ -149,7 +268,7 @@ export async function convertSafetensorsWithPython(
   python: string,
   modelPath: string,
   outPath: string,
-  onOutput?: (output: string) => void
+  onOutput?: OutputHandler
 ): Promise<TaskResult> {
   const execFile = './backend-python/convert_safetensors.py'
   const exists = await FileExists(execFile)
@@ -169,7 +288,7 @@ export async function convertGGML(
   modelPath: string,
   outPath: string,
   Q51: boolean,
-  onOutput?: (output: string) => void
+  onOutput?: OutputHandler
 ): Promise<TaskResult> {
   const execFile = './backend-python/convert_pytorch_to_ggml.py'
   const exists = await FileExists(execFile)
@@ -190,7 +309,7 @@ export async function convertData(
   input: string,
   outputPrefix: string,
   vocab: string,
-  onOutput?: (output: string) => void
+  onOutput?: OutputHandler
 ): Promise<TaskResult> {
   const execFile = './finetune/json2binidx_tool/tools/preprocess_data.py'
   const exists = await FileExists(execFile)
@@ -253,7 +372,7 @@ export async function mergeLora(
   baseModel: string,
   loraPath: string,
   outputPath: string,
-  onOutput?: (output: string) => void
+  onOutput?: OutputHandler
 ): Promise<TaskResult> {
   const execFile = './finetune/lora/merge_lora.py'
   const exists = await FileExists(execFile)
@@ -272,7 +391,7 @@ export async function mergeLora(
 
 export async function depCheck(
   python: string,
-  onOutput?: (output: string) => void
+  onOutput?: OutputHandler
 ): Promise<TaskResult> {
   const execFile = './backend-python/dep_check.py'
   const exists = await FileExists(execFile)
@@ -290,7 +409,7 @@ export async function depCheck(
 export async function installPyDep(
   python: string,
   cnMirror: boolean,
-  onOutput?: (output: string) => void
+  onOutput?: OutputHandler
 ): Promise<TaskResult> {
   let torchWhlUrl =
     'torch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 --index-url https://download.pytorch.org/whl/cu117'
@@ -323,11 +442,7 @@ export async function installPyDep(
     const installSteps = installScript
       .split('\n')
       .map((step) => step.split(' '))
-    return createTask(installSteps[0], onOutput).then(() =>
-      createTask(installSteps[1], onOutput).then(() =>
-        createTask(installSteps[2], onOutput)
-      )
-    )
+    return createTaskMultiToOne(installSteps, onOutput)
   }
 
   const args = [

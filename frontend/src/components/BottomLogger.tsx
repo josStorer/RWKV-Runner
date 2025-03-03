@@ -9,31 +9,24 @@ import cmdTaskChainStore from '../stores/cmdTaskChainStore'
 import commonStore from '../stores/commonStore'
 
 const BottomLogger = observer(() => {
-  const [isOpen, setIsOpen] = useState(false)
   const { t } = useTranslation()
   const isDark = commonStore.settings.darkMode
 
-  const onClickBottomButton = useCallback(() => {
-    setIsOpen(true)
-  }, [])
-
-  const taskMap = cmdTaskChainStore.activeTaskChainId
+  const activeTaskChain = cmdTaskChainStore.activeTaskChainId
     ? cmdTaskChainStore.taskChainMap[cmdTaskChainStore.activeTaskChainId]
     : null
 
   const scrollRef = useRef<HTMLDivElement>(null)
 
-  const taskName = taskMap?.name
-  const timestamp = taskMap?.createdAt
-  const lines = taskMap?.lines ?? []
+  const taskName = activeTaskChain?.name
+  const timestamp = activeTaskChain?.createdAt
+  const lines =
+    activeTaskChain?.executeTaskInfo.flatMap((item) => item.lines) ?? []
 
   const scrollToBottom = () => {
     const current = scrollRef.current
     if (current) {
-      current.scrollTo({
-        top: current.scrollHeight,
-        behavior: 'smooth',
-      })
+      current.scrollTop = current.scrollHeight
     }
   }
 
@@ -59,8 +52,8 @@ const BottomLogger = observer(() => {
         className={classNames()}
         style={{ backgroundColor: 'transparent', boxShadow: 'none' }}
         position={'bottom'}
-        open={isOpen}
-        onOpenChange={(_, { open }) => setIsOpen(open)}
+        open={cmdTaskChainStore.consoleOpen}
+        onOpenChange={(_, { open }) => cmdTaskChainStore.setConsoleOpen(open)}
       >
         <div className={classNames('flex', 'h-full', 'w-full')}>
           <div
@@ -99,7 +92,7 @@ const BottomLogger = observer(() => {
               )}
               <Button
                 onClick={() => {
-                  setIsOpen(false)
+                  cmdTaskChainStore.setConsoleOpen(false)
                 }}
               >
                 {t('close')}
@@ -119,12 +112,12 @@ const BottomLogger = observer(() => {
               {lines.map((line, index) => {
                 return (
                   <div
-                    key={index + line}
+                    key={index}
                     className={classNames(
                       'w-full',
                       'font-mono',
                       'whitespace-pre-wrap',
-                      'text-[8px]'
+                      'text-[12px]'
                     )}
                     style={{ overflowWrap: 'anywhere' }}
                   >
@@ -146,7 +139,7 @@ const BottomLogger = observer(() => {
         <Button
           appearance="secondary"
           size="small"
-          onClick={onClickBottomButton}
+          onClick={() => cmdTaskChainStore.setConsoleOpen(true)}
         >
           {t('打开控制台')}
         </Button>

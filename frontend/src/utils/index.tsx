@@ -872,7 +872,9 @@ export function getSupportedCustomCudaFile(isBeta: boolean) {
   else return ''
 }
 
-// a wrapper for webOpenOpenFileDialog and OpenOpenFileDialog
+/**
+ * a wrapper for webOpenOpenFileDialog and OpenOpenFileDialog
+ */
 export function OpenFileDialog(filterPattern: string): Promise<Blob> {
   return new Promise((resolve) => {
     OpenOpenFileDialog(filterPattern)
@@ -944,13 +946,17 @@ export function isDynamicStateSupported(modelConfig: ModelConfig) {
   )
 }
 
-// It is recommended to use the stop function returned by cmdInteractive to terminate the cmd.
-// If this function is used to terminate the cmd, it will still trigger the onFinish event normally.
+/**
+ * It is recommended to use the stop function returned by cmdInteractive to terminate the cmd.
+ * If this function is used to terminate the cmd, it will still trigger the onFinish event normally (with stopped = false).
+ */
 export async function stopCmd(eventId: string) {
   return KillCmd(eventId)
 }
 
-// return the key-value pairs of cmd eventId and args
+/**
+ * return the key-value pairs of cmd eventId and args
+ */
 export async function getCmds() {
   return GetCmds()
 }
@@ -958,7 +964,7 @@ export async function getCmds() {
 export function cmdInteractive(
   cmdArgs: string[],
   onOutput: (output: string) => Promise<void>,
-  onFinish: () => Promise<void>,
+  onFinish: (stopped: boolean) => Promise<void>,
   onError: (e: string) => Promise<void>
 ): { stop: () => void; eventId: string } {
   const eventId = uuid()
@@ -970,7 +976,7 @@ export function cmdInteractive(
   const unregisterFinish = EventsOnce(eventId + '-finish', () => {
     finished = true
     unregisterOutput()
-    if (!stopped) onFinish()
+    onFinish(stopped)
   })
   CmdInteractive(cmdArgs, eventId).catch((e) => {
     unregisterOutput()
