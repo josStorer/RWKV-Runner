@@ -8,8 +8,10 @@ from typing import Optional, List, Tuple, Callable
 QUANTIZED_FORMAT_NAMES: Tuple[str, str, str, str, str] = (
     "Q4_0",
     "Q4_1",
+    "Q4_K",
     "Q5_0",
     "Q5_1",
+    "Q5_K",
     "Q8_0",
 )
 
@@ -18,6 +20,7 @@ P_INT = ctypes.POINTER(ctypes.c_int32)
 
 
 class RWKVContext:
+
     def __init__(self, ptr: ctypes.pointer) -> None:
         self.ptr: ctypes.pointer = ptr
 
@@ -45,14 +48,12 @@ class RWKVSharedLibrary:
         else:
             self.library = ctypes.cdll.LoadLibrary(shared_library_path)
 
-        self.library.rwkv_init_from_file.argtypes = [ctypes.c_char_p, ctypes.c_uint32]
-        self.library.rwkv_init_from_file.restype = ctypes.c_void_p
-
-        self.library.rwkv_gpu_offload_layers.argtypes = [
-            ctypes.c_void_p,
+        self.library.rwkv_init_from_file.argtypes = [
+            ctypes.c_char_p,
+            ctypes.c_uint32,
             ctypes.c_uint32,
         ]
-        self.library.rwkv_gpu_offload_layers.restype = ctypes.c_bool
+        self.library.rwkv_init_from_file.restype = ctypes.c_void_p
 
         self.library.rwkv_eval.argtypes = [
             ctypes.c_void_p,  # ctx
@@ -124,7 +125,7 @@ class RWKVSharedLibrary:
         self.nullptr = ctypes.cast(0, ctypes.c_void_p)
 
     def rwkv_init_from_file(
-        self, model_file_path: str, thread_count: int
+        self, model_file_path: str, thread_count: int, offload_layers: int
     ) -> RWKVContext:
         """
         Loads the model from a file and prepares it for inference.
@@ -139,37 +140,15 @@ class RWKVSharedLibrary:
         """
 
         ptr = self.library.rwkv_init_from_file(
-            model_file_path.encode("utf-8"), ctypes.c_uint32(thread_count)
+            model_file_path.encode("utf-8"),
+            ctypes.c_uint32(thread_count),
+            ctypes.c_uint32(offload_layers),
         )
 
         if ptr is None:
             raise ValueError("rwkv_init_from_file failed, check stderr")
 
         return RWKVContext(ptr)
-
-    def rwkv_gpu_offload_layers(self, ctx: RWKVContext, layer_count: int) -> bool:
-        """
-        Offloads specified count of model layers onto the GPU. Offloaded layers are evaluated using cuBLAS or CLBlast.
-        For the purposes of this function, model head (unembedding matrix) is treated as an additional layer:
-        - pass `rwkv_get_n_layer(ctx)` to offload all layers except model head
-        - pass `rwkv_get_n_layer(ctx) + 1` to offload all layers, including model head
-        Returns true if at least one layer was offloaded.
-        If rwkv.cpp was compiled without cuBLAS and CLBlast support, this function is a no-op and always returns false.
-
-        Parameters
-        ----------
-        ctx : RWKVContext
-            RWKV context obtained from rwkv_init_from_file.
-        layer_count : int
-            Count of layers to offload onto the GPU, must be >= 0.
-        """
-
-        if not (layer_count >= 0):
-            raise ValueError("Layer count must be >= 0")
-
-        return self.library.rwkv_gpu_offload_layers(
-            ctx.ptr, ctypes.c_uint32(layer_count)
-        )
 
     def rwkv_eval(
         self,
