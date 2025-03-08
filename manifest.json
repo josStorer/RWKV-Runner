@@ -36,6 +36,68 @@
       ]
     },
     {
+      "name": "RWKV-x070-World-0.4B-v2.9-20250107-ctx4096.pth",
+      "desc": {
+        "en": "RWKV-7 Global Languages 0.4B v2.9",
+        "zh": "RWKV-7 全球语言 0.4B v2.9",
+        "ja": "RWKV-7 グローバル言語 0.4B v2.9"
+      },
+      "size": 901794466,
+      "SHA256": "c08cf602b33e59a5717b8f0cafaf7f04c50c1c67166e477aa2f47c5ca180da4a",
+      "lastUpdated": "2025-01-07T20:11:37",
+      "url": "https://huggingface.co/BlinkDL/rwkv-7-world/blob/main/RWKV-x070-World-0.4B-v2.9-20250107-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-7-world/resolve/main/RWKV-x070-World-0.4B-v2.9-20250107-ctx4096.pth",
+      "tags": [
+        "Official",
+        "RWKV-7",
+        "Global",
+        "CN",
+        "JP"
+      ]
+    },
+    {
+      "name": "RWKV-x070-World-1.5B-v3-20250127-ctx4096.pth",
+      "desc": {
+        "en": "RWKV-7 Global Languages 1.5B v3",
+        "zh": "RWKV-7 全球语言 1.5B v3",
+        "ja": "RWKV-7 グローバル言語 1.5B v3"
+      },
+      "size": 3055062345,
+      "SHA256": "23e13ff62ac6f80b28910ffc230324939e80ddb00b98f892a5951c0da071e700",
+      "lastUpdated": "2025-01-28T03:30:26",
+      "url": "https://huggingface.co/BlinkDL/rwkv-7-world/blob/main/RWKV-x070-World-1.5B-v3-20250127-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-7-world/resolve/main/RWKV-x070-World-1.5B-v3-20250127-ctx4096.pth",
+      "tags": [
+        "Official",
+        "RWKV-7",
+        "Global",
+        "Recommended",
+        "CN",
+        "JP"
+      ]
+    },
+    {
+      "name": "RWKV-x070-World-2.9B-v3-20250211-ctx4096.pth",
+      "desc": {
+        "en": "RWKV-7 Global Languages 2.9B v3",
+        "zh": "RWKV-7 全球语言 2.9B v3",
+        "ja": "RWKV-7 グローバル言語 2.9B v3"
+      },
+      "size": 5895796446,
+      "SHA256": "5d7901b91ef1646115db03d03d171370bca454061ad426a1256fda9e1c428cf8",
+      "lastUpdated": "2025-02-10T19:05:00",
+      "url": "https://huggingface.co/BlinkDL/rwkv-7-world/blob/main/RWKV-x070-World-2.9B-v3-20250211-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv-7-world/resolve/main/RWKV-x070-World-2.9B-v3-20250211-ctx4096.pth",
+      "tags": [
+        "Official",
+        "RWKV-7",
+        "Global",
+        "Recommended",
+        "CN",
+        "JP"
+      ]
+    },
+    {
       "name": "RWKV-x060-World-1B6-v2.1-20240328-ctx4096.pth",
       "desc": {
         "en": "RWKV-6 Global Languages 1.6B v2.1",
@@ -51,7 +113,6 @@
         "Official",
         "RWKV-6",
         "Global",
-        "Recommended",
         "CN",
         "JP"
       ]
@@ -93,7 +154,6 @@
         "Official",
         "RWKV-6",
         "Global",
-        "Recommended",
         "CN",
         "JP"
       ]

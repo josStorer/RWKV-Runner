@@ -227,7 +227,7 @@ export const defaultModelConfigsMac: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'RWKV-x060-World-1B6-v2.1-20240328-ctx4096.pth',
+      modelName: 'RWKV-x070-World-1.5B-v3-20250127-ctx4096.pth',
       device: 'WebGPU',
       precision: 'nf4',
       storedLayers: 41,
@@ -245,7 +245,7 @@ export const defaultModelConfigsMac: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'RWKV-x060-World-3B-v2.1-20240417-ctx4096.pth',
+      modelName: 'RWKV-x070-World-2.9B-v3-20250211-ctx4096.pth',
       device: 'WebGPU',
       precision: 'nf4',
       storedLayers: 41,
@@ -263,7 +263,7 @@ export const defaultModelConfigsMac: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'RWKV-x060-World-3B-v2.1-20240417-ctx4096.pth',
+      modelName: 'RWKV-x070-World-2.9B-v3-20250211-ctx4096.pth',
       device: 'WebGPU',
       precision: 'nf4',
       storedLayers: 41,
@@ -353,7 +353,7 @@ export const defaultModelConfigsMac: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'RWKV-x060-World-1B6-v2.1-20240328-ctx4096.pth',
+      modelName: 'RWKV-x070-World-1.5B-v3-20250127-ctx4096.pth',
       device: 'MPS',
       precision: 'fp32',
       storedLayers: 41,
@@ -372,7 +372,7 @@ export const defaultModelConfigsMac: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'RWKV-x060-World-3B-v2.1-20240417-ctx4096.pth',
+      modelName: 'RWKV-x070-World-2.9B-v3-20250211-ctx4096.pth',
       device: 'MPS',
       precision: 'fp32',
       storedLayers: 41,
@@ -391,7 +391,7 @@ export const defaultModelConfigsMac: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'RWKV-x060-World-3B-v2.1-20240417-ctx4096.pth',
+      modelName: 'RWKV-x070-World-2.9B-v3-20250211-ctx4096.pth',
       device: 'MPS',
       precision: 'fp32',
       storedLayers: 41,
@@ -432,7 +432,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'RWKV-x060-World-1B6-v2.1-20240328-ctx4096.pth',
+      modelName: 'RWKV-x070-World-1.5B-v3-20250127-ctx4096.pth',
       device: 'CUDA',
       precision: 'int8',
       storedLayers: 41,
@@ -451,7 +451,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'RWKV-x060-World-3B-v2.1-20240417-ctx4096.pth',
+      modelName: 'RWKV-x070-World-2.9B-v3-20250211-ctx4096.pth',
       device: 'CUDA',
       precision: 'int8',
       storedLayers: 6,
@@ -470,7 +470,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'RWKV-x060-World-1B6-v2.1-20240328-ctx4096.pth',
+      modelName: 'RWKV-x070-World-1.5B-v3-20250127-ctx4096.pth',
       device: 'CUDA',
       precision: 'fp16',
       storedLayers: 41,
@@ -489,7 +489,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'RWKV-x060-World-3B-v2.1-20240417-ctx4096.pth',
+      modelName: 'RWKV-x070-World-2.9B-v3-20250211-ctx4096.pth',
       device: 'CUDA',
       precision: 'int8',
       storedLayers: 24,
@@ -508,7 +508,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'RWKV-x060-World-3B-v2.1-20240417-ctx4096.pth',
+      modelName: 'RWKV-x070-World-2.9B-v3-20250211-ctx4096.pth',
       device: 'CUDA',
       precision: 'int8',
       storedLayers: 24,
@@ -565,7 +565,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'RWKV-x060-World-3B-v2.1-20240417-ctx4096.pth',
+      modelName: 'RWKV-x070-World-2.9B-v3-20250211-ctx4096.pth',
       device: 'CUDA',
       precision: 'int8',
       storedLayers: 41,
@@ -584,7 +584,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'RWKV-x060-World-3B-v2.1-20240417-ctx4096.pth',
+      modelName: 'RWKV-x070-World-2.9B-v3-20250211-ctx4096.pth',
       device: 'CUDA',
       precision: 'int8',
       storedLayers: 41,
@@ -641,7 +641,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'RWKV-x060-World-3B-v2.1-20240417-ctx4096.pth',
+      modelName: 'RWKV-x070-World-2.9B-v3-20250211-ctx4096.pth',
       device: 'CUDA',
       precision: 'fp16',
       storedLayers: 41,
@@ -660,7 +660,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'RWKV-x060-World-3B-v2.1-20240417-ctx4096.pth',
+      modelName: 'RWKV-x070-World-2.9B-v3-20250211-ctx4096.pth',
       device: 'CUDA',
       precision: 'fp16',
       storedLayers: 41,
@@ -829,7 +829,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'RWKV-x060-World-1B6-v2.1-20240328-ctx4096.pth',
+      modelName: 'RWKV-x070-World-1.5B-v3-20250127-ctx4096.pth',
       device: 'WebGPU',
       precision: 'nf4',
       storedLayers: 41,
@@ -847,7 +847,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'RWKV-x060-World-3B-v2.1-20240417-ctx4096.pth',
+      modelName: 'RWKV-x070-World-2.9B-v3-20250211-ctx4096.pth',
       device: 'WebGPU',
       precision: 'nf4',
       storedLayers: 41,
@@ -865,7 +865,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'RWKV-x060-World-3B-v2.1-20240417-ctx4096.pth',
+      modelName: 'RWKV-x070-World-2.9B-v3-20250211-ctx4096.pth',
       device: 'WebGPU',
       precision: 'nf4',
       storedLayers: 41,
