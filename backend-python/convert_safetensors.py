@@ -63,6 +63,7 @@ def convert_file(pt_filename: str, sf_filename: str, rename={}, transpose_names=
                 if transpose_name in new_k:
                     dims = len(v.shape)
                     v = v.transpose(dims - 2, dims - 1)
+                    break
             print(f"{new_k}\t{v.shape}\t{v.dtype}")
             loaded[new_k] = {
                 "dtype": str(v.dtype).split(".")[-1],
@@ -102,6 +103,14 @@ if __name__ == "__main__":
                 "time_mix_w2",
                 "time_decay_w1",
                 "time_decay_w2",
+                "w1",
+                "w2",
+                "a1",
+                "a2",
+                "g1",
+                "g2",
+                "v1",
+                "v2",
                 "time_state",
                 "lora.0",
             ],

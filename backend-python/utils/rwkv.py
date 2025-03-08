@@ -645,7 +645,7 @@ def RWKV(model: str, strategy: str, tokenizer: Union[str, None]) -> AbstractRWKV
 
     filename, _ = os.path.splitext(os.path.basename(model_path))
     model = Model(model_path, strategy)
-    if model.version == 7:
+    if model.version == 7 and not rwkv_cpp and not webgpu:
         import sys
 
         sys.modules.pop("rwkv_pip.model")
