@@ -92,7 +92,7 @@ class CommonStore {
   } = {}
   currentTempAttachment: Attachment | null = null
   chatParams: ChatParams = {
-    maxResponseToken: 1000,
+    maxResponseToken: 2000,
     temperature: 1,
     topP: 0.3,
     presencePenalty: 0,
