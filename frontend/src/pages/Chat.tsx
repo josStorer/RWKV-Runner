@@ -235,6 +235,7 @@ const ChatMessageItem: FC<{
                 !commonStore.chatParams.markdown ||
                 messageItem.side === 'center'
               }
+              thinkEnded={messageItem.thinkingEnded}
             >
               {messageItem.sender.startsWith('call_') || messageItem.toolName
                 ? messageItem.sender +
@@ -913,6 +914,10 @@ const ChatPanel: FC = observer(() => {
       })
       let answer = ''
       let finished = false
+      // when answer sends <think> tag, we need to detect it
+      let detectingThinking = true
+      let hasThinking = false
+      let isThinkingEnded = false
       const finish = () => {
         finished = true
         if (answerId! in chatSseControllers)
@@ -1003,11 +1008,57 @@ const ChatPanel: FC = observer(() => {
                   tool_calls[0]?.function?.name
               }
 
-              if (!isToolCallAnswer)
-                answer += data.choices[0]?.delta?.content || ''
-              else if (tool_calls)
+              if (!isToolCallAnswer) {
+                const answerContent = data.choices[0]?.delta?.content
+                const thinkContent = data.choices[0]?.delta?.reasoning_content
+                if (detectingThinking) {
+                  if (!hasThinking && answer.trim().startsWith('<think>')) {
+                    hasThinking = true
+                  }
+                  if (
+                    !hasThinking &&
+                    answer.length > 10 &&
+                    !answer.trim().startsWith('<think>')
+                  ) {
+                    detectingThinking = false
+                    console.log('stop detecting thinking')
+                  }
+                  if (hasThinking) {
+                    if (answer.includes('\n\n</think>')) {
+                      detectingThinking = false
+                      isThinkingEnded = true
+                    } else if (answer.includes('</think>')) {
+                      answer = answer.replace('</think>', '\n\n</think>')
+                      detectingThinking = false
+                      isThinkingEnded = true
+                    }
+                  }
+                }
+                if (
+                  !hasThinking &&
+                  thinkContent !== undefined &&
+                  thinkContent !== null
+                ) {
+                  hasThinking = true
+                  detectingThinking = false
+                  answer += '<think>\n\n'
+                } else if (
+                  !detectingThinking &&
+                  hasThinking &&
+                  !isThinkingEnded &&
+                  answerContent !== undefined &&
+                  answerContent !== null
+                ) {
+                  isThinkingEnded = true
+                  answer += '\n\n</think>\n\n'
+                }
+                answer += answerContent || thinkContent || ''
+              } else if (tool_calls)
                 answer += tool_calls[0]?.function?.arguments || ''
               commonStore.conversation[answerId!].content = answer
+              commonStore.conversation[answerId!].thinking = hasThinking
+              commonStore.conversation[answerId!].thinkingEnded =
+                isThinkingEnded
               commonStore.setConversation(commonStore.conversation)
               commonStore.setConversationOrder([
                 ...commonStore.conversationOrder,

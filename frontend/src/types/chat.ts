@@ -22,6 +22,8 @@ export type MessageItem = {
   content: string
   side: Side
   done: boolean
+  thinking?: boolean
+  thinkingEnded?: boolean
 }
 export type Conversation = {
   [uuid: string]: MessageItem
