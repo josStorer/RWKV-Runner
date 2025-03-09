@@ -7,6 +7,7 @@ import { toast } from 'react-toastify'
 import { GetCmds, KillCmd } from '../../wailsjs/go/backend_golang/App'
 import cmdTaskChainStore from '../stores/cmdTaskChainStore'
 import commonStore from '../stores/commonStore'
+import { smartScrollHeight } from '../utils'
 
 const BottomLogger = observer(() => {
   const { t } = useTranslation()
@@ -28,7 +29,8 @@ const BottomLogger = observer(() => {
     if (
       current &&
       (force ||
-        current.scrollHeight - current.scrollTop - current.clientHeight < 50)
+        current.scrollHeight - current.scrollTop - current.clientHeight <
+          smartScrollHeight)
     ) {
       current.scrollTop = current.scrollHeight
     }

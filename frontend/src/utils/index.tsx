@@ -993,3 +993,5 @@ export function cmdInteractive(
   }
   return { stop, eventId } //TODO input
 }
+
+export const smartScrollHeight = 80

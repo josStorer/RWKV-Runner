@@ -56,7 +56,7 @@ import {
   LoraFinetunePrecision,
   TrainNavigationItem,
 } from '../types/train'
-import { checkDependencies, toastWithButton } from '../utils'
+import { checkDependencies, smartScrollHeight, toastWithButton } from '../utils'
 import { convertData, mergeLora } from '../utils/rwkv-task'
 
 ChartJS.register(
@@ -216,7 +216,8 @@ const TerminalDisplay: FC = observer(() => {
     if (
       current &&
       (force ||
-        current.scrollHeight - current.scrollTop - current.clientHeight < 50)
+        current.scrollHeight - current.scrollTop - current.clientHeight <
+          smartScrollHeight)
     )
       current.scrollTop = current.scrollHeight
   }

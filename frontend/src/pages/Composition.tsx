@@ -33,7 +33,12 @@ import { ValuedSlider } from '../components/ValuedSlider'
 import { WorkHeader } from '../components/WorkHeader'
 import commonStore, { ModelStatus } from '../stores/commonStore'
 import { CompositionParams } from '../types/composition'
-import { getReqUrl, getSoundFont, toastWithButton } from '../utils'
+import {
+  getReqUrl,
+  getSoundFont,
+  smartScrollHeight,
+  toastWithButton,
+} from '../utils'
 import { AudiotrackButton } from './AudiotrackManager/AudiotrackButton'
 import {
   defaultCompositionABCPrompt,
@@ -59,7 +64,8 @@ const CompositionPanel: FC = observer(() => {
     if (
       current &&
       (force ||
-        current.scrollHeight - current.scrollTop - current.clientHeight < 50)
+        current.scrollHeight - current.scrollTop - current.clientHeight <
+          smartScrollHeight)
     )
       current.scrollTop = current.scrollHeight
   }

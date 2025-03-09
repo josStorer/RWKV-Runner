@@ -18,7 +18,7 @@ import { ValuedSlider } from '../components/ValuedSlider'
 import { WorkHeader } from '../components/WorkHeader'
 import commonStore, { ModelStatus } from '../stores/commonStore'
 import { CompletionParams, CompletionPreset } from '../types/completion'
-import { getReqUrl } from '../utils'
+import { getReqUrl, smartScrollHeight } from '../utils'
 import { defaultPenaltyDecay, defaultPresets } from './defaultConfigs'
 import { PresetsButton } from './PresetsManager/PresetsButton'
 
@@ -36,7 +36,8 @@ const CompletionPanel: FC = observer(() => {
     if (
       current &&
       (force ||
-        current.scrollHeight - current.scrollTop - current.clientHeight < 50)
+        current.scrollHeight - current.scrollTop - current.clientHeight <
+          smartScrollHeight)
     )
       current.scrollTop = current.scrollHeight
   }

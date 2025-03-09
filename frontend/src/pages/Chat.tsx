@@ -67,6 +67,7 @@ import {
   newChatConversation,
   OpenFileDialog,
   setActivePreset,
+  smartScrollHeight,
   toastWithButton,
 } from '../utils'
 import { webOpenOpenFileDialog } from '../utils/web-file-operations'
@@ -743,7 +744,8 @@ const ChatPanel: FC = observer(() => {
     if (
       current &&
       (force ||
-        current.scrollHeight - current.scrollTop - current.clientHeight < 50)
+        current.scrollHeight - current.scrollTop - current.clientHeight <
+          smartScrollHeight)
     )
       current.scrollTop = current.scrollHeight
   }
