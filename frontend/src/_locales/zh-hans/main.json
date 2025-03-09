@@ -370,5 +370,11 @@
   "Tool Return Value": "工具返回值",
   "Tool Definition is not a valid JSON": "工具定义不是一个有效的JSON",
   "Current selected model may not support function call": "当前选择的模型可能不支持函数调用",
-  "Hello! How can I assist you today?": "你好！有什么我可以帮助你的吗？"
+  "Hello! How can I assist you today?": "你好！有什么我可以帮助你的吗？",
+  "Open Console": "打开控制台",
+  "Thinking Ended": "思考结束",
+  "Thinking...": "思考中...",
+  "Check Model File Exists": "检查模型文件存在",
+  "Check Model File Format Correct": "检查模型文件格式正确",
+  "Download File": "下载文件"
 }

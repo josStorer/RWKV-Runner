@@ -151,7 +151,7 @@ const BottomLogger = observer(() => {
           size="small"
           onClick={() => cmdTaskChainStore.setConsoleOpen(true)}
         >
-          {t('打开控制台')}
+          {t('Open Console')}
         </Button>
       )}
     </div>

@@ -52,7 +52,7 @@ const ThinkComponent: FC<any> = ({ node, children, ...props }) => {
       <Accordion collapsible defaultOpenItems={['default']}>
         <AccordionItem value="default">
           <AccordionHeader size="small">
-            {isEnded ? t('思考结束') : t('思考中...')}
+            {isEnded ? t('Thinking Ended') : t('Thinking...')}
           </AccordionHeader>
           <AccordionPanel>
             <div

@@ -65,7 +65,7 @@ const startWebGPUTaskChain = (modelName: string, modelConfig: ModelConfig) => {
     '',
     [
       {
-        name: t('检查模型文件存在')!,
+        name: t('Check Model File Exists')!,
         func: async (onOutput: OutputHandler) => {
           if (
             (!(await FileExists(pthModelPath)) ||
@@ -89,7 +89,7 @@ const startWebGPUTaskChain = (modelName: string, modelConfig: ModelConfig) => {
       },
       {
         id: 'check model file format',
-        name: t('检查模型文件格式正确')!,
+        name: t('Check Model File Format Correct')!,
         func: async (onOutput: OutputHandler) => {
           if (
             !(await FileExists(stModelPath1)) &&
@@ -121,7 +121,7 @@ const startWebGPUTaskChain = (modelName: string, modelConfig: ModelConfig) => {
     [
       {
         id: 'download file',
-        name: t('下载文件')!,
+        name: t('Download File')!,
         func: async (onOutput: OutputHandler) => {
           const downloadUrl = currentModelSource?.downloadUrl
           if (downloadUrl) {
