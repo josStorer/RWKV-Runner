@@ -23,12 +23,20 @@ const BottomLogger = observer(() => {
   const lines =
     activeTaskChain?.executeTaskInfo.flatMap((item) => item.lines) ?? []
 
-  const scrollToBottom = () => {
+  const scrollToBottom = (force: boolean = false) => {
     const current = scrollRef.current
-    if (current) {
+    if (
+      current &&
+      (force ||
+        current.scrollHeight - current.scrollTop - current.clientHeight < 50)
+    ) {
       current.scrollTop = current.scrollHeight
     }
   }
+
+  useEffect(() => {
+    scrollToBottom(true)
+  }, [])
 
   const copyLines = () => {
     const text = lines.join('\n')

@@ -714,7 +714,7 @@ const ChatPanel: FC = observer(() => {
 
   useEffect(() => {
     if (inputRef.current) inputRef.current.style.maxHeight = '16rem'
-    scrollToBottom()
+    scrollToBottom(true)
   }, [])
 
   useEffect(() => {
@@ -738,9 +738,14 @@ const ChatPanel: FC = observer(() => {
     }
   }, [])
 
-  const scrollToBottom = () => {
-    if (bodyRef.current)
-      bodyRef.current.scrollTop = bodyRef.current.scrollHeight
+  const scrollToBottom = (force: boolean = false) => {
+    const current = bodyRef.current
+    if (
+      current &&
+      (force ||
+        current.scrollHeight - current.scrollTop - current.clientHeight < 50)
+    )
+      current.scrollTop = current.scrollHeight
   }
 
   const handleKeyDownOrClick = (e: any) => {
@@ -901,7 +906,9 @@ const ChatPanel: FC = observer(() => {
       }
       commonStore.setConversation(commonStore.conversation)
       commonStore.setConversationOrder(commonStore.conversationOrder)
-      setTimeout(scrollToBottom)
+      setTimeout(() => {
+        scrollToBottom(true)
+      })
       let answer = ''
       let finished = false
       const finish = () => {

@@ -31,9 +31,14 @@ const CompletionPanel: FC = observer(() => {
     commonStore.autoConfigPort ||
     commonStore.getCurrentModelConfig().apiParameters.apiPort
 
-  const scrollToBottom = () => {
-    if (inputRef.current)
-      inputRef.current.scrollTop = inputRef.current.scrollHeight
+  const scrollToBottom = (force: boolean = false) => {
+    const current = inputRef.current
+    if (
+      current &&
+      (force ||
+        current.scrollHeight - current.scrollTop - current.clientHeight < 50)
+    )
+      current.scrollTop = current.scrollHeight
   }
 
   useEffect(() => {
@@ -41,7 +46,7 @@ const CompletionPanel: FC = observer(() => {
       inputRef.current.style.height = '100%'
       inputRef.current.style.maxHeight = '100%'
     }
-    scrollToBottom()
+    scrollToBottom(true)
   }, [])
 
   const setPreset = (preset: CompletionPreset) => {

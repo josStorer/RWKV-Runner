@@ -54,9 +54,14 @@ const CompositionPanel: FC = observer(() => {
   const visualizerRef = useRef<VisualizerElement>(null)
   const playerRef = useRef<PlayerElement>(null)
 
-  const scrollToBottom = () => {
-    if (inputRef.current)
-      inputRef.current.scrollTop = inputRef.current.scrollHeight
+  const scrollToBottom = (force: boolean = false) => {
+    const current = inputRef.current
+    if (
+      current &&
+      (force ||
+        current.scrollHeight - current.scrollTop - current.clientHeight < 50)
+    )
+      current.scrollTop = current.scrollHeight
   }
 
   const params = commonStore.compositionParams
@@ -96,7 +101,7 @@ const CompositionPanel: FC = observer(() => {
       inputRef.current.style.height = '100%'
       inputRef.current.style.maxHeight = '100%'
     }
-    scrollToBottom()
+    scrollToBottom(true)
 
     if (playerRef.current && visualizerRef.current) {
       playerRef.current.addVisualizer(visualizerRef.current)

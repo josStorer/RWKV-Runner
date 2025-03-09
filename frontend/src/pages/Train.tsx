@@ -31,6 +31,7 @@ import { ChartJSOrUndefined } from 'react-chartjs-2/dist/types'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 import { toast } from 'react-toastify'
+import { useUpdateEffect } from 'usehooks-ts'
 import {
   FileExists,
   GetPyError,
@@ -210,12 +211,21 @@ const addWslMessage = (message: string) => {
 const TerminalDisplay: FC = observer(() => {
   const bodyRef = useRef<HTMLDivElement>(null)
 
-  const scrollToBottom = () => {
-    if (bodyRef.current)
-      bodyRef.current.scrollTop = bodyRef.current.scrollHeight
+  const scrollToBottom = (force: boolean = false) => {
+    const current = bodyRef.current
+    if (
+      current &&
+      (force ||
+        current.scrollHeight - current.scrollTop - current.clientHeight < 50)
+    )
+      current.scrollTop = current.scrollHeight
   }
 
   useEffect(() => {
+    scrollToBottom(true)
+  }, [])
+
+  useUpdateEffect(() => {
     scrollToBottom()
   })
 
