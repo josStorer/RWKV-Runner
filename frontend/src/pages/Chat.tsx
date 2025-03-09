@@ -429,7 +429,7 @@ const SidePanel: FC = observer(() => {
               value={params.presencePenalty}
               min={0}
               max={2}
-              step={0.1}
+              step={0.01}
               input
               onChange={(e, data) => {
                 commonStore.setChatParams({
@@ -451,7 +451,7 @@ const SidePanel: FC = observer(() => {
               value={params.frequencyPenalty}
               min={0}
               max={2}
-              step={0.1}
+              step={0.01}
               input
               onChange={(e, data) => {
                 commonStore.setChatParams({

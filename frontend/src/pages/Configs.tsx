@@ -417,7 +417,7 @@ const Configs: FC = observer(() => {
                                 }
                                 min={-2}
                                 max={2}
-                                step={0.1}
+                                step={0.01}
                                 input
                                 onChange={(e, data) => {
                                   setSelectedConfigApiParams({
@@ -439,7 +439,7 @@ const Configs: FC = observer(() => {
                                 }
                                 min={-2}
                                 max={2}
-                                step={0.1}
+                                step={0.01}
                                 input
                                 onChange={(e, data) => {
                                   setSelectedConfigApiParams({
