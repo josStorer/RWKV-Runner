@@ -369,5 +369,6 @@
   "Tool Definition": "工具定义",
   "Tool Return Value": "工具返回值",
   "Tool Definition is not a valid JSON": "工具定义不是一个有效的JSON",
-  "Current selected model may not support function call": "当前选择的模型可能不支持函数调用"
+  "Current selected model may not support function call": "当前选择的模型可能不支持函数调用",
+  "Hello! How can I assist you today?": "你好！有什么我可以帮助你的吗？"
 }

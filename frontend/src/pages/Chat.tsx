@@ -729,10 +729,8 @@ const ChatPanel: FC = observer(() => {
           time: new Date().toISOString(),
           content:
             commonStore.platform === 'web'
-              ? t('Hello, what can I do for you?')
-              : t(
-                  "Hello! I'm RWKV, an open-source and commercially usable large language model."
-                ),
+              ? t('Hello! How can I assist you today?')
+              : t('Hello! How can I assist you today?'),
           side: 'left',
           done: true,
         },
