@@ -144,14 +144,14 @@ const App: FC = observer(() => {
             ))}
           </Routes>
         </div>
-        {!isWeb && (
-          <div className="absolute bottom-0">
-            <LazyImportComponent
-              lazyChildren={lazy(() => import('./components/BottomLogger'))}
-              disableFallback
-            />
-          </div>
-        )}
+        {/*{!isWeb && (*/}
+        {/*  <div className="absolute bottom-0">*/}
+        {/*    <LazyImportComponent*/}
+        {/*      lazyChildren={lazy(() => import('./components/BottomLogger'))}*/}
+        {/*      disableFallback*/}
+        {/*    />*/}
+        {/*  </div>*/}
+        {/*)}*/}
       </div>
       <CustomToastContainer />
       <DebugModeIndicator />

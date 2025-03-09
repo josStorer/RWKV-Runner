@@ -10,6 +10,8 @@ import {
   AddToDownloadList,
   FileExists,
   IsPortAvailable,
+  StartServer,
+  StartWebGPUServer,
 } from '../../wailsjs/go/backend_golang/App'
 import { WindowShow } from '../../wailsjs/runtime'
 import { exit, getStatus, readRoot, switchModel, updateConfig } from '../apis'
@@ -171,19 +173,19 @@ export const RunButton: FC<{
         return
       }
 
-      if (webgpu) {
-        try {
-          await startWebGPUTaskChain(modelName, modelConfig)
-        } catch (e: any) {
-          toast(t('Failed to start WebGPU server') + ' - ' + (e.message || e), {
-            type: 'error',
-          })
-          commonStore.setStatus({ status: ModelStatus.Offline })
-          return
-        }
-        commonStore.setStatus({ status: ModelStatus.Working })
-        return
-      }
+      // if (webgpu) {
+      //   try {
+      //     await startWebGPUTaskChain(modelName, modelConfig)
+      //   } catch (e: any) {
+      //     toast(t('Failed to start WebGPU server') + ' - ' + (e.message || e), {
+      //       type: 'error',
+      //     })
+      //     commonStore.setStatus({ status: ModelStatus.Offline })
+      //     return
+      //   }
+      //   commonStore.setStatus({ status: ModelStatus.Working })
+      //   return
+      // }
 
       const currentModelSource = commonStore.modelSourceList.find(
         (item) => item.name === modelName
@@ -333,28 +335,21 @@ export const RunButton: FC<{
         }
       }
 
-      const startServerInner = webgpu
+      const startServer = webgpu
         ? (_: string, port: number, host: string) =>
-            startWebGPUServer(port, host)
-        : startServer
+            StartWebGPUServer(port, host)
+        : StartServer
       const isUsingCudaBeta = modelConfig.modelParameters.device === 'CUDA-Beta'
 
-      const id = cmdTaskChainStore.newTaskChain('', [
-        {
-          name: t('启动服务器')!,
-          func: startServerInner,
-          args: [
-            commonStore.settings.customPythonPath,
-            port,
-            commonStore.settings.host !== '127.0.0.1' ? '0.0.0.0' : '127.0.0.1',
-            !!modelConfig.enableWebUI,
-            isUsingCudaBeta,
-            cpp,
-            webgpuPython,
-          ],
-        },
-      ])
-      cmdTaskChainStore.startTaskChain(id).catch((e) => {
+      startServer(
+        commonStore.settings.customPythonPath,
+        port,
+        commonStore.settings.host !== '127.0.0.1' ? '0.0.0.0' : '127.0.0.1',
+        !!modelConfig.enableWebUI,
+        isUsingCudaBeta,
+        cpp,
+        webgpuPython
+      ).catch((e) => {
         const errMsg = e.message || e
         if (errMsg.includes('path contains space'))
           toast(`${t('Error')} - ${t('File Path Cannot Contain Space')}`, {

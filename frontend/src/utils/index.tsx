@@ -14,6 +14,7 @@ import {
   DepCheck,
   GetCmds,
   GetProxyPort,
+  InstallPyDep,
   IsPortAvailable,
   KillCmd,
   ListDirFiles,
@@ -652,17 +653,10 @@ export const checkDependencies = async (navigate: NavigateFunction) => {
               ),
               t('Install'),
               () => {
-                const id = cmdTaskChainStore.newTaskChain('', [
-                  {
-                    name: t('安装Python依赖')!,
-                    func: installPyDep,
-                    args: [
-                      commonStore.settings.customPythonPath,
-                      commonStore.settings.cnMirror,
-                    ],
-                  },
-                ])
-                cmdTaskChainStore.startTaskChain(id).catch((e) => {
+                InstallPyDep(
+                  commonStore.settings.customPythonPath,
+                  commonStore.settings.cnMirror
+                ).catch((e) => {
                   const errMsg = e.message || e
                   toast(t('Error') + ' - ' + errMsg, { type: 'error' })
                 })

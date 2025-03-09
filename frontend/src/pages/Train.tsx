@@ -33,8 +33,10 @@ import { useNavigate } from 'react-router'
 import { toast } from 'react-toastify'
 import { useUpdateEffect } from 'usehooks-ts'
 import {
+  ConvertData,
   FileExists,
   GetPyError,
+  MergeLora,
   OpenFileFolder,
   WslCommand,
   WslEnable,
@@ -557,21 +559,13 @@ const LoraFinetune: FC = observer(() => {
                         .split(/[\/\\]/)
                         .pop()!
                         .split('.')[0]
-                    const id = cmdTaskChainStore.newTaskChain('', [
-                      {
-                        name: t('转换数据')!,
-                        func: convertData,
-                        args: [
-                          commonStore.settings.customPythonPath,
-                          dataParams.dataPath.replaceAll('\\', '/'),
-                          outputPrefix,
-                          dataParams.vocabPath,
-                        ],
-                      },
-                    ])
-                    cmdTaskChainStore
-                      .startTaskChain(id)
-                      .then(async (success) => {
+                    ConvertData(
+                      commonStore.settings.customPythonPath,
+                      dataParams.dataPath.replaceAll('\\', '/'),
+                      outputPrefix,
+                      dataParams.vocabPath
+                    )
+                      .then(async () => {
                         if (
                           !(await FileExists(
                             outputPrefix + '_text_document.idx'
@@ -661,23 +655,15 @@ const LoraFinetune: FC = observer(() => {
                   if (!ok) return
                   if (loraParams.loraLoad) {
                     const outputPath = `models/${loraParams.baseModel}-LoRA-${loraParams.loraLoad}`
-                    const id = cmdTaskChainStore.newTaskChain('', [
-                      {
-                        name: t('合并模型')!,
-                        func: mergeLora,
-                        args: [
-                          commonStore.settings.customPythonPath,
-                          !!commonStore.monitorData &&
-                            commonStore.monitorData.totalVram !== 0,
-                          loraParams.loraAlpha,
-                          'models/' + loraParams.baseModel,
-                          'lora-models/' + loraParams.loraLoad,
-                          outputPath,
-                        ],
-                      },
-                    ])
-                    cmdTaskChainStore
-                      .startTaskChain(id)
+                    MergeLora(
+                      commonStore.settings.customPythonPath,
+                      !!commonStore.monitorData &&
+                        commonStore.monitorData.totalVram !== 0,
+                      loraParams.loraAlpha,
+                      'models/' + loraParams.baseModel,
+                      'lora-models/' + loraParams.loraLoad,
+                      outputPath
+                    )
                       .then(async (success) => {
                         if (!(await FileExists(outputPath))) {
                           if (

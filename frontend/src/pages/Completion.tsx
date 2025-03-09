@@ -27,9 +27,7 @@ let completionSseController: AbortController | null = null
 const CompletionPanel: FC = observer(() => {
   const { t } = useTranslation()
   const inputRef = useRef<HTMLTextAreaElement>(null)
-  const port =
-    commonStore.autoConfigPort ||
-    commonStore.getCurrentModelConfig().apiParameters.apiPort
+  const port = commonStore.getCurrentModelConfig().apiParameters.apiPort
 
   const scrollToBottom = (force: boolean = false) => {
     const current = inputRef.current

@@ -947,4 +947,4 @@ const PageConfigs: FC = () => {
   )
 }
 
-export default PageConfigs
+export default Configs

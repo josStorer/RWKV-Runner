@@ -1,7 +1,14 @@
 import { t } from 'i18next'
 import { NavigateFunction } from 'react-router'
 import { toast } from 'react-toastify'
-import { FileExists, GetPyError } from '../../wailsjs/go/backend_golang/App'
+import {
+  ConvertGGML,
+  ConvertModel,
+  ConvertSafetensors,
+  ConvertSafetensorsWithPython,
+  FileExists,
+  GetPyError,
+} from '../../wailsjs/go/backend_golang/App'
 import { WindowShow } from '../../wailsjs/runtime'
 import cmdTaskChainStore from '../stores/cmdTaskChainStore'
 import commonStore from '../stores/commonStore'
@@ -44,21 +51,13 @@ export const convertModel = async (
     const strategy = getStrategy(selectedConfig)
     const newModelPath = modelPath + '-' + strategy.replace(/[:> *+]/g, '-')
     toast(t('Start Converting'), { autoClose: 2000, type: 'info' })
-    const id = cmdTaskChainStore.newTaskChain('', [
-      {
-        name: t('转换模型')!,
-        func: convertModelFunc,
-        args: [
-          commonStore.settings.customPythonPath,
-          modelPath,
-          strategy,
-          newModelPath,
-        ],
-      },
-    ])
-    cmdTaskChainStore
-      .startTaskChain(id)
-      .then(async (success) => {
+    ConvertModel(
+      commonStore.settings.customPythonPath,
+      modelPath,
+      strategy,
+      newModelPath
+    )
+      .then(async () => {
         if (!(await FileExists(newModelPath + '.pth'))) {
           toast(t('Convert Failed') + ' - ' + (await GetPyError()), {
             type: 'error',
@@ -102,22 +101,14 @@ export const convertToSt = async (
     const newModelPath = modelPath.replace(/\.pth$/, '.st')
     const convert = webgpuPython
       ? (input: string, output: string) =>
-          convertSafetensorsWithPython(
+          ConvertSafetensorsWithPython(
             commonStore.settings.customPythonPath,
             input,
             output
           )
-      : convertSafetensors
-    const id = cmdTaskChainStore.newTaskChain('', [
-      {
-        name: t('转换模型')!,
-        func: convert,
-        args: [modelPath, newModelPath],
-      },
-    ])
-    cmdTaskChainStore
-      .startTaskChain(id)
-      .then(async (success) => {
+      : ConvertSafetensors
+    convert(modelPath, newModelPath)
+      .then(async () => {
         if (!(await FileExists(newModelPath))) {
           if (
             commonStore.platform === 'windows' ||
@@ -161,21 +152,13 @@ export const convertToGGML = async (
     const precision: Precision =
       selectedConfig.modelParameters.precision === 'Q5_1' ? 'Q5_1' : 'fp16'
     const newModelPath = modelPath.replace(/\.pth$/, `-${precision}.bin`)
-    const id = cmdTaskChainStore.newTaskChain('', [
-      {
-        name: t('转换模型')!,
-        func: convertGGML,
-        args: [
-          commonStore.settings.customPythonPath,
-          modelPath,
-          newModelPath,
-          precision === 'Q5_1',
-        ],
-      },
-    ])
-    cmdTaskChainStore
-      .startTaskChain(id)
-      .then(async (success) => {
+    ConvertGGML(
+      commonStore.settings.customPythonPath,
+      modelPath,
+      newModelPath,
+      precision === 'Q5_1'
+    )
+      .then(async () => {
         if (!(await FileExists(newModelPath))) {
           if (
             commonStore.platform === 'windows' ||
