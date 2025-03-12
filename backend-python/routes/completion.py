@@ -365,7 +365,8 @@ def chat_template(
 
     system = "System" if body.system_name is None else body.system_name
     tool = "Observation"
-    for message in body.messages:
+    assistant_prefix_mode = False
+    for i, message in enumerate(body.messages):
         append_message: str = ""
         if message.role == Role.User.value:
             append_message = f"{user}{interface} " + message.content
@@ -386,8 +387,18 @@ def chat_template(
             append_message = f"{system}{interface} " + message.content
         elif message.role == Role.Tool.value:
             append_message = f"{tool}{interface} " + message.content
-        completion_text += append_message + "\n\n"
-    completion_text += f"{bot}{interface}"
+
+        if (
+            message.role == Role.Assistant.value
+            and message.prefix
+            and i == len(body.messages) - 1
+        ):
+            assistant_prefix_mode = True
+        completion_text += append_message + (
+            "\n\n" if not assistant_prefix_mode else ""
+        )
+    if not assistant_prefix_mode:
+        completion_text += f"{bot}{interface}"
     return completion_text
 
 
