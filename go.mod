@@ -9,7 +9,7 @@ require (
 	github.com/minio/selfupdate v0.6.0
 	github.com/nyaosorg/go-windows-su v0.2.1
 	github.com/ubuntu/gowsl v0.0.0-20230615094051-94945650cc1e
-	github.com/wailsapp/wails/v2 v2.10.1
+	github.com/wailsapp/wails/v2 v2.9.2
 	golang.org/x/text v0.22.0
 )
 
