@@ -32,6 +32,7 @@ export type Role = 'assistant' | 'user' | 'system' | 'tool'
 export type ConversationMessage = {
   role: Role
   content: string
+  prefix?: boolean
   tool_call_id?: string
   tool_calls?: Array<{
     id: string

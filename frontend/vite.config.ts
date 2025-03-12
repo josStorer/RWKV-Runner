@@ -25,6 +25,7 @@ const vendor = [
 const embedded = [
   // split @fluentui/react-components by components
   '@fluentui/react-components',
+  '@tabler/icons-react',
 
   // dependencies that exist in single component
   'react-beautiful-dnd',
@@ -64,6 +65,12 @@ export default defineConfig({
       promiseImportName: (i) => `__tla_${i}`,
     }),
   ],
+  resolve: {
+    alias: {
+      // /esm/icons/index.mjs only exports the icons statically, so no separate chunks are created
+      '@tabler/icons-react': '@tabler/icons-react/dist/esm/icons/index.mjs',
+    },
+  },
   build: {
     chunkSizeWarningLimit: 3000,
     rollupOptions: {

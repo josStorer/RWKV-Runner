@@ -84,6 +84,7 @@ class CommonStore {
   currentInput: string = ''
   conversation: Conversation = {}
   conversationOrder: string[] = []
+  deepThink: boolean = false
   activePreset: Preset | null = null
   activePresetIndex: number = -1
   attachmentUploading: boolean = false
@@ -376,6 +377,10 @@ class CommonStore {
 
   setCurrentInput(value: string) {
     this.currentInput = value
+  }
+
+  setDeepThink(value: boolean) {
+    this.deepThink = value
   }
 
   setAdvancedCollapsed(value: boolean) {

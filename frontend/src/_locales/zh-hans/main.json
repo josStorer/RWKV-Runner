@@ -376,5 +376,7 @@
   "Thinking...": "思考中...",
   "Check Model File Exists": "检查模型文件存在",
   "Check Model File Format Correct": "检查模型文件格式正确",
-  "Download File": "下载文件"
+  "Download File": "下载文件",
+  "Force Enable Deep Think, Currently Only DeepSeek API and RWKV Runner Server Support": "强制启用深度思考, 目前仅 DeepSeek API 及 RWKV Runner 服务器支持",
+  "DeepThink": "深度思考"
 }

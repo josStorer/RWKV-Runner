@@ -30,6 +30,7 @@ import {
   SyncIcon,
   TrashIcon,
 } from '@primer/octicons-react'
+import { IconAtom } from '@tabler/icons-react'
 import classnames from 'classnames'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
@@ -819,7 +820,7 @@ const ChatPanel: FC = observer(() => {
         endIndex
       )
 
-      const messages: ConversationMessage[] = []
+      let messages: ConversationMessage[] = []
       targetRange.forEach((uuid, index) => {
         if (uuid === welcomeUuid) return
         const messageItem = commonStore.conversation[uuid]
@@ -892,6 +893,14 @@ const ChatPanel: FC = observer(() => {
           return
         }
       }
+      messages = messages.slice(-commonStore.chatParams.historyN)
+      if (commonStore.deepThink) {
+        messages.push({
+          role: 'assistant',
+          content: '<think>',
+          prefix: true,
+        })
+      }
 
       if (answerId === null) {
         answerId = uuid()
@@ -912,7 +921,7 @@ const ChatPanel: FC = observer(() => {
       setTimeout(() => {
         scrollToBottom(true)
       })
-      let answer = ''
+      let answer = commonStore.deepThink ? '<think>\n' : ''
       let finished = false
       // when answer sends <think> tag, we need to detect it
       let detectingThinking = true
@@ -953,7 +962,7 @@ const ChatPanel: FC = observer(() => {
             ...headers,
           },
           body: JSON.stringify({
-            messages: messages.slice(-commonStore.chatParams.historyN),
+            messages,
             stream: true,
             model: commonStore.settings.apiChatModelName, // 'gpt-3.5-turbo'
             max_tokens: commonStore.chatParams.maxResponseToken,
@@ -1179,7 +1188,20 @@ const ChatPanel: FC = observer(() => {
               onChange={(e) => commonStore.setCurrentInput(e.target.value)}
               onKeyDown={handleKeyDownOrClick}
             />
-            <div className="absolute bottom-2 right-2">
+            <div className="absolute bottom-1 left-2">
+              <ToolTipButton
+                desc={t(
+                  'Force Enable Deep Think, Currently Only DeepSeek API and RWKV Runner Server Support'
+                )}
+                icon={<IconAtom size={16} stroke={1.5} />}
+                size="small"
+                shape="circular"
+                appearance={commonStore.deepThink ? 'primary' : 'secondary'}
+                text={t('DeepThink')}
+                onClick={() => commonStore.setDeepThink(!commonStore.deepThink)}
+              />
+            </div>
+            <div className="absolute bottom-1 right-2">
               {!commonStore.currentTempAttachment ? (
                 <ToolTipButton
                   desc={
