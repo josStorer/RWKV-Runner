@@ -226,10 +226,6 @@ const TerminalDisplay: FC = observer(() => {
 
   useEffect(() => {
     scrollToBottom(true)
-  }, [])
-
-  useUpdateEffect(() => {
-    scrollToBottom()
   })
 
   return (
