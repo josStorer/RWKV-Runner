@@ -83,6 +83,15 @@ def write_state_dict(
                     )
                 except KeyError:
                     state_dict_new[f"blocks.{l}.att.x_rwkvag"] = state_dict[k]
+            elif any(
+                s in k 
+                for s in [
+                    "blocks.0.att.v0",
+                    "blocks.0.att.v1",
+                    "blocks.0.att.v2",
+                ]
+            ):
+                continue
             else:
                 state_dict_new[k] = state_dict[k]
 
