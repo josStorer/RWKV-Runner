@@ -370,5 +370,14 @@
   "Tool Return Value": "ツールの戻り値",
   "Tool Definition is not a valid JSON": "ツール定義が有効なJSONではありません",
   "Current selected model may not support function call": "現在選択されているモデルは、関数呼び出しをサポートしていない可能性があります",
-  "Hello! How can I assist you today?": "こんにちは！今日はどんなお手伝いをしましょうか？"
+  "Hello! How can I assist you today?": "こんにちは！今日はどんなお手伝いをしましょうか？",
+  "Open Console": "コンソールを開く",
+  "Thinking Ended": "思考終了",
+  "Thinking...": "思考中...",
+  "Check Model File Exists": "モデルファイルの存在を確認",
+  "Check Model File Format Correct": "モデルファイルの形式が正しいか確認",
+  "Download File": "ファイルをダウンロード",
+  "Force Enable Deep Think, Currently Only DeepSeek API and RWKV Runner Server Support": "深い思考を強制的に有効化、現在はDeepSeek APIとRWKV Runnerサーバーのみサポート",
+  "DeepThink": "深い思考",
+  "Reasoning": "推論思考"
 }

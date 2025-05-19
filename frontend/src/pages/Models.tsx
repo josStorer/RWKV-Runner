@@ -192,6 +192,7 @@ const getTags = () => {
   return Array.from(
     new Set([
       'Recommended',
+      'Reasoning',
       'Official',
       ...commonStore.modelSourceList
         .filter((item) => !item.hide || item.isComplete)

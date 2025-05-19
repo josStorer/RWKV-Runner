@@ -77,6 +77,28 @@
       ]
     },
     {
+      "name": "rwkv7-g1-1.5b-20250429-ctx4096.pth",
+      "desc": {
+        "en": "RWKV-7 Global Languages 1.5B Reasoning Model",
+        "zh": "RWKV-7 全球语言 1.5B 推理思考模型",
+        "ja": "RWKV-7 グローバル言語 1.5B 推論思考モデル"
+      },
+      "size": 3055445649,
+      "SHA256": "3a5ad5596ee90fd2eb98dfb946b7b6be30576dc973ac664a44e8e87a8c53f958",
+      "lastUpdated": "2025-04-29T05:07:05",
+      "url": "https://huggingface.co/BlinkDL/rwkv7-g1/blob/main/rwkv7-g1-1.5b-20250429-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv7-g1/resolve/main/rwkv7-g1-1.5b-20250429-ctx4096.pth",
+      "tags": [
+        "Official",
+        "RWKV-7",
+        "Global",
+        "Recommended",
+        "Reasoning",
+        "CN",
+        "JP"
+      ]
+    },
+    {
       "name": "RWKV-x070-World-2.9B-v3-20250211-ctx4096.pth",
       "desc": {
         "en": "RWKV-7 Global Languages 2.9B v3",
@@ -372,7 +394,8 @@
         "Official",
         "RWKV-5",
         "Global"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-5-World-0.4B-v2-20231113-ctx4096.pth",
@@ -1669,7 +1692,8 @@
         "Official",
         "RWKV-4",
         "Music"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-4-MIDI-560M-v1-20230717-ctx4096.pth",
@@ -1687,7 +1711,8 @@
         "Official",
         "RWKV-4",
         "Music"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-4-ABC-82M-v1-20230805-ctx1024.pth",
@@ -1705,7 +1730,8 @@
         "Official",
         "RWKV-4",
         "Music"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-5-MIDI-120M-v1-20230728-ctx4096.pth",
