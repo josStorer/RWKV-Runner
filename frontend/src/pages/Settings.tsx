@@ -171,9 +171,10 @@ export const AdvancedGeneralSettings: FC = observer(() => {
               }}
             >
               <Option value="">{t('Localhost')!}</Option>
-              <Option value="https://rwkv.ai-creator.net/chntuned">RWKV</Option>
-              <Option value="https://api.openai.com">OpenAI</Option>
               <Option value="http://localhost:11434">Ollama</Option>
+              <Option value="https://api.openai.com">OpenAI</Option>
+              <Option value="https://openrouter.ai/api">OpenRouter</Option>
+              <Option value="https://api.deepseek.com/beta">DeepSeek</Option>
             </Dropdown>
           </div>
         }
@@ -225,14 +226,23 @@ export const AdvancedGeneralSettings: FC = observer(() => {
             >
               {[
                 'rwkv',
-                'gpt-4-1106-preview',
-                'gpt-4',
-                'gpt-4-32k',
-                'gpt-4-0613',
-                'gpt-4-32k-0613',
-                'gpt-3.5-turbo-1106',
                 'gpt-3.5-turbo',
-                'gpt-3.5-turbo-16k',
+                'gpt-4.1',
+                'o4-mini',
+                'o3',
+                'gpt-4o',
+                'google/gemini-2.5-pro-preview',
+                'anthropic/claude-3.7-sonnet',
+                'anthropic/claude-3.7-sonnet:thinking',
+                'openai/gpt-4o-mini',
+                'openai/gpt-3.5-turbo-1106',
+                'openai/gpt-4.1',
+                'openai/o4-mini',
+                'meta-llama/llama-3.3-8b-instruct:free',
+                'qwen/qwen3-32b',
+                'qwen/qwen3-235b-a22b',
+                'deepseek-chat',
+                'deepseek-reasoner',
               ].map((v, i) => (
                 <Option key={i} value={v}>
                   {v}
@@ -271,16 +281,7 @@ export const AdvancedGeneralSettings: FC = observer(() => {
                 }
               }}
             >
-              {[
-                'rwkv',
-                'gpt-3.5-turbo-instruct',
-                'text-davinci-003',
-                'text-davinci-002',
-                'code-davinci-002',
-                'text-curie-001',
-                'text-babbage-001',
-                'text-ada-001',
-              ].map((v, i) => (
+              {['rwkv', 'gpt-3.5-turbo-instruct'].map((v, i) => (
                 <Option key={i} value={v}>
                   {v}
                 </Option>
