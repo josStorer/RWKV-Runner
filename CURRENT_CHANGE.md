@@ -1,12 +1,10 @@
 ## Changes
 
-- deepseek compatible prefix mode api support
-- add deepthink toggle button
-- chores
-
-The image below shows the effect of RWKV7-G1 1.5B model trained to 16% completion. The results may not be optimal as it's mainly for demonstrating the API server and UI functionality.
-
-![image](https://github.com/user-attachments/assets/0890d491-9379-4b8d-ba2d-fde5fb2ee48e)
+- bump rwkv pip (improve VRAM usage when using rwkv7)
+- the reasoning model renderer no longer modifies the original response's `<think>` tags, but only processes them during the rendering process, and fixes the issue where markdown was not correctly rendered when rendering the `<think>` tags in certain cases
+- update the shortcut API list and model list in the settings, add OpenRouter and DeepSeek, and update the list with the most commonly used models at present
+- update manifest (add rwkv7-g1 reasoning model)
+- add `make devq` command to improve the startup and reload speed during project development. Requires `go install github.com/josStorer/wails/v2/cmd/wails@v2.9.2x`
 
 Note: If you encounter WebView2 crash issues, please try opening the Windows Settings, click on Apps, search for
 WebView2, click Modify -> Repair to update your WebView2 runtime.
