@@ -244,7 +244,9 @@ const ChatMessageItem: FC<{
                   messageItem.toolName +
                   ': ' +
                   messageItem.content
-                : messageItem.content}
+                : messageItem.thinkingEnded
+                  ? messageItem.content.replace('</think>', '\n\n</think>\n\n')
+                  : messageItem.content}
             </MarkdownRender>
             {uuid in commonStore.attachments && (
               <div className="flex grow">
@@ -1033,11 +1035,7 @@ const ChatPanel: FC = observer(() => {
                     console.log('stop detecting thinking')
                   }
                   if (hasThinking) {
-                    if (answer.includes('\n\n</think>')) {
-                      detectingThinking = false
-                      isThinkingEnded = true
-                    } else if (answer.includes('</think>')) {
-                      answer = answer.replace('</think>', '\n\n</think>')
+                    if (answer.includes('</think>')) {
                       detectingThinking = false
                       isThinkingEnded = true
                     }
@@ -1050,7 +1048,7 @@ const ChatPanel: FC = observer(() => {
                 ) {
                   hasThinking = true
                   detectingThinking = false
-                  answer += '<think>\n\n'
+                  answer += '<think>\n'
                 } else if (
                   !detectingThinking &&
                   hasThinking &&
@@ -1059,7 +1057,7 @@ const ChatPanel: FC = observer(() => {
                   answerContent !== null
                 ) {
                   isThinkingEnded = true
-                  answer += '\n\n</think>\n\n'
+                  answer += '\n</think>\n\n'
                 }
                 answer += answerContent || thinkContent || ''
               } else if (tool_calls)
