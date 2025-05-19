@@ -30,6 +30,10 @@ build-web:
 dev:
 	wails dev
 
+# go install github.com/josStorer/wails/v2/cmd/wails@v2.9.2x
+devq:
+	wails dev -s -m -skipembedcreate -skipbindings
+
 dev-web:
 	cd frontend && npm run dev
 
