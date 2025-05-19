@@ -80,7 +80,7 @@ jobs:
       - run: gh release upload ${{github.ref_name}} build/bin/RWKV-Runner_windows_x64.exe build/bin/RWKV-Runner-amd64-installer.exe
 
   linux:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: create-draft
     steps:
       - uses: actions/checkout@v4
