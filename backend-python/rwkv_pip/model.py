@@ -366,20 +366,22 @@ if os.environ.get("RWKV_V7_ON") == "1":
 
             if not args.MODEL_NAME.endswith(".pth"):
                 args.MODEL_NAME += ".pth"
-            self.z = torch.load(args.MODEL_NAME, map_location=DEVICE)
-            z = self.z
-            self.w = self.z
+            temp_z = torch.load(args.MODEL_NAME, map_location="cpu")
             self.version = 7
 
-            self.n_head, self.head_size = z["blocks.0.att.r_k"].shape
+            self.n_head, self.head_size = temp_z["blocks.0.att.r_k"].shape
             args.head_size = self.head_size
-            args.vocab_size, args.n_embd = z["emb.weight"].shape
+            args.vocab_size, args.n_embd = temp_z["emb.weight"].shape
 
             args.n_layer = 0
-            keys = list(z.keys())
+            keys = list(temp_z.keys())
+            self.z = {}
+            self.w = self.z
+
             for k in keys:
                 layer_id = int(k.split(".")[1]) if ("blocks." in k) else 0
                 args.n_layer = max(args.n_layer, layer_id + 1)
+                tensor = temp_z[k]
                 if (
                     "key.weight" in k
                     or "value.weight" in k
@@ -387,23 +389,34 @@ if os.environ.get("RWKV_V7_ON") == "1":
                     or "output.weight" in k
                     or "head.weight" in k
                 ):
-                    z[k] = z[k].t()
-                z[k] = z[k].squeeze().to(dtype=DTYPE)
+                    tensor = tensor.t().contiguous()
+                tensor = tensor.squeeze()
                 if k.endswith("att.r_k"):
-                    z[k] = z[k].flatten()
+                    tensor = tensor.flatten()
+                self.z[k] = tensor.to(DEVICE).to(DTYPE)
+                del temp_z[k]
+                if keys.index(k) % 5 == 0:
+                    torch.cuda.empty_cache()
 
             self.n_embd = args.n_embd
             self.n_layer = args.n_layer
 
-            z["emb.weight"] = F.layer_norm(
-                z["emb.weight"],
+            self.z["emb.weight"] = F.layer_norm(
+                self.z["emb.weight"],
                 (args.n_embd,),
-                weight=z["blocks.0.ln0.weight"],
-                bias=z["blocks.0.ln0.bias"],
+                weight=self.z["blocks.0.ln0.weight"],
+                bias=self.z["blocks.0.ln0.bias"],
             )
-            z["blocks.0.att.v0"] = z["blocks.0.att.a0"]  # actually ignored
-            z["blocks.0.att.v1"] = z["blocks.0.att.a1"]  # actually ignored
-            z["blocks.0.att.v2"] = z["blocks.0.att.a2"]  # actually ignored
+            self.z["blocks.0.att.v0"] = torch.empty(
+                0, device=DEVICE, dtype=DTYPE
+            )  # actually ignored
+            self.z["blocks.0.att.v1"] = torch.empty(
+                0, device=DEVICE, dtype=DTYPE
+            )  # actually ignored
+            self.z["blocks.0.att.v2"] = torch.empty(
+                0, device=DEVICE, dtype=DTYPE
+            )  # actually ignored
+            torch.cuda.empty_cache()
 
         def forward(self, idx, state, full_output=False):
             if state == None:
