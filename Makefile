@@ -34,6 +34,9 @@ dev:
 devq:
 	wails dev -s -m -skipembedcreate -skipbindings
 
+devq2:
+	wails dev -s -m -skipembedcreate
+
 dev-web:
 	cd frontend && npm run dev
 
