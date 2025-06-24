@@ -2,6 +2,7 @@ import { ChartData } from 'chart.js'
 import i18n from 'i18next'
 import { makeAutoObservable } from 'mobx'
 import manifest from '../../../manifest.json'
+import { GetTorchVersion } from '../../wailsjs/go/backend_golang/App'
 import { WindowSetDarkTheme, WindowSetLightTheme } from '../../wailsjs/runtime'
 import {
   defaultCompositionPrompt,
@@ -72,6 +73,9 @@ class CommonStore {
   monitorData: MonitorData | null = null
   depComplete: boolean = false
   platform: Platform = 'windows'
+  cudaComputeCapability: string = ''
+  driverCudaVersion: string = ''
+  torchVersion: string = ''
   proxyPort: number = 0
   lastModelName: string = ''
   stateModels: string[] = []
@@ -369,6 +373,20 @@ class CommonStore {
 
   setPlatform(value: Platform) {
     this.platform = value
+  }
+
+  setCudaComputeCapability(value: string) {
+    this.cudaComputeCapability = value
+  }
+
+  setDriverCudaVersion(value: string) {
+    this.driverCudaVersion = value
+  }
+
+  refreshTorchVersion() {
+    GetTorchVersion(this.settings.customPythonPath).then((v) => {
+      this.torchVersion = v
+    })
   }
 
   setProxyPort(value: number) {

@@ -4,6 +4,7 @@ package backend_golang
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"os"
 	"os/exec"
 	"runtime"
@@ -221,13 +222,49 @@ func (a *App) MergeLora(python string, useGpu bool, loraAlpha int, baseModel str
 	return Cmd(args...)
 }
 
-func (a *App) InstallPyDep(python string, cnMirror bool) (string, error) {
+func (a *App) InstallTorch(python string, cnMirror bool, torchVersion string, cuSourceVersion string) (string, error) {
+	if runtime.GOOS != "windows" {
+		return "", errors.New("only support windows")
+	}
+
 	var err error
-	torchWhlUrl := "torch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 --index-url https://download.pytorch.org/whl/cu117"
+	cuSourceVersion = strings.Replace(cuSourceVersion, ".", "", 1)
+	torchWhlUrl := fmt.Sprintf("torch==%s --index-url https://download.pytorch.org/whl/cu%s", torchVersion, cuSourceVersion)
 	if python == "" {
 		python, err = a.GetPython()
 		if cnMirror && python == "py310/python.exe" {
-			torchWhlUrl = "https://mirrors.aliyun.com/pytorch-wheels/cu117/torch-1.13.1+cu117-cp310-cp310-win_amd64.whl"
+			torchWhlUrl = fmt.Sprintf("https://mirrors.aliyun.com/pytorch-wheels/cu%s/torch-%s+cu%s-cp310-cp310-win_amd64.whl", cuSourceVersion, torchVersion, cuSourceVersion)
+		}
+		if runtime.GOOS == "windows" {
+			python = `"%CD%/` + python + `"`
+		}
+	}
+	if err != nil {
+		return "", err
+	}
+
+	a.ChangeFileLine("./py310/python310._pth", 3, "Lib\\site-packages")
+	installScript := python + " ./backend-python/get-pip.py -i https://mirrors.aliyun.com/pypi/simple --no-warn-script-location\n" +
+		python + " -m pip install " + torchWhlUrl + " --no-warn-script-location\n" +
+		"exit"
+	if !cnMirror {
+		installScript = strings.Replace(installScript, " -i https://mirrors.aliyun.com/pypi/simple", "", -1)
+	}
+	err = os.WriteFile(a.exDir+"install-py-dep.bat", []byte(installScript), 0644)
+	if err != nil {
+		return "", err
+	}
+	return Cmd("install-py-dep.bat")
+}
+
+func (a *App) InstallPyDep(python string, cnMirror bool, torchVersion string, cuSourceVersion string) (string, error) {
+	var err error
+	cuSourceVersion = strings.Replace(cuSourceVersion, ".", "", 1)
+	torchWhlUrl := fmt.Sprintf("torch==%s --index-url https://download.pytorch.org/whl/cu%s", torchVersion, cuSourceVersion)
+	if python == "" {
+		python, err = a.GetPython()
+		if cnMirror && python == "py310/python.exe" {
+			torchWhlUrl = fmt.Sprintf("https://mirrors.aliyun.com/pytorch-wheels/cu%s/torch-%s+cu%s-cp310-cp310-win_amd64.whl", cuSourceVersion, torchVersion, cuSourceVersion)
 		}
 		if runtime.GOOS == "windows" {
 			python = `"%CD%/` + python + `"`

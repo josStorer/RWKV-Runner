@@ -36,6 +36,12 @@ export function GetAbsPath(arg1:string):Promise<string>;
 
 export function GetCmds():Promise<{[key: string]: Array<string>}>;
 
+export function GetCudaComputeCapability(arg1:number):Promise<string>;
+
+export function GetMaxCudaComputeCapability():Promise<string>;
+
+export function GetNvidiaGpuCount():Promise<number>;
+
 export function GetPlatform():Promise<string>;
 
 export function GetProxyPort():Promise<number>;
@@ -44,7 +50,13 @@ export function GetPyError():Promise<string>;
 
 export function GetPython():Promise<string>;
 
-export function InstallPyDep(arg1:string,arg2:boolean):Promise<string>;
+export function GetSupportedCudaVersion():Promise<string>;
+
+export function GetTorchVersion(arg1:string):Promise<string>;
+
+export function InstallPyDep(arg1:string,arg2:boolean,arg3:string,arg4:string):Promise<string>;
+
+export function InstallTorch(arg1:string,arg2:boolean,arg3:string,arg4:string):Promise<string>;
 
 export function IsCmdRunning(arg1:string):Promise<boolean>;
 

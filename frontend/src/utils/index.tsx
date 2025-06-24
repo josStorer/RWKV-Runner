@@ -54,6 +54,7 @@ import { ModelSourceItem } from '../types/models'
 import { Preset } from '../types/presets'
 import { Language, Languages, SettingsType } from '../types/settings'
 import { DataProcessParameters, LoraFinetuneParameters } from '../types/train'
+import { getAvailableTorchCuVersion } from './get-available-torch-cu-version'
 import { installPyDep } from './rwkv-task'
 
 export type Cache = {
@@ -653,9 +654,19 @@ export const checkDependencies = async (navigate: NavigateFunction) => {
               ),
               t('Install'),
               () => {
+                const { torchVersion, cuSourceVersion } =
+                  getAvailableTorchCuVersion(
+                    commonStore.cudaComputeCapability &&
+                      compare(commonStore.cudaComputeCapability, '9.0', '>=')
+                      ? '2.7.1'
+                      : '1.13.1',
+                    commonStore.driverCudaVersion || '11.7'
+                  )
                 InstallPyDep(
                   commonStore.settings.customPythonPath,
-                  commonStore.settings.cnMirror
+                  commonStore.settings.cnMirror,
+                  torchVersion,
+                  cuSourceVersion
                 ).catch((e) => {
                   const errMsg = e.message || e
                   toast(t('Error') + ' - ' + errMsg, { type: 'error' })

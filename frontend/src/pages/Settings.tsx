@@ -6,21 +6,37 @@ import {
   AccordionPanel,
   Dropdown,
   Input,
+  Label,
   Option,
   Switch,
 } from '@fluentui/react-components'
+import { compare } from 'compare-versions'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
-import { RestartApp } from '../../wailsjs/go/backend_golang/App'
+import {
+  GetTorchVersion,
+  InstallTorch,
+  RestartApp,
+} from '../../wailsjs/go/backend_golang/App'
 import { Labeled } from '../components/Labeled'
 import { Page } from '../components/Page'
 import commonStore from '../stores/commonStore'
 import { Language, Languages } from '../types/settings'
 import { checkUpdate, toastWithButton } from '../utils'
+import {
+  getAvailableTorchCuVersion,
+  torchVersions,
+} from '../utils/get-available-torch-cu-version'
 
 export const GeneralSettings: FC = observer(() => {
   const { t } = useTranslation()
+
+  useEffect(() => {
+    if (commonStore.platform === 'windows' && !commonStore.torchVersion) {
+      commonStore.refreshTorchVersion()
+    }
+  }, [])
 
   return (
     <div className="flex flex-col gap-2">
@@ -89,6 +105,63 @@ export const GeneralSettings: FC = observer(() => {
           }
         />
       )}
+      {commonStore.platform === 'windows' && (
+        <Labeled
+          label={t('Pytorch Version')}
+          flex
+          spaceBetween
+          content={
+            <Dropdown
+              style={{ minWidth: 0 }}
+              listbox={{ style: { minWidth: 'fit-content' } }}
+              value={commonStore.torchVersion || t('Not Installed')!}
+              selectedOptions={[
+                commonStore.torchVersion
+                  ? torchVersions.find((v) =>
+                      commonStore.torchVersion.includes(v)
+                    ) || ''
+                  : '',
+              ]}
+              onOptionSelect={(_, data) => {
+                const selectedVersion = data.optionValue
+                if (selectedVersion) {
+                  const isSelectingCurrent =
+                    commonStore.torchVersion.includes(selectedVersion)
+                  if (!isSelectingCurrent) {
+                    const { torchVersion, cuSourceVersion } =
+                      getAvailableTorchCuVersion(
+                        selectedVersion,
+                        commonStore.driverCudaVersion || '11.7'
+                      )
+                    InstallTorch(
+                      commonStore.settings.customPythonPath,
+                      commonStore.settings.cnMirror,
+                      torchVersion,
+                      cuSourceVersion
+                    )
+                      .then(() => {
+                        commonStore.refreshTorchVersion()
+                      })
+                      .catch((e) => {
+                        toast.error(e)
+                      })
+                  }
+                }
+              }}
+            >
+              {torchVersions.map((v) => (
+                <Option key={v} value={v}>
+                  {v}
+                </Option>
+              ))}
+            </Dropdown>
+          }
+        />
+      )}
+      {commonStore.platform === 'windows' &&
+        commonStore.cudaComputeCapability && (
+          <Label size="small">{`${t('Driver CUDA Version')}: ${commonStore.driverCudaVersion} - ${t('CUDA Compute Capability')}: ${commonStore.cudaComputeCapability}`}</Label>
+        )}
       <Labeled
         label={t('Dark Mode')}
         flex

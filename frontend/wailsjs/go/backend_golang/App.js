@@ -70,6 +70,18 @@ export function GetCmds() {
   return window['go']['backend_golang']['App']['GetCmds']();
 }
 
+export function GetCudaComputeCapability(arg1) {
+  return window['go']['backend_golang']['App']['GetCudaComputeCapability'](arg1);
+}
+
+export function GetMaxCudaComputeCapability() {
+  return window['go']['backend_golang']['App']['GetMaxCudaComputeCapability']();
+}
+
+export function GetNvidiaGpuCount() {
+  return window['go']['backend_golang']['App']['GetNvidiaGpuCount']();
+}
+
 export function GetPlatform() {
   return window['go']['backend_golang']['App']['GetPlatform']();
 }
@@ -86,8 +98,20 @@ export function GetPython() {
   return window['go']['backend_golang']['App']['GetPython']();
 }
 
-export function InstallPyDep(arg1, arg2) {
-  return window['go']['backend_golang']['App']['InstallPyDep'](arg1, arg2);
+export function GetSupportedCudaVersion() {
+  return window['go']['backend_golang']['App']['GetSupportedCudaVersion']();
+}
+
+export function GetTorchVersion(arg1) {
+  return window['go']['backend_golang']['App']['GetTorchVersion'](arg1);
+}
+
+export function InstallPyDep(arg1, arg2, arg3, arg4) {
+  return window['go']['backend_golang']['App']['InstallPyDep'](arg1, arg2, arg3, arg4);
+}
+
+export function InstallTorch(arg1, arg2, arg3, arg4) {
+  return window['go']['backend_golang']['App']['InstallTorch'](arg1, arg2, arg3, arg4);
 }
 
 export function IsCmdRunning(arg1) {

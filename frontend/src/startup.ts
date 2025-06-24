@@ -5,7 +5,10 @@ import { toast } from 'react-toastify'
 import manifest from '../../manifest.json'
 import {
   FileExists,
+  GetMaxCudaComputeCapability,
   GetPlatform,
+  GetSupportedCudaVersion,
+  GetTorchVersion,
   ListDirFiles,
   ReadJson,
 } from '../wailsjs/go/backend_golang/App'
@@ -75,6 +78,15 @@ export async function startup() {
       //   })
       // }
     })
+    setTimeout(() => {
+      GetMaxCudaComputeCapability().then((c) => {
+        commonStore.setCudaComputeCapability(c)
+      })
+      GetSupportedCudaVersion().then((v) => {
+        commonStore.setDriverCudaVersion(v)
+      })
+      commonStore.refreshTorchVersion()
+    }, 1000)
   }
 }
 
