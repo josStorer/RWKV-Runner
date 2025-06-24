@@ -420,6 +420,7 @@ export const RunButton: FC<{
               if (
                 (modelConfig.modelParameters.device.startsWith('CUDA') ||
                   modelConfig.modelParameters.device === 'Custom') &&
+                commonStore.customKernelSupported &&
                 modelConfig.modelParameters.useCustomCuda &&
                 !strategy
                   .split('->')

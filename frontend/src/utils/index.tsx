@@ -275,9 +275,10 @@ export const getStrategy = (
     case 'CUDA':
     case 'CUDA-Beta':
       if (avoidOverflow)
-        strategy = params.useCustomCuda
-          ? 'cuda fp16 *1 -> '
-          : 'cuda fp32 *1 -> '
+        strategy =
+          commonStore.customKernelSupported && params.useCustomCuda
+            ? 'cuda fp16 *1 -> '
+            : 'cuda fp32 *1 -> '
       strategy += 'cuda '
       strategy +=
         params.precision === 'int8'
@@ -657,7 +658,7 @@ export const checkDependencies = async (navigate: NavigateFunction) => {
                 const { torchVersion, cuSourceVersion } =
                   getAvailableTorchCuVersion(
                     commonStore.cudaComputeCapability &&
-                      compare(commonStore.cudaComputeCapability, '9.0', '>=')
+                      compare(commonStore.cudaComputeCapability, '8.6', '>')
                       ? '2.7.1'
                       : '1.13.1',
                     commonStore.driverCudaVersion || '11.7'

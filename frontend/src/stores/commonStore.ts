@@ -236,6 +236,10 @@ class CommonStore {
     makeAutoObservable(this)
   }
 
+  get customKernelSupported() {
+    return !this.torchVersion || this.torchVersion.includes('1.13.1')
+  }
+
   setAutoConfigPort(port?: number) {
     this.autoConfigPort = port
   }

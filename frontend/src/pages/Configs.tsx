@@ -815,7 +815,12 @@ const Configs: FC = observer(() => {
                       )}
                       content={
                         <Switch
-                          checked={selectedConfig.modelParameters.useCustomCuda}
+                          checked={
+                            commonStore.customKernelSupported
+                              ? selectedConfig.modelParameters.useCustomCuda
+                              : false
+                          }
+                          disabled={!commonStore.customKernelSupported}
                           onChange={(e, data) => {
                             setSelectedConfigModelParams({
                               useCustomCuda: data.checked,
