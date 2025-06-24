@@ -29,7 +29,7 @@ def init():
         #     trie = cyac.Trie.from_buff(buff_object, copy=False)
         # else:
         trie = cyac.Trie()
-    except ModuleNotFoundError:
+    except (ModuleNotFoundError, AttributeError):
         print("cyac not found")
 
 
@@ -64,7 +64,7 @@ def enable_state_cache():
 
         print("state cache enabled")
         return "success"
-    except ModuleNotFoundError:
+    except (ModuleNotFoundError, AttributeError):
         print("state cache disabled")
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "cyac not found")
 

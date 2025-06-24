@@ -228,7 +228,7 @@ export const defaultModelConfigsMac: ModelConfig[] = [
     },
     modelParameters: {
       modelName: 'RWKV-x070-World-1.5B-v3-20250127-ctx4096.pth',
-      device: 'WebGPU',
+      device: 'WebGPU (Python)',
       precision: 'nf4',
       storedLayers: 41,
       maxStoredLayers: 41,
@@ -246,7 +246,7 @@ export const defaultModelConfigsMac: ModelConfig[] = [
     },
     modelParameters: {
       modelName: 'RWKV-x070-World-2.9B-v3-20250211-ctx4096.pth',
-      device: 'WebGPU',
+      device: 'WebGPU (Python)',
       precision: 'nf4',
       storedLayers: 41,
       maxStoredLayers: 41,
@@ -264,7 +264,7 @@ export const defaultModelConfigsMac: ModelConfig[] = [
     },
     modelParameters: {
       modelName: 'RWKV-x070-World-2.9B-v3-20250211-ctx4096.pth',
-      device: 'WebGPU',
+      device: 'WebGPU (Python)',
       precision: 'nf4',
       storedLayers: 41,
       maxStoredLayers: 41,
@@ -282,7 +282,7 @@ export const defaultModelConfigsMac: ModelConfig[] = [
     },
     modelParameters: {
       modelName: 'RWKV-x060-World-7B-v2.1-20240507-ctx4096.pth',
-      device: 'WebGPU',
+      device: 'WebGPU (Python)',
       precision: 'nf4',
       storedLayers: 41,
       maxStoredLayers: 41,
@@ -300,7 +300,7 @@ export const defaultModelConfigsMac: ModelConfig[] = [
     },
     modelParameters: {
       modelName: 'RWKV-x060-World-7B-v2.1-20240507-ctx4096.pth',
-      device: 'WebGPU',
+      device: 'WebGPU (Python)',
       precision: 'nf4',
       storedLayers: 41,
       maxStoredLayers: 41,
@@ -340,82 +340,6 @@ export const defaultModelConfigsMac: ModelConfig[] = [
       precision: 'fp32',
       storedLayers: 41,
       maxStoredLayers: 41,
-    },
-  },
-  {
-    name: 'MAC-1B5-World',
-    apiParameters: {
-      apiPort: 8000,
-      maxResponseToken: 4100,
-      temperature: 1.0,
-      topP: 0.3,
-      presencePenalty: 0,
-      frequencyPenalty: 1,
-    },
-    modelParameters: {
-      modelName: 'RWKV-x070-World-1.5B-v3-20250127-ctx4096.pth',
-      device: 'MPS',
-      precision: 'fp32',
-      storedLayers: 41,
-      maxStoredLayers: 41,
-      customStrategy: 'mps fp32',
-    },
-  },
-  {
-    name: 'MAC-3B-World',
-    apiParameters: {
-      apiPort: 8000,
-      maxResponseToken: 4100,
-      temperature: 1.0,
-      topP: 0.3,
-      presencePenalty: 0,
-      frequencyPenalty: 1,
-    },
-    modelParameters: {
-      modelName: 'RWKV-x070-World-2.9B-v3-20250211-ctx4096.pth',
-      device: 'MPS',
-      precision: 'fp32',
-      storedLayers: 41,
-      maxStoredLayers: 41,
-      customStrategy: 'mps fp32',
-    },
-  },
-  {
-    name: 'MAC-3B-CN',
-    apiParameters: {
-      apiPort: 8000,
-      maxResponseToken: 4100,
-      temperature: 1.0,
-      topP: 0.3,
-      presencePenalty: 0,
-      frequencyPenalty: 1,
-    },
-    modelParameters: {
-      modelName: 'RWKV-x070-World-2.9B-v3-20250211-ctx4096.pth',
-      device: 'MPS',
-      precision: 'fp32',
-      storedLayers: 41,
-      maxStoredLayers: 41,
-      customStrategy: 'mps fp32',
-    },
-  },
-  {
-    name: 'MAC-7B-World',
-    apiParameters: {
-      apiPort: 8000,
-      maxResponseToken: 4100,
-      temperature: 1.0,
-      topP: 0.3,
-      presencePenalty: 0,
-      frequencyPenalty: 1,
-    },
-    modelParameters: {
-      modelName: 'RWKV-x060-World-7B-v2.1-20240507-ctx4096.pth',
-      device: 'MPS',
-      precision: 'fp32',
-      storedLayers: 41,
-      maxStoredLayers: 41,
-      customStrategy: 'mps fp32',
     },
   },
 ]
@@ -830,7 +754,7 @@ export const defaultModelConfigs: ModelConfig[] = [
     },
     modelParameters: {
       modelName: 'RWKV-x070-World-1.5B-v3-20250127-ctx4096.pth',
-      device: 'WebGPU',
+      device: 'WebGPU (Python)',
       precision: 'nf4',
       storedLayers: 41,
       maxStoredLayers: 41,
@@ -848,7 +772,7 @@ export const defaultModelConfigs: ModelConfig[] = [
     },
     modelParameters: {
       modelName: 'RWKV-x070-World-2.9B-v3-20250211-ctx4096.pth',
-      device: 'WebGPU',
+      device: 'WebGPU (Python)',
       precision: 'nf4',
       storedLayers: 41,
       maxStoredLayers: 41,
@@ -866,7 +790,7 @@ export const defaultModelConfigs: ModelConfig[] = [
     },
     modelParameters: {
       modelName: 'RWKV-x070-World-2.9B-v3-20250211-ctx4096.pth',
-      device: 'WebGPU',
+      device: 'WebGPU (Python)',
       precision: 'nf4',
       storedLayers: 41,
       maxStoredLayers: 41,
@@ -884,7 +808,7 @@ export const defaultModelConfigs: ModelConfig[] = [
     },
     modelParameters: {
       modelName: 'RWKV-x060-World-7B-v2.1-20240507-ctx4096.pth',
-      device: 'WebGPU',
+      device: 'WebGPU (Python)',
       precision: 'nf4',
       storedLayers: 41,
       maxStoredLayers: 41,
@@ -902,7 +826,7 @@ export const defaultModelConfigs: ModelConfig[] = [
     },
     modelParameters: {
       modelName: 'RWKV-x060-World-7B-v2.1-20240507-ctx4096.pth',
-      device: 'WebGPU',
+      device: 'WebGPU (Python)',
       precision: 'nf4',
       storedLayers: 41,
       maxStoredLayers: 41,
