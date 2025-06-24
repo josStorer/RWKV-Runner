@@ -626,7 +626,7 @@ const Configs: FC = observer(() => {
                         {/*{commonStore.platform === 'darwin' && <Option value="MPS">MPS</Option>}*/}
                         <Option value="CUDA">CUDA</Option>
                         {/*<Option value="CUDA-Beta">{t('CUDA (Beta, Faster)')!}</Option>*/}
-                        <Option value="WebGPU">WebGPU</Option>
+                        {/* <Option value="WebGPU">WebGPU</Option> */}
                         <Option value="WebGPU (Python)">WebGPU (Python)</Option>
                         <Option value="Custom">{t('Custom')!}</Option>
                       </Dropdown>
