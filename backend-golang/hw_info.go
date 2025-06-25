@@ -2,7 +2,6 @@ package backend_golang
 
 import (
 	"errors"
-	"os/exec"
 	"strconv"
 	"strings"
 )
@@ -11,25 +10,24 @@ func (a *App) GetNvidiaGpuCount() (int, error) {
 	// temperature.gpu,utilization.gpu,utilization.memory,memory.total,memory.free,memory.used
 	// gpu_name,gpu_bus_id,driver_version
 	// nvidia-smi --help-query-gpu
-	output, err := exec.Command("nvidia-smi", "--query-gpu=count", "--format=csv,noheader,nounits").CombinedOutput()
+	output, err := a.CommandOutput("nvidia-smi", "--query-gpu=count", "--format=csv,noheader,nounits")
 	if err != nil {
 		return 0, err
 	}
-	return strconv.Atoi(strings.TrimSpace(string(output)))
+	return strconv.Atoi(output)
 }
 
 func (a *App) GetCudaComputeCapability(index int) (string, error) {
-	output, err := exec.Command("nvidia-smi", "-i="+strconv.Itoa(index), "--query-gpu=compute_cap", "--format=csv,noheader,nounits").CombinedOutput()
+	output, err := a.CommandOutput("nvidia-smi", "-i="+strconv.Itoa(index), "--query-gpu=compute_cap", "--format=csv,noheader,nounits")
 	if err != nil {
 		return "", err
 	}
 
-	computeCap := strings.TrimSpace(string(output))
-	if computeCap == "" {
+	if output == "" {
 		return "", errors.New("compute capability is empty")
 	}
 
-	return computeCap, nil
+	return output, nil
 }
 
 func (a *App) GetMaxCudaComputeCapability() (string, error) {
@@ -62,12 +60,12 @@ func (a *App) GetMaxCudaComputeCapability() (string, error) {
 }
 
 func (a *App) GetSupportedCudaVersion() (string, error) {
-	output, err := exec.Command("nvidia-smi", "--query").CombinedOutput()
+	output, err := a.CommandOutput("nvidia-smi", "--query")
 	if err != nil {
 		return "", err
 	}
 
-	lines := strings.Split(string(output), "\n")
+	lines := strings.Split(output, "\n")
 
 	for _, line := range lines {
 		if strings.Contains(line, "CUDA Version") {
@@ -87,15 +85,14 @@ func (a *App) GetTorchVersion(python string) (string, error) {
 		}
 	}
 
-	output, err := exec.Command(python, "-c", "import torch; print(torch.__version__)").CombinedOutput()
+	output, err := a.CommandOutput(python, "-c", "import torch; print(torch.__version__)")
 	if err != nil {
 		return "", err
 	}
 
-	version := strings.TrimSpace(string(output))
-	if version == "" {
+	if output == "" {
 		return "", errors.New("torch version is empty")
 	}
 
-	return version, nil
+	return output, nil
 }

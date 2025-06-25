@@ -17,7 +17,6 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
-	"syscall"
 	"time"
 
 	"github.com/fsnotify/fsnotify"
@@ -202,8 +201,7 @@ func (a *App) monitorHardware() {
 		}
 	}()
 
-	monitor.SysProcAttr = &syscall.SysProcAttr{}
-	//go:custom_build windows monitor.SysProcAttr.HideWindow = true
+	CmdSetHideWindow(monitor, true)
 	monitor.Start()
 }
 

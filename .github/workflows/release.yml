@@ -71,8 +71,6 @@ jobs:
           go install github.com/wailsapp/wails/v2/cmd/wails@v2.9.2
           del ./backend-python/rwkv_pip/cpp/librwkv.dylib
           del ./backend-python/rwkv_pip/cpp/librwkv.so
-          (Get-Content -Path ./backend-golang/app.go) -replace "//go:custom_build windows ", "" | Set-Content -Path ./backend-golang/app.go
-          (Get-Content -Path ./backend-golang/utils.go) -replace "//go:custom_build windows ", "" | Set-Content -Path ./backend-golang/utils.go
           go install mvdan.cc/garble@v0.10.1
           make
           Rename-Item -Path "build/bin/RWKV-Runner.exe" -NewName "RWKV-Runner_windows_x64.exe"

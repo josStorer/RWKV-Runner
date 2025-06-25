@@ -17,7 +17,6 @@ import (
 	"runtime/debug"
 	"strconv"
 	"strings"
-	"syscall"
 )
 
 func IsDebugMode() bool {
@@ -57,8 +56,7 @@ func CmdHelper(hideWindow bool, args ...string) (*exec.Cmd, error) {
 		}
 	}
 	cmd := exec.Command(cmdHelper, args...)
-	cmd.SysProcAttr = &syscall.SysProcAttr{}
-	//go:custom_build windows cmd.SysProcAttr.HideWindow = hideWindow
+	CmdSetHideWindow(cmd, hideWindow)
 	return cmd, nil
 }
 
@@ -137,6 +135,7 @@ func CopyEmbed(efs embed.FS) error {
 		executeWrite := true
 		existedContent, err := os.ReadFile(path)
 		if err == nil {
+			// use sha256 to prevent core files from being tampered with
 			if fmt.Sprintf("%x", sha256.Sum256(existedContent)) == fmt.Sprintf("%x", sha256.Sum256(content)) {
 				executeWrite = false
 			}
