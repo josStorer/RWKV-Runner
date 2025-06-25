@@ -237,7 +237,12 @@ class CommonStore {
   }
 
   get customKernelSupported() {
-    return !this.torchVersion || this.torchVersion.includes('1.13.1')
+    return (
+      this.platform !== 'windows' ||
+      !this.torchVersion ||
+      this.torchVersion === '1.13.1+cu117' ||
+      this.torchVersion === '2.7.1+cu128'
+    )
   }
 
   setAutoConfigPort(port?: number) {

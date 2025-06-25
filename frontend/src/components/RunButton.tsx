@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router'
 import { toast } from 'react-toastify'
 import {
   AddToDownloadList,
+  CopyFolderFiles,
   FileExists,
   IsPortAvailable,
   StartServer,
@@ -427,26 +428,29 @@ export const RunButton: FC<{
                   .some((s) => ['cuda', 'fp32'].every((v) => s.includes(v)))
               ) {
                 if (commonStore.platform === 'windows') {
-                  // this part is currently unused because there's no longer a need to use different kernels for different GPUs, but it might still be needed in the future
-                  //
-                  // customCudaFile = getSupportedCustomCudaFile(isUsingCudaBeta);
-                  // if (customCudaFile) {
-                  //   let kernelTargetPath: string;
-                  //   if (isUsingCudaBeta)
-                  //     kernelTargetPath = './backend-python/rwkv_pip/beta/wkv_cuda.pyd';
-                  //   else
-                  //     kernelTargetPath = './backend-python/rwkv_pip/wkv_cuda.pyd';
-                  //   await CopyFile(customCudaFile, kernelTargetPath).catch(() => {
-                  //     FileExists(kernelTargetPath).then((exist) => {
-                  //       if (!exist) {
-                  //         customCudaFile = '';
-                  //         toast(t('Failed to copy custom cuda file'), { type: 'error' });
-                  //       }
-                  //     });
-                  //   });
-                  // } else
-                  //   toast(t('Supported custom cuda file not found'), { type: 'warning' });
                   customCudaFile = 'any'
+                  const copyRoot = './backend-python/rwkv_pip'
+                  if (commonStore.torchVersion) {
+                    if (commonStore.torchVersion === '2.7.1+cu128') {
+                      await CopyFolderFiles(
+                        copyRoot + '/kernels/torch-2.7.1+cu128',
+                        copyRoot,
+                        true
+                      )
+                    } else {
+                      await CopyFolderFiles(
+                        copyRoot + '/kernels/torch-1.13.1+cu117',
+                        copyRoot,
+                        true
+                      )
+                    }
+                  } else if (!(await FileExists(copyRoot + '/wkv_cuda.pyd'))) {
+                    await CopyFolderFiles(
+                      copyRoot + '/kernels/torch-1.13.1+cu117',
+                      copyRoot,
+                      true
+                    )
+                  }
                 } else {
                   customCudaFile = 'any'
                 }

@@ -18,6 +18,10 @@ export function CmdInteractive(arg1, arg2) {
   return window['go']['backend_golang']['App']['CmdInteractive'](arg1, arg2);
 }
 
+export function CommandOutput(arg1, arg2) {
+  return window['go']['backend_golang']['App']['CommandOutput'](arg1, arg2);
+}
+
 export function ContinueDownload(arg1) {
   return window['go']['backend_golang']['App']['ContinueDownload'](arg1);
 }
@@ -42,8 +46,12 @@ export function ConvertSafetensorsWithPython(arg1, arg2, arg3) {
   return window['go']['backend_golang']['App']['ConvertSafetensorsWithPython'](arg1, arg2, arg3);
 }
 
-export function CopyFile(arg1, arg2) {
-  return window['go']['backend_golang']['App']['CopyFile'](arg1, arg2);
+export function CopyFile(arg1, arg2, arg3) {
+  return window['go']['backend_golang']['App']['CopyFile'](arg1, arg2, arg3);
+}
+
+export function CopyFolderFiles(arg1, arg2, arg3) {
+  return window['go']['backend_golang']['App']['CopyFolderFiles'](arg1, arg2, arg3);
 }
 
 export function DeleteFile(arg1) {
@@ -72,6 +80,18 @@ export function GetCmds() {
 
 export function GetCudaComputeCapability(arg1) {
   return window['go']['backend_golang']['App']['GetCudaComputeCapability'](arg1);
+}
+
+export function GetFileCrc32(arg1) {
+  return window['go']['backend_golang']['App']['GetFileCrc32'](arg1);
+}
+
+export function GetFileMd5(arg1) {
+  return window['go']['backend_golang']['App']['GetFileMd5'](arg1);
+}
+
+export function GetFileSha256(arg1) {
+  return window['go']['backend_golang']['App']['GetFileSha256'](arg1);
 }
 
 export function GetMaxCudaComputeCapability() {

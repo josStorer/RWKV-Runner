@@ -1,8 +1,12 @@
 package backend_golang
 
 import (
+	"crypto/md5"
+	"crypto/sha256"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"hash/crc32"
 	"io"
 	"os"
 	"os/exec"
@@ -147,7 +151,7 @@ func (a *App) DeleteFile(path string) error {
 	return nil
 }
 
-func (a *App) CopyFile(src string, dst string) error {
+func (a *App) CopyFile(src string, dst string, checkHash bool) error {
 	absSrc, err := a.GetAbsPath(src)
 	if err != nil {
 		return err
@@ -155,6 +159,22 @@ func (a *App) CopyFile(src string, dst string) error {
 	absDst, err := a.GetAbsPath(dst)
 	if err != nil {
 		return err
+	}
+
+	if checkHash {
+		if a.FileExists(absDst) {
+			srcHash, err := a.GetFileCrc32(absSrc)
+			if err != nil {
+				return err
+			}
+			dstHash, err := a.GetFileCrc32(absDst)
+			if err != nil {
+				return err
+			}
+			if srcHash == dstHash {
+				return nil
+			}
+		}
 	}
 
 	sourceFile, err := os.Open(absSrc)
@@ -179,6 +199,68 @@ func (a *App) CopyFile(src string, dst string) error {
 		return err
 	}
 	return nil
+}
+
+func (a *App) CopyFolderFiles(src string, dst string, checkHash bool) error {
+	absSrc, err := a.GetAbsPath(src)
+	if err != nil {
+		return err
+	}
+	absDst, err := a.GetAbsPath(dst)
+	if err != nil {
+		return err
+	}
+
+	files, err := os.ReadDir(absSrc)
+	if err != nil {
+		return err
+	}
+
+	for _, file := range files {
+		srcPath := filepath.Join(absSrc, file.Name())
+		dstPath := filepath.Join(absDst, file.Name())
+		err = a.CopyFile(srcPath, dstPath, checkHash)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (a *App) GetFileSha256(path string) (string, error) {
+	absPath, err := a.GetAbsPath(path)
+	if err != nil {
+		return "", err
+	}
+	content, err := os.ReadFile(absPath)
+	if err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("%x", sha256.Sum256(content)), nil
+}
+
+func (a *App) GetFileMd5(path string) (string, error) {
+	absPath, err := a.GetAbsPath(path)
+	if err != nil {
+		return "", err
+	}
+	content, err := os.ReadFile(absPath)
+	if err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("%x", md5.Sum(content)), nil
+}
+
+func (a *App) GetFileCrc32(path string) (string, error) {
+	absPath, err := a.GetAbsPath(path)
+	if err != nil {
+		return "", err
+	}
+	content, err := os.ReadFile(absPath)
+	if err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("%x", crc32.Checksum(content, crc32.IEEETable)), nil
 }
 
 func (a *App) OpenSaveFileDialog(filterPattern string, defaultFileName string, savedContent string) (string, error) {

@@ -10,6 +10,8 @@ export function CloseMidiPort():Promise<void>;
 
 export function CmdInteractive(arg1:Array<string>,arg2:string):Promise<void>;
 
+export function CommandOutput(arg1:string,arg2:Array<string>):Promise<string>;
+
 export function ContinueDownload(arg1:string):Promise<void>;
 
 export function ConvertData(arg1:string,arg2:string,arg3:string,arg4:string):Promise<string>;
@@ -22,7 +24,9 @@ export function ConvertSafetensors(arg1:string,arg2:string):Promise<string>;
 
 export function ConvertSafetensorsWithPython(arg1:string,arg2:string,arg3:string):Promise<string>;
 
-export function CopyFile(arg1:string,arg2:string):Promise<void>;
+export function CopyFile(arg1:string,arg2:string,arg3:boolean):Promise<void>;
+
+export function CopyFolderFiles(arg1:string,arg2:string,arg3:boolean):Promise<void>;
 
 export function DeleteFile(arg1:string):Promise<void>;
 
@@ -37,6 +41,12 @@ export function GetAbsPath(arg1:string):Promise<string>;
 export function GetCmds():Promise<{[key: string]: Array<string>}>;
 
 export function GetCudaComputeCapability(arg1:number):Promise<string>;
+
+export function GetFileCrc32(arg1:string):Promise<string>;
+
+export function GetFileMd5(arg1:string):Promise<string>;
+
+export function GetFileSha256(arg1:string):Promise<string>;
 
 export function GetMaxCudaComputeCapability():Promise<string>;
 
