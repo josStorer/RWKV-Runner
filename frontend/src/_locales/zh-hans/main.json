@@ -383,5 +383,6 @@
   "Pytorch Version": "Pytorch版本",
   "Not Installed": "未安装",
   "Driver CUDA Version": "驱动CUDA版本",
-  "CUDA Compute Capability": "CUDA计算兼容性"
+  "CUDA Compute Capability": "CUDA计算兼容性",
+  "Enable Quick Think, Currently Only DeepSeek API and RWKV Runner Server Support": "启用快速思考, 目前仅 DeepSeek API 及 RWKV Runner 服务器支持"
 }

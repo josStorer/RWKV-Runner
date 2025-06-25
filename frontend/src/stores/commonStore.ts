@@ -88,6 +88,7 @@ class CommonStore {
   currentInput: string = ''
   conversation: Conversation = {}
   conversationOrder: string[] = []
+  quickThink: boolean = false
   deepThink: boolean = false
   activePreset: Preset | null = null
   activePresetIndex: number = -1
@@ -404,6 +405,10 @@ class CommonStore {
 
   setCurrentInput(value: string) {
     this.currentInput = value
+  }
+
+  setQuickThink(value: boolean) {
+    this.quickThink = value
   }
 
   setDeepThink(value: boolean) {

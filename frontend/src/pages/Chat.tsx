@@ -30,7 +30,7 @@ import {
   SyncIcon,
   TrashIcon,
 } from '@primer/octicons-react'
-import { IconAtom } from '@tabler/icons-react'
+import { IconAtom, IconAtom2 } from '@tabler/icons-react'
 import classnames from 'classnames'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
@@ -902,6 +902,12 @@ const ChatPanel: FC = observer(() => {
           content: '<think>',
           prefix: true,
         })
+      } else if (commonStore.quickThink) {
+        messages.push({
+          role: 'assistant',
+          content: '<think></think>',
+          prefix: true,
+        })
       }
 
       if (answerId === null) {
@@ -923,7 +929,11 @@ const ChatPanel: FC = observer(() => {
       setTimeout(() => {
         scrollToBottom(true)
       })
-      let answer = commonStore.deepThink ? '<think>\n' : ''
+      let answer = commonStore.deepThink
+        ? '<think>\n'
+        : commonStore.quickThink
+          ? '<think></think>'
+          : ''
       let finished = false
       // when answer sends <think> tag, we need to detect it
       let detectingThinking = true
@@ -1186,7 +1196,20 @@ const ChatPanel: FC = observer(() => {
               onChange={(e) => commonStore.setCurrentInput(e.target.value)}
               onKeyDown={handleKeyDownOrClick}
             />
-            <div className="absolute bottom-1 left-2">
+            <div className="absolute bottom-1 left-2 flex gap-0.5">
+              <ToolTipButton
+                desc={t(
+                  'Enable Quick Think, Currently Only DeepSeek API and RWKV Runner Server Support'
+                )}
+                icon={<IconAtom2 size={16} stroke={1.5} />}
+                size="small"
+                shape="circular"
+                appearance={commonStore.quickThink ? 'primary' : 'secondary'}
+                onClick={() => {
+                  commonStore.setDeepThink(false)
+                  commonStore.setQuickThink(!commonStore.quickThink)
+                }}
+              />
               <ToolTipButton
                 desc={t(
                   'Force Enable Deep Think, Currently Only DeepSeek API and RWKV Runner Server Support'
@@ -1196,7 +1219,10 @@ const ChatPanel: FC = observer(() => {
                 shape="circular"
                 appearance={commonStore.deepThink ? 'primary' : 'secondary'}
                 text={t('DeepThink')}
-                onClick={() => commonStore.setDeepThink(!commonStore.deepThink)}
+                onClick={() => {
+                  commonStore.setDeepThink(!commonStore.deepThink)
+                  commonStore.setQuickThink(false)
+                }}
               />
             </div>
             <div className="absolute bottom-1 right-2">
