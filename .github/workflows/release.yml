@@ -92,7 +92,7 @@ jobs:
           wget https://github.com/josStorer/web-rwkv-converter/releases/latest/download/web-rwkv-converter_linux_x86_64 -O ./backend-rust/web-rwkv-converter
           sudo apt-get update
           sudo apt-get install upx
-          sudo apt-get install build-essential libgtk-3-dev libwebkit2gtk-4.0-dev libasound2-dev
+          sudo apt-get install build-essential libgtk-3-dev libwebkit2gtk-4.1-dev libasound2-dev
           go install github.com/wailsapp/wails/v2/cmd/wails@v2.9.2
           rm -rf ./backend-python/rwkv_pip/kernels
           rm ./backend-python/get-pip.py
@@ -100,7 +100,7 @@ jobs:
           rm ./backend-python/rwkv_pip/cpp/rwkv.dll
           rm ./backend-python/rwkv_pip/webgpu/web_rwkv_py.cp310-win_amd64.pyd
           go install mvdan.cc/garble@v0.10.1
-          make
+          make build-linux_webkit2_41
           mv build/bin/RWKV-Runner build/bin/RWKV-Runner_linux_x64
 
       - run: gh release upload ${{github.ref_name}} build/bin/RWKV-Runner_linux_x64

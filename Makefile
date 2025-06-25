@@ -23,6 +23,10 @@ build-linux:
 	@echo ---- build for linux
 	wails build -ldflags '-s -w' -platform linux/amd64 -devtools -upx -upxflags "-9 --lzma"
 
+build-linux_webkit2_41:
+	@echo ---- build for linux with webkit2_41
+	wails build -tags webkit2_41 -ldflags '-s -w' -platform linux/amd64 -devtools -upx -upxflags "-9 --lzma"
+
 build-web:
 	@echo ---- build for web
 	cd frontend && npm run build
