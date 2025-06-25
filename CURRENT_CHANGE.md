@@ -1,10 +1,14 @@
 ## Changes
 
-- Add NVIDIA hardware info display to Settings Page with PyTorch version switching capability. Auto-select optimal PyTorch version during initial setup based on detected hardware. (Currently only works on Windows)
-![image](https://github.com/user-attachments/assets/cce4b8ce-a920-451d-8f5f-c497b06a6339)
+- add torch-2.7.1+cu128 precompiled kernels
 ![image](https://github.com/user-attachments/assets/aa1703ec-da0e-4e3f-820c-9253f4b9bf15)
-- temporarily disable the standard WebGPU strategy as it's outdated
-- improve details
+- hide unnecessary pop-up consoles on windows
+- The linux binary files released in github releases now depend on libwebkit2gtk-4.1 to support Ubuntu 24.04. This means that versions below Ubuntu 20.04 will no longer be supported for running, and users will have to build it on their own. Additionally, Windows 7 is still supported, but you need to install the KB2999226 patch.
+- add quick think support
+![Image](https://github.com/user-attachments/assets/ecf66622-0765-42c9-b8a0-633c30329349)
+- fix the issue where the line breaks in the thinking content did not take effect
+- update manifest.json and defaultModelConfigs
+- bump go-webview2
 
 Note: If you encounter WebView2 crash issues, please try opening the Windows Settings, click on Apps, search for
 WebView2, click Modify -> Repair to update your WebView2 runtime.
