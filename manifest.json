@@ -33,6 +33,28 @@
         "Global",
         "CN",
         "JP"
+      ],
+      "hide": true
+    },
+    {
+      "name": "rwkv7-g1-0.1b-20250307-ctx4096.pth",
+      "desc": {
+        "en": "RWKV-7 Global Languages 0.1B Reasoning Model",
+        "zh": "RWKV-7 全球语言 0.1B 推理思考模型",
+        "ja": "RWKV-7 グローバル言語 0.1B 推論思考モデル"
+      },
+      "size": 382231495,
+      "SHA256": "854230983f1015407c44274a7a27196ed72007618995b7a7efba3c4a15f69a45",
+      "lastUpdated": "2025-03-07T17:12:51",
+      "url": "https://huggingface.co/BlinkDL/rwkv7-g1/blob/main/rwkv7-g1-0.1b-20250307-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv7-g1/resolve/main/rwkv7-g1-0.1b-20250307-ctx4096.pth",
+      "tags": [
+        "Official",
+        "RWKV-7",
+        "Global",
+        "Reasoning",
+        "CN",
+        "JP"
       ]
     },
     {
@@ -51,6 +73,28 @@
         "Official",
         "RWKV-7",
         "Global",
+        "CN",
+        "JP"
+      ],
+      "hide": true
+    },
+    {
+      "name": "rwkv7-g1-0.4b-20250324-ctx4096.pth",
+      "desc": {
+        "en": "RWKV-7 Global Languages 0.4B Reasoning Model",
+        "zh": "RWKV-7 全球语言 0.4B 推理思考模型",
+        "ja": "RWKV-7 グローバル言語 0.4B 推論思考モデル"
+      },
+      "size": 901779157,
+      "SHA256": "797e6393a980e7f6518d0f4e74dab4f4a01aff4e85d3bb2fe3d3efd23cf5d93a",
+      "lastUpdated": "2025-03-24T16:00:48",
+      "url": "https://huggingface.co/BlinkDL/rwkv7-g1/blob/main/rwkv7-g1-0.4b-20250324-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv7-g1/resolve/main/rwkv7-g1-0.4b-20250324-ctx4096.pth",
+      "tags": [
+        "Official",
+        "RWKV-7",
+        "Global",
+        "Reasoning",
         "CN",
         "JP"
       ]
@@ -74,7 +118,8 @@
         "Recommended",
         "CN",
         "JP"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "rwkv7-g1-1.5b-20250429-ctx4096.pth",
@@ -115,6 +160,29 @@
         "RWKV-7",
         "Global",
         "Recommended",
+        "CN",
+        "JP"
+      ],
+      "hide": true
+    },
+    {
+      "name": "rwkv7-g1-2.9b-20250519-ctx4096.pth",
+      "desc": {
+        "en": "RWKV-7 Global Languages 2.9B Reasoning Model",
+        "zh": "RWKV-7 全球语言 2.9B 推理思考模型",
+        "ja": "RWKV-7 グローバル言語 2.9B 推論思考モデル"
+      },
+      "size": 5896274653,
+      "SHA256": "163b76a041c4f69c115732404ac810f0feee354e4a01554f24c70ae5d2bfdbd6",
+      "lastUpdated": "2025-05-19T18:40:53",
+      "url": "https://huggingface.co/BlinkDL/rwkv7-g1/blob/main/rwkv7-g1-2.9b-20250519-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv7-g1/resolve/main/rwkv7-g1-2.9b-20250519-ctx4096.pth",
+      "tags": [
+        "Official",
+        "RWKV-7",
+        "Global",
+        "Recommended",
+        "Reasoning",
         "CN",
         "JP"
       ]
