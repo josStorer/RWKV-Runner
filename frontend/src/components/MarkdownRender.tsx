@@ -56,6 +56,7 @@ const ThinkComponent: FC<any> = ({ node, children, ...props }) => {
           </AccordionHeader>
           <AccordionPanel>
             <div
+              style={{ whiteSpace: 'pre-wrap' }}
               className={classNames(
                 commonStore.settings.darkMode
                   ? 'text-[#d6d6d6]'
