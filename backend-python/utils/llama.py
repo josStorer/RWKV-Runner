@@ -4,7 +4,7 @@ from typing import Iterable, Iterator, List, Literal, Tuple, Union
 
 from fastapi.encoders import jsonable_encoder
 from utils.log import quick_log
-from utils.rwkv import ModelConfigBody, get_model_path
+from utils.rwkv import ModelConfigBody, get_model_path, AbstractRWKV
 
 
 class AbstractLlama(ABC):
@@ -35,9 +35,14 @@ class AbstractLlama(ABC):
         completion_token_len = 0
         response = ""
 
+        if is_rwkv_model(self):
+            # state cache for rwkv in llama.cpp has bug, so we need to reset it
+            self.model.reset()
+            self.model._ctx.kv_cache_clear()
+
         from routes.completion import ChatCompletionBody
 
-        if isinstance(body, ChatCompletionBody):
+        if not is_rwkv_model(self) and isinstance(body, ChatCompletionBody):
             from llama_cpp import CreateChatCompletionStreamResponse
 
             stream_chat: Iterator[CreateChatCompletionStreamResponse] = (
@@ -165,3 +170,7 @@ def get_llama_config(model: AbstractLlama) -> ModelConfigBody:
         frequency_penalty=model.penalty_alpha_frequency,
         top_k=model.top_k,
     )
+
+
+def is_rwkv_model(model: Union[AbstractRWKV, AbstractLlama]) -> bool:
+    return isinstance(model, AbstractRWKV) or "rwkv" in model.name.lower()

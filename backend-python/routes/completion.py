@@ -456,9 +456,10 @@ async def chat_completions(body: ChatCompletionBody, request: Request):
         # if not body.presystem:
         #     body.stop.append("\n\n")
     elif body.stop == default_stop:
-        body.stop = None
+        if not is_rwkv_model(model):
+            body.stop = None
 
-    if isinstance(model, TextRWKV) and (
+    if is_rwkv_model(model) and (
         (body.tool_choice != "none" and body.tools is not None and len(body.tools) > 0)
         or body.messages[-1].role == Role.Tool.value
     ):
