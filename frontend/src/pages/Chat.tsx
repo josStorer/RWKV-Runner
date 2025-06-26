@@ -895,6 +895,7 @@ const ChatPanel: FC = observer(() => {
           return
         }
       }
+      const isToolArray = Array.isArray(tool)
       messages = messages.slice(-commonStore.chatParams.historyN)
       if (commonStore.deepThink) {
         messages.push({
@@ -983,12 +984,17 @@ const ChatPanel: FC = observer(() => {
             presence_penalty: commonStore.chatParams.presencePenalty,
             frequency_penalty: commonStore.chatParams.frequencyPenalty,
             tools: useToolDefinition
-              ? [
-                  {
+              ? isToolArray
+                ? tool.map((t: any) => ({
                     type: 'function',
-                    function: tool,
-                  },
-                ]
+                    function: t,
+                  }))
+                : [
+                    {
+                      type: 'function',
+                      function: tool,
+                    },
+                  ]
               : undefined,
             penalty_decay:
               commonStore.chatParams.penaltyDecay === defaultPenaltyDecay
