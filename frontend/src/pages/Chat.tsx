@@ -716,6 +716,10 @@ const ChatPanel: FC = observer(() => {
   const apiParams = currentConfig.apiParameters
   const port = apiParams.apiPort
   const generating: boolean = Object.keys(chatSseControllers).length > 0
+  const isThinkButtonAvailable =
+    commonStore.platform === 'web' ||
+    commonStore.status.status === ModelStatus.Offline ||
+    !currentConfig.modelParameters.modelName.endsWith('.gguf')
 
   useEffect(() => {
     if (inputRef.current) inputRef.current.style.maxHeight = '16rem'
@@ -930,11 +934,14 @@ const ChatPanel: FC = observer(() => {
       setTimeout(() => {
         scrollToBottom(true)
       })
-      let answer = commonStore.deepThink
-        ? '<think>\n'
-        : commonStore.quickThink
-          ? '<think></think>'
-          : ''
+      let answer = ''
+      if (isThinkButtonAvailable) {
+        answer = commonStore.deepThink
+          ? '<think>\n'
+          : commonStore.quickThink
+            ? '<think></think>'
+            : ''
+      }
       let finished = false
       // when answer sends <think> tag, we need to detect it
       let detectingThinking = true
@@ -1210,6 +1217,7 @@ const ChatPanel: FC = observer(() => {
                 icon={<IconAtom2 size={16} stroke={1.5} />}
                 size="small"
                 shape="circular"
+                disabled={!isThinkButtonAvailable}
                 appearance={commonStore.quickThink ? 'primary' : 'secondary'}
                 onClick={() => {
                   commonStore.setDeepThink(false)
@@ -1223,6 +1231,7 @@ const ChatPanel: FC = observer(() => {
                 icon={<IconAtom size={16} stroke={1.5} />}
                 size="small"
                 shape="circular"
+                disabled={!isThinkButtonAvailable}
                 appearance={commonStore.deepThink ? 'primary' : 'secondary'}
                 text={t('DeepThink')}
                 onClick={() => {

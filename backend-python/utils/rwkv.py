@@ -5,7 +5,7 @@ import pathlib
 import copy
 import re
 import time
-from typing import Dict, Iterable, List, Tuple, Union, Type, Callable
+from typing import Dict, Iterable, List, Literal, Tuple, Union, Type, Callable
 from utils.log import quick_log
 from fastapi import HTTPException, status
 from pydantic import BaseModel, Field
@@ -20,6 +20,36 @@ class RWKVType(Enum):
     Raven = auto()
     World = auto()
     Music = auto()
+
+
+class ModelConfigBody(BaseModel):
+    max_tokens: int = Field(default=None, gt=0, le=102400)
+    temperature: float = Field(default=None, ge=0, le=3)
+    top_p: float = Field(default=None, ge=0, le=1)
+    presence_penalty: float = Field(default=None, ge=-2, le=2)
+    frequency_penalty: float = Field(default=None, ge=-2, le=2)
+    penalty_decay: float = Field(default=None, ge=0.99, le=0.999)
+    top_k: int = Field(default=None, ge=0, le=100)
+    global_penalty: bool = Field(
+        default=None,
+        description="When generating a response, whether to include the submitted prompt as a penalty factor. By turning this off, you will get the same generated results as official RWKV Gradio. If you find duplicate results in the generated results, turning this on can help avoid generating duplicates.",
+    )
+    state: str = Field(default=None, description="state-tuned file path")
+
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "max_tokens": 1000,
+                "temperature": 1,
+                "top_p": 0.3,
+                "presence_penalty": 0,
+                "frequency_penalty": 1,
+                "penalty_decay": 0.996,
+                "global_penalty": False,
+                "state": "",
+            }
+        }
+    }
 
 
 class AbstractRWKV(ABC):
@@ -225,8 +255,11 @@ class AbstractRWKV(ABC):
                 return state[0].tolist(), token_len
 
     def generate(
-        self, prompt: str, stop: Union[str, List[str], None] = None
-    ) -> Iterable[Tuple[str, str, int, int]]:
+        self,
+        body: ModelConfigBody,
+        prompt: str,
+        stop: Union[str, List[str], None] = None,
+    ) -> Iterable[Tuple[Literal["text", "tool"], str, str, int, int]]:
         import numpy as np
 
         quick_log(None, None, "Generation Prompt:\n" + prompt)
@@ -300,7 +333,7 @@ class AbstractRWKV(ABC):
                     )
                 except HTTPException:
                     pass
-                yield response, "", prompt_token_len, completion_token_len
+                yield "text", response, "", prompt_token_len, completion_token_len
                 break
 
             self.adjust_occurrence(occurrence, token)
@@ -327,7 +360,7 @@ class AbstractRWKV(ABC):
                             except HTTPException:
                                 pass
                             response = response.split(stop)[0]
-                            yield response, "", prompt_token_len, completion_token_len
+                            yield "text", response, "", prompt_token_len, completion_token_len
                             break
                     elif type(stop) == list:
                         exit_flag = False
@@ -346,7 +379,7 @@ class AbstractRWKV(ABC):
                                     pass
                                 exit_flag = True
                                 response = response.split(s)[0]
-                                yield response, "", prompt_token_len, completion_token_len
+                                yield "text", response, "", prompt_token_len, completion_token_len
                                 break
                         if exit_flag:
                             break
@@ -363,7 +396,7 @@ class AbstractRWKV(ABC):
                         )
                     except HTTPException:
                         pass
-                yield response, delta, prompt_token_len, completion_token_len
+                yield "text", response, delta, prompt_token_len, completion_token_len
 
 
 class TextRWKV(AbstractRWKV):
@@ -691,36 +724,6 @@ def RWKV(model: str, strategy: str, tokenizer: Union[str, None]) -> AbstractRWKV
     rwkv.version = model.version
 
     return rwkv
-
-
-class ModelConfigBody(BaseModel):
-    max_tokens: int = Field(default=None, gt=0, le=102400)
-    temperature: float = Field(default=None, ge=0, le=3)
-    top_p: float = Field(default=None, ge=0, le=1)
-    presence_penalty: float = Field(default=None, ge=-2, le=2)
-    frequency_penalty: float = Field(default=None, ge=-2, le=2)
-    penalty_decay: float = Field(default=None, ge=0.99, le=0.999)
-    top_k: int = Field(default=None, ge=0, le=25)
-    global_penalty: bool = Field(
-        default=None,
-        description="When generating a response, whether to include the submitted prompt as a penalty factor. By turning this off, you will get the same generated results as official RWKV Gradio. If you find duplicate results in the generated results, turning this on can help avoid generating duplicates.",
-    )
-    state: str = Field(default=None, description="state-tuned file path")
-
-    model_config = {
-        "json_schema_extra": {
-            "example": {
-                "max_tokens": 1000,
-                "temperature": 1,
-                "top_p": 0.3,
-                "presence_penalty": 0,
-                "frequency_penalty": 1,
-                "penalty_decay": 0.996,
-                "global_penalty": False,
-                "state": "",
-            }
-        }
-    }
 
 
 def load_rwkv_state(

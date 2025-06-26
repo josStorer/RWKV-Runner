@@ -4,6 +4,7 @@ from utils.log import quick_log
 from fastapi import APIRouter, HTTPException, Request, Response, status as Status
 from pydantic import BaseModel
 from utils.rwkv import *
+from utils.llama import *
 from utils.torch import *
 import global_var
 
@@ -44,7 +45,8 @@ def switch_model(body: SwitchModelBody, response: Response, request: Request):
 
     global_var.set(global_var.Model_Status, global_var.ModelStatus.Offline)
     global_var.set(global_var.Model, None)
-    torch_gc()
+    if not body.model.endswith(".gguf"):
+        torch_gc()
 
     if body.model == "":
         return "success"
@@ -68,10 +70,18 @@ def switch_model(body: SwitchModelBody, response: Response, request: Request):
 
     global_var.set(global_var.Model_Status, global_var.ModelStatus.Loading)
     try:
-        global_var.set(
-            global_var.Model,
-            RWKV(model=body.model, strategy=body.strategy, tokenizer=body.tokenizer),
-        )
+        if not body.model.endswith(".gguf"):
+            global_var.set(
+                global_var.Model,
+                RWKV(
+                    model=body.model, strategy=body.strategy, tokenizer=body.tokenizer
+                ),
+            )
+        else:
+            global_var.set(
+                global_var.Model,
+                Llama(model_path=body.model),
+            )
     except Exception as e:
         print(e)
         import traceback
@@ -88,7 +98,11 @@ def switch_model(body: SwitchModelBody, response: Response, request: Request):
         global_var.set(global_var.Deploy_Mode, True)
 
     saved_model_config = global_var.get(global_var.Model_Config)
-    init_model_config = get_rwkv_config(global_var.get(global_var.Model))
+    model = global_var.get(global_var.Model)
+    if isinstance(model, AbstractRWKV):
+        init_model_config = get_rwkv_config(model)
+    else:
+        init_model_config = get_llama_config(model)
     if saved_model_config is not None:
         merge_model(init_model_config, saved_model_config)
     global_var.set(global_var.Model_Config, init_model_config)
@@ -120,9 +134,11 @@ def update_config(body: ModelConfigBody):
         model_config = ModelConfigBody()
         global_var.set(global_var.Model_Config, model_config)
     merge_model(model_config, body)
-    exception = load_rwkv_state(
-        global_var.get(global_var.Model), model_config.state, True
-    )
+    model = global_var.get(global_var.Model)
+    if isinstance(model, AbstractRWKV):
+        exception = load_rwkv_state(model, model_config.state, True)
+    else:
+        exception = None
     if exception is not None:
         raise exception
     print("Updated Model Config:", model_config)

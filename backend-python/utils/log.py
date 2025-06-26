@@ -1,6 +1,6 @@
 import json
 import logging
-from typing import Any
+from typing import Any, Union
 from fastapi import Request
 from pydantic import BaseModel
 from enum import Enum
@@ -25,7 +25,7 @@ class ClsEncoder(json.JSONEncoder):
         return super().default(obj)
 
 
-def quick_log(request: Request, body: Any, response: str):
+def quick_log(request: Union[Request, None], body: Any, response: str):
     try:
         logger.info(
             f"Client: {request.client if request else ''}\nUrl: {request.url if request else ''}\n"

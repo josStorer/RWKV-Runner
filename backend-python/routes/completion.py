@@ -18,6 +18,7 @@ from routes.schema import (
     ChatCompletionNamedToolChoiceParam,
 )
 from utils.rwkv import *
+from utils.llama import *
 from utils.log import quick_log
 import global_var
 
@@ -120,8 +121,8 @@ completion_lock = Lock()
 requests_num = 0
 
 
-async def eval_rwkv(
-    model: AbstractRWKV,
+async def eval(
+    model: Union[AbstractRWKV, AbstractLlama],
     request: Request,
     body: ModelConfigBody,
     prompt: str,
@@ -154,14 +155,26 @@ async def eval_rwkv(
                     "Stop Waiting (Lock). RequestsNum: " + str(requests_num),
                 )
                 return
-            set_rwkv_config(model, global_var.get(global_var.Model_Config))
-            set_rwkv_config(model, body)
-            print(get_rwkv_config(model))
+            if isinstance(model, AbstractRWKV):
+                set_rwkv_config(model, global_var.get(global_var.Model_Config))
+                set_rwkv_config(model, body)
+                print(get_rwkv_config(model))
+            else:
+                set_llama_config(model, global_var.get(global_var.Model_Config))
+                set_llama_config(model, body)
+                print(get_llama_config(model))
 
-            response, prompt_tokens, completion_tokens = "", 0, 0
+            response_type, response, prompt_tokens, completion_tokens = "text", "", 0, 0
             completion_start_time = None
             try:
-                for response, delta, prompt_tokens, completion_tokens in model.generate(
+                for (
+                    response_type,
+                    response,
+                    delta,
+                    prompt_tokens,
+                    completion_tokens,
+                ) in model.generate(
+                    body,
                     prompt,
                     stop=stop,
                 ):
@@ -250,39 +263,44 @@ async def eval_rwkv(
                 )
                 yield "[DONE]"
             else:  # !stream
-                yield {
-                    "object": "chat.completion" if chat_mode else "text_completion",
-                    "model": model.name,
-                    "choices": [
-                        (
-                            {
-                                "message": {
-                                    "role": Role.Assistant.value,
-                                    "content": response,
-                                },
-                                "index": 0,
-                                "finish_reason": "stop",
-                            }
-                            if chat_mode
-                            else {
-                                "text": response,
-                                "index": 0,
-                                "finish_reason": "stop",
-                            }
-                        )
-                    ],
-                    "usage": {
-                        "prompt_tokens": prompt_tokens,
-                        "completion_tokens": completion_tokens,
-                        "total_tokens": prompt_tokens + completion_tokens,
-                    },
-                }
+                if response_type == "text":
+                    yield {
+                        "object": "chat.completion" if chat_mode else "text_completion",
+                        "model": model.name,
+                        "choices": [
+                            (
+                                {
+                                    "message": {
+                                        "role": Role.Assistant.value,
+                                        "content": response,
+                                    },
+                                    "index": 0,
+                                    "finish_reason": "stop",
+                                }
+                                if chat_mode
+                                else {
+                                    "text": response,
+                                    "index": 0,
+                                    "finish_reason": "stop",
+                                }
+                            )
+                        ],
+                        "usage": {
+                            "prompt_tokens": prompt_tokens,
+                            "completion_tokens": completion_tokens,
+                            "total_tokens": prompt_tokens + completion_tokens,
+                        },
+                    }
 
 
 def chat_template_old(
-    model: TextRWKV, body: ChatCompletionBody, interface: str, user: str, bot: str
+    model: Union[TextRWKV, TextLlama],
+    body: ChatCompletionBody,
+    interface: str,
+    user: str,
+    bot: str,
 ):
-    is_raven = model.rwkv_type == RWKVType.Raven
+    is_raven = isinstance(model, TextRWKV) and model.rwkv_type == RWKVType.Raven
 
     completion_text: str = ""
     basic_system: Union[str, None] = None
@@ -354,7 +372,11 @@ The following is a coherent verbose detailed conversation between a girl named {
 
 
 def chat_template(
-    model: TextRWKV, body: ChatCompletionBody, interface: str, user: str, bot: str
+    model: Union[TextRWKV, TextLlama],
+    body: ChatCompletionBody,
+    interface: str,
+    user: str,
+    bot: str,
 ):
     completion_text: str = ""
     if body.presystem:
@@ -405,7 +427,7 @@ def chat_template(
 @router.post("/v1/chat/completions", tags=["Completions"])
 @router.post("/chat/completions", tags=["Completions"])
 async def chat_completions(body: ChatCompletionBody, request: Request):
-    model: TextRWKV = global_var.get(global_var.Model)
+    model: Union[TextRWKV, TextLlama] = global_var.get(global_var.Model)
     if model is None:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "model not loaded")
 
@@ -421,21 +443,25 @@ async def chat_completions(body: ChatCompletionBody, request: Request):
     else:
         completion_text = chat_template(model, body, interface, user, bot)
 
-    user_code = model.pipeline.decode([model.pipeline.encode(user)[0]])
-    bot_code = model.pipeline.decode([model.pipeline.encode(bot)[0]])
-    if type(body.stop) == str:
-        body.stop = [body.stop, f"\n\n{user_code}", f"\n\n{bot_code}"]
-    elif type(body.stop) == list:
-        body.stop.append(f"\n\n{user_code}")
-        body.stop.append(f"\n\n{bot_code}")
-    elif body.stop is None:
-        body.stop = default_stop + [f"\n\n{user_code}", f"\n\n{bot_code}"]
-    # if not body.presystem:
-    #     body.stop.append("\n\n")
+    if isinstance(model, TextRWKV):
+        user_code = model.pipeline.decode([model.pipeline.encode(user)[0]])
+        bot_code = model.pipeline.decode([model.pipeline.encode(bot)[0]])
+        if type(body.stop) == str:
+            body.stop = [body.stop, f"\n\n{user_code}", f"\n\n{bot_code}"]
+        elif type(body.stop) == list:
+            body.stop.append(f"\n\n{user_code}")
+            body.stop.append(f"\n\n{bot_code}")
+        elif body.stop is None:
+            body.stop = default_stop + [f"\n\n{user_code}", f"\n\n{bot_code}"]
+        # if not body.presystem:
+        #     body.stop.append("\n\n")
+    elif body.stop == default_stop:
+        body.stop = None
 
-    if (
-        body.tool_choice != "none" and body.tools is not None and len(body.tools) > 0
-    ) or body.messages[-1].role == Role.Tool.value:
+    if isinstance(model, TextRWKV) and (
+        (body.tool_choice != "none" and body.tools is not None and len(body.tools) > 0)
+        or body.messages[-1].role == Role.Tool.value
+    ):
         return await chat_with_tools(model, body, request, completion_text)
     else:
         return await chat(model, body, request, completion_text)
@@ -445,7 +471,10 @@ tool_call_id_timestamps = {}
 
 
 async def chat_with_tools(
-    model: TextRWKV, body: ChatCompletionBody, request: Request, completion_text: str
+    model: Union[TextRWKV, TextLlama],
+    body: ChatCompletionBody,
+    request: Request,
+    completion_text: str,
 ):
     system = "System"
     interface = model.interface
@@ -487,7 +516,7 @@ def generate_tool_call_id():
 
 
 async def async_generator_stream_response_tool_call(
-    model: TextRWKV,
+    model: Union[TextRWKV, TextLlama],
     body: ChatCompletionBody,
     request: Request,
     completion_text: str,
@@ -496,7 +525,7 @@ async def async_generator_stream_response_tool_call(
     # NOTE: There is none of existing failure analysis.
 
     # Initialization
-    gen = eval_rwkv(
+    gen = eval(
         model, request, body, completion_text, body.stream, body.stop, True
     )  # Get an async generator handle
     content: str = ""
@@ -795,17 +824,18 @@ def postprocess_response(response: dict, tool_call_id: str):
 
 
 async def chat(
-    model: TextRWKV, body: ChatCompletionBody, request: Request, completion_text: str
+    model: Union[TextRWKV, TextLlama],
+    body: ChatCompletionBody,
+    request: Request,
+    completion_text: str,
 ):
     if body.stream:
         return EventSourceResponse(
-            eval_rwkv(
-                model, request, body, completion_text, body.stream, body.stop, True
-            )
+            eval(model, request, body, completion_text, body.stream, body.stop, True)
         )
     else:
         try:
-            return await eval_rwkv(
+            return await eval(
                 model, request, body, completion_text, body.stream, body.stop, True
             ).__anext__()
         except StopAsyncIteration:
@@ -815,7 +845,7 @@ async def chat(
 @router.post("/v1/completions", tags=["Completions"])
 @router.post("/completions", tags=["Completions"])
 async def completions(body: CompletionBody, request: Request):
-    model: AbstractRWKV = global_var.get(global_var.Model)
+    model: Union[AbstractRWKV, AbstractLlama] = global_var.get(global_var.Model)
     if model is None:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "model not loaded")
 
@@ -827,11 +857,11 @@ async def completions(body: CompletionBody, request: Request):
 
     if body.stream:
         return EventSourceResponse(
-            eval_rwkv(model, request, body, body.prompt, body.stream, body.stop, False)
+            eval(model, request, body, body.prompt, body.stream, body.stop, False)
         )
     else:
         try:
-            return await eval_rwkv(
+            return await eval(
                 model, request, body, body.prompt, body.stream, body.stop, False
             ).__anext__()
         except StopAsyncIteration:
@@ -870,6 +900,9 @@ async def embeddings(body: EmbeddingsBody, request: Request):
     model: AbstractRWKV = global_var.get(global_var.Model)
     if model is None:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "model not loaded")
+
+    if not isinstance(model, AbstractRWKV):
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "model not support embedding")
 
     if body.input is None or body.input == "" or body.input == [] or body.input == [[]]:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "input not found")

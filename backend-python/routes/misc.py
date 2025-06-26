@@ -1,5 +1,7 @@
+from typing import Union
 from fastapi import APIRouter, HTTPException, status
 from utils.rwkv import AbstractRWKV
+from utils.llama import AbstractLlama
 import global_var
 
 router = APIRouter()
@@ -82,7 +84,7 @@ fake_models = [
 @router.get("/v1/models", tags=["MISC"])
 @router.get("/models", tags=["MISC"])
 def models():
-    model: AbstractRWKV = global_var.get(global_var.Model)
+    model: Union[AbstractRWKV, AbstractLlama] = global_var.get(global_var.Model)
     model_name = model.name if model else "rwkv"
 
     return {
@@ -108,7 +110,7 @@ def model(model_id: str):
             return fake_model
 
     if "rwkv" in model_id.lower():
-        model: AbstractRWKV = global_var.get(global_var.Model)
+        model: Union[AbstractRWKV, AbstractLlama] = global_var.get(global_var.Model)
         model_name = model.name if model else "rwkv"
         return {
             "id": model_name,

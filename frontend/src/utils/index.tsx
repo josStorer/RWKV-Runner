@@ -92,7 +92,7 @@ export async function refreshBuiltInModels(readCache: boolean = false) {
   return cache
 }
 
-const modelSuffix = ['.pth', '.st', '.safetensors', '.bin']
+const modelSuffix = ['.pth', '.st', '.safetensors', '.bin', '.gguf']
 
 export async function refreshLocalModels(
   cache: {
