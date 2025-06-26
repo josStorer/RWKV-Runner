@@ -401,6 +401,77 @@ if os.environ.get("RWKV_V7_ON") == "1":
             self.n_embd = args.n_embd
             self.n_layer = args.n_layer
 
+            ####################### Compute strategy
+
+            s = [x.strip().split(" ") for x in strategy.split("->")]
+            plan = [0] * len(s)
+            stream_i = -1
+            stream_count = 0
+            to_allocate = args.n_layer + 1
+            allocated = 0
+            free_slots = 0
+            for i in range(len(s)):
+                si = s[i]
+                si1 = si[1]
+                if si1.startswith("fp32"):
+                    si[1] = [torch.float]
+                elif si1.startswith("fp16"):
+                    si[1] = [torch.float16]
+                elif si1.startswith("bf16"):
+                    si[1] = [torch.bfloat16]
+                if si1.endswith("i8"):
+                    si[1] += [torch.uint8]
+                else:
+                    si[1] += [si[1][0]]
+                if len(si) > 2:
+                    ss = si[2]
+                    assert ss.startswith("*")
+                    if ss.endswith("+"):
+                        plan[i] = int(ss[1:-1])
+                        stream_i = i
+                    else:
+                        plan[i] = int(ss[1:])
+                    allocated += plan[i]
+                    if allocated >= to_allocate:
+                        plan[i] += to_allocate - allocated
+                        break
+                else:
+                    free_slots += 1
+            if stream_i < 0:
+                if free_slots > 0 and to_allocate > allocated:
+                    for i in range(len(s)):
+                        if plan[i] == 0:
+                            plan[i] = (to_allocate - allocated) // free_slots
+                            allocated += plan[i]
+                            free_slots -= 1
+                if to_allocate > allocated:
+                    plan[len(s) - 1] += to_allocate - allocated
+            else:
+                if to_allocate > allocated:
+                    stream_count = to_allocate - allocated
+                    plan[stream_i] += stream_count
+            for i in range(len(s)):
+                ss = s[i]
+                plan[i] += 0 if i == 0 else plan[i - 1]
+            self.strategy = [None] * (args.n_layer + 1)
+            for n in range(args.n_layer + 1):
+                for i in range(len(s)):
+                    if n < plan[i]:
+                        self.strategy[n] = types.SimpleNamespace()
+                        self.strategy[n].device = s[i][0]
+                        self.strategy[n].atype = s[i][1][0]
+                        self.strategy[n].wtype = s[i][1][1]
+                        self.strategy[n].stream = False
+                        if self.strategy[n].device == "dml":
+                            import torch_directml
+
+                            self.strategy[n].device = torch_directml.device()
+                        if i == stream_i and n >= (plan[i] - stream_count):
+                            self.strategy[n].stream = True
+                        break
+
+            #######################
+
             self.z["emb.weight"] = F.layer_norm(
                 self.z["emb.weight"],
                 (args.n_embd,),
@@ -1141,9 +1212,11 @@ class RWKV(MyModule):
                     args.time_state = True
             if REAL_TIME_FIRST:
                 w = {
-                    k.replace(".time_faaaa", ".time_first")
-                    if ".time_faaaa" in k
-                    else k: v
+                    (
+                        k.replace(".time_faaaa", ".time_first")
+                        if ".time_faaaa" in k
+                        else k
+                    ): v
                     for k, v in w.items()
                 }
                 self.w = w

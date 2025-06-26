@@ -775,13 +775,21 @@ def load_rwkv_state(
                     model.state_tuned[i * 3 + 0] = torch.zeros(
                         args.n_embd, dtype=atype, requires_grad=False, device=dev
                     ).contiguous()
-                    model.state_tuned[i * 3 + 1] = (
-                        state_raw[f"blocks.{i}.att.time_state"]
-                        .transpose(1, 2)
-                        .to(dtype=torch.float, device=dev)
-                        .requires_grad_(False)
-                        .contiguous()
-                    )
+                    if model.model.version >= 7:
+                        model.state_tuned[i * 3 + 1] = (
+                            state_raw[f"blocks.{i}.att.time_state"]
+                            .to(dtype=torch.float, device=dev)
+                            .requires_grad_(False)
+                            .contiguous()
+                        )
+                    else:
+                        model.state_tuned[i * 3 + 1] = (
+                            state_raw[f"blocks.{i}.att.time_state"]
+                            .transpose(1, 2)
+                            .to(dtype=torch.float, device=dev)
+                            .requires_grad_(False)
+                            .contiguous()
+                        )
                     model.state_tuned[i * 3 + 2] = torch.zeros(
                         args.n_embd, dtype=atype, requires_grad=False, device=dev
                     ).contiguous()
