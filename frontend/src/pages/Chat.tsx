@@ -666,12 +666,12 @@ const SidePanel: FC = observer(() => {
         icon={<SaveRegular />}
         onClick={() => {
           let savedContent: string = ''
-          const isWorldModel = commonStore
+          const isRavenModel = commonStore
             .getCurrentModelConfig()
             .modelParameters.modelName.toLowerCase()
-            .includes('world')
-          const user = isWorldModel ? 'User' : 'Bob'
-          const bot = isWorldModel ? 'Assistant' : 'Alice'
+            .includes('raven')
+          const user = isRavenModel ? 'Bob' : 'User'
+          const bot = isRavenModel ? 'Alice' : 'Assistant'
           commonStore.conversationOrder.forEach((uuid) => {
             if (uuid === welcomeUuid) return
             const messageItem = commonStore.conversation[uuid]
