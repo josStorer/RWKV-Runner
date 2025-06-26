@@ -160,6 +160,7 @@ export const RunButton: FC<{
 
       const modelConfig = config || commonStore.getCurrentModelConfig()
 
+      const gguf = modelConfig.modelParameters.modelName.endsWith('.gguf')
       const webgpu = modelConfig.modelParameters.device === 'WebGPU'
       const webgpuPython =
         modelConfig.modelParameters.device === 'WebGPU (Python)'
@@ -212,7 +213,7 @@ export const RunButton: FC<{
         })
       }
 
-      if (webgpu || webgpuPython) {
+      if (!gguf && (webgpu || webgpuPython)) {
         if (!['.st', '.safetensors'].some((ext) => modelPath.endsWith(ext))) {
           const stModelPath = modelPath.replace(/\.pth$/, '.st')
           if (await FileExists(stModelPath)) {
@@ -242,7 +243,7 @@ export const RunButton: FC<{
         }
       }
 
-      if (!webgpu && !webgpuPython) {
+      if (!gguf && !webgpu && !webgpuPython) {
         if (['.st', '.safetensors'].some((ext) => modelPath.endsWith(ext))) {
           toast(
             t('Please change Strategy to WebGPU to use safetensors format'),
@@ -253,12 +254,12 @@ export const RunButton: FC<{
         }
       }
 
-      if (!webgpu) {
+      if (gguf || !webgpu) {
         const ok = await checkDependencies(navigate)
         if (!ok) return
       }
 
-      if (cpp) {
+      if (!gguf && cpp) {
         if (!['.bin'].some((ext) => modelPath.endsWith(ext))) {
           const precision: Precision =
             modelConfig.modelParameters.precision === 'Q5_1' ? 'Q5_1' : 'fp16'
@@ -290,7 +291,7 @@ export const RunButton: FC<{
         }
       }
 
-      if (!cpp) {
+      if (!gguf && !cpp) {
         if (['.bin'].some((ext) => modelPath.endsWith(ext))) {
           toast(
             t('Please change Strategy to CPU (rwkv.cpp) to use ggml format'),
@@ -307,7 +308,10 @@ export const RunButton: FC<{
         return
       } // If the user selects the .pth model with WebGPU mode, modelPath will be set to the .st model.
       // However, if the .pth model is deleted, modelPath will exist and isComplete will be false.
-      else if (!currentModelSource?.isComplete && modelPath.endsWith('.pth')) {
+      else if (
+        !currentModelSource?.isComplete &&
+        (modelPath.endsWith('.pth') || gguf)
+      ) {
         showDownloadPrompt(t('Model file download is not complete'), modelName)
         commonStore.setStatus({ status: ModelStatus.Offline })
         return
@@ -337,10 +341,11 @@ export const RunButton: FC<{
         }
       }
 
-      const startServer = webgpu
-        ? (_: string, port: number, host: string) =>
-            StartWebGPUServer(port, host)
-        : StartServer
+      const startServer =
+        !gguf && webgpu
+          ? (_: string, port: number, host: string) =>
+              StartWebGPUServer(port, host)
+          : StartServer
       const isUsingCudaBeta = modelConfig.modelParameters.device === 'CUDA-Beta'
 
       startServer(
@@ -371,7 +376,7 @@ export const RunButton: FC<{
             if (r.ok && !loading) {
               loading = true
               clearInterval(intervalId)
-              if (!webgpu) {
+              if (gguf || !webgpu) {
                 await getStatus(undefined, port).then((status) => {
                   if (status) commonStore.setStatus(status)
                 })
@@ -381,7 +386,7 @@ export const RunButton: FC<{
                 type: 'info',
                 autoClose: false,
               })
-              if (!webgpu) {
+              if (gguf || !webgpu) {
                 updateConfig(
                   t,
                   {
@@ -420,6 +425,7 @@ export const RunButton: FC<{
               const strategy = getStrategy(modelConfig)
               let customCudaFile = ''
               if (
+                !gguf &&
                 (modelConfig.modelParameters.device.startsWith('CUDA') ||
                   modelConfig.modelParameters.device === 'Custom') &&
                 commonStore.customKernelSupported &&
@@ -489,6 +495,7 @@ export const RunButton: FC<{
                     }
 
                     if (
+                      !gguf &&
                       modelConfig.modelParameters.device.startsWith('CUDA') &&
                       modelConfig.modelParameters.storedLayers <
                         modelConfig.modelParameters.maxStoredLayers &&

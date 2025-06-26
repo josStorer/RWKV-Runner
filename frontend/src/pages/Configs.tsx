@@ -53,6 +53,7 @@ import commonStore from '../stores/commonStore'
 import {
   ApiParameters,
   Device,
+  GGUFMode,
   ModelParameters,
   Precision,
 } from '../types/configs'
@@ -113,6 +114,7 @@ const Configs: FC = observer(() => {
   const mq = useMediaQuery('(min-width: 640px)')
   const navigate = useNavigate()
   const port = selectedConfig.apiParameters.apiPort
+  const usingGGUF = selectedConfig.modelParameters.modelName.endsWith('.gguf')
 
   useEffect(() => {
     if (advancedHeaderRef1.current)
@@ -449,56 +451,60 @@ const Configs: FC = observer(() => {
                               />
                             }
                           />
-                          <Labeled
-                            label={
-                              t('Penalty Decay') +
-                              (!selectedConfig.apiParameters.penaltyDecay ||
-                              selectedConfig.apiParameters.penaltyDecay ===
-                                defaultPenaltyDecay
-                                ? ` (${t('Default')})`
-                                : '') +
-                              ' *'
-                            }
-                            desc={t(
-                              "If you don't know what it is, keep it default."
-                            )}
-                            content={
-                              <ValuedSlider
-                                value={
-                                  selectedConfig.apiParameters.penaltyDecay ||
+                          {!usingGGUF && (
+                            <Labeled
+                              label={
+                                t('Penalty Decay') +
+                                (!selectedConfig.apiParameters.penaltyDecay ||
+                                selectedConfig.apiParameters.penaltyDecay ===
                                   defaultPenaltyDecay
-                                }
-                                min={0.99}
-                                max={0.999}
-                                step={0.001}
-                                toFixed={3}
-                                input
-                                onChange={(e, data) => {
-                                  setSelectedConfigApiParams({
-                                    penaltyDecay: data.value,
-                                  })
-                                }}
-                              />
-                            }
-                          />
-                          <Labeled
-                            label={t('Global Penalty') + ' *'}
-                            desc={t(
-                              'When generating a response, whether to include the submitted prompt as a penalty factor. By turning this off, you will get the same generated results as official RWKV Gradio. If you find duplicate results in the generated results, turning this on can help avoid generating duplicates.'
-                            )}
-                            content={
-                              <Switch
-                                checked={
-                                  selectedConfig.apiParameters.globalPenalty
-                                }
-                                onChange={(e, data) => {
-                                  setSelectedConfigApiParams({
-                                    globalPenalty: data.checked,
-                                  })
-                                }}
-                              />
-                            }
-                          />
+                                  ? ` (${t('Default')})`
+                                  : '') +
+                                ' *'
+                              }
+                              desc={t(
+                                "If you don't know what it is, keep it default."
+                              )}
+                              content={
+                                <ValuedSlider
+                                  value={
+                                    selectedConfig.apiParameters.penaltyDecay ||
+                                    defaultPenaltyDecay
+                                  }
+                                  min={0.99}
+                                  max={0.999}
+                                  step={0.001}
+                                  toFixed={3}
+                                  input
+                                  onChange={(e, data) => {
+                                    setSelectedConfigApiParams({
+                                      penaltyDecay: data.value,
+                                    })
+                                  }}
+                                />
+                              }
+                            />
+                          )}
+                          {!usingGGUF && (
+                            <Labeled
+                              label={t('Global Penalty') + ' *'}
+                              desc={t(
+                                'When generating a response, whether to include the submitted prompt as a penalty factor. By turning this off, you will get the same generated results as official RWKV Gradio. If you find duplicate results in the generated results, turning this on can help avoid generating duplicates.'
+                              )}
+                              content={
+                                <Switch
+                                  checked={
+                                    selectedConfig.apiParameters.globalPenalty
+                                  }
+                                  onChange={(e, data) => {
+                                    setSelectedConfigApiParams({
+                                      globalPenalty: data.checked,
+                                    })
+                                  }}
+                                />
+                              }
+                            />
+                          )}
                         </div>
                       </AccordionPanel>
                     </AccordionItem>
@@ -566,7 +572,8 @@ const Configs: FC = observer(() => {
                           }}
                         />
                       </div>
-                      {!selectedConfig.modelParameters.device.startsWith(
+                      {!usingGGUF &&
+                      !selectedConfig.modelParameters.device.startsWith(
                         'WebGPU'
                       ) ? (
                         selectedConfig.modelParameters.device !==
@@ -592,12 +599,16 @@ const Configs: FC = observer(() => {
                           />
                         )
                       ) : (
-                        <ToolTipButton
-                          text={t('Convert To Safe Tensors Format')}
-                          className="shrink-0"
-                          desc=""
-                          onClick={() => convertToSt(selectedConfig, navigate)}
-                        />
+                        !usingGGUF && (
+                          <ToolTipButton
+                            text={t('Convert To Safe Tensors Format')}
+                            className="shrink-0"
+                            desc=""
+                            onClick={() =>
+                              convertToSt(selectedConfig, navigate)
+                            }
+                          />
+                        )
                       )}
                     </div>
                   </div>
@@ -607,18 +618,30 @@ const Configs: FC = observer(() => {
                       <Dropdown
                         style={{ minWidth: 0 }}
                         className="grow"
-                        value={t(selectedConfig.modelParameters.device)!}
+                        disabled={usingGGUF}
+                        value={
+                          usingGGUF
+                            ? 'LLAMA.cpp'
+                            : t(selectedConfig.modelParameters.device)!
+                        }
                         selectedOptions={[
                           selectedConfig.modelParameters.device,
                         ]}
                         onOptionSelect={(_, data) => {
                           if (data.optionValue) {
-                            setSelectedConfigModelParams({
-                              device: data.optionValue as Device,
-                            })
+                            if (data.optionValue === 'LLAMA.cpp') {
+                              toast.warn(
+                                '请直接选择gguf格式的文件，以使用llama.cpp'
+                              )
+                            } else {
+                              setSelectedConfigModelParams({
+                                device: data.optionValue as Device,
+                              })
+                            }
                           }
                         }}
                       >
+                        <Option value="LLAMA.cpp">LLAMA.cpp</Option>
                         <Option value="CPU">CPU</Option>
                         <Option value="CPU (rwkv.cpp)">
                           {t('CPU (rwkv.cpp, Faster)')!}
@@ -632,143 +655,155 @@ const Configs: FC = observer(() => {
                       </Dropdown>
                     }
                   />
-                  {selectedConfig.modelParameters.device !== 'Custom' && (
-                    <Labeled
-                      label={t('Precision')}
-                      desc={t(
-                        'int8 uses less VRAM, but has slightly lower quality. fp16 has higher quality.'
-                      )}
-                      content={
-                        <Dropdown
-                          style={{ minWidth: 0 }}
-                          className="grow"
-                          value={selectedConfig.modelParameters.precision}
-                          selectedOptions={[
-                            selectedConfig.modelParameters.precision,
-                          ]}
-                          onOptionSelect={(_, data) => {
-                            if (data.optionText) {
-                              setSelectedConfigModelParams({
-                                precision: data.optionText as Precision,
-                              })
-                            }
-                          }}
-                        >
-                          {selectedConfig.modelParameters.device !== 'CPU' &&
-                            selectedConfig.modelParameters.device !== 'MPS' && (
-                              <Option>fp16</Option>
-                            )}
-                          {selectedConfig.modelParameters.device !==
-                            'CPU (rwkv.cpp)' && <Option>int8</Option>}
-                          {selectedConfig.modelParameters.device.startsWith(
-                            'WebGPU'
-                          ) && <Option>nf4</Option>}
-                          {selectedConfig.modelParameters.device !==
-                            'CPU (rwkv.cpp)' &&
-                            !selectedConfig.modelParameters.device.startsWith(
+                  {!usingGGUF &&
+                    selectedConfig.modelParameters.device !== 'Custom' && (
+                      <Labeled
+                        label={t('Precision')}
+                        desc={t(
+                          'int8 uses less VRAM, but has slightly lower quality. fp16 has higher quality.'
+                        )}
+                        content={
+                          <Dropdown
+                            style={{ minWidth: 0 }}
+                            className="grow"
+                            value={selectedConfig.modelParameters.precision}
+                            selectedOptions={[
+                              selectedConfig.modelParameters.precision,
+                            ]}
+                            onOptionSelect={(_, data) => {
+                              if (data.optionText) {
+                                setSelectedConfigModelParams({
+                                  precision: data.optionText as Precision,
+                                })
+                              }
+                            }}
+                          >
+                            {selectedConfig.modelParameters.device !== 'CPU' &&
+                              selectedConfig.modelParameters.device !==
+                                'MPS' && <Option>fp16</Option>}
+                            {selectedConfig.modelParameters.device !==
+                              'CPU (rwkv.cpp)' && <Option>int8</Option>}
+                            {selectedConfig.modelParameters.device.startsWith(
                               'WebGPU'
-                            ) && <Option>fp32</Option>}
-                          {selectedConfig.modelParameters.device ===
-                            'CPU (rwkv.cpp)' && <Option>Q5_1</Option>}
-                        </Dropdown>
-                      }
-                    />
-                  )}
-                  {selectedConfig.modelParameters.device.startsWith('CUDA') && (
-                    <Labeled
-                      label={t('Current Strategy')}
-                      content={<Text> {getStrategy(selectedConfig)} </Text>}
-                    />
-                  )}
-                  {selectedConfig.modelParameters.device.startsWith('CUDA') && (
-                    <Labeled
-                      label={t('Stored Layers')}
-                      desc={t(
-                        'Number of the neural network layers loaded into VRAM, the more you load, the faster the speed, but it consumes more VRAM. (If your VRAM is not enough, it will fail to load)'
-                      )}
-                      content={
-                        <ValuedSlider
-                          value={selectedConfig.modelParameters.storedLayers}
-                          min={0}
-                          max={selectedConfig.modelParameters.maxStoredLayers}
-                          step={1}
-                          input
-                          onChange={(e, data) => {
-                            setSelectedConfigModelParams({
-                              storedLayers: data.value,
-                            })
-                          }}
-                        />
-                      }
-                    />
-                  )}
-                  {selectedConfig.modelParameters.device.startsWith(
-                    'WebGPU'
-                  ) && (
-                    <Labeled
-                      label={t('Parallel Token Chunk Size')}
-                      desc={t(
-                        'Maximum tokens to be processed in parallel at once. For high end GPUs, this could be 64 or 128 (faster).'
-                      )}
-                      content={
-                        <ValuedSlider
-                          value={
-                            selectedConfig.modelParameters.tokenChunkSize || 32
-                          }
-                          min={16}
-                          max={256}
-                          step={16}
-                          input
-                          onChange={(e, data) => {
-                            setSelectedConfigModelParams({
-                              tokenChunkSize: data.value,
-                            })
-                          }}
-                        />
-                      }
-                    />
-                  )}
-                  {selectedConfig.modelParameters.device.startsWith(
-                    'WebGPU'
-                  ) && (
-                    <Labeled
-                      label={t('Quantized Layers')}
-                      desc={t(
-                        'Number of the neural network layers quantized with current precision, the more you quantize, the lower the VRAM usage, but the quality correspondingly decreases.'
-                      )}
-                      content={
-                        <ValuedSlider
-                          disabled={
-                            selectedConfig.modelParameters.precision !==
-                              'int8' &&
-                            selectedConfig.modelParameters.precision !== 'nf4'
-                          }
-                          value={
-                            selectedConfig.modelParameters.precision === 'int8'
-                              ? selectedConfig.modelParameters
-                                  .quantizedLayers || 31
-                              : selectedConfig.modelParameters.precision ===
-                                  'nf4'
+                            ) && <Option>nf4</Option>}
+                            {selectedConfig.modelParameters.device !==
+                              'CPU (rwkv.cpp)' &&
+                              !selectedConfig.modelParameters.device.startsWith(
+                                'WebGPU'
+                              ) && <Option>fp32</Option>}
+                            {selectedConfig.modelParameters.device ===
+                              'CPU (rwkv.cpp)' && <Option>Q5_1</Option>}
+                          </Dropdown>
+                        }
+                      />
+                    )}
+                  {!usingGGUF &&
+                    selectedConfig.modelParameters.device.startsWith(
+                      'CUDA'
+                    ) && (
+                      <Labeled
+                        label={t('Current Strategy')}
+                        content={<Text> {getStrategy(selectedConfig)} </Text>}
+                      />
+                    )}
+                  {!usingGGUF &&
+                    selectedConfig.modelParameters.device.startsWith(
+                      'CUDA'
+                    ) && (
+                      <Labeled
+                        label={t('Stored Layers')}
+                        desc={t(
+                          'Number of the neural network layers loaded into VRAM, the more you load, the faster the speed, but it consumes more VRAM. (If your VRAM is not enough, it will fail to load)'
+                        )}
+                        content={
+                          <ValuedSlider
+                            value={selectedConfig.modelParameters.storedLayers}
+                            min={0}
+                            max={selectedConfig.modelParameters.maxStoredLayers}
+                            step={1}
+                            input
+                            onChange={(e, data) => {
+                              setSelectedConfigModelParams({
+                                storedLayers: data.value,
+                              })
+                            }}
+                          />
+                        }
+                      />
+                    )}
+                  {!usingGGUF &&
+                    selectedConfig.modelParameters.device.startsWith(
+                      'WebGPU'
+                    ) && (
+                      <Labeled
+                        label={t('Parallel Token Chunk Size')}
+                        desc={t(
+                          'Maximum tokens to be processed in parallel at once. For high end GPUs, this could be 64 or 128 (faster).'
+                        )}
+                        content={
+                          <ValuedSlider
+                            value={
+                              selectedConfig.modelParameters.tokenChunkSize ||
+                              32
+                            }
+                            min={16}
+                            max={256}
+                            step={16}
+                            input
+                            onChange={(e, data) => {
+                              setSelectedConfigModelParams({
+                                tokenChunkSize: data.value,
+                              })
+                            }}
+                          />
+                        }
+                      />
+                    )}
+                  {!usingGGUF &&
+                    selectedConfig.modelParameters.device.startsWith(
+                      'WebGPU'
+                    ) && (
+                      <Labeled
+                        label={t('Quantized Layers')}
+                        desc={t(
+                          'Number of the neural network layers quantized with current precision, the more you quantize, the lower the VRAM usage, but the quality correspondingly decreases.'
+                        )}
+                        content={
+                          <ValuedSlider
+                            disabled={
+                              selectedConfig.modelParameters.precision !==
+                                'int8' &&
+                              selectedConfig.modelParameters.precision !== 'nf4'
+                            }
+                            value={
+                              selectedConfig.modelParameters.precision ===
+                              'int8'
                                 ? selectedConfig.modelParameters
-                                    .quantizedLayers || 26
-                                : selectedConfig.modelParameters.maxStoredLayers
-                          }
-                          min={0}
-                          max={selectedConfig.modelParameters.maxStoredLayers}
-                          step={1}
-                          input
-                          onChange={(e, data) => {
-                            setSelectedConfigModelParams({
-                              quantizedLayers: data.value,
-                            })
-                          }}
-                        />
-                      }
-                    />
-                  )}
-                  {selectedConfig.modelParameters.device.startsWith('CUDA') && (
-                    <div />
-                  )}
+                                    .quantizedLayers || 31
+                                : selectedConfig.modelParameters.precision ===
+                                    'nf4'
+                                  ? selectedConfig.modelParameters
+                                      .quantizedLayers || 26
+                                  : selectedConfig.modelParameters
+                                      .maxStoredLayers
+                            }
+                            min={0}
+                            max={selectedConfig.modelParameters.maxStoredLayers}
+                            step={1}
+                            input
+                            onChange={(e, data) => {
+                              setSelectedConfigModelParams({
+                                quantizedLayers: data.value,
+                              })
+                            }}
+                          />
+                        }
+                      />
+                    )}
+                  {!usingGGUF &&
+                    selectedConfig.modelParameters.device.startsWith(
+                      'CUDA'
+                    ) && <div />}
                   {displayStrategyImg && (
                     <img
                       style={{ width: '80vh', height: 'auto', zIndex: 100 }}
@@ -780,112 +815,153 @@ const Configs: FC = observer(() => {
                       }
                     />
                   )}
-                  {selectedConfig.modelParameters.device === 'Custom' && (
-                    <Labeled
-                      label="Strategy"
-                      onMouseEnter={() => setDisplayStrategyImg(true)}
-                      onMouseLeave={() => setDisplayStrategyImg(false)}
-                      content={
-                        <Input
-                          className="grow"
-                          placeholder={
-                            commonStore.platform !== 'darwin'
-                              ? 'cuda:0 fp16 *20 -> cuda:1 fp16'
-                              : 'mps fp32'
-                          }
-                          value={selectedConfig.modelParameters.customStrategy}
-                          onChange={(e, data) => {
-                            setSelectedConfigModelParams({
-                              customStrategy: data.value,
-                            })
-                          }}
-                        />
-                      }
-                    />
-                  )}
-                  {selectedConfig.modelParameters.device === 'Custom' && (
-                    <div />
-                  )}
-                  {(selectedConfig.modelParameters.device.startsWith('CUDA') ||
-                    selectedConfig.modelParameters.device === 'Custom') && (
-                    <Labeled
-                      label={t('Use Custom CUDA kernel to Accelerate')}
-                      desc={t(
-                        'Enabling this option can greatly improve inference speed and save some VRAM, but there may be compatibility issues (output garbled). If it fails to start, please turn off this option, or try to upgrade your gpu driver.'
-                      )}
-                      content={
-                        <Switch
-                          checked={
-                            commonStore.customKernelSupported
-                              ? selectedConfig.modelParameters.useCustomCuda
-                              : false
-                          }
-                          disabled={!commonStore.customKernelSupported}
-                          onChange={(e, data) => {
-                            setSelectedConfigModelParams({
-                              useCustomCuda: data.checked,
-                            })
-                          }}
-                        />
-                      }
-                    />
-                  )}
-                  {selectedConfig.modelParameters.device !== 'WebGPU' && (
-                    <Accordion
-                      className="sm:col-span-2"
-                      collapsible
-                      openItems={
-                        !commonStore.modelParamsCollapsed && 'advanced'
-                      }
-                      onToggle={(e, data) => {
-                        if (data.value === 'advanced')
-                          commonStore.setModelParamsCollapsed(
-                            !commonStore.modelParamsCollapsed
-                          )
-                      }}
-                    >
-                      <AccordionItem value="advanced">
-                        <AccordionHeader ref={advancedHeaderRef2} size="small">
-                          {t('Advanced')}
-                        </AccordionHeader>
-                        <AccordionPanel>
-                          <div className="flex flex-col">
-                            <div className="flex grow">
-                              <Checkbox
-                                className="select-none"
-                                size="large"
-                                label={t('Use Custom Tokenizer')}
-                                checked={
-                                  selectedConfig.modelParameters
-                                    .useCustomTokenizer
-                                }
-                                onChange={(_, data) => {
-                                  setSelectedConfigModelParams({
-                                    useCustomTokenizer: data.checked as boolean,
-                                  })
-                                }}
-                              />
-                              <Input
-                                className="grow"
-                                placeholder={
-                                  t(
-                                    'Tokenizer Path (e.g. backend-python/rwkv_pip/20B_tokenizer.json or rwkv_vocab_v20230424.txt)'
-                                  )!
-                                }
-                                value={
-                                  selectedConfig.modelParameters.customTokenizer
-                                }
-                                onChange={(e, data) => {
-                                  setSelectedConfigModelParams({
-                                    customTokenizer: data.value,
-                                  })
-                                }}
-                              />
+                  {!usingGGUF &&
+                    selectedConfig.modelParameters.device === 'Custom' && (
+                      <Labeled
+                        label="Strategy"
+                        onMouseEnter={() => setDisplayStrategyImg(true)}
+                        onMouseLeave={() => setDisplayStrategyImg(false)}
+                        content={
+                          <Input
+                            className="grow"
+                            placeholder={
+                              commonStore.platform !== 'darwin'
+                                ? 'cuda:0 fp16 *20 -> cuda:1 fp16'
+                                : 'mps fp32'
+                            }
+                            value={
+                              selectedConfig.modelParameters.customStrategy
+                            }
+                            onChange={(e, data) => {
+                              setSelectedConfigModelParams({
+                                customStrategy: data.value,
+                              })
+                            }}
+                          />
+                        }
+                      />
+                    )}
+                  {!usingGGUF &&
+                    selectedConfig.modelParameters.device === 'Custom' && (
+                      <div />
+                    )}
+                  {!usingGGUF &&
+                    (selectedConfig.modelParameters.device.startsWith('CUDA') ||
+                      selectedConfig.modelParameters.device === 'Custom') && (
+                      <Labeled
+                        label={t('Use Custom CUDA kernel to Accelerate')}
+                        desc={t(
+                          'Enabling this option can greatly improve inference speed and save some VRAM, but there may be compatibility issues (output garbled). If it fails to start, please turn off this option, or try to upgrade your gpu driver.'
+                        )}
+                        content={
+                          <Switch
+                            checked={
+                              commonStore.customKernelSupported
+                                ? selectedConfig.modelParameters.useCustomCuda
+                                : false
+                            }
+                            disabled={!commonStore.customKernelSupported}
+                            onChange={(e, data) => {
+                              setSelectedConfigModelParams({
+                                useCustomCuda: data.checked,
+                              })
+                            }}
+                          />
+                        }
+                      />
+                    )}
+                  {!usingGGUF &&
+                    selectedConfig.modelParameters.device !== 'WebGPU' && (
+                      <Accordion
+                        className="sm:col-span-2"
+                        collapsible
+                        openItems={
+                          !commonStore.modelParamsCollapsed && 'advanced'
+                        }
+                        onToggle={(e, data) => {
+                          if (data.value === 'advanced')
+                            commonStore.setModelParamsCollapsed(
+                              !commonStore.modelParamsCollapsed
+                            )
+                        }}
+                      >
+                        <AccordionItem value="advanced">
+                          <AccordionHeader
+                            ref={advancedHeaderRef2}
+                            size="small"
+                          >
+                            {t('Advanced')}
+                          </AccordionHeader>
+                          <AccordionPanel>
+                            <div className="flex flex-col">
+                              <div className="flex grow">
+                                <Checkbox
+                                  className="select-none"
+                                  size="large"
+                                  label={t('Use Custom Tokenizer')}
+                                  checked={
+                                    selectedConfig.modelParameters
+                                      .useCustomTokenizer
+                                  }
+                                  onChange={(_, data) => {
+                                    setSelectedConfigModelParams({
+                                      useCustomTokenizer:
+                                        data.checked as boolean,
+                                    })
+                                  }}
+                                />
+                                <Input
+                                  className="grow"
+                                  placeholder={
+                                    t(
+                                      'Tokenizer Path (e.g. backend-python/rwkv_pip/20B_tokenizer.json or rwkv_vocab_v20230424.txt)'
+                                    )!
+                                  }
+                                  value={
+                                    selectedConfig.modelParameters
+                                      .customTokenizer
+                                  }
+                                  onChange={(e, data) => {
+                                    setSelectedConfigModelParams({
+                                      customTokenizer: data.value,
+                                    })
+                                  }}
+                                />
+                              </div>
                             </div>
-                          </div>
-                        </AccordionPanel>
-                      </AccordionItem>
-                    </Accordion>
+                          </AccordionPanel>
+                        </AccordionItem>
+                      </Accordion>
+                    )}
+                  {usingGGUF && (
+                    <Labeled
+                      label={t('GGUF 运行模式')}
+                      desc={t('选择llama.cpp的运行模式')}
+                      content={
+                        <Dropdown
+                          style={{ minWidth: 0 }}
+                          className="grow"
+                          value={
+                            selectedConfig.modelParameters.ggufMode ||
+                            'Vulkan GPU'
+                          }
+                          selectedOptions={[
+                            selectedConfig.modelParameters.ggufMode ||
+                              'Vulkan GPU',
+                          ]}
+                          onOptionSelect={(_, data) => {
+                            if (data.optionText) {
+                              setSelectedConfigModelParams({
+                                ggufMode: data.optionText as GGUFMode,
+                              })
+                            }
+                          }}
+                        >
+                          <Option>CPU</Option>
+                          <Option>Vulkan GPU</Option>
+                        </Dropdown>
+                      }
+                    />
                   )}
                 </div>
               }

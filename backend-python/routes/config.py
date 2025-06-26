@@ -80,7 +80,7 @@ def switch_model(body: SwitchModelBody, response: Response, request: Request):
         else:
             global_var.set(
                 global_var.Model,
-                Llama(model_path=body.model),
+                Llama(model_path=body.model, strategy=body.strategy),
             )
     except Exception as e:
         print(e)

@@ -47,6 +47,12 @@ var cyac embed.FS
 //go:embed all:py310/Lib/site-packages/cyac-1.9.dist-info
 var cyacInfo embed.FS
 
+//go:embed all:py310/Lib/site-packages/llama_cpp
+var llamacpp embed.FS
+
+//go:embed all:py310/Lib/site-packages/llama_cpp_python-0.3.9.dist-info
+var llamacppInfo embed.FS
+
 //go:embed backend-python
 var py embed.FS
 
@@ -77,8 +83,10 @@ func main() {
 		os.RemoveAll("./py310/Lib/site-packages/cyac-1.7.dist-info")
 		backend.CopyEmbed(cyac)
 		backend.CopyEmbed(cyacInfo)
+		backend.CopyEmbed(llamacpp)
+		backend.CopyEmbed(llamacppInfo)
 		backend.CopyEmbed(py)
-// 		backend.CopyEmbed(webgpu)
+		// backend.CopyEmbed(webgpu)
 		backend.CopyEmbed(finetune)
 		backend.CopyEmbed(midi)
 		backend.CopyEmbed(midiAssets)

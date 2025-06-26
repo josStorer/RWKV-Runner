@@ -19,6 +19,7 @@ export type Device =
   | 'MPS'
   | 'Custom'
 export type Precision = 'fp16' | 'int8' | 'fp32' | 'nf4' | 'Q5_1'
+export type GGUFMode = 'CPU' | 'Vulkan GPU'
 export type ModelParameters = {
   // different models can not have the same name
   modelName: string
@@ -32,6 +33,7 @@ export type ModelParameters = {
   customStrategy?: string
   useCustomTokenizer?: boolean
   customTokenizer?: string
+  ggufMode?: GGUFMode
 }
 export type ModelConfig = {
   // different configs can have the same name

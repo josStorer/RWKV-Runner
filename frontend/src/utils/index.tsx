@@ -248,6 +248,15 @@ export const getStrategy = (
   if (modelConfig) params = modelConfig.modelParameters
   else params = commonStore.getCurrentModelConfig().modelParameters
   const modelName = params.modelName.toLowerCase()
+
+  if (modelName.endsWith('.gguf')) {
+    if (modelConfig?.modelParameters.ggufMode === 'CPU') {
+      return 'cpu'
+    } else {
+      return 'vulkan'
+    }
+  }
+
   const avoidOverflow =
     params.precision !== 'fp32' &&
     modelName.includes('world') &&
@@ -674,12 +683,14 @@ export const checkDependencies = async (navigate: NavigateFunction) => {
                   commonStore.settings.cnMirror,
                   torchVersion,
                   cuSourceVersion
-                ).then(() => {
-                  commonStore.refreshTorchVersion()
-                }).catch((e) => {
-                  const errMsg = e.message || e
-                  toast(t('Error') + ' - ' + errMsg, { type: 'error' })
-                })
+                )
+                  .then(() => {
+                    commonStore.refreshTorchVersion()
+                  })
+                  .catch((e) => {
+                    const errMsg = e.message || e
+                    toast(t('Error') + ' - ' + errMsg, { type: 'error' })
+                  })
                 setTimeout(WindowShow, 1000)
               },
               {
@@ -918,10 +929,11 @@ export async function getAvailablePort(
 
 export function isDynamicStateSupported(modelConfig: ModelConfig) {
   return (
-    modelConfig.modelParameters.device === 'CUDA' ||
-    modelConfig.modelParameters.device === 'CPU' ||
-    modelConfig.modelParameters.device === 'Custom' ||
-    modelConfig.modelParameters.device === 'MPS'
+    (modelConfig.modelParameters.device === 'CUDA' ||
+      modelConfig.modelParameters.device === 'CPU' ||
+      modelConfig.modelParameters.device === 'Custom' ||
+      modelConfig.modelParameters.device === 'MPS') &&
+    !modelConfig.modelParameters.modelName.endsWith('.gguf')
   )
 }
 

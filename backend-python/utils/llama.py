@@ -121,13 +121,15 @@ class TextLlama(AbstractLlama):
         pass
 
 
-def Llama(model_path: str) -> AbstractLlama:
+def Llama(model_path: str, strategy: str) -> AbstractLlama:
     model_path = get_model_path(model_path)
 
     from llama_cpp import Llama
 
     filename, _ = os.path.splitext(os.path.basename(model_path))
-    model = Llama(model_path, n_gpu_layers=-1, n_ctx=8192)
+    model = Llama(
+        model_path, n_gpu_layers=-1 if "cpu" not in strategy else 0, n_ctx=8192
+    )
     llama: AbstractLlama
     llama = TextLlama(model)
     llama.name = filename
