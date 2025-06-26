@@ -31,6 +31,7 @@ import {
   toastWithButton,
 } from '../utils'
 import { convertToGGML, convertToSt } from '../utils/convert-model'
+import { copyCudaKernels } from '../utils/copy-cuda-kernels'
 import {
   addToDownloadList,
   ImmediateTaskResult,
@@ -431,19 +432,7 @@ export const RunButton: FC<{
                   customCudaFile = 'any'
                   const copyRoot = './backend-python/rwkv_pip'
                   if (commonStore.torchVersion) {
-                    if (commonStore.torchVersion === '2.7.1+cu128') {
-                      await CopyFolderFiles(
-                        copyRoot + '/kernels/torch-2.7.1+cu128',
-                        copyRoot,
-                        true
-                      )
-                    } else {
-                      await CopyFolderFiles(
-                        copyRoot + '/kernels/torch-1.13.1+cu117',
-                        copyRoot,
-                        true
-                      )
-                    }
+                    await copyCudaKernels(commonStore.torchVersion)
                   } else if (!(await FileExists(copyRoot + '/wkv_cuda.pyd'))) {
                     await CopyFolderFiles(
                       copyRoot + '/kernels/torch-1.13.1+cu117',

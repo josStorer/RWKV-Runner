@@ -24,6 +24,7 @@ import { Page } from '../components/Page'
 import commonStore from '../stores/commonStore'
 import { Language, Languages } from '../types/settings'
 import { checkUpdate, toastWithButton } from '../utils'
+import { copyCudaKernels } from '../utils/copy-cuda-kernels'
 import {
   getAvailableTorchCuVersion,
   torchVersions,
@@ -133,6 +134,9 @@ export const GeneralSettings: FC = observer(() => {
                         selectedVersion,
                         commonStore.driverCudaVersion || '11.7'
                       )
+                    copyCudaKernels(
+                      `${torchVersion}+cu${cuSourceVersion.replace('.', '')}`
+                    )
                     InstallTorch(
                       commonStore.settings.customPythonPath,
                       commonStore.settings.cnMirror,
