@@ -182,7 +182,7 @@ export const GeneralSettings: FC = observer(() => {
         }
       />
       <Labeled
-        label={t('完全记忆客户端状态')}
+        label={t('Remember the Full Client State')}
         flex
         spaceBetween
         content={

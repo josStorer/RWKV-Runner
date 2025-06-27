@@ -620,8 +620,8 @@ const SidePanel: FC = observer(() => {
       <div className="flex justify-between">
         <ToolTipButton
           className="shrink-0"
-          desc={t('点击保存对话截图到剪贴板')}
-          text={t('分享')}
+          desc={t('Click to Copy the Conversation Screenshot to Clipboard')}
+          text={t('Share')}
           icon={<ShareRegular />}
           onClick={() => {
             const node = document.getElementById('chat-body')
@@ -639,7 +639,7 @@ const SidePanel: FC = observer(() => {
                   })
                   .then(async (blob) => {
                     if (!blob) {
-                      toast.error(t('截图失败，请重试'))
+                      toast.error(t('Failed to screenshot, please try again'))
                       return
                     }
                     navigator.clipboard.write([

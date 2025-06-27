@@ -935,8 +935,8 @@ const Configs: FC = observer(() => {
                     )}
                   {usingGGUF && (
                     <Labeled
-                      label={t('GGUF 运行模式')}
-                      desc={t('选择llama.cpp的运行模式')}
+                      label={t('GGUF Mode')}
+                      desc={t('Select the Running Mode of llama.cpp')}
                       content={
                         <Dropdown
                           style={{ minWidth: 0 }}
@@ -966,7 +966,7 @@ const Configs: FC = observer(() => {
                   {usingGGUF && <div />}
                   {usingGGUF && (
                     <Labeled
-                      label={t('上下文尺寸')}
+                      label={t('Context Size')}
                       content={
                         <ValuedSlider
                           value={

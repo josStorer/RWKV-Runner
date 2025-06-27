@@ -385,5 +385,12 @@
   "Driver CUDA Version": "驱动CUDA版本",
   "CUDA Compute Capability": "CUDA计算兼容性",
   "Enable Quick Think, Currently Only DeepSeek API and RWKV Runner Server Support": "启用快速思考, 目前仅 DeepSeek API 及 RWKV Runner 服务器支持",
-  "Current context setting of llama.cpp is too large, causing insufficient VRAM. Please reduce the context.": "你当前的llama.cpp上下文设置过大，导致显存不足，请减小上下文"
+  "Current context setting of llama.cpp is too large, causing insufficient VRAM. Please reduce the context.": "你当前的llama.cpp上下文设置过大，导致显存不足，请减小上下文",
+  "Click to Copy the Conversation Screenshot to Clipboard": "点击保存对话截图到剪贴板",
+  "Share": "分享",
+  "Failed to screenshot, please try again": "截图失败，请重试",
+  "GGUF Mode": "GGUF 运行模式",
+  "Select the Running Mode of llama.cpp": "选择llama.cpp的运行模式",
+  "Context Size": "上下文尺寸",
+  "Remember the Full Client State": "完全记忆客户端状态"
 }
