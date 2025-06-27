@@ -719,7 +719,8 @@ const ChatPanel: FC = observer(() => {
   const isThinkButtonAvailable =
     commonStore.platform === 'web' ||
     commonStore.status.status === ModelStatus.Offline ||
-    !currentConfig.modelParameters.modelName.endsWith('.gguf')
+    !currentConfig.modelParameters.modelName.endsWith('.gguf') ||
+    currentConfig.modelParameters.modelName.toLowerCase().includes('rwkv')
 
   useEffect(() => {
     if (inputRef.current) inputRef.current.style.maxHeight = '16rem'

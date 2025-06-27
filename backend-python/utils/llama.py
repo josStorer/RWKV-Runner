@@ -172,5 +172,6 @@ def get_llama_config(model: AbstractLlama) -> ModelConfigBody:
     )
 
 
+# you can rename gguf file to rwkv to use builtin rwkv prompt template
 def is_rwkv_model(model: Union[AbstractRWKV, AbstractLlama]) -> bool:
     return isinstance(model, AbstractRWKV) or "rwkv" in model.name.lower()
