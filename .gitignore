@@ -11,6 +11,7 @@ __pycache__
 *.mid
 /config.json
 /cache.json
+/durable.json
 /presets.json
 /frontend/stats.html
 /frontend/package.json.md5
