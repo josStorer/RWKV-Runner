@@ -34,7 +34,11 @@ class SwitchModelBody(BaseModel):
     }
 
 
-@router.post("/switch-model", tags=["Configs"])
+@router.post(
+    "/switch-model",
+    tags=["Configs"],
+    description="pass a .gguf file to use llama.cpp, otherwise use rwkv cli args and strategy",
+)
 def switch_model(body: SwitchModelBody, response: Response, request: Request):
     if global_var.get(global_var.Deploy_Mode) is True:
         raise HTTPException(Status.HTTP_403_FORBIDDEN)

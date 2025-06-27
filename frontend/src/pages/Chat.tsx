@@ -627,38 +627,41 @@ const SidePanel: FC = observer(() => {
             const node = document.getElementById('chat-body')
             if (node) {
               commonStore.setScreenshotting(true)
-              setTimeout(() => {
-                htmlToImage
-                  .toBlob(node, {
-                    backgroundColor: commonStore.settings.darkMode
-                      ? '#292929'
-                      : '#ffffff',
-                    cacheBust: true,
-                    skipFonts: true,
-                    skipAutoScale: true,
-                  })
-                  .then(async (blob) => {
-                    if (!blob) {
-                      toast.error(t('Failed to screenshot, please try again'))
-                      return
-                    }
-                    navigator.clipboard.write([
-                      new ClipboardItem({
-                        // must be image/png
-                        'image/png': blob,
-                      }),
-                    ])
-                    toast(t('Successfully copied to clipboard.'), {
-                      type: 'success',
+              requestAnimationFrame(() => {
+                // execute after next frame to ensure the node is rendered
+                setTimeout(() => {
+                  htmlToImage
+                    .toBlob(node, {
+                      backgroundColor: commonStore.settings.darkMode
+                        ? '#292929'
+                        : '#ffffff',
+                      cacheBust: true,
+                      skipFonts: true,
+                      skipAutoScale: true,
                     })
-                  })
-                  .catch((e) => {
-                    toast.error(e)
-                  })
-                  .finally(() => {
-                    commonStore.setScreenshotting(false)
-                  })
-              }, 30)
+                    .then(async (blob) => {
+                      if (!blob) {
+                        toast.error(t('Failed to screenshot, please try again'))
+                        return
+                      }
+                      navigator.clipboard.write([
+                        new ClipboardItem({
+                          // must be image/png
+                          'image/png': blob,
+                        }),
+                      ])
+                      toast(t('Successfully copied to clipboard.'), {
+                        type: 'success',
+                      })
+                    })
+                    .catch((e) => {
+                      toast.error(e)
+                    })
+                    .finally(() => {
+                      commonStore.setScreenshotting(false)
+                    })
+                })
+              })
             }
           }}
         ></ToolTipButton>
