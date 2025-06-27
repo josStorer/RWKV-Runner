@@ -16,6 +16,298 @@
   ],
   "models": [
     {
+      "name": "rwkv7-g1-2.9b-20250519-ctx4096-Q6_K.gguf",
+      "desc": {
+        "en": "RWKV-7 2.9B Reasoning Model (llama.cpp)",
+        "zh": "RWKV-7 2.9B 推理思考模型 (llama.cpp)",
+        "ja": "RWKV-7 2.9B 推論思考モデル (llama.cpp)"
+      },
+      "size": 2567852800,
+      "SHA256": "81b9d3b06f1a5955bbe6a6490967a11e67666e68236a96b788172241cb8d4476",
+      "lastUpdated": "2025-05-20T03:46:29",
+      "url": "https://huggingface.co/mollysama/rwkv-mobile-models/blob/main/gguf/rwkv7-g1-2.9b-20250519-ctx4096-Q6_K.gguf",
+      "downloadUrl": "https://huggingface.co/mollysama/rwkv-mobile-models/resolve/main/gguf/rwkv7-g1-2.9b-20250519-ctx4096-Q6_K.gguf",
+      "tags": [
+        "Official",
+        "RWKV-7",
+        "Recommended",
+        "Reasoning",
+        "LLAMA.cpp"
+      ]
+    },
+    {
+      "name": "DeepSeek-R1-0528-Qwen3-8B-Q5_K_M.gguf",
+      "desc": {
+        "en": "DeepSeek-R1 8B Reasoning Model (llama.cpp)",
+        "zh": "DeepSeek-R1 8B 推理思考模型 (llama.cpp)",
+        "ja": "DeepSeek-R1 8B 推論思考モデル (llama.cpp)"
+      },
+      "size": 5851113984,
+      "SHA256": "044519a2d9821f9a91fbc8bda4eb2333180842bf56845d130e71144c11a1140e",
+      "lastUpdated": "2025-06-16T00:07:56",
+      "url": "https://huggingface.co/unsloth/DeepSeek-R1-0528-Qwen3-8B-GGUF/blob/main/DeepSeek-R1-0528-Qwen3-8B-Q5_K_M.gguf",
+      "downloadUrl": "https://huggingface.co/unsloth/DeepSeek-R1-0528-Qwen3-8B-GGUF/resolve/main/DeepSeek-R1-0528-Qwen3-8B-Q5_K_M.gguf",
+      "tags": [
+        "Reasoning",
+        "LLAMA.cpp"
+      ]
+    },
+    {
+      "name": "Qwen3-8B-Q5_K_M.gguf",
+      "desc": {
+        "en": "Qwen3 8B Reasoning Model (llama.cpp)",
+        "zh": "通义千问3 8B 推理思考模型 (llama.cpp)",
+        "ja": "Qwen3 8B 推論思考モデル (llama.cpp)"
+      },
+      "size": 5851112224,
+      "SHA256": "068bae163faa96ad48032daf4e071a6a28fe67d8dcc95367609c2ff165e52738",
+      "lastUpdated": "2025-05-03T07:13:02",
+      "url": "https://huggingface.co/Qwen/Qwen3-8B-GGUF/blob/main/Qwen3-8B-Q5_K_M.gguf",
+      "downloadUrl": "https://huggingface.co/Qwen/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-Q5_K_M.gguf",
+      "tags": [
+        "Reasoning",
+        "LLAMA.cpp"
+      ]
+    },
+    {
+      "name": "gemma-3n-E4B-it-Q5_K_M.gguf",
+      "desc": {
+        "en": "Gemma 3N E4B (llama.cpp)",
+        "zh": "Gemma 3N E4B (llama.cpp)",
+        "ja": "Gemma 3N E4B (llama.cpp)"
+      },
+      "size": 4947997952,
+      "SHA256": "b82233cd22459a948796b96f7624638fdae91b124b781031de16854ff5a20c1e",
+      "lastUpdated": "2025-06-26T16:40:58",
+      "url": "https://huggingface.co/unsloth/gemma-3n-E4B-it-GGUF/blob/main/gemma-3n-E4B-it-Q5_K_M.gguf",
+      "downloadUrl": "https://huggingface.co/unsloth/gemma-3n-E4B-it-GGUF/resolve/main/gemma-3n-E4B-it-Q5_K_M.gguf",
+      "tags": ["LLAMA.cpp"]
+    },
+    {
+      "name": "Phi-4-mini-reasoning-Q5_K_M.gguf",
+      "desc": {
+        "en": "Phi-4 Mini Reasoning Model (llama.cpp)",
+        "zh": "Phi-4 Mini 推理思考模型 (llama.cpp)",
+        "ja": "Phi-4 Mini 推論思考モデル (llama.cpp)"
+      },
+      "size": 2848128928,
+      "SHA256": "036c6d0d06bcc08c4a3bcfe8ba2693e3485389c1ca1b1d81d7f7c6451d0c5e48",
+      "lastUpdated": "2025-05-01T02:24:16",
+      "url": "https://huggingface.co/unsloth/Phi-4-mini-reasoning-GGUF/blob/main/Phi-4-mini-reasoning-Q5_K_M.gguf",
+      "downloadUrl": "https://huggingface.co/unsloth/Phi-4-mini-reasoning-GGUF/resolve/main/Phi-4-mini-reasoning-Q5_K_M.gguf",
+      "tags": [
+        "Reasoning",
+        "LLAMA.cpp"
+      ]
+    },
+    {
+      "name": "Qwen3-1.7B-Q8_0.gguf",
+      "desc": {
+        "en": "Qwen3 1.7B Reasoning Model (llama.cpp)",
+        "zh": "通义千问3 1.7B 推理思考模型 (llama.cpp)",
+        "ja": "Qwen3 1.7B 推論思考モデル (llama.cpp)"
+      },
+      "size": 1834426016,
+      "SHA256": "061b54daade076b5d3362dac252678d17da8c68f07560be70818cace6590cb1a",
+      "lastUpdated": "2025-05-08T10:47:31",
+      "url": "https://huggingface.co/Qwen/Qwen3-1.7B-GGUF/blob/main/Qwen3-1.7B-Q8_0.gguf",
+      "downloadUrl": "https://huggingface.co/Qwen/Qwen3-1.7B-GGUF/resolve/main/Qwen3-1.7B-Q8_0.gguf",
+      "tags": [
+        "Reasoning",
+        "LLAMA.cpp"
+      ]
+    },
+    {
+      "name": "Qwen3-4B-Q5_K_M.gguf",
+      "desc": {
+        "en": "Qwen3 4B Reasoning Model (llama.cpp)",
+        "zh": "通义千问3 4B 推理思考模型 (llama.cpp)",
+        "ja": "Qwen3 4B 推論思考モデル (llama.cpp)"
+      },
+      "size": 2889513184,
+      "SHA256": "aca596860e8cb40af6539e3f2ea40df305f42515deac56d49c08d39a02e6533f",
+      "lastUpdated": "2025-05-05T09:13:18",
+      "url": "https://huggingface.co/Qwen/Qwen3-4B-GGUF/blob/main/Qwen3-4B-Q5_K_M.gguf",
+      "downloadUrl": "https://huggingface.co/Qwen/Qwen3-4B-GGUF/resolve/main/Qwen3-4B-Q5_K_M.gguf",
+      "tags": [
+        "Reasoning",
+        "LLAMA.cpp"
+      ]
+    },
+    {
+      "name": "Qwen3-14B-Q5_K_M.gguf",
+      "desc": {
+        "en": "Qwen3 14B Reasoning Model (llama.cpp)",
+        "zh": "通义千问3 14B 推理思考模型 (llama.cpp)",
+        "ja": "Qwen3 14B 推論思考モデル (llama.cpp)"
+      },
+      "size": 10514569568,
+      "SHA256": "e7c9aba1129ca2936be9eca01419d9f86af40e08caa01230d5574b34d08e3e31",
+      "lastUpdated": "2025-05-02T09:18:19",
+      "url": "https://huggingface.co/Qwen/Qwen3-14B-GGUF/blob/main/Qwen3-14B-Q5_K_M.gguf",
+      "downloadUrl": "https://huggingface.co/Qwen/Qwen3-14B-GGUF/resolve/main/Qwen3-14B-Q5_K_M.gguf",
+      "tags": [
+        "Reasoning",
+        "LLAMA.cpp"
+      ]
+    },
+    {
+      "name": "Qwen3-32B-Q4_K_M.gguf",
+      "desc": {
+        "en": "Qwen3 32B Reasoning Model (llama.cpp)",
+        "zh": "通义千问3 32B 推理思考模型 (llama.cpp)",
+        "ja": "Qwen3 32B 推論思考モデル (llama.cpp)"
+      },
+      "size": 19762149024,
+      "SHA256": "efd971561896866f0e910cce52761ca77b1b138090c7f15fe284676d57d1f689",
+      "lastUpdated": "2025-05-02T09:58:29",
+      "url": "https://huggingface.co/Qwen/Qwen3-32B-GGUF/blob/main/Qwen3-32B-Q4_K_M.gguf",
+      "downloadUrl": "https://huggingface.co/Qwen/Qwen3-32B-GGUF/resolve/main/Qwen3-32B-Q4_K_M.gguf",
+      "tags": [
+        "Reasoning",
+        "LLAMA.cpp"
+      ]
+    },
+    {
+      "name": "Qwen3-30B-A3B-Q4_K_M.gguf",
+      "desc": {
+        "en": "Qwen3 30B MoE Reasoning Model (llama.cpp)",
+        "zh": "通义千问3 30B MoE 推理思考模型 (llama.cpp)",
+        "ja": "Qwen3 30B MoE 推論思考モデル (llama.cpp)"
+      },
+      "size": 18556685824,
+      "SHA256": "0d003f6662faee786ed5da3e31b29c978de5ae5d275c8794c606a7f3c01aa8f5",
+      "lastUpdated": "2025-05-05T09:09:38",
+      "url": "https://huggingface.co/Qwen/Qwen3-30B-A3B-GGUF/blob/main/Qwen3-30B-A3B-Q4_K_M.gguf",
+      "downloadUrl": "https://huggingface.co/Qwen/Qwen3-30B-A3B-GGUF/resolve/main/Qwen3-30B-A3B-Q4_K_M.gguf",
+      "tags": [
+        "Reasoning",
+        "LLAMA.cpp"
+      ]
+    },
+    {
+      "name": "gemma-3n-E2B-it-Q5_K_M.gguf",
+      "desc": {
+        "en": "Gemma 3N E2B (llama.cpp)",
+        "zh": "Gemma 3N E2B (llama.cpp)",
+        "ja": "Gemma 3N E2B (llama.cpp)"
+      },
+      "size": 3240266208,
+      "SHA256": "69649771c805b6f0510c647a8cbb0ad35c33b46424f160911d93a7b3bd0f8c28",
+      "lastUpdated": "2025-06-26T16:51:27",
+      "url": "https://huggingface.co/unsloth/gemma-3n-E2B-it-GGUF/blob/main/gemma-3n-E2B-it-Q5_K_M.gguf",
+      "downloadUrl": "https://huggingface.co/unsloth/gemma-3n-E2B-it-GGUF/resolve/main/gemma-3n-E2B-it-Q5_K_M.gguf",
+      "tags": ["LLAMA.cpp"]
+    },
+    {
+      "name": "Phi-4-mini-instruct-Q5_K_M.gguf",
+      "desc": {
+        "en": "Phi-4 Mini (llama.cpp)",
+        "zh": "Phi-4 Mini (llama.cpp)",
+        "ja": "Phi-4 Mini (llama.cpp)"
+      },
+      "size": 2848127968,
+      "SHA256": "b5a981febb25f218762d52411f5a4af6aad8b3a203bb1004a576545350ad08e3",
+      "lastUpdated": "2025-03-03T00:53:59",
+      "url": "https://huggingface.co/unsloth/Phi-4-mini-instruct-GGUF/blob/main/Phi-4-mini-instruct-Q5_K_M.gguf",
+      "downloadUrl": "https://huggingface.co/unsloth/Phi-4-mini-instruct-GGUF/resolve/main/Phi-4-mini-instruct-Q5_K_M.gguf",
+      "tags": ["LLAMA.cpp"]
+    },
+    {
+      "name": "Phi-4-reasoning-plus-Q5_K_M.gguf",
+      "desc": {
+        "en": "Phi-4 Plus Reasoning Model (llama.cpp)",
+        "zh": "Phi-4 Plus 推理思考模型 (llama.cpp)",
+        "ja": "Phi-4 Plus 推論思考モデル (llama.cpp)"
+      },
+      "size": 10604190400,
+      "SHA256": "ae09219b97a9b840c414a25463ddac6250650406ab96f29e892265b89afeb390",
+      "lastUpdated": "2025-05-01T07:07:26",
+      "url": "https://huggingface.co/unsloth/Phi-4-reasoning-plus-GGUF/blob/main/Phi-4-reasoning-plus-Q5_K_M.gguf",
+      "downloadUrl": "https://huggingface.co/unsloth/Phi-4-reasoning-plus-GGUF/resolve/main/Phi-4-reasoning-plus-Q5_K_M.gguf",
+      "tags": [
+        "Reasoning",
+        "LLAMA.cpp"
+      ]
+    },
+    {
+      "name": "rwkv7-g1-0.1b-20250307-ctx4096_Q8_0.gguf",
+      "desc": {
+        "en": "RWKV-7 0.1B Reasoning Model (llama.cpp)",
+        "zh": "RWKV-7 0.1B 推理思考模型 (llama.cpp)",
+        "ja": "RWKV-7 0.1B 推論思考モデル (llama.cpp)"
+      },
+      "size": 212371712,
+      "SHA256": "a86b93d4dc1f51ee4075474d6478e90fb03992d849587ff57f895a4d921b5a96",
+      "lastUpdated": "2025-03-26T06:31:52",
+      "url": "https://huggingface.co/mollysama/rwkv-mobile-models/blob/main/gguf/rwkv7-g1-0.1b-20250307-ctx4096_Q8_0.gguf",
+      "downloadUrl": "https://huggingface.co/mollysama/rwkv-mobile-models/resolve/main/gguf/rwkv7-g1-0.1b-20250307-ctx4096_Q8_0.gguf",
+      "tags": [
+        "Official",
+        "RWKV-7",
+        "Reasoning",
+        "LLAMA.cpp"
+      ]
+    },
+    {
+      "name": "rwkv7-g1-0.4b-20250324-ctx4096_Q8_0.gguf",
+      "desc": {
+        "en": "RWKV-7 0.4B Reasoning Model (llama.cpp)",
+        "zh": "RWKV-7 0.4B 推理思考模型 (llama.cpp)",
+        "ja": "RWKV-7 0.4B 推論思考モデル (llama.cpp)"
+      },
+      "size": 501496768,
+      "SHA256": "806035f26ae3d496ead0b865310f58dbe22636c41aed95f5fd371d3b08c9054b",
+      "lastUpdated": "2025-03-24T23:15:58",
+      "url": "https://huggingface.co/mollysama/rwkv-mobile-models/blob/main/gguf/rwkv7-g1-0.4b-20250324-ctx4096_Q8_0.gguf",
+      "downloadUrl": "https://huggingface.co/mollysama/rwkv-mobile-models/resolve/main/gguf/rwkv7-g1-0.4b-20250324-ctx4096_Q8_0.gguf",
+      "tags": [
+        "Official",
+        "RWKV-7",
+        "Reasoning",
+        "LLAMA.cpp"
+      ]
+    },
+    {
+      "name": "rwkv7-g1-1.5b-20250429-ctx4096-Q6_K.gguf",
+      "desc": {
+        "en": "RWKV-7 1.5B Reasoning Model (llama.cpp)",
+        "zh": "RWKV-7 1.5B 推理思考模型 (llama.cpp)",
+        "ja": "RWKV-7 1.5B 推論思考モデル (llama.cpp)"
+      },
+      "size": 1336081344,
+      "SHA256": "9493ada6457372d85fee11720e7ea1e45f97921e0011d389993d5b272c248073",
+      "lastUpdated": "2025-04-29T06:23:36",
+      "url": "https://huggingface.co/mollysama/rwkv-mobile-models/blob/main/gguf/rwkv7-g1-1.5b-20250429-ctx4096-Q6_K.gguf",
+      "downloadUrl": "https://huggingface.co/mollysama/rwkv-mobile-models/resolve/main/gguf/rwkv7-g1-1.5b-20250429-ctx4096-Q6_K.gguf",
+      "tags": [
+        "Official",
+        "RWKV-7",
+        "Recommended",
+        "Reasoning",
+        "LLAMA.cpp"
+      ]
+    },
+    {
+      "name": "rwkv7-g1-1.5b-Lonely-Neko-Q6_K.gguf",
+      "desc": {
+        "en": "RWKV-7 1.5B Lonely-Neko (llama.cpp)",
+        "zh": "RWKV-7 1.5B Lonely-Neko (llama.cpp)",
+        "ja": "RWKV-7 1.5B Lonely-Neko (llama.cpp)"
+      },
+      "size": 1336081344,
+      "SHA256": "5fd5f61af898a568f5a174de4f8b826d1195f53d7903bea329e5780eaed27791",
+      "lastUpdated": "2025-05-16T05:54:03",
+      "url": "https://huggingface.co/mollysama/rwkv-mobile-models/blob/main/gguf/rwkv7-g1-1.5b-Lonely-Neko-Q6_K.gguf",
+      "downloadUrl": "https://huggingface.co/mollysama/rwkv-mobile-models/resolve/main/gguf/rwkv7-g1-1.5b-Lonely-Neko-Q6_K.gguf",
+      "tags": [
+        "RWKV-7",
+        "Finetuned",
+        "Reasoning",
+        "LLAMA.cpp"
+      ]
+    },
+    {
       "name": "RWKV-x070-World-0.1B-v2.8-20241210-ctx4096.pth",
       "desc": {
         "en": "RWKV-7 Global Languages 0.1B v2.8",
