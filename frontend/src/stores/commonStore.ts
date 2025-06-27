@@ -33,8 +33,10 @@ import {
   isSystemLightMode,
   saveCache,
   saveConfigs,
+  saveDurableData,
   savePresets,
 } from '../utils'
+import { FilterFunctionProperties } from '../utils/filter-function-properties'
 
 export enum ModelStatus {
   Offline,
@@ -62,6 +64,12 @@ export type MonitorData = {
 }
 
 export type Platform = 'windows' | 'darwin' | 'linux' | 'web'
+
+export type CommonStoreType = FilterFunctionProperties<
+  InstanceType<typeof CommonStore>
+>
+
+export type CommonStorePropertyKey = keyof CommonStoreType
 
 class CommonStore {
   // global
@@ -229,12 +237,19 @@ class CommonStore {
     apiChatModelName: 'rwkv',
     apiCompletionModelName: 'rwkv',
     coreApiUrl: '',
+    rememberAllDurableData: true,
   }
   // about
   about: AboutContent = manifest.about
 
   constructor() {
     makeAutoObservable(this)
+  }
+
+  setData(data: Partial<CommonStoreType>, saveConfig: boolean = true) {
+    Object.assign(this, data)
+
+    if (saveConfig) saveDurableData()
   }
 
   get customKernelSupported() {
@@ -310,8 +325,9 @@ class CommonStore {
     if (saveConfig) saveConfigs()
   }
 
-  setModelSourceManifestList = (value: string) => {
+  setModelSourceManifestList = (value: string, saveConfig: boolean = true) => {
     this.modelSourceManifestList = value
+    if (saveConfig) saveConfigs()
   }
 
   setModelSourceList = (value: ModelSourceItem[]) => {
@@ -363,14 +379,17 @@ class CommonStore {
 
   setConversation = (value: Conversation) => {
     this.conversation = value
+    saveDurableData()
   }
 
   setConversationOrder = (value: string[]) => {
     this.conversationOrder = value
+    saveDurableData()
   }
 
   setCompletionPreset(value: CompletionPreset) {
     this.completionPreset = value
+    saveDurableData()
   }
 
   setCompletionGenerating(value: boolean) {
@@ -405,26 +424,32 @@ class CommonStore {
 
   setCurrentInput(value: string) {
     this.currentInput = value
+    saveDurableData()
   }
 
   setQuickThink(value: boolean) {
     this.quickThink = value
+    saveDurableData()
   }
 
   setDeepThink(value: boolean) {
     this.deepThink = value
+    saveDurableData()
   }
 
   setAdvancedCollapsed(value: boolean) {
     this.advancedCollapsed = value
+    saveDurableData()
   }
 
   setApiParamsCollapsed(value: boolean) {
     this.apiParamsCollapsed = value
+    saveDurableData()
   }
 
   setModelParamsCollapsed(value: boolean) {
     this.modelParamsCollapsed = value
+    saveDurableData()
   }
 
   setLastUnfinishedModelDownloads(value: DownloadStatus[]) {
@@ -442,18 +467,22 @@ class CommonStore {
 
   setActivePreset(value: Preset | null) {
     this.activePreset = value
+    saveDurableData()
   }
 
   setActivePresetIndex(value: number) {
     this.activePresetIndex = value
+    saveDurableData()
   }
 
   setCompletionSubmittedPrompt(value: string) {
     this.completionSubmittedPrompt = value
+    saveDurableData()
   }
 
   setCompositionParams(value: CompositionParams) {
     this.compositionParams = value
+    saveDurableData()
   }
 
   setCompositionGenerating(value: boolean) {
@@ -462,6 +491,7 @@ class CommonStore {
 
   setCompositionSubmittedPrompt(value: string) {
     this.compositionSubmittedPrompt = value
+    saveDurableData()
   }
 
   setWslStdout(value: string) {
@@ -506,43 +536,53 @@ class CommonStore {
 
   setAttachments(value: { [uuid: string]: Attachment[] }) {
     this.attachments = value
+    saveDurableData()
   }
 
   setAttachment(uuid: string, value: Attachment[] | null) {
     if (value === null) delete this.attachments[uuid]
     else this.attachments[uuid] = value
+    saveDurableData()
   }
 
   setCurrentTempAttachment(value: Attachment | null) {
     this.currentTempAttachment = value
+    saveDurableData()
   }
 
   setChatParams(value: Partial<ChatParams>) {
     this.chatParams = { ...this.chatParams, ...value }
+    saveDurableData()
   }
 
   setSidePanelCollapsed(value: boolean | 'auto') {
     this.sidePanelCollapsed = value
+    saveDurableData()
   }
 
   setTracks(value: Track[]) {
     this.tracks = value
+    saveDurableData()
   }
 
   setTrackScale(value: number) {
     this.trackScale = value
+    saveDurableData()
   }
 
   setTrackTotalTime(value: number) {
     this.trackTotalTime = value
+    saveDurableData()
   }
 
   setTrackCurrentTime(value: number) {
     this.trackCurrentTime = value
+    saveDurableData()
   }
 
   setTrackPlayStartTime(value: number) {
     this.trackPlayStartTime = value
+    saveDurableData()
   }
 
   setMidiPorts(value: MidiPort[]) {
@@ -551,6 +591,7 @@ class CommonStore {
 
   setInstrumentType(value: InstrumentType) {
     this.instrumentType = value
+    saveDurableData()
   }
 
   setRecordingTrackId(value: string) {
@@ -575,6 +616,7 @@ class CommonStore {
 
   setActiveModelListTags(value: string[]) {
     this.activeModelListTags = value
+    saveDurableData()
   }
 }
 

@@ -23,7 +23,7 @@ import { Labeled } from '../components/Labeled'
 import { Page } from '../components/Page'
 import commonStore from '../stores/commonStore'
 import { Language, Languages } from '../types/settings'
-import { checkUpdate, toastWithButton } from '../utils'
+import { checkUpdate, saveDurableData, toastWithButton } from '../utils'
 import { copyCudaKernels } from '../utils/copy-cuda-kernels'
 import {
   getAvailableTorchCuVersion,
@@ -177,6 +177,22 @@ export const GeneralSettings: FC = observer(() => {
               commonStore.setSettings({
                 darkMode: data.checked,
               })
+            }}
+          />
+        }
+      />
+      <Labeled
+        label={t('完全记忆客户端状态')}
+        flex
+        spaceBetween
+        content={
+          <Switch
+            checked={commonStore.settings.rememberAllDurableData}
+            onChange={(e, data) => {
+              commonStore.setSettings({
+                rememberAllDurableData: data.checked,
+              })
+              if (data.checked) saveDurableData()
             }}
           />
         }

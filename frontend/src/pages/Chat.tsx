@@ -1171,9 +1171,13 @@ const ChatPanel: FC = observer(() => {
           ref={bodyRef}
           className="grow overflow-y-auto overflow-x-hidden pr-2"
         >
-          {commonStore.conversationOrder.map((uuid) => (
-            <ChatMessageItem key={uuid} uuid={uuid} onSubmit={onSubmit} />
-          ))}
+          {commonStore.conversationOrder.map(
+            (uuid) =>
+              // when using durable data, uuid may not in conversation
+              uuid in commonStore.conversation && (
+                <ChatMessageItem key={uuid} uuid={uuid} onSubmit={onSubmit} />
+              )
+          )}
         </div>
         <div className={classnames('flex items-end gap-2')}>
           <DialogButton

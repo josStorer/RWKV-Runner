@@ -34,7 +34,11 @@ import {
 } from '../../wailsjs/runtime'
 import logo from '../assets/images/logo.png'
 import cmdTaskChainStore, { Task } from '../stores/cmdTaskChainStore'
-import commonStore, { ModelStatus } from '../stores/commonStore'
+import commonStore, {
+  CommonStorePropertyKey,
+  CommonStoreType,
+  ModelStatus,
+} from '../stores/commonStore'
 import {
   botName,
   Conversation,
@@ -350,6 +354,57 @@ export const saveCache = throttle(
 export const savePresets = async () => {
   return SaveJson('presets.json', commonStore.presets)
 }
+
+export const loadDurableData = async () => {
+  const data = (await ReadJson('durable.json')) as Partial<CommonStoreType>
+  if (data) {
+    commonStore.setData(data, false)
+  }
+}
+
+export const saveDurableData = throttle(
+  async () => {
+    if (!commonStore.settings.rememberAllDurableData) return
+    const durableProperties: CommonStorePropertyKey[] = [
+      'conversation',
+      'conversationOrder',
+      'completionPreset',
+      'currentInput',
+      'quickThink',
+      'deepThink',
+      'advancedCollapsed',
+      'apiParamsCollapsed',
+      'modelParamsCollapsed',
+      'activePreset',
+      'activePresetIndex',
+      'completionSubmittedPrompt',
+      'compositionParams',
+      'compositionSubmittedPrompt',
+      'attachments',
+      'currentTempAttachment',
+      'chatParams',
+      'sidePanelCollapsed',
+      'tracks',
+      'trackScale',
+      'trackTotalTime',
+      'trackCurrentTime',
+      'trackPlayStartTime',
+      'instrumentType',
+      'activeModelListTags',
+    ]
+    const data: Partial<CommonStoreType> = {}
+    durableProperties.forEach((key) => {
+      // @ts-ignore
+      data[key] = commonStore[key]
+    })
+    return SaveJson('durable.json', data)
+  },
+  800,
+  {
+    leading: true,
+    trailing: true,
+  }
+)
 
 export function getUserLanguage(): Language {
   // const l = navigator.language.toLowerCase();

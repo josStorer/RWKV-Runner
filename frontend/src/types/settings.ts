@@ -20,4 +20,5 @@ export type SettingsType = {
   apiChatModelName: string
   apiCompletionModelName: string
   coreApiUrl: string
+  rememberAllDurableData: boolean
 }

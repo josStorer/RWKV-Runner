@@ -30,6 +30,7 @@ import {
   Cache,
   checkUpdate,
   downloadProgramFiles,
+  loadDurableData,
   LocalConfig,
   refreshLocalModels,
   refreshModels,
@@ -75,6 +76,7 @@ export async function startup() {
   }
 
   await initConfig()
+  if (commonStore.settings.rememberAllDurableData) loadDurableData()
 
   if (commonStore.platform !== 'web') {
     initCache(true).then(initRemoteText) // depends on config customModelsPath
@@ -126,7 +128,8 @@ async function initConfig() {
     .then((configData: LocalConfig) => {
       if (configData.modelSourceManifestList)
         commonStore.setModelSourceManifestList(
-          configData.modelSourceManifestList
+          configData.modelSourceManifestList,
+          false
         )
 
       if (configData.settings)
