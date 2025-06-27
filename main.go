@@ -53,6 +53,12 @@ var llamacpp embed.FS
 //go:embed all:py310/Lib/site-packages/llama_cpp_python-0.3.9.dist-info
 var llamacppInfo embed.FS
 
+//go:embed all:py310/Lib/site-packages/diskcache
+var diskcache embed.FS
+
+//go:embed all:py310/Lib/site-packages/diskcache-5.6.3.dist-info
+var diskcacheInfo embed.FS
+
 //go:embed backend-python
 var py embed.FS
 
@@ -85,6 +91,8 @@ func main() {
 		backend.CopyEmbed(cyacInfo)
 		backend.CopyEmbed(llamacpp)
 		backend.CopyEmbed(llamacppInfo)
+		backend.CopyEmbed(diskcache)
+		backend.CopyEmbed(diskcacheInfo)
 		backend.CopyEmbed(py)
 		// backend.CopyEmbed(webgpu)
 		backend.CopyEmbed(finetune)
