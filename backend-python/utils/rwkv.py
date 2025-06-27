@@ -7,6 +7,7 @@ import re
 import time
 from typing import Dict, Iterable, List, Literal, Tuple, Union, Type, Callable
 from utils.log import quick_log
+from utils.torch import torch_gc
 from fastapi import HTTPException, status
 from pydantic import BaseModel, Field
 from routes import state_cache
@@ -679,9 +680,12 @@ def RWKV(model: str, strategy: str, tokenizer: Union[str, None]) -> AbstractRWKV
     filename, _ = os.path.splitext(os.path.basename(model_path))
     model = Model(model_path, strategy)
     if model.version == 7 and not rwkv_cpp and not webgpu:
+        # reduce peak memory usage
+        model = ""
         import sys
 
         sys.modules.pop("rwkv_pip.model")
+        torch_gc()
         os.environ["RWKV_V7_ON"] = "1"
         from rwkv_pip.model import (
             RWKV as Model,
