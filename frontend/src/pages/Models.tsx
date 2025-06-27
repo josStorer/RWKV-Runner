@@ -194,11 +194,19 @@ const getTags = () => {
       'Recommended',
       'Reasoning',
       'Official',
+      'LLAMA.cpp',
       ...commonStore.modelSourceList
         .filter((item) => !item.hide || item.isComplete)
         .map((item) => item.tags || [])
         .flat()
-        .filter((i) => !i.includes('Other') && !i.includes('Local')),
+        .filter(
+          (i) =>
+            !i.includes('Other') &&
+            !i.includes('Local') &&
+            !i.includes('CN') &&
+            !i.includes('JP') &&
+            !i.includes('Global')
+        ),
       'Other',
       'Local',
     ])
