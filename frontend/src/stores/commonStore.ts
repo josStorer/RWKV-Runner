@@ -134,6 +134,7 @@ class CommonStore {
     toolReturn: '{"location": "Paris", "temperature": "22"}',
   }
   sidePanelCollapsed: boolean | 'auto' = 'auto'
+  screenshotting: boolean = false
   // completion
   completionPreset: CompletionPreset | null = null
   completionGenerating: boolean = false
@@ -558,6 +559,10 @@ class CommonStore {
   setSidePanelCollapsed(value: boolean | 'auto') {
     this.sidePanelCollapsed = value
     saveDurableData()
+  }
+
+  setScreenshotting(value: boolean) {
+    this.screenshotting = value
   }
 
   setTracks(value: Track[]) {

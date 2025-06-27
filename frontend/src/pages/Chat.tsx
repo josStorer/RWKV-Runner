@@ -8,6 +8,7 @@ import {
   MenuTrigger,
   PresenceBadge,
   Switch,
+  Text,
   Textarea,
 } from '@fluentui/react-components'
 import {
@@ -20,6 +21,7 @@ import {
   FolderOpenVerticalRegular,
   RecordStop28Regular,
   SaveRegular,
+  ShareRegular,
   TextAlignJustify24Regular,
   TextAlignJustifyRotate9024Regular,
 } from '@fluentui/react-icons'
@@ -32,6 +34,7 @@ import {
 } from '@primer/octicons-react'
 import { IconAtom, IconAtom2 } from '@tabler/icons-react'
 import classnames from 'classnames'
+import * as htmlToImage from 'html-to-image'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
@@ -614,93 +617,139 @@ const SidePanel: FC = observer(() => {
           />
         </div>
       )}
-      <Button
-        className="shrink-0"
-        icon={<FolderOpenVerticalRegular />}
-        onClick={() => {
-          OpenFileDialog('*.txt;*.md').then(async (blob) => {
-            const userNames = ['User:', 'Question:', 'Q:', 'Human:', 'Bob:']
-            const assistantNames = [
-              'Assistant:',
-              'Answer:',
-              'A:',
-              'Bot:',
-              'Alice:',
-            ]
-            const names = userNames.concat(assistantNames)
-            const content = await blob.text()
-            const lines = content.split('\n')
+      <div className="flex justify-between">
+        <ToolTipButton
+          className="shrink-0"
+          desc={t('点击保存对话截图到剪贴板')}
+          text={t('分享')}
+          icon={<ShareRegular />}
+          onClick={() => {
+            const node = document.getElementById('chat-body')
+            if (node) {
+              commonStore.setScreenshotting(true)
+              setTimeout(() => {
+                htmlToImage
+                  .toBlob(node, {
+                    backgroundColor: commonStore.settings.darkMode
+                      ? '#292929'
+                      : '#ffffff',
+                    cacheBust: true,
+                    skipFonts: true,
+                    skipAutoScale: true,
+                  })
+                  .then(async (blob) => {
+                    if (!blob) {
+                      toast.error(t('截图失败，请重试'))
+                      return
+                    }
+                    navigator.clipboard.write([
+                      new ClipboardItem({
+                        // must be image/png
+                        'image/png': blob,
+                      }),
+                    ])
+                    toast(t('Successfully copied to clipboard.'), {
+                      type: 'success',
+                    })
+                  })
+                  .catch((e) => {
+                    toast.error(e)
+                  })
+                  .finally(() => {
+                    commonStore.setScreenshotting(false)
+                  })
+              }, 30)
+            }
+          }}
+        ></ToolTipButton>
+        <div className="flex gap-2">
+          <ToolTipButton
+            className="shrink-0"
+            desc={t('Load Conversation')}
+            icon={<FolderOpenVerticalRegular />}
+            onClick={() => {
+              OpenFileDialog('*.txt;*.md').then(async (blob) => {
+                const userNames = ['User:', 'Question:', 'Q:', 'Human:', 'Bob:']
+                const assistantNames = [
+                  'Assistant:',
+                  'Answer:',
+                  'A:',
+                  'Bot:',
+                  'Alice:',
+                ]
+                const names = userNames.concat(assistantNames)
+                const content = await blob.text()
+                const lines = content.split('\n')
 
-            const { pushMessage, saveConversation } = newChatConversation()
-            let messageRole: Role = 'user'
-            let messageContent = ''
-            for (const [i, line] of lines.entries()) {
-              let lineName = ''
-              if (
-                names.some((name) => {
-                  lineName = name
-                  return line.startsWith(name)
-                })
-              ) {
+                const { pushMessage, saveConversation } = newChatConversation()
+                let messageRole: Role = 'user'
+                let messageContent = ''
+                for (const [i, line] of lines.entries()) {
+                  let lineName = ''
+                  if (
+                    names.some((name) => {
+                      lineName = name
+                      return line.startsWith(name)
+                    })
+                  ) {
+                    if (messageContent.trim())
+                      pushMessage(messageRole, messageContent.trim())
+
+                    if (userNames.includes(lineName)) messageRole = 'user'
+                    else messageRole = 'assistant'
+
+                    messageContent = line.replace(lineName, '')
+                  } else {
+                    messageContent += '\n' + line
+                  }
+                }
                 if (messageContent.trim())
                   pushMessage(messageRole, messageContent.trim())
-
-                if (userNames.includes(lineName)) messageRole = 'user'
-                else messageRole = 'assistant'
-
-                messageContent = line.replace(lineName, '')
-              } else {
-                messageContent += '\n' + line
-              }
-            }
-            if (messageContent.trim())
-              pushMessage(messageRole, messageContent.trim())
-            saveConversation()
-          })
-        }}
-      >
-        {t('Load Conversation')}
-      </Button>
-      <Button
-        className="shrink-0"
-        icon={<SaveRegular />}
-        onClick={() => {
-          let savedContent: string = ''
-          const isRavenModel = commonStore
-            .getCurrentModelConfig()
-            .modelParameters.modelName.toLowerCase()
-            .includes('raven')
-          const user = isRavenModel ? 'Bob' : 'User'
-          const bot = isRavenModel ? 'Alice' : 'Assistant'
-          commonStore.conversationOrder.forEach((uuid) => {
-            if (uuid === welcomeUuid) return
-            const messageItem = commonStore.conversation[uuid]
-            if (messageItem.type !== MessageType.Error) {
-              if (messageItem.sender === userName) {
-                savedContent += `${user}: ${messageItem.content}\n\n`
-              } else if (messageItem.sender === botName) {
-                savedContent += `${bot}: ${messageItem.content}\n\n`
-              }
-            }
-          })
-
-          OpenSaveFileDialog('*.txt', 'conversation.txt', savedContent)
-            .then((path) => {
-              if (path)
-                toastWithButton(t('Conversation Saved'), t('Open'), () => {
-                  OpenFileFolder(path)
-                })
-            })
-            .catch((e) => {
-              toast(t('Error') + ' - ' + (e.message || e), {
-                type: 'error',
-                autoClose: 2500,
+                saveConversation()
               })
-            })
-        }}
-      >
-        {t('Save Conversation')}
-      </Button>
+            }}
+          ></ToolTipButton>
+          <ToolTipButton
+            className="shrink-0"
+            desc={t('Save Conversation')}
+            icon={<SaveRegular />}
+            onClick={() => {
+              let savedContent: string = ''
+              const isRavenModel = commonStore
+                .getCurrentModelConfig()
+                .modelParameters.modelName.toLowerCase()
+                .includes('raven')
+              const user = isRavenModel ? 'Bob' : 'User'
+              const bot = isRavenModel ? 'Alice' : 'Assistant'
+              commonStore.conversationOrder.forEach((uuid) => {
+                if (uuid === welcomeUuid) return
+                const messageItem = commonStore.conversation[uuid]
+                if (messageItem.type !== MessageType.Error) {
+                  if (messageItem.sender === userName) {
+                    savedContent += `${user}: ${messageItem.content}\n\n`
+                  } else if (messageItem.sender === botName) {
+                    savedContent += `${bot}: ${messageItem.content}\n\n`
+                  }
+                }
+              })
+
+              OpenSaveFileDialog('*.txt', 'conversation.txt', savedContent)
+                .then((path) => {
+                  if (path)
+                    toastWithButton(t('Conversation Saved'), t('Open'), () => {
+                      OpenFileFolder(path)
+                    })
+                })
+                .catch((e) => {
+                  toast(t('Error') + ' - ' + (e.message || e), {
+                    type: 'error',
+                    autoClose: 2500,
+                  })
+                })
+            }}
+          ></ToolTipButton>
+        </div>
+      </div>
     </div>
   )
 })
@@ -1168,9 +1217,27 @@ const ChatPanel: FC = observer(() => {
           }
         />
         <div
+          id="chat-body"
           ref={bodyRef}
-          className="grow overflow-y-auto overflow-x-hidden pr-2"
+          className={classnames(
+            !commonStore.screenshotting &&
+              'grow overflow-y-auto overflow-x-hidden pr-2'
+          )}
         >
+          {commonStore.screenshotting && (
+            <div className="mb-4 flex flex-row-reverse items-center gap-4">
+              <Avatar
+                size={48}
+                image={{
+                  src: logo,
+                }}
+              />
+              <div className="flex flex-col items-end">
+                <Text size={500}>RWKV-Runner</Text>
+                <Text size={200}>https://github.com/josStorer/RWKV-Runner</Text>
+              </div>
+            </div>
+          )}
           {commonStore.conversationOrder.map(
             (uuid) =>
               // when using durable data, uuid may not in conversation
