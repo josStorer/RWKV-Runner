@@ -16,7 +16,7 @@ document.querySelectorAll('.grid.h-10.grid-cols-12.place-content-center.gap-x-3.
   let data = {}
   data.name = e.children[0].children[0].textContent.trim()
 
-  if (!data.name.endsWith('.bin') && !data.name.endsWith('.pth'))
+  if (!data.name.endsWith('.bin') && !data.name.endsWith('.pth') && !data.name.endsWith('.gguf'))
     return
 
   data.desc = { en: '', zh: '', ja: '' }
