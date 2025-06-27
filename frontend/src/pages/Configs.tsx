@@ -963,6 +963,28 @@ const Configs: FC = observer(() => {
                       }
                     />
                   )}
+                  {usingGGUF && <div />}
+                  {usingGGUF && (
+                    <Labeled
+                      label={t('上下文尺寸')}
+                      content={
+                        <ValuedSlider
+                          value={
+                            selectedConfig.modelParameters.llamaContext || 8192
+                          }
+                          min={512}
+                          max={102400}
+                          step={128}
+                          input
+                          onChange={(e, data) => {
+                            setSelectedConfigModelParams({
+                              llamaContext: data.value,
+                            })
+                          }}
+                        />
+                      }
+                    />
+                  )}
                 </div>
               }
             />

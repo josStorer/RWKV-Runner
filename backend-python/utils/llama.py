@@ -132,8 +132,14 @@ def Llama(model_path: str, strategy: str) -> AbstractLlama:
     from llama_cpp import Llama
 
     filename, _ = os.path.splitext(os.path.basename(model_path))
+    n_ctx = 8192
+    try:
+        n_ctx = int(strategy.split(" ")[1])
+    except:
+        pass
+
     model = Llama(
-        model_path, n_gpu_layers=-1 if "cpu" not in strategy else 0, n_ctx=8192
+        model_path, n_gpu_layers=-1 if "cpu" not in strategy else 0, n_ctx=n_ctx
     )
     llama: AbstractLlama
     llama = TextLlama(model)

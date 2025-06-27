@@ -34,6 +34,7 @@ export type ModelParameters = {
   useCustomTokenizer?: boolean
   customTokenizer?: string
   ggufMode?: GGUFMode
+  llamaContext?: number
 }
 export type ModelConfig = {
   // different configs can have the same name

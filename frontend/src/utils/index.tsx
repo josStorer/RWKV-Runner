@@ -251,9 +251,9 @@ export const getStrategy = (
 
   if (modelName.endsWith('.gguf')) {
     if (modelConfig?.modelParameters.ggufMode === 'CPU') {
-      return 'cpu'
+      return `cpu ${modelConfig?.modelParameters.llamaContext || 8192}`
     } else {
-      return 'vulkan'
+      return `vulkan ${modelConfig?.modelParameters.llamaContext || 8192}`
     }
   }
 

@@ -537,6 +537,8 @@ export const RunButton: FC<{
                         'Failed to enable custom CUDA kernel, ninja is required to load C++ extensions. You may be using the CPU version of PyTorch, please reinstall PyTorch with CUDA. Or if you are using a custom Python interpreter, you must compile the CUDA kernel by yourself or disable Custom CUDA kernel acceleration.',
                       're-convert the model':
                         'Model has been converted and does not match current strategy. If you are using a new strategy, re-convert the model.',
+                      'Failed to create llama_context':
+                        'Current context setting of llama.cpp is too large, causing insufficient VRAM. Please reduce the context.',
                     }
                     const matchedError = Object.entries(errorsMap).find(
                       ([key, _]) => error.includes(key)

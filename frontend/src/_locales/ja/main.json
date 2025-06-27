@@ -384,5 +384,6 @@
   "Not Installed": "未インストール",
   "Driver CUDA Version": "ドライバーCUDAバージョン",
   "CUDA Compute Capability": "CUDA計算互換性",
-  "Enable Quick Think, Currently Only DeepSeek API and RWKV Runner Server Support": "Quick Thinkを有効化、現在はDeepSeek APIとRWKV Runnerサーバーのみサポート"
+  "Enable Quick Think, Currently Only DeepSeek API and RWKV Runner Server Support": "Quick Thinkを有効化、現在はDeepSeek APIとRWKV Runnerサーバーのみサポート",
+  "Current context setting of llama.cpp is too large, causing insufficient VRAM. Please reduce the context.": "llama.cppの現在のコンテキスト設定が大きすぎ、VRAM不足を引き起こしています。コンテキストを削減してください。"
 }
