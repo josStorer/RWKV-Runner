@@ -1,5 +1,5 @@
 {
-  "version": "1.9.5",
+  "version": "1.9.6",
   "introduction": {
     "en": "RWKV is an open-source, commercially usable large language model with high flexibility and great potential for development.\n### About This Tool\nThis tool aims to lower the barrier of entry for using large language models, making it accessible to everyone. It provides fully automated dependency and model management. You simply need to click and run, following the instructions, to deploy a local large language model. The tool itself is very compact and only requires a single executable file for one-click deployment.\nAdditionally, this tool offers an interface that is fully compatible with the OpenAI API. This means you can use any ChatGPT client as a client for RWKV, enabling capability expansion beyond just chat functionality.\n### Preset Configuration Rules at the Bottom\nThis tool comes with a series of preset configurations to reduce complexity. The naming rules for each configuration represent the following in order: device - required VRAM/memory - model size - model language.\nFor example, \"GPU-8G-3B-EN\" indicates that this configuration is for a graphics card with 8GB of VRAM, a model size of 3 billion parameters, and it uses an English language model.\nLarger model sizes have higher performance and VRAM requirements. Among configurations with the same model size, those with higher VRAM usage will have faster runtime.\nFor example, if you have 12GB of VRAM but running the \"GPU-12G-7B-EN\" configuration is slow, you can downgrade to \"GPU-8G-3B-EN\" for a significant speed improvement.\n### About RWKV\nRWKV is an RNN with Transformer-level LLM performance, which can also be directly trained like a GPT transformer (parallelizable). And it's 100% attention-free. You only need the hidden state at position t to compute the state at position t+1. You can use the \"GPT\" mode to quickly compute the hidden state for the \"RNN\" mode.<br/>So it's combining the best of RNN and transformer - great performance, fast inference, saves VRAM, fast training, \"infinite\" ctx_len, and free sentence embedding (using the final hidden state).",
     "zh": "RWKV是一个开源且允许商用的大语言模型，灵活性很高且极具发展潜力。\n### 关于本工具\n本工具旨在降低大语言模型的使用门槛，做到人人可用，本工具提供了全自动化的依赖和模型管理，你只需要直接点击运行，跟随引导，即可完成本地大语言模型的部署，工具本身体积极小，只需要一个exe即可完成一键部署。\n此外，本工具提供了与OpenAI API完全兼容的接口，这意味着你可以把任意ChatGPT客户端用作RWKV的客户端，实现能力拓展，而不局限于聊天。\n### 底部的预设配置规则\n本工具内置了一系列预设配置，以降低使用难度，每个配置名的规则，依次代表着：设备-所需显存/内存-模型规模-模型语言。\n例如，GPU-8G-3B-CN，表示该配置用于显卡，需要8G显存，模型规模为30亿参数，使用的是中文模型。\n模型规模越大，性能要求越高，显存要求也越高，而同样模型规模的配置中，显存占用越高的，运行速度越快。\n例如当你有12G显存，但运行GPU-12G-7B-CN配置速度比较慢，可降级成GPU-8G-3B-CN，将会大幅提速。\n### 关于RWKV\nRWKV是具有Transformer级别LLM性能的RNN，也可以像GPT Transformer一样直接进行训练（可并行化）。而且它是100% attention-free的。你只需在位置t处获得隐藏状态即可计算位置t + 1处的状态。你可以使用“GPT”模式快速计算用于“RNN”模式的隐藏状态。\n因此，它将RNN和Transformer的优点结合起来 - 高性能、快速推理、节省显存、快速训练、“无限”上下文长度以及免费的语句嵌入（使用最终隐藏状态）。"
@@ -81,7 +81,9 @@
       "lastUpdated": "2025-06-26T16:40:58",
       "url": "https://huggingface.co/unsloth/gemma-3n-E4B-it-GGUF/blob/main/gemma-3n-E4B-it-Q5_K_M.gguf",
       "downloadUrl": "https://huggingface.co/unsloth/gemma-3n-E4B-it-GGUF/resolve/main/gemma-3n-E4B-it-Q5_K_M.gguf",
-      "tags": ["LLAMA.cpp"]
+      "tags": [
+        "LLAMA.cpp"
+      ]
     },
     {
       "name": "Phi-4-mini-reasoning-Q5_K_M.gguf",
@@ -197,7 +199,9 @@
       "lastUpdated": "2025-06-26T16:51:27",
       "url": "https://huggingface.co/unsloth/gemma-3n-E2B-it-GGUF/blob/main/gemma-3n-E2B-it-Q5_K_M.gguf",
       "downloadUrl": "https://huggingface.co/unsloth/gemma-3n-E2B-it-GGUF/resolve/main/gemma-3n-E2B-it-Q5_K_M.gguf",
-      "tags": ["LLAMA.cpp"]
+      "tags": [
+        "LLAMA.cpp"
+      ]
     },
     {
       "name": "Phi-4-mini-instruct-Q5_K_M.gguf",
@@ -211,7 +215,9 @@
       "lastUpdated": "2025-03-03T00:53:59",
       "url": "https://huggingface.co/unsloth/Phi-4-mini-instruct-GGUF/blob/main/Phi-4-mini-instruct-Q5_K_M.gguf",
       "downloadUrl": "https://huggingface.co/unsloth/Phi-4-mini-instruct-GGUF/resolve/main/Phi-4-mini-instruct-Q5_K_M.gguf",
-      "tags": ["LLAMA.cpp"]
+      "tags": [
+        "LLAMA.cpp"
+      ]
     },
     {
       "name": "Phi-4-reasoning-plus-Q5_K_M.gguf",
