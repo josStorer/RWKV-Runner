@@ -631,7 +631,9 @@ const Configs: FC = observer(() => {
                           if (data.optionValue) {
                             if (data.optionValue === 'LLAMA.cpp') {
                               toast.warn(
-                                '请直接选择gguf格式的文件，以使用llama.cpp'
+                                t(
+                                  'Please select a gguf file directly to use llama.cpp'
+                                )
                               )
                             } else {
                               setSelectedConfigModelParams({

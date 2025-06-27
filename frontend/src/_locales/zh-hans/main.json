@@ -392,5 +392,6 @@
   "GGUF Mode": "GGUF 运行模式",
   "Select the Running Mode of llama.cpp": "选择llama.cpp的运行模式",
   "Context Size": "上下文尺寸",
-  "Remember the Full Client State": "完全记忆客户端状态"
+  "Remember the Full Client State": "完全记忆客户端状态",
+  "Please select a gguf file directly to use llama.cpp": "请直接选择gguf格式的文件以使用llama.cpp"
 }

@@ -392,5 +392,6 @@
   "GGUF Mode": "GGUF モード",
   "Select the Running Mode of llama.cpp": "llama.cppの実行モードを選択",
   "Context Size": "コンテキストサイズ",
-  "Remember the Full Client State": "完全なクライアント状態を記憶"
+  "Remember the Full Client State": "完全なクライアント状態を記憶",
+  "Please select a gguf file directly to use llama.cpp": "llama.cppを使用するにはggufファイルを直接選択してください"
 }
