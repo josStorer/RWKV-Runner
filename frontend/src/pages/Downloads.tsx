@@ -19,14 +19,6 @@ import { bytesToGb, bytesToKb, bytesToMb, refreshLocalModels } from '../utils'
 
 const Downloads: FC = observer(() => {
   const { t } = useTranslation()
-  const finishedModelsLen = commonStore.downloadList.filter(
-    (status) => status.done && status.name.endsWith('.pth')
-  ).length
-  useEffect(() => {
-    if (finishedModelsLen > 0)
-      refreshLocalModels({ models: commonStore.modelSourceList }, false)
-    console.log('finishedModelsLen:', finishedModelsLen)
-  }, [finishedModelsLen])
 
   let displayList = commonStore.downloadList.slice()
   const downloadListNames = displayList.map((s) => s.name)

@@ -43,8 +43,25 @@ export async function startup() {
   if (commonStore.platform !== 'web') {
     document.body.style.setProperty('overflow', 'hidden')
     downloadProgramFiles()
+    const finishDownloadedNames = new Set<string>()
     EventsOn('downloadList', (data) => {
-      if (data) commonStore.setDownloadList(data)
+      if (data) {
+        commonStore.setDownloadList(data)
+        for (const downloadedItem of commonStore.downloadList) {
+          if (
+            downloadedItem.done &&
+            !finishDownloadedNames.has(downloadedItem.name)
+          ) {
+            finishDownloadedNames.add(downloadedItem.name)
+            if (
+              downloadedItem.name.endsWith('.pth') ||
+              downloadedItem.name.endsWith('.gguf')
+            ) {
+              refreshLocalModels({ models: commonStore.modelSourceList }, false)
+            }
+          }
+        }
+      }
     })
     EventsOn('wsl', (await import('./pages/Train')).wslHandler)
     EventsOn('wslerr', (e) => {
