@@ -10,4 +10,5 @@ backend-python/utils/midi.py linguist-vendored
 build/** linguist-vendored
 finetune/lora/** linguist-vendored
 finetune/json2binidx_tool/** linguist-vendored
+py310/** linguist-vendored
 frontend/wailsjs/** linguist-generated
