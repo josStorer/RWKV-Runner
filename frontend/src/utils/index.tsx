@@ -708,7 +708,7 @@ export const checkDependencies = async (navigate: NavigateFunction) => {
             ),
             t('Download'),
             () => {
-              BrowserOpenURL('https://aka.ms/vs/16/release/vc_redist.x64.exe')
+              BrowserOpenURL('https://aka.ms/vs/17/release/vc_redist.x64.exe')
             }
           )
         } else {
