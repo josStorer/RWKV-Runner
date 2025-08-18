@@ -14,7 +14,7 @@ import {
   StartServer,
   StartWebGPUServer,
 } from '../../wailsjs/go/backend_golang/App'
-import { WindowShow } from '../../wailsjs/runtime'
+import { BrowserOpenURL, WindowShow } from '../../wailsjs/runtime'
 import { exit, getStatus, readRoot, switchModel, updateConfig } from '../apis'
 import {
   defaultCompositionABCPrompt,
@@ -522,32 +522,50 @@ export const RunButton: FC<{
                   } else {
                     commonStore.setStatus({ status: ModelStatus.Offline })
                     const error = await r.text()
-                    const errorsMap = {
-                      'not enough memory':
-                        'Memory is not enough, try to increase the virtual memory or use a smaller model.',
-                      'not compiled with CUDA':
-                        'Bad PyTorch version, please reinstall PyTorch with cuda.',
-                      'invalid header or archive is corrupted':
-                        'The model file is corrupted, please download again.',
-                      'no NVIDIA driver':
-                        "Found no NVIDIA driver, please install the latest driver. If you are not using an Nvidia GPU, please switch the 'Strategy' to WebGPU or CPU in the Configs page.",
-                      'CUDA out of memory':
-                        'VRAM is not enough, please reduce stored layers or use a lower precision in Configs page.',
-                      'Ninja is required to load C++ extensions':
-                        'Failed to enable custom CUDA kernel, ninja is required to load C++ extensions. You may be using the CPU version of PyTorch, please reinstall PyTorch with CUDA. Or if you are using a custom Python interpreter, you must compile the CUDA kernel by yourself or disable Custom CUDA kernel acceleration.',
-                      're-convert the model':
-                        'Model has been converted and does not match current strategy. If you are using a new strategy, re-convert the model.',
-                      'Failed to create llama_context':
-                        'Current context setting of llama.cpp is too large, causing insufficient VRAM. Please reduce the context.',
+                    if (
+                      error.includes('access violation reading 0x00000000') ||
+                      (error.includes('could not find module') &&
+                        error.includes('rwkv.dll'))
+                    ) {
+                      toastWithButton(
+                        t(
+                          'Microsoft Visual C++ Redistributable is not installed, would you like to download it?'
+                        ),
+                        t('Download'),
+                        () => {
+                          BrowserOpenURL(
+                            'https://aka.ms/vs/17/release/vc_redist.x64.exe'
+                          )
+                        }
+                      )
+                    } else {
+                      const errorsMap = {
+                        'not enough memory':
+                          'Memory is not enough, try to increase the virtual memory or use a smaller model.',
+                        'not compiled with CUDA':
+                          'Bad PyTorch version, please reinstall PyTorch with cuda.',
+                        'invalid header or archive is corrupted':
+                          'The model file is corrupted, please download again.',
+                        'no NVIDIA driver':
+                          "Found no NVIDIA driver, please install the latest driver. If you are not using an Nvidia GPU, please switch the 'Strategy' to WebGPU or CPU in the Configs page.",
+                        'CUDA out of memory':
+                          'VRAM is not enough, please reduce stored layers or use a lower precision in Configs page.',
+                        'Ninja is required to load C++ extensions':
+                          'Failed to enable custom CUDA kernel, ninja is required to load C++ extensions. You may be using the CPU version of PyTorch, please reinstall PyTorch with CUDA. Or if you are using a custom Python interpreter, you must compile the CUDA kernel by yourself or disable Custom CUDA kernel acceleration.',
+                        're-convert the model':
+                          'Model has been converted and does not match current strategy. If you are using a new strategy, re-convert the model.',
+                        'Failed to create llama_context':
+                          'Current context setting of llama.cpp is too large, causing insufficient VRAM. Please reduce the context.',
+                      }
+                      const matchedError = Object.entries(errorsMap).find(
+                        ([key, _]) => error.includes(key)
+                      )
+                      const message = matchedError ? t(matchedError[1]) : error
+                      toast(t('Failed to switch model') + ' - ' + message, {
+                        autoClose: 5000,
+                        type: 'error',
+                      })
                     }
-                    const matchedError = Object.entries(errorsMap).find(
-                      ([key, _]) => error.includes(key)
-                    )
-                    const message = matchedError ? t(matchedError[1]) : error
-                    toast(t('Failed to switch model') + ' - ' + message, {
-                      autoClose: 5000,
-                      type: 'error',
-                    })
                   }
                 })
                 .catch((e) => {
