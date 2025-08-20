@@ -50,7 +50,7 @@ var cyacInfo embed.FS
 //go:embed all:py310/Lib/site-packages/llama_cpp
 var llamacpp embed.FS
 
-//go:embed all:py310/Lib/site-packages/llama_cpp_python-0.3.9.dist-info
+//go:embed all:py310/Lib/site-packages/llama_cpp_python-0.3.16.dist-info
 var llamacppInfo embed.FS
 
 //go:embed backend-python
