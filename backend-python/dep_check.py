@@ -3,6 +3,9 @@ import setuptools
 if setuptools.__version__ >= "70.0.0":
     raise ImportError("setuptools>=70.0.0 is not supported")
 
+import jinja2
+import miditok
+import diskcache
 import multipart
 import fitz
 import safetensors
