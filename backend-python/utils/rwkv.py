@@ -21,6 +21,7 @@ class RWKVType(Enum):
     Raven = auto()
     World = auto()
     Music = auto()
+    RawToken = auto()
 
 
 class ModelConfigBody(BaseModel):
@@ -528,6 +529,38 @@ The following is a coherent verbose detailed conversation between a girl named {
             pass
 
 
+class RawTokenRWKV(AbstractRWKV):
+    def __init__(self, model, pipeline):
+        super().__init__(model, pipeline)
+        self.max_tokens_per_generation = 1000
+        self.temperature = 1
+        self.top_p = 0.8
+        self.top_k = 0
+
+        self.rwkv_type = RWKVType.RawToken
+
+    def adjust_occurrence(self, occurrence: Dict, token: int):
+        pass
+
+    def adjust_forward_logits(self, logits: List[float], occurrence: Dict, i: int):
+        pass
+
+    def fix_tokens(self, tokens) -> List[int]:
+        return tokens
+
+    def run_rnn(
+        self, _tokens: List[str], newline_adj: int = 0
+    ) -> Tuple[List[float], int]:
+        tokens = [int(x) for x in _tokens]
+        token_len = len(tokens)
+        self.model_tokens += tokens
+        out, self.model_state = self.model.forward(tokens, self.model_state)
+        return out, token_len
+
+    def delta_postprocess(self, delta: str) -> str:
+        return ", " + delta
+
+
 class MusicMidiRWKV(AbstractRWKV):
     def __init__(self, model, pipeline):
         super().__init__(model, pipeline)
@@ -607,8 +640,10 @@ class MusicAbcRWKV(AbstractRWKV):
 
 def get_tokenizer(tokenizer_len: int):
     tokenizer_dir = f"{pathlib.Path(__file__).parent.parent.resolve()}/rwkv_pip/"
-    if tokenizer_len < 2176:
+    if tokenizer_len < 129:
         return "abc_tokenizer"
+    if tokenizer_len < 2176:
+        return tokenizer_dir + "REMI_tokenizer_params.json"
     if tokenizer_len < 20096:
         return tokenizer_dir + "tokenizer-midipiano.json"
     if tokenizer_len < 50277:
@@ -717,7 +752,10 @@ def RWKV(model: str, strategy: str, tokenizer: Union[str, None]) -> AbstractRWKV
         rwkv = rwkv_map[tokenizer_name](model, pipeline)
     else:
         tokenizer_name = tokenizer_name.lower()
-        if "music" in tokenizer_name or "midi" in tokenizer_name:
+        if "REMI" in str(type(pipeline.tokenizer)):
+            rwkv = RawTokenRWKV(model, pipeline)
+            rwkv.EOS_ID = pipeline.eos_token_id
+        elif "music" in tokenizer_name or "midi" in tokenizer_name:
             rwkv = MusicMidiRWKV(model, pipeline)
         elif "abc" in tokenizer_name:
             rwkv = MusicAbcRWKV(model, pipeline)

@@ -4,6 +4,7 @@
 
 import os, sys
 import numpy as np
+import json
 import torch
 from torch.nn import functional as F
 
@@ -76,9 +77,33 @@ class PIPELINE:
 
                 self.tokenizer = TRIE_TOKENIZER(WORD_NAME)
             else:
-                from tokenizers import Tokenizer
+                if WORD_NAME.endswith(".json"):
+                    try:
+                        with open(WORD_NAME, "r") as f:
+                            params = json.load(f)
+                    except Exception as e:
+                        print(f"Error loading {WORD_NAME}: {e}")
+                        params = None
+                    if (
+                        params
+                        and "tokenization" in params
+                        and params["tokenization"] == "REMI"
+                    ):
+                        from miditok import REMI
 
-                self.tokenizer = Tokenizer.from_file(WORD_NAME)
+                        self.tokenizer = REMI(params=WORD_NAME)
+                        self.bos_token_id = self.tokenizer.vocab.get("BOS_None", 1)
+                        self.eos_token_id = self.tokenizer.vocab.get("EOS_None", 2)
+                        self.pad_token_id = self.tokenizer.vocab.get("PAD_None", 0)
+                    else:
+                        from tokenizers import Tokenizer
+
+                        self.tokenizer = Tokenizer.from_file(WORD_NAME)
+                else:
+                    from tokenizers import Tokenizer
+
+                    self.tokenizer = Tokenizer.from_file(WORD_NAME)
+        self.tokenizer_type = str(type(self.tokenizer))
 
     def refine_context(self, context):
         context = context.strip().split("\n")
@@ -90,13 +115,20 @@ class PIPELINE:
             context = "\n"
         return context
 
-    def encode(self, x):
-        if "Tokenizer" in str(type(self.tokenizer)):
+    def encode(self, x: str):
+        if "Tokenizer" in self.tokenizer_type:
             return self.tokenizer.encode(x).ids
+        elif "REMI" in self.tokenizer_type:
+            if x.strip() == "":
+                return [self.bos_token_id]
+            else:
+                return [int(x.strip()) for x in x.split(",") if x.strip()]
         else:
             return self.tokenizer.encode(x)
 
     def decode(self, x):
+        if "REMI" in self.tokenizer_type:
+            return str(x[0])
         return self.tokenizer.decode(x)
 
     def np_softmax(self, x: np.ndarray, axis: int):

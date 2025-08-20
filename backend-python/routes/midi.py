@@ -1,10 +1,12 @@
 import io
+import re
 import global_var
 from fastapi import APIRouter, HTTPException, UploadFile, status
 from starlette.responses import StreamingResponse
 from pydantic import BaseModel
 from utils.midi import *
 from midi2audio import FluidSynth
+from utils.rwkv import RawTokenRWKV
 
 router = APIRouter()
 
@@ -21,15 +23,30 @@ class TextToMidiBody(BaseModel):
     }
 
 
+raw_token_regex = r"^[\d\s,]+$"
+
+
 @router.post("/text-to-midi", tags=["MIDI"])
 def text_to_midi(body: TextToMidiBody):
+    text_content = body.text.strip()
+
+    model = global_var.get(global_var.Model)
+    if model and isinstance(model, RawTokenRWKV):
+        if re.match(raw_token_regex, text_content):
+            tokens = [int(x.strip()) for x in text_content.split(",") if x.strip()]
+            midi = model.pipeline.tokenizer.decode(tokens)
+            midi.dump_midi("midi/raw_token.mid")
+            with open("midi/raw_token.mid", "rb") as f:
+                mid_data = f.read()
+            return StreamingResponse(io.BytesIO(mid_data), media_type="audio/midi")
+
     vocab_config_type = global_var.get(global_var.Midi_Vocab_Config_Type)
     if vocab_config_type == global_var.MidiVocabConfig.Piano:
         vocab_config = "backend-python/utils/vocab_config_piano.json"
     else:
         vocab_config = "backend-python/utils/midi_vocab_config.json"
     cfg = VocabConfig.from_json(vocab_config)
-    mid = convert_str_to_midi(cfg, body.text.strip())
+    mid = convert_str_to_midi(cfg, text_content)
     mid_data = io.BytesIO()
     mid.save(None, mid_data)
     mid_data.seek(0)
