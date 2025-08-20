@@ -852,7 +852,8 @@ async def completions(body: CompletionBody, request: Request):
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "model not loaded")
 
     if body.prompt is None or body.prompt == "" or body.prompt == []:
-        raise HTTPException(status.HTTP_400_BAD_REQUEST, "prompt not found")
+        body.prompt = "\n"
+        # raise HTTPException(status.HTTP_400_BAD_REQUEST, "prompt not found")
 
     if type(body.prompt) == list:
         body.prompt = body.prompt[0]  # TODO: support multiple prompts
