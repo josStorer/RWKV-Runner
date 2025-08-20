@@ -105,6 +105,23 @@
       ]
     },
     {
+      "name": "openai_gpt-oss-20b-MXFP4.gguf",
+      "desc": {
+        "en": "GPT-OSS 20B Reasoning Model (llama.cpp)",
+        "zh": "GPT-OSS 20B 推理思考模型 (llama.cpp)",
+        "ja": "GPT-OSS 20B 推論思考モデル (llama.cpp)"
+      },
+      "size": 12109565760,
+      "SHA256": "75acd89545d50126692df2116bc3fdf700408b4be1d74d58e8eed13bca028f17",
+      "lastUpdated": "2025-08-05T23:11:47",
+      "url": "https://huggingface.co/bartowski/openai_gpt-oss-20b-GGUF/blob/main/openai_gpt-oss-20b-MXFP4.gguf",
+      "downloadUrl": "https://huggingface.co/bartowski/openai_gpt-oss-20b-GGUF/resolve/main/openai_gpt-oss-20b-MXFP4.gguf",
+      "tags": [
+        "Reasoning",
+        "LLAMA.cpp"
+      ]
+    },
+    {
       "name": "gpt-oss-20b-Q4_K_M.gguf",
       "desc": {
         "en": "GPT-OSS 20B Reasoning Model (llama.cpp)",
@@ -119,7 +136,8 @@
       "tags": [
         "Reasoning",
         "LLAMA.cpp"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "gemma-3-12b-it-Q4_K_M.gguf",
