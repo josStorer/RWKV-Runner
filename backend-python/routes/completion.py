@@ -209,7 +209,8 @@ async def eval(
                                 ],
                             }
                         )
-            except:
+            except Exception as e:
+                print(e)
                 pass
             # torch_gc()
             requests_num = requests_num - 1
