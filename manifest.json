@@ -36,6 +36,25 @@
       ]
     },
     {
+      "name": "rwkv7-g0-7.2b-20250722-ctx4096.pth",
+      "desc": {
+        "en": "RWKV-7 7.2B Reasoning Model",
+        "zh": "RWKV-7 7.2B 推理思考模型",
+        "ja": "RWKV-7 7.2B 推論思考モデル"
+      },
+      "size": 14400009577,
+      "SHA256": "4064a881f9f17819de921db3de2ace9b228696f22e998be0c71211e7c2e487cf",
+      "lastUpdated": "2025-07-22T11:32:43",
+      "url": "https://huggingface.co/BlinkDL/rwkv7-g1/blob/main/rwkv7-g0-7.2b-20250722-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv7-g1/resolve/main/rwkv7-g0-7.2b-20250722-ctx4096.pth",
+      "tags": [
+        "Official",
+        "RWKV-7",
+        "Recommended",
+        "Reasoning"
+      ]
+    },
+    {
       "name": "DeepSeek-R1-0528-Qwen3-8B-Q5_K_M.gguf",
       "desc": {
         "en": "DeepSeek-R1 8B Reasoning Model (llama.cpp)",
