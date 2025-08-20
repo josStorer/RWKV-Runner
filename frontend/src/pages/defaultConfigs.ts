@@ -263,7 +263,7 @@ export const defaultModelConfigsMac: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'RWKV-x060-World-7B-v3-20241112-ctx4096.pth',
+      modelName: 'rwkv7-g0-7.2b-20250722-ctx4096.pth',
       device: 'WebGPU (Python)',
       precision: 'nf4',
       storedLayers: 41,
@@ -377,7 +377,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'RWKV-x060-World-7B-v3-20241112-ctx4096.pth',
+      modelName: 'rwkv7-g0-7.2b-20250722-ctx4096.pth',
       device: 'WebGPU (Python)',
       precision: 'nf4',
       storedLayers: 41,
