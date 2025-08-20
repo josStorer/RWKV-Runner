@@ -1228,16 +1228,24 @@ const ChatPanel: FC = observer(() => {
           )}
         >
           {commonStore.screenshotting && (
-            <div className="mb-4 flex flex-row-reverse items-center gap-4">
-              <Avatar
-                size={48}
-                image={{
-                  src: logo,
-                }}
-              />
-              <div className="flex flex-col items-end">
-                <Text size={500}>RWKV-Runner</Text>
-                <Text size={200}>https://github.com/josStorer/RWKV-Runner</Text>
+            <div className="mb-4 flex flex-row-reverse items-center gap-2">
+              <div className="flex items-center gap-4">
+                <div className="flex flex-col items-end">
+                  <Text size={500}>RWKV-Runner</Text>
+                  <Text size={200}>
+                    https://github.com/josStorer/RWKV-Runner
+                  </Text>
+                </div>
+                <Avatar
+                  size={48}
+                  image={{
+                    src: logo,
+                  }}
+                />
+              </div>
+              <div className="flex grow flex-col">
+                <Text>{commonStore.lastModelName}</Text>
+                <Text size={200}>{new Date().toLocaleDateString()}</Text>
               </div>
             </div>
           )}
