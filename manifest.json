@@ -105,6 +105,39 @@
       ]
     },
     {
+      "name": "gpt-oss-20b-Q4_K_M.gguf",
+      "desc": {
+        "en": "GPT-OSS 20B Reasoning Model (llama.cpp)",
+        "zh": "GPT-OSS 20B 推理思考模型 (llama.cpp)",
+        "ja": "GPT-OSS 20B 推論思考モデル (llama.cpp)"
+      },
+      "size": 11624759488,
+      "SHA256": "c27536640e410032865dc68781d80a08b98f8db5e93575919af8ccc0568aeb4f",
+      "lastUpdated": "2025-08-08T17:16:53",
+      "url": "https://huggingface.co/unsloth/gpt-oss-20b-GGUF/blob/main/gpt-oss-20b-Q4_K_M.gguf",
+      "downloadUrl": "https://huggingface.co/unsloth/gpt-oss-20b-GGUF/resolve/main/gpt-oss-20b-Q4_K_M.gguf",
+      "tags": [
+        "Reasoning",
+        "LLAMA.cpp"
+      ]
+    },
+    {
+      "name": "gemma-3-12b-it-Q4_K_M.gguf",
+      "desc": {
+        "en": "Gemma 3 12B (llama.cpp)",
+        "zh": "Gemma 3 12B (llama.cpp)",
+        "ja": "Gemma 3 12B (llama.cpp)"
+      },
+      "size": 7300778336,
+      "SHA256": "15b8fd9d8672cd4240c178c217ca781409291f34e353d2e913b29c7602ceb3ff",
+      "lastUpdated": "2025-05-09T11:50:46",
+      "url": "https://huggingface.co/unsloth/gemma-3-12b-it-GGUF/blob/main/gemma-3-12b-it-Q4_K_M.gguf",
+      "downloadUrl": "https://huggingface.co/unsloth/gemma-3-12b-it-GGUF/resolve/main/gemma-3-12b-it-Q4_K_M.gguf",
+      "tags": [
+        "LLAMA.cpp"
+      ]
+    },
+    {
       "name": "Phi-4-mini-reasoning-Q5_K_M.gguf",
       "desc": {
         "en": "Phi-4 Mini Reasoning Model (llama.cpp)",
