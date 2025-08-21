@@ -276,6 +276,22 @@
       "hide": true
     },
     {
+      "name": "ERNIE-4.5-21B-A3B-PT-Q4_K_M.gguf",
+      "desc": {
+        "en": "ERNIE4.5 21B Moe (llama.cpp)",
+        "zh": "文心一言 ERNIE4.5 21B Moe (llama.cpp)",
+        "ja": "ERNIE4.5 21B Moe (llama.cpp)"
+      },
+      "size": 13245828608,
+      "SHA256": "150e2463d7644d52ce88e116115ed1e664854edc5cbe619134793e72b019ba1d",
+      "lastUpdated": "2025-07-18T01:49:30",
+      "url": "https://huggingface.co/unsloth/ERNIE-4.5-21B-A3B-PT-GGUF/blob/main/ERNIE-4.5-21B-A3B-PT-Q4_K_M.gguf",
+      "downloadUrl": "https://huggingface.co/unsloth/ERNIE-4.5-21B-A3B-PT-GGUF/resolve/main/ERNIE-4.5-21B-A3B-PT-Q4_K_M.gguf",
+      "tags": [
+        "LLAMA.cpp"
+      ]
+    },
+    {
       "name": "gemma-3n-E2B-it-Q5_K_M.gguf",
       "desc": {
         "en": "Gemma 3N E2B (llama.cpp)",
