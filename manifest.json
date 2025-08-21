@@ -241,6 +241,23 @@
       ]
     },
     {
+      "name": "Qwen3-30B-A3B-Instruct-2507-Q4_K_M.gguf",
+      "desc": {
+        "en": "Qwen3 30B MoE 2507 Reasoning Model (llama.cpp)",
+        "zh": "通义千问3 30B MoE 2507 推理思考模型 (llama.cpp)",
+        "ja": "Qwen3 30B MoE 2507 推論思考モデル (llama.cpp)"
+      },
+      "size": 18556686752,
+      "SHA256": "6c997b8af17debdfb01d890214400ccbab00db6acc0ba8da5de1cc906c4774d0",
+      "lastUpdated": "2025-07-29T11:38:54",
+      "url": "https://huggingface.co/unsloth/Qwen3-30B-A3B-Instruct-2507-GGUF/blob/main/Qwen3-30B-A3B-Instruct-2507-Q4_K_M.gguf",
+      "downloadUrl": "https://huggingface.co/unsloth/Qwen3-30B-A3B-Instruct-2507-GGUF/resolve/main/Qwen3-30B-A3B-Instruct-2507-Q4_K_M.gguf",
+      "tags": [
+        "Reasoning",
+        "LLAMA.cpp"
+      ]
+    },
+    {
       "name": "Qwen3-30B-A3B-Q4_K_M.gguf",
       "desc": {
         "en": "Qwen3 30B MoE Reasoning Model (llama.cpp)",
@@ -255,7 +272,8 @@
       "tags": [
         "Reasoning",
         "LLAMA.cpp"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "gemma-3n-E2B-it-Q5_K_M.gguf",
