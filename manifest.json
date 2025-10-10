@@ -16,6 +16,25 @@
   ],
   "models": [
     {
+      "name": "rwkv7-g1a2-1.5b-20251005-ctx8192.pth",
+      "desc": {
+        "en": "RWKV-7 1.5B Reasoning Model g1a2",
+        "zh": "RWKV-7 1.5B 推理思考模型 g1a2",
+        "ja": "RWKV-7 1.5B 推論思考モデル g1a2"
+      },
+      "size": 3055445757,
+      "SHA256": "a1ebfc6e7c3059ce0e4b1823914c3d0e4e1cdb46aee6c97f775ea147ac7e4d4b",
+      "lastUpdated": "2025-10-09T05:44:36",
+      "url": "https://huggingface.co/BlinkDL/rwkv7-g1/blob/main/rwkv7-g1a2-1.5b-20251005-ctx8192.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv7-g1/resolve/main/rwkv7-g1a2-1.5b-20251005-ctx8192.pth",
+      "tags": [
+        "Official",
+        "RWKV-7",
+        "Recommended",
+        "Reasoning"
+      ]
+    },
+    {
       "name": "rwkv7-g1-2.9b-20250519-ctx4096-Q6_K.gguf",
       "desc": {
         "en": "RWKV-7 2.9B Reasoning Model (llama.cpp)",
@@ -36,17 +55,56 @@
       ]
     },
     {
+      "name": "rwkv7-g1a-2.9b-20250924-ctx4096.pth",
+      "desc": {
+        "en": "RWKV-7 2.9b Reasoning Model g1a",
+        "zh": "RWKV-7 2.9b 推理思考模型 g1a",
+        "ja": "RWKV-7 2.9b 推論思考モデル g1a"
+      },
+      "size": 5896274949,
+      "SHA256": "df5716263b617e7da83590446fb2a98b6663447cfd52e8e9b49e11ce7f4faa3e",
+      "lastUpdated": "2025-09-25T14:00:48",
+      "url": "https://huggingface.co/BlinkDL/rwkv7-g1/blob/main/rwkv7-g1a-2.9b-20250924-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv7-g1/resolve/main/rwkv7-g1a-2.9b-20250924-ctx4096.pth",
+      "tags": [
+        "Official",
+        "RWKV-7",
+        "Recommended",
+        "Reasoning"
+      ]
+    },
+    {
       "name": "rwkv7-g0-7.2b-20250722-ctx4096.pth",
       "desc": {
-        "en": "RWKV-7 7.2B Reasoning Model",
-        "zh": "RWKV-7 7.2B 推理思考模型",
-        "ja": "RWKV-7 7.2B 推論思考モデル"
+        "en": "RWKV-7 7.2B Reasoning Model g0",
+        "zh": "RWKV-7 7.2B 推理思考模型 g0",
+        "ja": "RWKV-7 7.2B 推論思考モデル g0"
       },
       "size": 14400009577,
       "SHA256": "4064a881f9f17819de921db3de2ace9b228696f22e998be0c71211e7c2e487cf",
       "lastUpdated": "2025-07-22T11:32:43",
       "url": "https://huggingface.co/BlinkDL/rwkv7-g1/blob/main/rwkv7-g0-7.2b-20250722-ctx4096.pth",
       "downloadUrl": "https://huggingface.co/BlinkDL/rwkv7-g1/resolve/main/rwkv7-g0-7.2b-20250722-ctx4096.pth",
+      "tags": [
+        "Official",
+        "RWKV-7",
+        "Recommended",
+        "Reasoning"
+      ],
+      "hidden": true
+    },
+    {
+      "name": "rwkv7-g0a2-7.2b-20251005-ctx4096.pth",
+      "desc": {
+        "en": "RWKV-7 7.2B Reasoning Model g0a2",
+        "zh": "RWKV-7 7.2B 推理思考模型 g0a2",
+        "ja": "RWKV-7 7.2B 推論思考モデル g0a2"
+      },
+      "size": 14400009333,
+      "SHA256": "fc5373bc40a196a806dedb8bcf4e7700e0d7b385c0f79fee91322cf808384fef",
+      "lastUpdated": "2025-10-09T06:15:02",
+      "url": "https://huggingface.co/BlinkDL/rwkv7-g1/blob/main/rwkv7-g0a2-7.2b-20251005-ctx4096.pth",
+      "downloadUrl": "https://huggingface.co/BlinkDL/rwkv7-g1/resolve/main/rwkv7-g0a2-7.2b-20251005-ctx4096.pth",
       "tags": [
         "Official",
         "RWKV-7",
