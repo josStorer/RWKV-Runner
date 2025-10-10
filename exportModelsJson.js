@@ -12,7 +12,7 @@ function extractValue(text, prefix) {
   return ret || ''
 }
 
-document.querySelectorAll('.grid.h-10.grid-cols-12.place-content-center.gap-x-3.border-t.px-3.dark\\:border-gray-800').forEach(async e => {
+document.querySelectorAll('ul.rounded-b-lg li.grid').forEach(async e => {
   let data = {}
   data.name = e.children[0].children[0].textContent.trim()
 
