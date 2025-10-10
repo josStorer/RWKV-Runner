@@ -91,7 +91,7 @@
         "Recommended",
         "Reasoning"
       ],
-      "hidden": true
+      "hide": true
     },
     {
       "name": "rwkv7-g0a2-7.2b-20251005-ctx4096.pth",
@@ -601,7 +601,8 @@
         "Reasoning",
         "CN",
         "JP"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-x070-World-2.9B-v3-20250211-ctx4096.pth",
@@ -645,7 +646,8 @@
         "Reasoning",
         "CN",
         "JP"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-x060-World-1B6-v2.1-20240328-ctx4096.pth",
@@ -748,7 +750,8 @@
         "Recommended",
         "CN",
         "JP"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-x060-World-7B-v2.1-20240507-ctx4096.pth",
@@ -790,7 +793,8 @@
         "Recommended",
         "CN",
         "JP"
-      ]
+      ],
+      "hide": true
     },
     {
       "name": "RWKV-x060-ChnNovel-1B-20240807-ctx4096.pth",
