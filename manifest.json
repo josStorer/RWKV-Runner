@@ -132,6 +132,26 @@
         "RWKV-7",
         "Recommended",
         "Reasoning"
+      ],
+      "hide": true
+    },
+    {
+      "name": "rwkv7-g1c-2.9b-20251231-ctx8192.pth",
+      "desc": {
+        "en": "RWKV-7 2.9b Reasoning Model g1c",
+        "zh": "RWKV-7 2.9b 推理思考模型 g1c",
+        "ja": "RWKV-7 2.9b 推論思考モデル g1c"
+      },
+      "size": 5896275005,
+      "SHA256": "3865b25e1ef4a2325fec5cf721ac3afd75eb58df35457e0c1fc57b1c0f6fce83",
+      "lastUpdated": "2025-12-31T05:44:36",
+      "url": "https://modelscope.cn/models/RWKV/rwkv7-g1/file/view/master/rwkv7-g1c-2.9b-20251231-ctx8192.pth",
+      "downloadUrl": "https://modelscope.cn/models/RWKV/rwkv7-g1/resolve/master/rwkv7-g1c-2.9b-20251231-ctx8192.pth",
+      "tags": [
+        "Official",
+        "RWKV-7",
+        "Recommended",
+        "Reasoning"
       ]
     },
     {
@@ -231,6 +251,26 @@
         "RWKV-7",
         "Recommended",
         "Reasoning"
+      ],
+      "hide": true
+    },
+    {
+      "name": "rwkv7-g1c-7.2b-20251231-ctx8192.pth",
+      "desc": {
+        "en": "RWKV-7 7.2B Reasoning Model g1c",
+        "zh": "RWKV-7 7.2B 推理思考模型 g1c",
+        "ja": "RWKV-7 7.2B 推論思考モデル g1c"
+      },
+      "size": 14400009405,
+      "SHA256": "0c7476544a2ddacf463e255e17afd2f8fba7961a92539b6166887f1cc953e191",
+      "lastUpdated": "2025-12-31T06:15:02",
+      "url": "https://modelscope.cn/models/RWKV/rwkv7-g1/file/view/master/rwkv7-g1c-7.2b-20251231-ctx8192.pth",
+      "downloadUrl": "https://modelscope.cn/models/RWKV/rwkv7-g1/resolve/master/rwkv7-g1c-7.2b-20251231-ctx8192.pth",
+      "tags": [
+        "Official",
+        "RWKV-7",
+        "Recommended",
+        "Reasoning"
       ]
     },
     {
@@ -245,6 +285,26 @@
       "lastUpdated": "2025-11-30T06:15:02",
       "url": "https://modelscope.cn/models/RWKV/rwkv7-g1/file/view/master/rwkv7-g0b-13.3b-20251130-ctx8192.pth",
       "downloadUrl": "https://modelscope.cn/models/RWKV/rwkv7-g1/resolve/master/rwkv7-g0b-13.3b-20251130-ctx8192.pth",
+      "tags": [
+        "Official",
+        "RWKV-7",
+        "Recommended",
+        "Reasoning"
+      ],
+      "hide": true
+    },
+    {
+      "name": "rwkv7-g1c-13.3b-20251231-ctx8192.pth",
+      "desc": {
+        "en": "RWKV-7 13.3B Reasoning Model g1c",
+        "zh": "RWKV-7 13.3B 推理思考模型 g1c",
+        "ja": "RWKV-7 13.3B 推論思考モデル g1c"
+      },
+      "size": 26540871429,
+      "SHA256": "899c16cb40c91bba4d8b3d72d1bed5da91164a1d94023d7b0a4d4445cf22135e",
+      "lastUpdated": "2025-12-31T06:18:02",
+      "url": "https://modelscope.cn/models/RWKV/rwkv7-g1/file/view/master/rwkv7-g1c-13.3b-20251231-ctx8192.pth",
+      "downloadUrl": "https://modelscope.cn/models/RWKV/rwkv7-g1/resolve/master/rwkv7-g1c-13.3b-20251231-ctx8192.pth",
       "tags": [
         "Official",
         "RWKV-7",
@@ -284,6 +344,27 @@
       "lastUpdated": "2025-12-08T06:23:36",
       "url": "https://modelscope.cn/models/shoumenchougou/RWKV7-G1b-2.9B-GGUF/file/view/master/rwkv7-g1b-2.9b-Q8_0.gguf",
       "downloadUrl": "https://modelscope.cn/models/shoumenchougou/RWKV7-G1b-2.9B-GGUF/resolve/master/rwkv7-g1b-2.9b-Q8_0.gguf",
+      "tags": [
+        "Official",
+        "RWKV-7",
+        "Recommended",
+        "Reasoning",
+        "LLAMA.cpp"
+      ],
+      "hide": true
+    },
+    {
+      "name": "rwkv7-g1c-2.9b-Q8_0.gguf",
+      "desc": {
+        "en": "RWKV-7 G1c 2.9B Reasoning Model (llama.cpp)",
+        "zh": "RWKV-7 G1c 2.9B 推理思考模型 (llama.cpp)",
+        "ja": "RWKV-7 G1c 2.9B 推論思考モデル (llama.cpp)"
+      },
+      "size": 2567854016,
+      "SHA256": "f214fd2f67296d374f1544767c6107e9409d9785fd597c6d357dbc52b410389c",
+      "lastUpdated": "2025-12-31T05:44:06",
+      "url": "https://modelscope.cn/models/shoumenchougou/RWKV7-G1c-2.9B-GGUF/file/view/master/rwkv7-g1c-2.9b-Q8_0.gguf",
+      "downloadUrl": "https://modelscope.cn/models/shoumenchougou/RWKV7-G1c-2.9B-GGUF/resolve/master/rwkv7-g1c-2.9b-Q8_0.gguf",
       "tags": [
         "Official",
         "RWKV-7",
@@ -331,6 +412,27 @@
         "Recommended",
         "Reasoning",
         "LLAMA.cpp"
+      ],
+      "hide":true
+    },
+    {
+      "name": "rwkv7-g1c-7.2b-Q5_K_M.gguf",
+      "desc": {
+        "en": "RWKV-7 G1c 7.2B Reasoning Model (llama.cpp)",
+        "zh": "RWKV-7 G1c 7.2B 推理思考模型 (llama.cpp)",
+        "ja": "RWKV-7 G1c 7.2B 推論思考モデル (llama.cpp)"
+      },
+      "size": 5349226432,
+      "SHA256": "1b915ace95acc6bc5da2abd7698821b1881e2935e965d7d013b7b56d32a10146",
+      "lastUpdated": "2025-12-31T06:03:36",
+      "url": "https://modelscope.cn/models/shoumenchougou/RWKV7-G1c-7.2B-GGUF/file/view/master/rwkv7-g1c-7.2b-Q5_K_M.gguf",
+      "downloadUrl": "https://modelscope.cn/models/shoumenchougou/RWKV7-G1c-7.2B-GGUF/resolve/master/rwkv7-g1c-7.2b-Q5_K_M.gguf",
+      "tags": [
+        "Official",
+        "RWKV-7",
+        "Recommended",
+        "Reasoning",
+        "LLAMA.cpp"
       ]
     },
     {
@@ -345,6 +447,27 @@
       "lastUpdated": "2025-12-01T06:23:36",
       "url": "https://modelscope.cn/models/shoumenchougou/RWKV7-G0a4-7.2B-GGUF/file/view/master/rwkv7-g0a4-7.2b-Q6_K.gguf",
       "downloadUrl": "https://modelscope.cn/models/shoumenchougou/RWKV7-G0a4-7.2B-GGUF/resolve/master/rwkv7-g0a4-7.2b-Q6_K.gguf",
+      "tags": [
+        "Official",
+        "RWKV-7",
+        "Recommended",
+        "Reasoning",
+        "LLAMA.cpp"
+      ],
+      "hide": true
+    },
+    {
+      "name": "rwkv7-g1c-13.3b-Q5_K_M.gguf",
+      "desc": {
+        "en": "RWKV-7 G1c 13.3B Reasoning Model (llama.cpp)",
+        "zh": "RWKV-7 G1c 13.3B 推理思考模型 (llama.cpp)",
+        "ja": "RWKV-7 G1c 13.3B 推論思考モデル (llama.cpp)"
+      },
+      "size": 9956835264,
+      "SHA256": "ee9acf558e0b631fce2af8569db0c888327cf7ba9a2696d2658a3f217773da84",
+      "lastUpdated": "2025-12-31T06:18:00",
+      "url": "https://modelscope.cn/models/shoumenchougou/RWKV7-G1c-13.3B-GGUF/file/view/master/rwkv7-g1c-13.3b-Q5_K_M.gguf",
+      "downloadUrl": "https://modelscope.cn/models/shoumenchougou/RWKV7-G1c-13.3B-GGUF/resolve/master/rwkv7-g1c-13.3b-Q5_K_M.gguf",
       "tags": [
         "Official",
         "RWKV-7",
