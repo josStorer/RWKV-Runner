@@ -82,6 +82,7 @@ func main() {
 		backend.CopyEmbed(assets)
 		os.RemoveAll("./py310/Lib/site-packages/cyac-1.7.dist-info")
 		os.RemoveAll("./py310/Lib/site-packages/llama_cpp_python-0.3.9.dist-info")
+		os.RemoveAll("./py310/Lib/site-packages/llama_cpp_python-0.3.16.dist-info")
 		backend.CopyEmbed(cyac)
 		backend.CopyEmbed(cyacInfo)
 		backend.CopyEmbed(llamacpp)
