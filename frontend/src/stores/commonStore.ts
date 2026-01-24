@@ -481,9 +481,9 @@ class CommonStore {
     saveDurableData()
   }
 
-  setCompositionParams(value: CompositionParams) {
+  setCompositionParams(value: CompositionParams, saveDurable: boolean = true) {
     this.compositionParams = value
-    saveDurableData()
+    if (saveDurable) saveDurableData()
   }
 
   setCompositionGenerating(value: boolean) {

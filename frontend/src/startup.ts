@@ -283,9 +283,12 @@ async function initMidi() {
     ).midiMessageHandler(data)
   })
   if (await FileExists('assets/sound-font/accordion/instrument.json')) {
-    commonStore.setCompositionParams({
-      ...commonStore.compositionParams,
-      useLocalSoundFont: true,
-    })
+    commonStore.setCompositionParams(
+      {
+        ...commonStore.compositionParams,
+        useLocalSoundFont: true,
+      },
+      false
+    )
   }
 }
