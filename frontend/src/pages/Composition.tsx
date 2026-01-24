@@ -258,6 +258,7 @@ const CompositionPanel: FC = observer(() => {
           top_p: params.topP,
         }),
         signal: compositionSseController?.signal,
+        openWhenHidden: true,
         onmessage(e) {
           if (finished) return
           scrollToBottom()

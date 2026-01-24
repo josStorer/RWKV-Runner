@@ -131,6 +131,7 @@ const CompletionPanel: FC = observer(() => {
               : params.penaltyDecay,
         }),
         signal: completionSseController?.signal,
+        openWhenHidden: true,
         onmessage(e) {
           if (finished) return
           scrollToBottom()

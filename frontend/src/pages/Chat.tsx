@@ -1066,6 +1066,7 @@ const ChatPanel: FC = observer(() => {
             presystem: commonStore.activePreset?.presystem || undefined,
           }),
           signal: chatSseController?.signal,
+          openWhenHidden: true,
           onmessage(e) {
             if (finished) return
             scrollToBottom()
