@@ -171,6 +171,20 @@ class LlamaProxy:
                 chat_handler = llama_cpp.llama_chat_format.MiniCPMv26ChatHandler(
                     clip_model_path=settings.clip_model_path, verbose=settings.verbose
                 )
+        elif settings.chat_format == "gemma3":
+            assert settings.clip_model_path is not None, "clip model not found"
+            if settings.hf_model_repo_id is not None:
+                chat_handler = (
+                    llama_cpp.llama_chat_format.Gemma3ChatHandler.from_pretrained(
+                        repo_id=settings.hf_model_repo_id,
+                        filename=settings.clip_model_path,
+                        verbose=settings.verbose,
+                    )
+                )
+            else:
+                chat_handler = llama_cpp.llama_chat_format.Gemma3ChatHandler(
+                    clip_model_path=settings.clip_model_path, verbose=settings.verbose
+                )
         elif settings.chat_format == "qwen2.5-vl":
             assert settings.clip_model_path is not None, "clip model not found"
             if settings.hf_model_repo_id is not None:
@@ -256,7 +270,11 @@ class LlamaProxy:
             tensor_split=settings.tensor_split,
             vocab_only=settings.vocab_only,
             use_mmap=settings.use_mmap,
+            use_direct_io=settings.use_direct_io,
             use_mlock=settings.use_mlock,
+            check_tensors=settings.check_tensors,
+            use_extra_bufts=settings.use_extra_bufts,
+            no_host=settings.no_host,
             kv_overrides=kv_overrides,
             rpc_servers=settings.rpc_servers,
             # Context Params
@@ -264,9 +282,13 @@ class LlamaProxy:
             n_ctx=settings.n_ctx,
             n_batch=settings.n_batch,
             n_ubatch=settings.n_ubatch,
+            n_seq_max=settings.n_seq_max,
             n_threads=settings.n_threads,
             n_threads_batch=settings.n_threads_batch,
             rope_scaling_type=settings.rope_scaling_type,
+            pooling_type=settings.pooling_type,
+            attention_type=settings.attention_type,
+            flash_attn_type=settings.flash_attn_type,
             rope_freq_base=settings.rope_freq_base,
             rope_freq_scale=settings.rope_freq_scale,
             yarn_ext_factor=settings.yarn_ext_factor,
@@ -276,9 +298,12 @@ class LlamaProxy:
             yarn_orig_ctx=settings.yarn_orig_ctx,
             mul_mat_q=settings.mul_mat_q,
             logits_all=settings.logits_all,
-            embedding=settings.embedding,
+            embeddings=settings.embeddings,
             offload_kqv=settings.offload_kqv,
-            flash_attn=settings.flash_attn,
+            no_perf=settings.no_perf,
+            op_offload=settings.op_offload,
+            swa_full=settings.swa_full,
+            kv_unified=settings.kv_unified,
             # Sampling Params
             last_n_tokens_size=settings.last_n_tokens_size,
             # LoRA Params
@@ -304,6 +329,10 @@ class LlamaProxy:
                 if settings.verbose:
                     print(f"Using disk cache with size {settings.cache_size}")
                 cache = llama_cpp.LlamaDiskCache(capacity_bytes=settings.cache_size)
+            elif settings.cache_type == "tire":
+                if settings.verbose:
+                    print(f"Using tire cache with size {settings.cache_size}")
+                cache = llama_cpp.LlamaTrieCache(capacity_bytes=settings.cache_size)
             else:
                 if settings.verbose:
                     print(f"Using ram cache with size {settings.cache_size}")
