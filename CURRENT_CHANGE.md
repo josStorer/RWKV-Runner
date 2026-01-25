@@ -1,13 +1,12 @@
 ## Changes
 
-- add extra vc++ installation guide
-- add support for REMI tokenizer and raw token input
-- allow prompt to be empty when using `/completions` api
+- disable auto throttling of @microsoft/fetch-event-source
 - bump precompiled llama.cpp vulkan
-- add modelName and date to screenshot
-- update python dependencies
+- add `stop_token_ids` field to `/completions` and `/chat/completions`
+- allow stop sequences to accept multiple values or numeric token IDs, passed to the api server as arrays
+  <img width="331" height="170" alt="Image" src="https://github.com/user-attachments/assets/3dcd7a8b-9503-4fc4-8f89-6b0b8e33e933" />
 - update manifest.json and defaultConfigs
-- chores
+- small fixes
 
 Note: If you encounter WebView2 crash issues, please try opening the Windows Settings, click on Apps, search for
 WebView2, click Modify -> Repair to update your WebView2 runtime.
