@@ -108,7 +108,7 @@ jobs:
       - run: gh release upload ${{github.ref_name}} build/bin/RWKV-Runner_linux_x64
 
   macos:
-    runs-on: macos-13
+    runs-on: macos-15
     needs: create-draft
     steps:
       - uses: actions/checkout@v4
