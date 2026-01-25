@@ -1,10 +1,11 @@
-import React, { FC, useEffect, useRef } from 'react'
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react'
 import {
   Button,
   Dropdown,
   Input,
   Option,
   Textarea,
+  Tooltip,
 } from '@fluentui/react-components'
 import { ArrowSync20Regular } from '@fluentui/react-icons'
 import { fetchEventSource } from '@microsoft/fetch-event-source'
@@ -17,12 +18,155 @@ import { ToolTipButton } from '../components/ToolTipButton'
 import { ValuedSlider } from '../components/ValuedSlider'
 import { WorkHeader } from '../components/WorkHeader'
 import commonStore, { ModelStatus } from '../stores/commonStore'
-import { CompletionParams, CompletionPreset } from '../types/completion'
+import {
+  CompletionParams,
+  CompletionPreset,
+  StopItem,
+} from '../types/completion'
 import { getReqUrl, smartScrollHeight } from '../utils'
 import { defaultPenaltyDecay, defaultPresets } from './defaultConfigs'
 import { PresetsButton } from './PresetsManager/PresetsButton'
 
 let completionSseController: AbortController | null = null
+
+const isNumericStopValue = (value: string) => /^\d+$/.test(value)
+
+const normalizeStopItems = (params: CompletionParams): StopItem[] => {
+  if (Array.isArray(params.stopItems)) {
+    return params.stopItems
+      .map(
+        (item) =>
+          ({
+            type: item?.type === 'token' ? 'token' : 'text',
+            value: (item?.value ?? '').toString().trim(),
+          }) satisfies StopItem
+      )
+      .filter((item) => item.value.length > 0)
+  }
+  const legacyStop = params.stop
+  if (typeof legacyStop === 'string' && legacyStop.trim().length > 0) {
+    return [{ type: 'text', value: legacyStop.trim() }]
+  }
+  return []
+}
+
+const StopTagInput: FC<{
+  items: StopItem[]
+  onChange: (items: StopItem[]) => void
+  placeholder?: string
+}> = ({ items, onChange, placeholder }) => {
+  const { t } = useTranslation()
+  const inputRef = useRef<HTMLInputElement>(null)
+  const [inputValue, setInputValue] = useState('')
+  const [focused, setFocused] = useState(false)
+
+  const commitInput = (raw?: string) => {
+    const value = (raw ?? inputValue).trim()
+    if (!value) return
+    const nextItem: StopItem = {
+      type: isNumericStopValue(value) ? 'token' : 'text',
+      value,
+    }
+    onChange([...items, nextItem])
+    setInputValue('')
+  }
+
+  const removeItem = (index: number) => {
+    onChange(items.filter((_, i) => i !== index))
+  }
+
+  const toggleItem = (index: number) => {
+    const item = items[index]
+    if (!isNumericStopValue(item.value)) return
+    const nextType = item.type === 'token' ? 'text' : 'token'
+    onChange(
+      items.map((current, i) =>
+        i === index ? { ...current, type: nextType } : current
+      )
+    )
+  }
+
+  const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      commitInput()
+      return
+    }
+    if (e.key === 'Backspace' && inputValue.length === 0 && items.length > 0) {
+      removeItem(items.length - 1)
+    }
+  }
+
+  const inputWidth = Math.max(6, inputValue.length + 1)
+
+  return (
+    <div
+      className={
+        'flex min-h-[32px] w-full min-w-0 max-w-full flex-wrap items-center gap-1 rounded border px-2 py-1 ' +
+        (focused ? 'border-[#115ea3] shadow-sm' : 'border-neutral-300')
+      }
+      onClick={() => inputRef.current?.focus()}
+    >
+      {items.map((item, index) => {
+        const isNumeric = isNumericStopValue(item.value)
+        const isToken = item.type === 'token'
+        const title = isToken
+          ? isNumeric
+            ? t('Stop token id') + ` (${t('Click to toggle type')})`
+            : t('Stop token id')
+          : isNumeric
+            ? t('Stop sequence') + ` (${t('Click to toggle type')})`
+            : t('Stop sequence')
+
+        return (
+          <Tooltip
+            key={`${item.type}-${item.value}-${index}`}
+            content={title}
+            showDelay={0}
+            hideDelay={0}
+            relationship="description"
+          >
+            <span
+              className={
+                'inline-flex max-w-full items-center gap-1 rounded-full border px-2 py-0.5 text-xs ' +
+                (isToken
+                  ? 'border-amber-300 bg-amber-100 text-amber-800'
+                  : 'border-slate-300 bg-slate-50 text-slate-800') +
+                (isNumeric ? ' cursor-pointer' : '')
+              }
+              onClick={() => toggleItem(index)}
+            >
+              <span className="break-all">{item.value}</span>
+              <div
+                className="ml-0.5 inline-flex h-4 w-4 cursor-pointer items-center justify-center rounded-full text-[10px] text-slate-500 hover:bg-slate-200"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  removeItem(index)
+                }}
+              >
+                x
+              </div>
+            </span>
+          </Tooltip>
+        )
+      })}
+      <input
+        ref={inputRef}
+        className="min-w-[6ch] max-w-full flex-grow bg-transparent text-sm outline-none"
+        style={{ width: `${inputWidth}ch` }}
+        value={inputValue}
+        placeholder={placeholder}
+        onChange={(e) => setInputValue(e.target.value)}
+        onKeyDown={handleKeyDown}
+        onFocus={() => setFocused(true)}
+        onBlur={() => {
+          commitInput()
+          setFocused(false)
+        }}
+      />
+    </div>
+  )
+}
 
 const CompletionPanel: FC = observer(() => {
   const { t } = useTranslation()
@@ -79,6 +223,15 @@ const CompletionPanel: FC = observer(() => {
     })
   }
 
+  const stopItems = useMemo(() => normalizeStopItems(params), [params])
+
+  // for old version data compatibility
+  useEffect(() => {
+    if (!Array.isArray(params.stopItems)) {
+      setParams({ stopItems })
+    }
+  }, [params.stopItems, stopItems])
+
   const onSubmit = async (prompt: string) => {
     commonStore.setCompletionSubmittedPrompt(prompt)
 
@@ -96,6 +249,15 @@ const CompletionPanel: FC = observer(() => {
     }
 
     prompt += params.injectStart.replaceAll('\\n', '\n')
+
+    const stopSequences = stopItems
+      .filter((item) => item.type === 'text')
+      .map((item) => item.value.replaceAll('\\n', '\n'))
+      .filter((value) => value.length > 0)
+    const stopTokenIds = stopItems
+      .filter((item) => item.type === 'token')
+      .map((item) => Number.parseInt(item.value, 10))
+      .filter((value) => Number.isFinite(value) && value >= 0)
 
     let answer = ''
     let finished = false
@@ -124,7 +286,8 @@ const CompletionPanel: FC = observer(() => {
           top_p: params.topP,
           presence_penalty: params.presencePenalty,
           frequency_penalty: params.frequencyPenalty,
-          stop: params.stop.replaceAll('\\n', '\n') || undefined,
+          stop: stopSequences.length > 0 ? stopSequences : undefined,
+          stop_token_ids: stopTokenIds.length > 0 ? stopTokenIds : undefined,
           penalty_decay:
             !params.penaltyDecay || params.penaltyDecay === defaultPenaltyDecay
               ? undefined
@@ -207,7 +370,7 @@ const CompletionPanel: FC = observer(() => {
           setPrompt(e.target.value)
         }}
       />
-      <div className="flex max-h-48 flex-col gap-1 sm:max-h-full sm:max-w-sm">
+      <div className="flex max-h-48 flex-col gap-1 sm:max-h-full sm:w-[250px] sm:min-w-[250px] sm:max-w-[250px]">
         <div className="flex gap-2">
           <Dropdown
             style={{ minWidth: 0 }}
@@ -378,13 +541,12 @@ const CompletionPanel: FC = observer(() => {
               'When this content appears in the response result, the generation will end.'
             )}
             content={
-              <Input
-                value={params.stop}
-                onChange={(e, data) => {
-                  setParams({
-                    stop: data.value,
-                  })
+              <StopTagInput
+                items={stopItems}
+                onChange={(items) => {
+                  setParams({ stopItems: items })
                 }}
+                placeholder={t('Stop Sequences')!}
               />
             }
           />
