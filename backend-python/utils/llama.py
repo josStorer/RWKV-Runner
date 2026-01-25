@@ -30,6 +30,7 @@ class AbstractLlama(ABC):
         body: ModelConfigBody,
         prompt: str,
         stop: Union[str, List[str], None] = None,
+        stop_token_ids: Union[List[int], None] = None,
     ) -> Iterable[Tuple[Literal["text", "tool"], str, str, int, int]]:
         quick_log(None, None, "Generation Prompt:\n" + prompt)
         completion_token_len = 0

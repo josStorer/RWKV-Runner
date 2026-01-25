@@ -261,6 +261,7 @@ class AbstractRWKV(ABC):
         body: ModelConfigBody,
         prompt: str,
         stop: Union[str, List[str], None] = None,
+        stop_token_ids: Union[List[int], None] = None,
     ) -> Iterable[Tuple[Literal["text", "tool"], str, str, int, int]]:
         import numpy as np
 
@@ -342,9 +343,31 @@ class AbstractRWKV(ABC):
 
             logits, _ = self.run_rnn([token])
             completion_token_len = completion_token_len + 1
-            delta: str = self.delta_postprocess(
-                self.pipeline.decode(self.model_tokens[out_last:])
-            )
+            delta_tokens = self.model_tokens[out_last:]
+            delta: str = self.delta_postprocess(self.pipeline.decode(delta_tokens))
+            is_stop_token = stop_token_ids is not None and token in stop_token_ids
+
+            if is_stop_token:
+                if len(delta_tokens) > 1:
+                    delta_without_stop = self.delta_postprocess(
+                        self.pipeline.decode(delta_tokens[:-1])
+                    )
+                    if "\ufffd" not in delta_without_stop:
+                        response += delta_without_stop
+                try:
+                    state_cache.add_state(
+                        state_cache.AddStateBody(
+                            prompt=prompt + response,
+                            tokens=self.model_tokens,
+                            state=self.model_state,
+                            logits=logits,
+                        )
+                    )
+                except HTTPException:
+                    pass
+                yield "text", response, "", prompt_token_len, completion_token_len
+                break
+
             if "\ufffd" not in delta:  # avoid utf-8 display issues
                 response += delta
                 if stop is not None:

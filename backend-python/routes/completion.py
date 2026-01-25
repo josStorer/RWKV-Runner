@@ -52,6 +52,7 @@ class ChatCompletionBody(ModelConfigBody):
     model: Union[str, None] = "rwkv"
     stream: bool = False
     stop: Union[str, List[str], None] = default_stop
+    stop_token_ids: Union[List[int], None] = None
     tools: Union[List[ChatCompletionToolParam], None] = None
     tool_choice: Union[
         Literal["none", "auto", "required"], ChatCompletionNamedToolChoiceParam
@@ -97,6 +98,7 @@ class CompletionBody(ModelConfigBody):
     model: Union[str, None] = "rwkv"
     stream: bool = False
     stop: Union[str, List[str], None] = None
+    stop_token_ids: Union[List[int], None] = None
 
     model_config = {
         "json_schema_extra": {
@@ -128,6 +130,7 @@ async def eval(
     prompt: str,
     stream: bool,
     stop: Union[str, List[str], None],
+    stop_token_ids: Union[List[int], None],
     chat_mode: bool,
 ):
     global requests_num
@@ -177,6 +180,7 @@ async def eval(
                     body,
                     prompt,
                     stop=stop,
+                    stop_token_ids=stop_token_ids,
                 ):
                     if not completion_start_time:
                         completion_start_time = time.time()
@@ -528,7 +532,14 @@ async def async_generator_stream_response_tool_call(
 
     # Initialization
     gen = eval(
-        model, request, body, completion_text, body.stream, body.stop, True
+        model,
+        request,
+        body,
+        completion_text,
+        body.stream,
+        body.stop,
+        body.stop_token_ids,
+        True,
     )  # Get an async generator handle
     content: str = ""
     flag_is_function_call_confirmed = False
@@ -833,12 +844,28 @@ async def chat(
 ):
     if body.stream:
         return EventSourceResponse(
-            eval(model, request, body, completion_text, body.stream, body.stop, True)
+            eval(
+                model,
+                request,
+                body,
+                completion_text,
+                body.stream,
+                body.stop,
+                body.stop_token_ids,
+                True,
+            )
         )
     else:
         try:
             return await eval(
-                model, request, body, completion_text, body.stream, body.stop, True
+                model,
+                request,
+                body,
+                completion_text,
+                body.stream,
+                body.stop,
+                body.stop_token_ids,
+                True,
             ).__anext__()
         except StopAsyncIteration:
             return None
@@ -860,12 +887,28 @@ async def completions(body: CompletionBody, request: Request):
 
     if body.stream:
         return EventSourceResponse(
-            eval(model, request, body, body.prompt, body.stream, body.stop, False)
+            eval(
+                model,
+                request,
+                body,
+                body.prompt,
+                body.stream,
+                body.stop,
+                body.stop_token_ids,
+                False,
+            )
         )
     else:
         try:
             return await eval(
-                model, request, body, body.prompt, body.stream, body.stop, False
+                model,
+                request,
+                body,
+                body.prompt,
+                body.stream,
+                body.stop,
+                body.stop_token_ids,
+                False,
             ).__anext__()
         except StopAsyncIteration:
             return None
