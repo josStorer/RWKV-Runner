@@ -963,7 +963,7 @@ const ChatPanel: FC = observer(() => {
       } else if (commonStore.quickThink) {
         messages.push({
           role: 'assistant',
-          content: '<think></think>',
+          content: '<think>\n</think>',
           prefix: true,
         })
       }
@@ -992,7 +992,7 @@ const ChatPanel: FC = observer(() => {
         answer = commonStore.deepThink
           ? '<think>\n'
           : commonStore.quickThink
-            ? '<think></think>'
+            ? '<think>\n</think>'
             : ''
       }
       let finished = false
