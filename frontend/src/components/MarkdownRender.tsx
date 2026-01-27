@@ -1,11 +1,12 @@
 import 'katex/dist/katex.min.css'
-import { FC, useRef } from 'react'
+import { FC, useEffect, useMemo, useRef, useState } from 'react'
 import {
   Accordion,
   AccordionHeader,
   AccordionItem,
   AccordionPanel,
 } from '@fluentui/react-components'
+import { MermaidDiagram } from '@lightenna/react-mermaid-diagram'
 import classNames from 'classnames'
 import { useTranslation } from 'react-i18next'
 import ReactMarkdown from 'react-markdown'
@@ -72,9 +73,96 @@ const ThinkComponent: FC<any> = ({ node, children, ...props }) => {
   )
 }
 
+const extractText = (node: any): string => {
+  if (node === null || node === undefined) return ''
+  if (typeof node === 'string') return node
+  if (Array.isArray(node)) return node.map(extractText).join('')
+  if (typeof node === 'object' && 'props' in node)
+    return extractText(node.props?.children)
+  if (typeof node === 'object' && 'children' in node)
+    return extractText(node.children)
+  return ''
+}
+
+const MermaidComponent: FC<any> = ({ children }) => {
+  const chart = extractText(children).trim()
+  const [error, setError] = useState<string | null>(null)
+  useEffect(() => {
+    setError(null)
+  }, [chart])
+  if (!chart) return <></>
+  const theme = commonStore.settings.darkMode ? 'dark' : 'default'
+  if (error) {
+    return (
+      <div className="rounded border border-red-300 bg-red-50 p-2 text-sm text-red-700">
+        <div className="font-semibold">Mermaid render error</div>
+        <div className="whitespace-pre-wrap">{error}</div>
+        <pre className="mt-2 whitespace-pre-wrap rounded bg-white/70 p-2 text-xs text-neutral-700">
+          {chart}
+        </pre>
+      </div>
+    )
+  }
+  return (
+    <MermaidDiagram
+      theme={theme}
+      suppressErrorRendering={true}
+      onError={(err) => {
+        const message =
+          err instanceof Error
+            ? err.message
+            : typeof err === 'string'
+              ? err
+              : String(err)
+        setError(message)
+      }}
+    >
+      {chart}
+    </MermaidDiagram>
+  )
+}
+
+const wrapMermaidLabels = (content: string) =>
+  content.replace(/\[([^\]\n]*)\]/g, (match, inner) => {
+    const trimmed = inner.trim()
+    if (
+      (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
+      (trimmed.startsWith("'") && trimmed.endsWith("'"))
+    )
+      return match
+    if (!/[:;]|\\n|["“”]/.test(inner)) return match
+    const escapedInner = inner.replace(/"/g, '\\"')
+    return `["${escapedInner}"]`
+  })
+
+const convertHtmlCommentsToMermaid = (content: string) =>
+  content.replace(/<!--([\s\S]*?)-->/g, (_, inner: string) => {
+    const compact = inner.replace(/\s+/g, ' ').trim()
+    return compact ? `\n%% ${compact}\n` : ''
+  })
+
+const stripHtmlTags = (content: string) =>
+  content.replace(/<[^>]+>/g, '').replace(/&nbsp;/gi, ' ')
+
+const normalizeMermaidBlocks = (value: string) =>
+  value.replace(/```mermaid([\s\S]*?)```/gi, (match, content) => {
+    const normalizedContent = wrapMermaidLabels(
+      stripHtmlTags(
+        convertHtmlCommentsToMermaid(content.replace(/<br\s*\/?>/gi, '\\n'))
+      )
+    )
+    const trimmed = normalizedContent.replace(/^\s+|\s+$/g, '')
+    return `\n\n<mermaid>\n\n${trimmed}\n\n</mermaid>\n\n`
+  })
+
 const MarkdownRender: FC<
   ReactMarkdownOptions & { disabled?: boolean; thinkEnded?: boolean }
 > = (props) => {
+  const markdownContent = useMemo(() => {
+    if (typeof props.children !== 'string') return props.children
+    return normalizeMermaidBlocks(props.children)
+  }, [props.children])
+
   return (
     <div
       dir="auto"
@@ -152,6 +240,51 @@ const MarkdownRender: FC<
             'cite',
 
             'think',
+            'mermaid',
+
+            'svg',
+            'style',
+            'defs',
+            'g',
+            'path',
+            'line',
+            'polyline',
+            'polygon',
+            'rect',
+            'circle',
+            'ellipse',
+            'marker',
+            'text',
+            'tspan',
+            'foreignObject',
+            'desc',
+            'title',
+            'linearGradient',
+            'radialGradient',
+            'stop',
+            'clipPath',
+            'mask',
+            'pattern',
+            'use',
+            'filter',
+            'feDropShadow',
+            'feGaussianBlur',
+            'feColorMatrix',
+            'feOffset',
+            'feBlend',
+            'feComponentTransfer',
+            'feFuncR',
+            'feFuncG',
+            'feFuncB',
+            'feFuncA',
+            'feComposite',
+            'feFlood',
+            'feImage',
+            'feMerge',
+            'feMergeNode',
+            'feMorphology',
+            'feTurbulence',
+            'feDisplacementMap',
           ]}
           unwrapDisallowed={true}
           remarkPlugins={[remarkMath, remarkGfm, remarkBreaks]}
@@ -170,9 +303,10 @@ const MarkdownRender: FC<
             a: Hyperlink,
             // @ts-ignore
             think: ThinkComponent,
+            mermaid: MermaidComponent,
           }}
         >
-          {props.children}
+          {markdownContent}
         </ReactMarkdown>
       )}
     </div>

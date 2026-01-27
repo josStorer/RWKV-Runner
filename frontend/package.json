@@ -10,6 +10,7 @@
   "dependencies": {
     "@fluentui/react-components": "^9.47.2",
     "@fluentui/react-icons": "^2.0.201",
+    "@lightenna/react-mermaid-diagram": "^1.0.22",
     "@magenta/music": "^1.23.1",
     "@microsoft/fetch-event-source": "^2.0.1",
     "@primer/octicons-react": "^19.1.0",

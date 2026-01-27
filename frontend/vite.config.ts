@@ -40,6 +40,7 @@ const embedded = [
   'remark-math',
   'rehype-katex',
   'katex',
+  '@lightenna/react-mermaid-diagram',
 ]
 
 function renderChunks(deps: Record<string, string>) {
