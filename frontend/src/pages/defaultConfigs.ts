@@ -405,6 +405,25 @@ export const defaultModelConfigs: ModelConfig[] = [
     },
   },
   {
+    name: 'GPU-20G-GLM-4.7',
+    apiParameters: {
+      apiPort: 8000,
+      maxResponseToken: 4100,
+      temperature: 1.0,
+      topP: 0.3,
+      presencePenalty: 0,
+      frequencyPenalty: 1,
+    },
+    modelParameters: {
+      modelName: 'GLM-4.7-Flash-Q4_K_M.gguf',
+      device: 'WebGPU (Python)',
+      precision: 'nf4',
+      storedLayers: 41,
+      maxStoredLayers: 41,
+      useCustomCuda: true,
+    },
+  },
+  {
     name: 'GPU-8G-DeepSeek-R1',
     apiParameters: {
       apiPort: 8000,

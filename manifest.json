@@ -494,6 +494,23 @@
       ]
     },
     {
+      "name": "GLM-4.7-Flash-Q4_K_M.gguf",
+      "desc": {
+        "en": "GLM 4.7 Flash (llama.cpp)",
+        "zh": "GLM 4.7 Flash (llama.cpp)",
+        "ja": "GLM 4.7 Flash (llama.cpp)"
+      },
+      "size": 18312339776,
+      "SHA256": "73ba18480e06ccda453a26263c0e2be2bd86294e827b1812ddea2f88bba2d924",
+      "lastUpdated": "2026-01-21T09:11:02",
+      "url": "https://huggingface.co/unsloth/GLM-4.7-Flash-GGUF/blob/main/GLM-4.7-Flash-Q4_K_M.gguf",
+      "downloadUrl": "https://huggingface.co/unsloth/GLM-4.7-Flash-GGUF/resolve/main/GLM-4.7-Flash-Q4_K_M.gguf",
+      "tags": [
+        "Reasoning",
+        "LLAMA.cpp"
+      ]
+    },
+    {
       "name": "Qwen3-8B-Q5_K_M.gguf",
       "desc": {
         "en": "Qwen3 8B Reasoning Model (llama.cpp)",
