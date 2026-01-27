@@ -1,10 +1,11 @@
 ## Changes
 
-- disable auto throttling of @microsoft/fetch-event-source
-- bump precompiled llama.cpp vulkan
-- add `stop_token_ids` field to `/completions` and `/chat/completions`
-- allow stop sequences to accept multiple values or numeric token IDs, passed to the api server as arrays
-  <img width="331" height="170" alt="Image" src="https://github.com/user-attachments/assets/3dcd7a8b-9503-4fc4-8f89-6b0b8e33e933" />
+- add search input to Models page
+- <img width="600" src="https://github.com/user-attachments/assets/63459a32-4d80-4429-b8c3-73e0d3cba8a6" />
+- add support for mermaid rendering
+- <img width="600" src="https://github.com/user-attachments/assets/b9a1a388-5d11-4898-9f24-b282caa12e6d" />
+- improve ThinkComponent
+- remove the compatibility support for top-level await; now only browsers/webviews with Chromium 89+ are supported
 - update manifest.json and defaultConfigs
 - small fixes
 
