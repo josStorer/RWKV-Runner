@@ -42,6 +42,7 @@ import commonStore, {
 import {
   botName,
   Conversation,
+  MessageItem,
   MessageType,
   Role,
   systemName,
@@ -942,13 +943,22 @@ export function OpenFileDialog(filterPattern: string): Promise<Blob> {
   })
 }
 
+const applyThinkingFlags = (
+  message: Pick<MessageItem, 'content'> & Partial<MessageItem>
+) => {
+  if (message.thinking === undefined)
+    message.thinking = message.content.includes('<think>')
+  if (message.thinkingEnded === undefined)
+    message.thinkingEnded = message.content.includes('</think>')
+}
+
 export function newChatConversation() {
   const conversation: Conversation = {}
   const conversationOrder: string[] = []
   const pushMessage = (role: Role, content: string) => {
     const newUuid = uuid()
     conversationOrder.push(newUuid)
-    conversation[newUuid] = {
+    const message: MessageItem = {
       sender:
         role === 'user'
           ? userName
@@ -964,6 +974,8 @@ export function newChatConversation() {
         role === 'user' ? 'right' : role === 'assistant' ? 'left' : 'center',
       done: true,
     }
+    applyThinkingFlags(message)
+    conversation[newUuid] = message
   }
   const saveConversation = () => {
     commonStore.setConversation(conversation)
