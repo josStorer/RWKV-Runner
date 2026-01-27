@@ -150,6 +150,7 @@
   "Are you sure you want to reset this page? It cannot be undone.": "你确定要重置本页吗？这无法撤销",
   "Model file download is not complete": "模型文件下载未完成",
   "Error": "错误",
+  "An unexpected error occurred. Please reload the app.": "发生了未知错误，请重启应用。",
   "Are you sure you want to clear the conversation? It cannot be undone.": "你确定要清空对话吗？这无法撤销",
   "Save": "保存",
   "Conversation Saved": "对话已保存",

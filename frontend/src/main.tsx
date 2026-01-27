@@ -5,6 +5,7 @@ import './style.scss'
 import 'react-toastify/dist/ReactToastify.css'
 import { HashRouter } from 'react-router-dom'
 import App from './App'
+import { ErrorBoundary } from './components/ErrorBoundary'
 import { startup } from './startup'
 import './_locales/i18n-react'
 import { WindowShow } from '../wailsjs/runtime'
@@ -15,9 +16,11 @@ startup().then(() => {
   const root = createRoot(container!)
 
   root.render(
-    <HashRouter>
-      <App />
-    </HashRouter>
+    <ErrorBoundary>
+      <HashRouter>
+        <App />
+      </HashRouter>
+    </ErrorBoundary>
   )
 
   // force display the window

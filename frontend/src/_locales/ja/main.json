@@ -150,6 +150,7 @@
   "Are you sure you want to reset this page? It cannot be undone.": "本当にこのページをリセットしてもよろしいですか？元に戻すことはできません。",
   "Model file download is not complete": "モデルファイルのダウンロードが完了していません",
   "Error": "エラー",
+  "An unexpected error occurred. Please reload the app.": "予期しないエラーが発生しました。アプリを再読み込みしてください。",
   "Are you sure you want to clear the conversation? It cannot be undone.": "会話をクリアしてもよろしいですか？元に戻すことはできません。",
   "Save": "保存",
   "Conversation Saved": "会話が保存されました",
