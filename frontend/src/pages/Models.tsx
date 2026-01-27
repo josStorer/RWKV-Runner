@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useMemo, useState } from 'react'
 import {
   Button,
   Checkbox,
@@ -9,6 +9,7 @@ import {
   DataGridHeader,
   DataGridHeaderCell,
   DataGridRow,
+  Input,
   TableCellLayout,
   TableColumnDefinition,
   Text,
@@ -20,6 +21,7 @@ import {
   Folder20Regular,
   Open20Regular,
 } from '@fluentui/react-icons'
+import { throttle } from 'lodash-es'
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
@@ -222,9 +224,39 @@ const getCurrentModelList = () => {
     )
 }
 
+const normalizeSearchTokens = (value: string) =>
+  value
+    .toLowerCase()
+    .split(/\s+/)
+    .map((token) => token.trim())
+    .filter(Boolean)
+
+const getModelSearchText = (item: ModelSourceItem) => {
+  const descValues = item.desc ? Object.values(item.desc).filter(Boolean) : []
+  return [item.name, ...descValues].join(' ').toLowerCase()
+}
+
+const filterModelSourceList = (items: ModelSourceItem[], rawQuery: string) => {
+  const tokens = normalizeSearchTokens(rawQuery)
+  if (tokens.length === 0) return items
+  return items.filter((item) => {
+    const haystack = getModelSearchText(item)
+    return tokens.every((token) => haystack.includes(token))
+  })
+}
+
 const Models: FC = observer(() => {
   const { t } = useTranslation()
   const [tags, setTags] = useState<Array<string>>(getTags())
+  const [searchInput, setSearchInput] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
+  const throttledSetSearchQuery = useMemo(
+    () =>
+      throttle((value: string) => {
+        setSearchQuery(value)
+      }, 300),
+    []
+  )
   const [modelSourceList, setModelSourceList] = useState<ModelSourceItem[]>(
     getCurrentModelList()
   )
@@ -234,8 +266,20 @@ const Models: FC = observer(() => {
   }, [commonStore.modelSourceList])
 
   useEffect(() => {
-    setModelSourceList(getCurrentModelList())
-  }, [commonStore.modelSourceList, commonStore.activeModelListTags])
+    setModelSourceList(
+      filterModelSourceList(getCurrentModelList(), searchQuery)
+    )
+  }, [
+    commonStore.modelSourceList,
+    commonStore.activeModelListTags,
+    searchQuery,
+  ])
+
+  useEffect(() => {
+    return () => {
+      throttledSetSearchQuery.cancel()
+    }
+  }, [throttledSetSearchQuery])
 
   return (
     <Page
@@ -281,6 +325,17 @@ const Models: FC = observer(() => {
               onChange={(e, data) =>
                 commonStore.setModelSourceManifestList(data.value)
               }
+            />
+          </div>
+          <div className="flex items-center">
+            <Input
+              className="w-full"
+              placeholder={t('Search models')!}
+              value={searchInput}
+              onChange={(_, data) => {
+                setSearchInput(data.value)
+                throttledSetSearchQuery(data.value)
+              }}
             />
           </div>
           <div
