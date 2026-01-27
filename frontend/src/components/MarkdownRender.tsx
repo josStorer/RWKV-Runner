@@ -130,7 +130,7 @@ const wrapMermaidLabels = (content: string) =>
       (trimmed.startsWith("'") && trimmed.endsWith("'"))
     )
       return match
-    if (!/[:;]|\\n|["“”]/.test(inner)) return match
+    if (!/[:;]|\n|["“”]/.test(inner)) return match
     const escapedInner = inner.replace(/"/g, '\\"')
     return `["${escapedInner}"]`
   })
@@ -148,7 +148,7 @@ const normalizeMermaidBlocks = (value: string) =>
   value.replace(/```mermaid([\s\S]*?)```/gi, (match, content) => {
     const normalizedContent = wrapMermaidLabels(
       stripHtmlTags(
-        convertHtmlCommentsToMermaid(content.replace(/<br\s*\/?>/gi, '\\n'))
+        convertHtmlCommentsToMermaid(content.replace(/<br\s*\/?>/gi, '\n'))
       )
     )
     const trimmed = normalizedContent.replace(/^\s+|\s+$/g, '')
