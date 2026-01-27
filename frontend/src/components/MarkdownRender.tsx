@@ -1,5 +1,5 @@
 import 'katex/dist/katex.min.css'
-import { FC, useEffect, useMemo, useRef, useState } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
 import {
   Accordion,
   AccordionHeader,
@@ -34,10 +34,22 @@ const Hyperlink: FC<any> = ({ href, children }) => {
   )
 }
 
-const ThinkComponent: FC<any> = ({ node, children, ...props }) => {
+const ThinkComponent: FC<any & { ended?: boolean }> = ({
+  children,
+  ended,
+  ...props
+}) => {
   const { t } = useTranslation()
-  const ref = useRef<HTMLDivElement>(null)
-  const isEnded = ref.current?.parentElement?.classList.contains('think-ended')
+  const isEnded = !!ended
+  const [openItems, setOpenItems] = useState<string[]>(
+    isEnded ? [] : ['default']
+  )
+  const [userToggled, setUserToggled] = useState(false)
+
+  useEffect(() => {
+    if (userToggled) return
+    setOpenItems(isEnded ? [] : ['default'])
+  }, [isEnded])
   const isEmpty =
     !children ||
     (Array.isArray(children) &&
@@ -49,8 +61,15 @@ const ThinkComponent: FC<any> = ({ node, children, ...props }) => {
   return isEmpty ? (
     <></>
   ) : (
-    <div ref={ref} {...props}>
-      <Accordion collapsible defaultOpenItems={['default']}>
+    <div {...props}>
+      <Accordion
+        collapsible
+        openItems={openItems}
+        onToggle={(_, data) => {
+          setUserToggled(true)
+          setOpenItems(data.openItems as string[])
+        }}
+      >
         <AccordionItem value="default">
           <AccordionHeader size="small">
             {isEnded ? t('Thinking Ended') : t('Thinking...')}
@@ -302,7 +321,9 @@ const MarkdownRender: FC<
           components={{
             a: Hyperlink,
             // @ts-ignore
-            think: ThinkComponent,
+            think: (componentProps) => (
+              <ThinkComponent {...componentProps} ended={props.thinkEnded} />
+            ),
             mermaid: MermaidComponent,
           }}
         >
