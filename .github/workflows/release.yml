@@ -128,6 +128,7 @@ jobs:
           rm ./backend-python/rwkv_pip/cpp/librwkv.so
           rm ./backend-python/rwkv_pip/webgpu/web_rwkv_py.cp310-win_amd64.pyd
           go install mvdan.cc/garble@v0.10.1
+          export NODE_OPTIONS="--max_old_space_size=4096"
           make
           cp build/darwin/Readme_Install.txt build/bin/Readme_Install.txt
           cp build/bin/RWKV-Runner.app/Contents/MacOS/RWKV-Runner build/bin/RWKV-Runner_darwin_universal

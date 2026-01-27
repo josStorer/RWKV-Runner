@@ -1,7 +1,6 @@
 import react from '@vitejs/plugin-react'
 import { visualizer } from 'rollup-plugin-visualizer'
 import { defineConfig } from 'vite'
-import topLevelAwait from 'vite-plugin-top-level-await'
 // @ts-ignore
 import { dependencies } from './package.json'
 
@@ -61,10 +60,6 @@ export default defineConfig({
       gzipSize: true,
       brotliSize: true,
     }),
-    topLevelAwait({
-      promiseExportName: '__tla',
-      promiseImportName: (i) => `__tla_${i}`,
-    }),
   ],
   resolve: {
     alias: {
@@ -72,7 +67,13 @@ export default defineConfig({
       '@tabler/icons-react': '@tabler/icons-react/dist/esm/icons/index.mjs',
     },
   },
+  optimizeDeps: {
+    esbuildOptions: {
+      target: 'es2022',
+    },
+  },
   build: {
+    target: 'es2022',
     chunkSizeWarningLimit: 3000,
     rollupOptions: {
       output: {
