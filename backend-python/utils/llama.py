@@ -39,7 +39,7 @@ class AbstractLlama(ABC):
         if is_rwkv_model(self):
             # state cache for rwkv in llama.cpp has bug, so we need to reset it
             self.model.reset()
-            self.model._ctx.kv_cache_clear()
+            # self.model._ctx.kv_cache_clear()
 
         from routes.completion import ChatCompletionBody
 
