@@ -20,6 +20,7 @@ class AbstractLlama(ABC):
         self.top_k = 40
         self.penalty_alpha_presence = 0.0
         self.penalty_alpha_frequency = 0.0
+        self.stateless = False
 
     @abstractmethod
     def delta_postprocess(self, delta: str) -> str:
@@ -75,6 +76,9 @@ class AbstractLlama(ABC):
         else:
             from llama_cpp import CreateCompletionStreamResponse
 
+            if self.stateless:
+                self.clear_rwkv_state()
+
             stream: Iterator[CreateCompletionStreamResponse] = (
                 self.model.create_completion(
                     prompt=prompt,
@@ -98,6 +102,59 @@ class AbstractLlama(ABC):
 
                 yield "text", response, delta, 0, completion_token_len
 
+    def clear_rwkv_state(self):
+        """Properly clear RWKV recurrent state and library cache"""
+        if not is_rwkv_model(self):
+            raise ValueError("clear_rwkv_state is only applicable for RWKV models.")
+
+        # 1. Use the official llama-cpp-python reset method.
+        self.model.reset()
+        
+        # 2. Ensure both the wrapper and the library object are zeroed
+        self.model.n_tokens = 0
+
+    def get_rwkv_state(self) -> Tuple[bytes, int, int]:
+        """Extracts the RWKV state, size, and token count using llama_cpp C API."""
+        if not is_rwkv_model(self):
+            raise ValueError("get_rwkv_state is only applicable for RWKV models.")
+
+        if self.stateless:
+            raise ValueError("Model is configured as stateless; state extraction is not applicable.")
+
+        import llama_cpp
+        import ctypes
+        
+        ctx_ptr = self.model._ctx.ctx
+        state_size = llama_cpp.llama_get_state_size(ctx_ptr)
+        
+        state_data = (ctypes.c_uint8 * state_size)()
+        llama_cpp.llama_copy_state_data(ctx_ptr, state_data)
+        
+        return bytes(state_data), state_size, self.model.n_tokens
+
+    def set_rwkv_state(self, state_bytes: bytes, tokens: int):
+        """Injects the RWKV state state and updates the token count."""
+        if not is_rwkv_model(self):
+            raise ValueError("set_rwkv_state is only applicable for RWKV models.")
+
+        if self.stateless:
+            raise ValueError("Model is configured as stateless; state injection is not applicable.")
+
+        import llama_cpp
+        import ctypes
+        
+        ctx_ptr = self.model._ctx.ctx
+        
+        # Clear existing state/memory before loading new one
+        self.clear_rwkv_state()
+        
+        # Inject the state back into the C context
+        state_data = (ctypes.c_uint8 * len(state_bytes)).from_buffer_copy(state_bytes)
+        llama_cpp.llama_set_state_data(ctx_ptr, state_data)
+        
+        # Prime the context
+        self.model.n_tokens = tokens
+
 
 class TextLlama(AbstractLlama):
     def __init__(self, model) -> None:
@@ -120,14 +177,7 @@ class TextLlama(AbstractLlama):
         return delta
 
     def __preload(self):
-        pass
-    
-    def clear_rwkv_state(self):
-        """Properly clear RWKV recurrent state"""
-        from llama_cpp import llama_get_memory, llama_memory_clear
-        memory = llama_get_memory(self.model._ctx.ctx)
-        llama_memory_clear(memory, True)
-        self.model.n_tokens = 0
+        pass    
 
 
 def Llama(model_path: str, strategy: str) -> AbstractLlama:

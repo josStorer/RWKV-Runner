@@ -5,8 +5,16 @@ from pydantic import BaseModel
 import gc
 import copy
 import global_var
+import base64
+import llama_cpp
+import ctypes
 
 router = APIRouter()
+
+class SetStateBody(BaseModel):
+    state: str
+    tokens: int
+    size_bytes: int
 
 trie = None
 dtrie: Dict = {}
@@ -44,6 +52,12 @@ def disable_state_cache():
     dtrie = {}
     gc.collect()
 
+    model = global_var.get(global_var.Model)
+    if model is not None:
+        from utils.llama import AbstractLlama, is_rwkv_model
+        if isinstance(model, AbstractLlama) and is_rwkv_model(model):
+            model.stateless = True
+
     print("state cache disabled")
     return "success"
 
@@ -61,6 +75,12 @@ def enable_state_cache():
         trie = cyac.Trie()
         dtrie = {}
         gc.collect()
+
+        model = global_var.get(global_var.Model)
+        if model is not None:
+            from utils.llama import AbstractLlama, is_rwkv_model
+            if isinstance(model, AbstractLlama) and is_rwkv_model(model):
+                model.stateless = False
 
         print("state cache enabled")
         return "success"
@@ -170,7 +190,10 @@ def reset_state():
     if model is not None:
         from utils.llama import AbstractLlama, is_rwkv_model
         if isinstance(model, AbstractLlama) and is_rwkv_model(model):
-            model.clear_rwkv_state()
+            if model.stateless:
+                pass
+            else:
+                model.clear_rwkv_state()
 
     if trie is None:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "trie not loaded")
@@ -290,3 +313,57 @@ def save_state():
     # trie.save("state_cache.trie")
 
     return "not implemented"
+
+@router.get("/gguf-get-state", tags=["State Cache"])
+def gguf_get_state():
+    if global_var.get(global_var.Deploy_Mode) is True:
+        raise HTTPException(status.HTTP_403_FORBIDDEN)
+
+    model_wrapper = global_var.get(global_var.Model)
+    if model_wrapper is None:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "model not loaded")
+    
+    from utils.llama import AbstractLlama, is_rwkv_model
+    
+    if isinstance(model_wrapper, AbstractLlama) and is_rwkv_model(model_wrapper):
+        if model_wrapper.stateless:
+            raise HTTPException(status.HTTP_400_BAD_REQUEST, "model is stateless, no state to get")
+
+        state_bytes, state_size, tokens = model_wrapper.get_rwkv_state()
+        
+        return {
+            "state": base64.b64encode(state_bytes).decode('utf-8'),
+            "size_bytes": state_size,
+            "tokens": tokens
+        }
+    else:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "not an RWKV model")
+
+@router.post("/gguf-set-state", tags=["State Cache"])
+def gguf_set_state(body: SetStateBody):
+    if global_var.get(global_var.Deploy_Mode) is True:
+        raise HTTPException(status.HTTP_403_FORBIDDEN)
+
+    model_wrapper = global_var.get(global_var.Model)
+    if model_wrapper is None:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "model not loaded")
+    
+    from utils.llama import AbstractLlama, is_rwkv_model
+    if isinstance(model_wrapper, AbstractLlama) and is_rwkv_model(model_wrapper):
+
+        if model_wrapper.stateless:
+            raise HTTPException(status.HTTP_400_BAD_REQUEST, "model is stateless, cannot set state")
+        
+        try:
+            # Decode the state
+            state_bytes = base64.b64decode(body.state)
+            
+            # Use the wrapper method to inject the state
+            model_wrapper.set_rwkv_state(state_bytes, body.tokens)
+            
+            return {"success": True, "size_bytes": len(state_bytes)}
+        except Exception as e:
+            import traceback
+            raise HTTPException(status.HTTP_400_BAD_REQUEST, f"Load failed: {str(e)}\n{traceback.format_exc()}")
+    else:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "not an RWKV model")
