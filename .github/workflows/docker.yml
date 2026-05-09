@@ -31,7 +31,7 @@ jobs:
 
       - name: Get lowercase string for the repository name
         id: lowercase-repo-name
-        uses: ASzc/change-string-case-action@v2
+        uses: ASzc/change-string-case-action@v6
         with:
           string: ${{ github.event.repository.name }}
 
@@ -124,7 +124,7 @@ jobs:
     steps:
       - name: Get lowercase string for the repository name
         id: lowercase-repo-name
-        uses: ASzc/change-string-case-action@v2
+        uses: ASzc/change-string-case-action@v6
         with:
           string: ${{ github.event.repository.name }}
 
