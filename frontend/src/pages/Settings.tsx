@@ -253,14 +253,24 @@ export const AdvancedGeneralSettings: FC = observer(() => {
                     commonStore.setSettings({
                       apiCompletionModelName: 'rwkv',
                     })
-                } else if (data.optionText === 'Ollama') {
-                  toast(
-                    t(
-                      "Don't forget to correctly fill in your Ollama API Chat Model Name."
-                    ),
-                    { type: 'info' }
-                  )
-                }
+              } else if (data.optionText === 'Ollama') {
+                toast(
+                  t(
+                    "Don't forget to correctly fill in your Ollama API Chat Model Name."
+                  ),
+                  { type: 'info' }
+                )
+              } else if (
+                data.optionText === 'Astraflow' ||
+                data.optionText === 'Astraflow CN'
+              ) {
+                toast(
+                  t(
+                    "Don't forget to fill in your Astraflow API Key and Chat Model Name."
+                  ),
+                  { type: 'info' }
+                )
+              }
               }}
             >
               <Option value="">{t('Localhost')!}</Option>
@@ -268,6 +278,8 @@ export const AdvancedGeneralSettings: FC = observer(() => {
               <Option value="https://api.openai.com">OpenAI</Option>
               <Option value="https://openrouter.ai/api">OpenRouter</Option>
               <Option value="https://api.deepseek.com/beta">DeepSeek</Option>
+              <Option value="https://api-us-ca.umodelverse.ai/v1">Astraflow</Option>
+              <Option value="https://api.modelverse.cn/v1">Astraflow CN</Option>
             </Dropdown>
           </div>
         }
