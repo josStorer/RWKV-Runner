@@ -366,6 +366,7 @@
   "Exit without saving": "退出而不保存",
   "Content has been changed, are you sure you want to exit without saving?": "内容已经被修改, 你确定要退出而不保存吗?",
   "Don't forget to correctly fill in your Ollama API Chat Model Name.": "不要忘记正确填写你的Ollama API 聊天模型名",
+  "Don't forget to correctly fill in your llmman API Chat Model Name.": "不要忘记正确填写你的llmman API 聊天模型名",
   "State-tuned Model": "State微调模型",
   "See More": "查看更多",
   "State Model": "State模型",

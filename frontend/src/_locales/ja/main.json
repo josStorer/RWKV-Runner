@@ -366,6 +366,7 @@
   "Exit without saving": "保存せずに終了",
   "Content has been changed, are you sure you want to exit without saving?": "コンテンツが変更されています、保存せずに終了してもよろしいですか？",
   "Don't forget to correctly fill in your Ollama API Chat Model Name.": "Ollama APIチャットモデル名を正しく記入するのを忘れないでください。",
+  "Don't forget to correctly fill in your llmman API Chat Model Name.": "llmman APIチャットモデル名を正しく記入するのを忘れないでください。",
   "State-tuned Model": "State調整モデル",
   "See More": "もっと見る",
   "State Model": "Stateモデル",
