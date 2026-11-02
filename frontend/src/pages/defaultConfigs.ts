@@ -227,7 +227,7 @@ export const defaultModelConfigsMac: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'rwkv7-g1b-1.5b-20251202-ctx8192.pth',
+      modelName: 'rwkv7-g1l-1.5b-20261031-ctx34304.pth',
       device: 'WebGPU (Python)',
       precision: 'nf4',
       storedLayers: 41,
@@ -245,7 +245,7 @@ export const defaultModelConfigsMac: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'rwkv7-g1c-2.9b-20251231-ctx8192.pth',
+      modelName: 'rwkv7-g1l-2.9b-20261031-ctx34304.pth',
       device: 'WebGPU (Python)',
       precision: 'nf4',
       storedLayers: 41,
@@ -263,7 +263,7 @@ export const defaultModelConfigsMac: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'rwkv7-g1c-7.2b-20251231-ctx8192.pth',
+      modelName: 'rwkv7-g1l-7.2b-20261031-ctx34304.pth',
       device: 'WebGPU (Python)',
       precision: 'nf4',
       storedLayers: 41,
@@ -320,7 +320,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'rwkv7-g1b-1.5b-Q8_0.gguf',
+      modelName: 'rwkv7-g1l-1.5b-Q8_0.gguf',
       device: 'WebGPU (Python)',
       precision: 'nf4',
       storedLayers: 41,
@@ -339,7 +339,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'rwkv7-g1c-2.9b-Q8_0.gguf',
+      modelName: 'rwkv7-g1l-2.9b-Q8_0.gguf',
       device: 'CUDA',
       precision: 'fp16',
       storedLayers: 41,
@@ -358,7 +358,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'rwkv7-g1c-2.9b-20251231-ctx8192.pth',
+      modelName: 'rwkv7-g1l-2.9b-20261031-ctx34304.pth',
       device: 'CUDA',
       precision: 'fp16',
       storedLayers: 41,
@@ -377,7 +377,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'rwkv7-g1c-7.2b-20251231-ctx8192.pth',
+      modelName: 'rwkv7-g1l-7.2b-20261031-ctx34304.pth',
       device: 'WebGPU (Python)',
       precision: 'nf4',
       storedLayers: 41,
@@ -396,7 +396,7 @@ export const defaultModelConfigs: ModelConfig[] = [
       frequencyPenalty: 1,
     },
     modelParameters: {
-      modelName: 'rwkv7-g1c-13.3b-20251231-ctx8192.pth',
+      modelName: 'rwkv7-g1l-13.3b-20261031-ctx34304.pth',
       device: 'WebGPU (Python)',
       precision: 'nf4',
       storedLayers: 60,
