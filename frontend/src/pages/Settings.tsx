@@ -267,6 +267,13 @@ export const AdvancedGeneralSettings: FC = observer(() => {
                     ),
                     { type: 'info' }
                   )
+                } else if (data.optionText === 'MartLLM') {
+                  toast(
+                    t(
+                      "Don't forget to correctly fill in your MartLLM API Chat Model Name."
+                    ),
+                    { type: 'info' }
+                  )
                 }
               }}
             >
@@ -275,6 +282,7 @@ export const AdvancedGeneralSettings: FC = observer(() => {
               <Option value="http://localhost:17434">llmman</Option>
               <Option value="https://api.openai.com">OpenAI</Option>
               <Option value="https://openrouter.ai/api">OpenRouter</Option>
+              <Option value="https://api.martllm.com">MartLLM</Option>
               <Option value="https://api.deepseek.com/beta">DeepSeek</Option>
             </Dropdown>
           </div>
